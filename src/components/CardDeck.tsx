@@ -17,7 +17,7 @@ const CardDeck = () => {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto h-[300px]">
+    <div className="relative w-full max-w-md mx-auto h-[250px] md:h-[300px] touch-manipulation">
       {cards.map((content, index) => (
         <div
           key={index}

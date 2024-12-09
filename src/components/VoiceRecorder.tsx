@@ -36,7 +36,7 @@ const VoiceRecorder = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex flex-col items-center gap-4 md:gap-8 touch-manipulation">
       <motion.div
         initial={{ scale: 1 }}
         animate={{ scale: isRecording ? [1, 1.1, 1] : 1 }}
@@ -49,18 +49,18 @@ const VoiceRecorder = () => {
         <Button
           onClick={isRecording ? stopRecording : startRecording}
           size="icon"
-          className={`h-24 w-24 rounded-full ${
+          className={`h-20 w-20 md:h-24 md:w-24 rounded-full ${
             isRecording ? 'bg-red-500 hover:bg-red-600' : 'bg-golf-green hover:bg-golf-green/90'
-          }`}
+          } active:scale-95 transition-transform touch-manipulation`}
         >
           {isRecording ? (
-            <Square className="h-12 w-12 text-white" />
+            <Square className="h-10 w-10 md:h-12 md:w-12 text-white" />
           ) : (
-            <Mic className="h-12 w-12 text-white" />
+            <Mic className="h-10 w-10 md:h-12 md:w-12 text-white" />
           )}
         </Button>
       </motion.div>
-      <p className="text-golf-white text-lg">
+      <p className="text-golf-white text-base md:text-lg">
         {isRecording ? "Recording in progress..." : "Tap to start recording"}
       </p>
     </div>
