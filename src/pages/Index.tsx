@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import CardDeck from "../components/CardDeck";
+import VoiceRecorder from "../components/VoiceRecorder";
 
 const Index = () => {
   return (
@@ -15,7 +16,7 @@ const Index = () => {
             Golf Journal
           </h1>
           <p className="text-xl text-golf-sand">
-            Improve your game, one swing at a time
+            Record your thoughts and improve your game
           </p>
         </motion.div>
 
@@ -23,6 +24,15 @@ const Index = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
+          className="max-w-4xl mx-auto mb-16"
+        >
+          <VoiceRecorder />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
           className="max-w-4xl mx-auto"
         >
           <CardDeck />
