@@ -1,0 +1,21 @@
+import { format } from "date-fns";
+
+interface RecordingTimerProps {
+  recordingTime: number;
+}
+
+const RecordingTimer = ({ recordingTime }: RecordingTimerProps) => {
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="text-4xl font-bold text-gray-900 mb-4">
+      {formatTime(recordingTime)}
+    </div>
+  );
+};
+
+export default RecordingTimer;
