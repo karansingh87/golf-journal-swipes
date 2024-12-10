@@ -60,7 +60,7 @@ const AudioWaveform = ({ isRecording, mediaStream }: AudioWaveformProps) => {
   }, [isRecording, mediaStream]);
 
   return (
-    <div className="flex-1 flex items-center justify-center">
+    <div className="h-64 w-full flex items-center justify-center">
       <motion.div
         className="relative w-64 h-64 flex items-center justify-center"
         animate={{

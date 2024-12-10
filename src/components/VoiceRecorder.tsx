@@ -95,10 +95,11 @@ const VoiceRecorder = () => {
     <div className="min-h-screen bg-white px-4 pt-12 pb-6 flex flex-col">
       <StatusBar />
 
-      <div className="flex-1 flex flex-col items-center justify-between">
-        <RecordingTimer recordingTime={recordingTime} />
-        
-        <AudioWaveform isRecording={isRecording && !isPaused} mediaStream={mediaStream} />
+      <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col items-center justify-center gap-6">
+          <AudioWaveform isRecording={isRecording && !isPaused} mediaStream={mediaStream} />
+          <RecordingTimer recordingTime={recordingTime} />
+        </div>
 
         <TranscriptionDisplay 
           transcription={transcription}
