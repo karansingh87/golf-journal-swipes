@@ -5,9 +5,11 @@ import { format } from "date-fns";
 import AudioWaveform from "./AudioWaveform";
 import RecordingTimer from "./RecordingTimer";
 import StatusBar from "./StatusBar";
+import { transcribeAudio } from "../utils/transcription";
 
 const VoiceRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [transcription, setTranscription] = useState("");
@@ -17,6 +19,7 @@ const VoiceRecorder = () => {
     audio: string;
     timestamp: string;
     duration: number;
+    transcription?: string;
   }>>([]);
   const { toast } = useToast();
 
@@ -42,21 +45,37 @@ const VoiceRecorder = () => {
       setMediaStream(stream);
       const recorder = new MediaRecorder(stream);
       
-      recorder.ondataavailable = (e) => {
+      recorder.ondataavailable = async (e) => {
         if (e.data.size > 0) {
           const audioUrl = URL.createObjectURL(e.data);
           const timestamp = format(new Date(), "MMM d, yyyy HH:mm:ss");
-          setRecordings(prev => [...prev, {
-            audio: audioUrl,
-            timestamp,
-            duration: recordingTime
-          }]);
-          console.log("Recording saved:", audioUrl);
-          setTranscription("Sample transcription of your golf notes...");
-          toast({
-            title: "Recording saved!",
-            description: "Your golf note has been recorded.",
-          });
+          
+          try {
+            setIsTranscribing(true);
+            const text = await transcribeAudio(e.data);
+            setTranscription(text);
+            
+            setRecordings(prev => [...prev, {
+              audio: audioUrl,
+              timestamp,
+              duration: recordingTime,
+              transcription: text
+            }]);
+            
+            toast({
+              title: "Recording saved!",
+              description: "Your golf note has been recorded and transcribed.",
+            });
+          } catch (error) {
+            console.error("Transcription error:", error);
+            toast({
+              variant: "destructive",
+              title: "Transcription failed",
+              description: "Could not transcribe the audio. Please try again.",
+            });
+          } finally {
+            setIsTranscribing(false);
+          }
         }
       };
 
@@ -120,6 +139,12 @@ const VoiceRecorder = () => {
           </div>
         )}
 
+        {isTranscribing && (
+          <div className="w-full mb-4">
+            <p className="text-gray-600 text-center">Transcribing your recording...</p>
+          </div>
+        )}
+
         {transcription && (
           <div className="w-full mb-20">
             <p className="text-gray-600 text-lg leading-relaxed">
@@ -139,6 +164,7 @@ const VoiceRecorder = () => {
           <button
             onClick={isRecording ? stopRecording : startRecording}
             className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200 active:scale-95"
+            disabled={isTranscribing}
           >
             {isRecording ? (
               <Pause className="w-8 h-8 text-gray-900" />
