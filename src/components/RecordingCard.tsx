@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { format } from "date-fns";
-import { Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardContent } from "./ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 interface RecordingCardProps {
   recording: {
@@ -32,9 +32,6 @@ const RecordingCard = ({
   onSave,
   onCancelEdit,
 }: RecordingCardProps) => {
-  const [showTranscription, setShowTranscription] = useState(true);
-  const [showAnalysis, setShowAnalysis] = useState(true);
-
   return (
     <Card className="mb-4">
       <CardHeader className="flex flex-row items-center justify-between p-4">
@@ -58,24 +55,19 @@ const RecordingCard = ({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="p-4 space-y-4">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-900">Transcription</h3>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowTranscription(!showTranscription)}
-            >
-              {showTranscription ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
-          {showTranscription && (
-            isEditing ? (
+      <CardContent className="p-4">
+        <Tabs defaultValue="analysis" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="analysis">Analysis</TabsTrigger>
+            <TabsTrigger value="transcription">Transcription</TabsTrigger>
+          </TabsList>
+          <TabsContent value="analysis" className="mt-4">
+            <div className="text-gray-700 whitespace-pre-wrap">
+              {recording.analysis}
+            </div>
+          </TabsContent>
+          <TabsContent value="transcription" className="mt-4">
+            {isEditing ? (
               <div className="space-y-2">
                 <textarea
                   value={editedTranscription}
@@ -98,36 +90,12 @@ const RecordingCard = ({
                 </div>
               </div>
             ) : (
-              <p className="text-gray-700 whitespace-pre-wrap">
+              <div className="text-gray-700 whitespace-pre-wrap">
                 {recording.transcription}
-              </p>
-            )
-          )}
-        </div>
-
-        {recording.analysis && (
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium text-gray-900">Analysis</h3>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowAnalysis(!showAnalysis)}
-              >
-                {showAnalysis ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
-            {showAnalysis && (
-              <p className="text-gray-700 whitespace-pre-wrap">
-                {recording.analysis}
-              </p>
+              </div>
             )}
-          </div>
-        )}
+          </TabsContent>
+        </Tabs>
       </CardContent>
     </Card>
   );
