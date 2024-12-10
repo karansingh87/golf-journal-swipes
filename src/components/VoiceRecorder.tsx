@@ -5,15 +5,17 @@ import { supabase } from "../integrations/supabase/client";
 import { transcribeAudio } from "../utils/transcription";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { History } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import AudioWaveform from "./AudioWaveform";
 import RecordingTimer from "./RecordingTimer";
 import StatusBar from "./StatusBar";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
-import RecordingHistory from "./RecordingHistory";
 import { useRecorder } from "../hooks/useRecorder";
 
 const VoiceRecorder = () => {
+  const navigate = useNavigate();
   const {
     isRecording,
     isPaused,
@@ -127,6 +129,17 @@ const VoiceRecorder = () => {
 
   return (
     <div className="min-h-screen bg-white px-4 pt-12 pb-6">
+      <div className="max-w-2xl mx-auto mb-6 flex justify-end">
+        <Button
+          variant="outline"
+          onClick={() => navigate('/history')}
+          className="flex items-center gap-2"
+        >
+          <History className="w-4 h-4" />
+          View History
+        </Button>
+      </div>
+
       <StatusBar />
 
       <div className="flex flex-col items-center justify-center">
@@ -190,8 +203,6 @@ const VoiceRecorder = () => {
           </div>
         )}
       </div>
-
-      <RecordingHistory />
     </div>
   );
 };
