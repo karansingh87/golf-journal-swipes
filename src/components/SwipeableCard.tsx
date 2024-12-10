@@ -24,11 +24,18 @@ const SwipeableCard = ({ content, onSwipe }: SwipeableCardProps) => {
         setIsDragging(false);
         handleDragEnd(event, info);
       }}
-      className={`w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-8 cursor-grab active:cursor-grabbing touch-manipulation
+      className={`w-full bg-black/70 backdrop-blur-sm rounded-xl shadow-lg 
+                  border border-green-500/20 p-6 cursor-grab active:cursor-grabbing 
+                  touch-manipulation hover:shadow-green-400/5 hover:border-green-500/30
                   ${isDragging ? 'rotate-3 scale-105' : 'rotate-0 scale-100'}
                   transition-all duration-200 ease-out`}
+      style={{
+        boxShadow: "0 4px 20px rgba(0, 255, 0, 0.1)",
+      }}
     >
-      <p className="text-golf-gray text-base md:text-lg font-medium text-center">{content}</p>
+      <p className="text-green-400 text-lg md:text-xl font-medium text-center leading-relaxed">
+        {content}
+      </p>
     </motion.div>
   );
 };

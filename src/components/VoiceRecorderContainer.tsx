@@ -35,7 +35,7 @@ const VoiceRecorderContainer = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-gradient-to-b from-black to-[#0a1f0a] text-white px-4">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-black to-[#0a1f0a] text-white px-4 pb-8">
       {showTextInput ? (
         <TextInput
           onSubmit={handleTextSubmitAndClose}
@@ -49,14 +49,16 @@ const VoiceRecorderContainer = () => {
             onSelect={handleSessionSelect} 
           />
           {sessionType && <CardDeck type={sessionType} />}
-          <VoiceRecorder
-            isTranscribing={isTranscribing}
-            transcription={transcription}
-            onRecordingComplete={handleAudioRecording}
-            onSwitchToText={() => setShowTextInput(true)}
-            onRecordingStart={handleRecordingStart}
-            sessionType={sessionType}
-          />
+          <div className="w-full flex-1 flex flex-col justify-end">
+            <VoiceRecorder
+              isTranscribing={isTranscribing}
+              transcription={transcription}
+              onRecordingComplete={handleAudioRecording}
+              onSwitchToText={() => setShowTextInput(true)}
+              onRecordingStart={handleRecordingStart}
+              sessionType={sessionType}
+            />
+          </div>
         </>
       )}
     </div>

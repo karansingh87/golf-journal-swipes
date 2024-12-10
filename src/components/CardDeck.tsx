@@ -24,25 +24,43 @@ interface CardDeckProps {
 const CardDeck = ({ type }: CardDeckProps) => {
   const initialPrompts = type === "course" ? COURSE_PROMPTS : PRACTICE_PROMPTS;
   const [cards, setCards] = useState(initialPrompts);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleSwipe = () => {
     setCards((prev) => prev.slice(1));
+    setCurrentIndex((prev) => prev + 1);
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto h-[250px] md:h-[300px] touch-manipulation mb-8">
-      {cards.map((content, index) => (
-        <div
-          key={index}
-          className={`absolute top-0 left-0 right-0 
+    <div className="relative w-full flex flex-col items-center mt-24 mb-12">
+      <div className="relative w-[85%] max-w-md mx-auto h-[180px] touch-manipulation">
+        {cards.map((content, index) => (
+          <div
+            key={index}
+            className={`absolute top-0 left-0 right-0 
                      ${index === 0 ? "z-20" : "z-10 -rotate-3"}`}
-          style={{
-            opacity: index === 0 ? 1 : index === 1 ? 0.7 : 0.4,
-          }}
-        >
-          <SwipeableCard content={content} onSwipe={handleSwipe} />
-        </div>
-      ))}
+            style={{
+              opacity: index === 0 ? 1 : index === 1 ? 0.7 : 0.4,
+            }}
+          >
+            <SwipeableCard content={content} onSwipe={handleSwipe} />
+          </div>
+        ))}
+      </div>
+      
+      {/* Pagination dots */}
+      <div className="flex justify-center space-x-2 mt-4">
+        {Array.from({ length: initialPrompts.length }).map((_, index) => (
+          <div
+            key={index}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentIndex
+                ? "bg-green-400 w-4"
+                : "bg-green-400/30"
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 };
