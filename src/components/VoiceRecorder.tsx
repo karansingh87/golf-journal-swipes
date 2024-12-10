@@ -46,40 +46,41 @@ const VoiceRecorder = ({
   };
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-2xl mx-auto flex flex-col items-center">
-          <AudioWaveform isRecording={isRecording && !isPaused} mediaStream={mediaStream} />
-          <RecordingTimer recordingTime={recordingTime} />
-        </div>
-
-        <TranscriptionDisplay 
-          transcription={transcription}
-          isTranscribing={isTranscribing}
+    <div className="flex flex-col items-center justify-center flex-1 gap-6 py-8">
+      <div className="flex flex-col items-center justify-center gap-4">
+        <AudioWaveform 
+          isRecording={isRecording && !isPaused} 
+          mediaStream={mediaStream} 
         />
-
-        <div className="w-full max-w-xs mx-auto flex items-center justify-center space-x-2 text-green-400/60">
-          <Button
-            variant="ghost"
-            onClick={onSwitchToText}
-            className="flex items-center gap-2 text-green-400/60 hover:text-green-400/80"
-          >
-            <Keyboard className="w-4 h-4" />
-            <span className="text-sm">Use Keyboard</span>
-          </Button>
-        </div>
-
-        <RecordingControls
-          isRecording={isRecording}
-          isPaused={isPaused}
-          onStart={startRecording}
-          onPause={pauseRecording}
-          onResume={resumeRecording}
-          onStop={handleStopRecording}
-          onCancel={handleCancel}
-        />
+        <RecordingTimer recordingTime={recordingTime} />
       </div>
-    </>
+
+      <TranscriptionDisplay 
+        transcription={transcription}
+        isTranscribing={isTranscribing}
+      />
+
+      <div className="w-full max-w-xs mx-auto flex items-center justify-center space-x-2 text-green-400/60">
+        <Button
+          variant="ghost"
+          onClick={onSwitchToText}
+          className="flex items-center gap-2 text-green-400/60 hover:text-green-400/80"
+        >
+          <Keyboard className="w-4 h-4" />
+          <span className="text-sm">Use Keyboard</span>
+        </Button>
+      </div>
+
+      <RecordingControls
+        isRecording={isRecording}
+        isPaused={isPaused}
+        onStart={startRecording}
+        onPause={pauseRecording}
+        onResume={resumeRecording}
+        onStop={handleStopRecording}
+        onCancel={handleCancel}
+      />
+    </div>
   );
 };
 
