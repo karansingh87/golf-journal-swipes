@@ -23,43 +23,45 @@ const RecordingControls = ({
     <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-12 px-4">
       <button
         onClick={onCancel}
-        className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center"
+        className="w-12 h-12 bg-green-950/30 rounded-full flex items-center justify-center border border-green-500/20 transition-all duration-200"
       >
-        <X className="w-6 h-6 text-gray-600" />
+        <X className="w-6 h-6 text-green-400" />
       </button>
 
       {isRecording ? (
         <>
           <button
             onClick={isPaused ? onResume : onPause}
-            className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200 active:scale-95"
+            className="w-16 h-16 bg-green-950/30 rounded-full flex items-center justify-center border border-green-500/20 transition-all duration-200 hover:bg-green-900/40 active:scale-95 relative group"
           >
+            <div className="absolute inset-0 bg-green-500/20 rounded-full blur-md group-hover:blur-lg transition-all" />
             {isPaused ? (
-              <div className="flex flex-col items-center">
-                <Mic className="w-8 h-8 text-gray-900" />
-                <span className="text-xs text-gray-600 mt-1">Continue</span>
+              <div className="flex flex-col items-center relative">
+                <Mic className="w-8 h-8 text-green-400" />
+                <span className="text-xs text-green-400 mt-1">Continue</span>
               </div>
             ) : (
-              <Pause className="w-8 h-8 text-gray-900" />
+              <Pause className="w-8 h-8 text-green-400 relative" />
             )}
           </button>
           <button
             onClick={onStop}
-            className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center"
+            className="w-12 h-12 bg-red-950/30 rounded-full flex items-center justify-center border border-red-500/20 transition-all duration-200"
           >
-            <Square className="w-6 h-6 text-red-600" />
+            <Square className="w-6 h-6 text-red-400" />
           </button>
         </>
       ) : (
         <>
           <button
             onClick={onStart}
-            className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200 active:scale-95"
+            className="w-16 h-16 bg-green-950/30 rounded-full flex items-center justify-center border border-green-500/20 transition-all duration-200 hover:bg-green-900/40 active:scale-95 relative group"
           >
-            <Mic className="w-8 h-8 text-gray-900" />
+            <div className="absolute inset-0 bg-green-500/20 rounded-full blur-md group-hover:blur-lg transition-all" />
+            <Mic className="w-8 h-8 text-green-400 relative" />
           </button>
-          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center opacity-50">
-            <div className="w-6 h-1 bg-gray-600 rounded-full" />
+          <div className="w-12 h-12 bg-green-950/30 rounded-full flex items-center justify-center border border-green-500/20 opacity-50">
+            <div className="w-6 h-1 bg-green-400 rounded-full" />
           </div>
         </>
       )}

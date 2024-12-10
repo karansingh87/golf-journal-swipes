@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-
 interface RecordingTimerProps {
   recordingTime: number;
 }
@@ -12,7 +10,7 @@ const RecordingTimer = ({ recordingTime }: RecordingTimerProps) => {
   };
 
   return (
-    <div className="text-4xl font-bold text-gray-900 mb-4">
+    <div className="text-4xl font-bold text-green-400 mb-4">
       {formatTime(recordingTime)}
     </div>
   );
