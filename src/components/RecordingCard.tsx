@@ -3,7 +3,7 @@ import { Pencil, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardHeader, CardContent } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 
 interface RecordingCardProps {
@@ -22,6 +22,7 @@ interface RecordingCardProps {
   onEditChange: (value: string) => void;
   onSave: (id: string) => void;
   onCancelEdit: () => void;
+  defaultExpanded?: boolean;
 }
 
 const RecordingCard = ({
@@ -33,8 +34,14 @@ const RecordingCard = ({
   onEditChange,
   onSave,
   onCancelEdit,
+  defaultExpanded = false,
 }: RecordingCardProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  // Update expansion state when defaultExpanded changes
+  useEffect(() => {
+    setIsExpanded(defaultExpanded);
+  }, [defaultExpanded]);
 
   return (
     <Card className="mb-4">

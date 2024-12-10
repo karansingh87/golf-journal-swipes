@@ -36,7 +36,7 @@ export const useGolfRecording = () => {
     try {
       const analysis = await analyzeTranscription(transcriptionText);
       
-      const { error: insertError } = await supabase
+      const { data, error: insertError } = await supabase
         .from('recordings')
         .insert({
           user_id: session.user.id,
@@ -44,7 +44,9 @@ export const useGolfRecording = () => {
           transcription: transcriptionText,
           duration: audioUrl ? 0 : 0,
           analysis
-        });
+        })
+        .select()
+        .single();
 
       if (insertError) throw insertError;
       
@@ -53,7 +55,8 @@ export const useGolfRecording = () => {
         description: "Your golf note has been saved and analyzed.",
       });
 
-      navigate('/history');
+      // Navigate to history with the new recording ID
+      navigate(`/history?recordingId=${data.id}`);
     } catch (error) {
       console.error("Error saving recording:", error);
       throw error;

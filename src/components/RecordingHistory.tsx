@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
+import { useSearchParams } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
@@ -19,6 +20,7 @@ const RecordingHistory = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedTranscription, setEditedTranscription] = useState("");
+  const [searchParams] = useSearchParams();
   const session = useSession();
   const { toast } = useToast();
 
@@ -114,6 +116,8 @@ const RecordingHistory = () => {
     );
   }
 
+  const expandedRecordingId = searchParams.get('recordingId');
+
   return (
     <div className="w-full max-w-2xl mx-auto px-4 space-y-4">
       {recordings.length === 0 ? (
@@ -130,6 +134,7 @@ const RecordingHistory = () => {
             onEditChange={setEditedTranscription}
             onSave={handleSave}
             onCancelEdit={() => setEditingId(null)}
+            defaultExpanded={recording.id === expandedRecordingId}
           />
         ))
       )}
