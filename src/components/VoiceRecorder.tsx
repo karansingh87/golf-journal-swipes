@@ -1,7 +1,6 @@
 import { useRecorder } from "../hooks/useRecorder";
 import AudioWaveform from "./AudioWaveform";
 import RecordingTimer from "./RecordingTimer";
-import StatusBar from "./StatusBar";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
 import { Button } from "@/components/ui/button";
@@ -47,7 +46,6 @@ const VoiceRecorder = ({
 
   return (
     <>
-      <StatusBar />
       <div className="flex flex-col items-center justify-center">
         <div className="w-full max-w-2xl mx-auto flex flex-col items-center">
           <AudioWaveform isRecording={isRecording && !isPaused} mediaStream={mediaStream} />
