@@ -1,4 +1,5 @@
 import { useRecorder } from "../hooks/useRecorder";
+import { Keyboard } from "lucide-react";
 import AudioWaveform from "./AudioWaveform";
 import RecordingTimer from "./RecordingTimer";
 import RecordingControls from "./RecordingControls";
@@ -57,13 +58,14 @@ const VoiceRecorder = ({
           isTranscribing={isTranscribing}
         />
 
-        <div className="w-full max-w-2xl mx-auto mb-8 flex justify-center">
+        <div className="w-full max-w-xs mx-auto flex items-center justify-center space-x-2 text-green-400/60">
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={onSwitchToText}
-            className="text-golf-green hover:text-golf-green/90"
+            className="flex items-center gap-2 text-green-400/60 hover:text-green-400/80"
           >
-            Or type your note instead
+            <Keyboard className="w-4 h-4" />
+            <span className="text-sm">Use Keyboard</span>
           </Button>
         </div>
 
