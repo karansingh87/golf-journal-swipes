@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { X, Pause } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
+import { useSession } from "@supabase/auth-helpers-react";
+import { supabase } from "../integrations/supabase/client";
 import AudioWaveform from "./AudioWaveform";
 import RecordingTimer from "./RecordingTimer";
 import StatusBar from "./StatusBar";
@@ -21,7 +23,9 @@ const VoiceRecorder = () => {
     duration: number;
     transcription?: string;
   }>>([]);
+  
   const { toast } = useToast();
+  const session = useSession();
 
   // Timer effect
   useEffect(() => {
@@ -35,6 +39,32 @@ const VoiceRecorder = () => {
     }
     return () => clearInterval(interval);
   }, [isRecording]);
+
+  const saveRecording = async (audioUrl: string, transcriptionText: string) => {
+    if (!session?.user?.id) {
+      console.error("No user session found");
+      return;
+    }
+
+    try {
+      const { error: insertError } = await supabase
+        .from('recordings')
+        .insert({
+          user_id: session.user.id,
+          audio_url: audioUrl,
+          transcription: transcriptionText,
+          duration: recordingTime
+        });
+
+      if (insertError) {
+        console.error("Error saving recording:", insertError);
+        throw insertError;
+      }
+    } catch (error) {
+      console.error("Error saving recording:", error);
+      throw error;
+    }
+  };
 
   const startRecording = async () => {
     try {
@@ -55,6 +85,8 @@ const VoiceRecorder = () => {
             const text = await transcribeAudio(e.data);
             setTranscription(text);
             
+            await saveRecording(audioUrl, text);
+            
             setRecordings(prev => [...prev, {
               audio: audioUrl,
               timestamp,
@@ -67,11 +99,11 @@ const VoiceRecorder = () => {
               description: "Your golf note has been recorded and transcribed.",
             });
           } catch (error) {
-            console.error("Transcription error:", error);
+            console.error("Error processing recording:", error);
             toast({
               variant: "destructive",
-              title: "Transcription failed",
-              description: "Could not transcribe the audio. Please try again.",
+              title: "Error saving recording",
+              description: "Could not save your recording. Please try again.",
             });
           } finally {
             setIsTranscribing(false);
