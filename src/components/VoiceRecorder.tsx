@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X, Pause } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const VoiceRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [transcription, setTranscription] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const startRecording = async () => {
     try {
+      console.log("Requesting microphone access...");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      console.log("Microphone access granted");
+      
       const recorder = new MediaRecorder(stream);
       
       recorder.ondataavailable = (e) => {
@@ -17,25 +23,57 @@ const VoiceRecorder = () => {
           const audioUrl = URL.createObjectURL(e.data);
           console.log("Recording saved:", audioUrl);
           // Simulate transcription (in real app, this would come from OpenAI)
-          setTranscription("It started with a sore throat. Then, I began to have a runny nose and frequent sneezing. Yesterday, I noticed that I had a mild fever and felt really tired. Today, I've been");
+          setTranscription("Sample transcription of your golf notes...");
+          toast({
+            title: "Recording saved!",
+            description: "Your golf note has been recorded.",
+          });
         }
+      };
+
+      recorder.onerror = (event) => {
+        console.error("Recorder error:", event);
+        setError("An error occurred while recording");
+        toast({
+          variant: "destructive",
+          title: "Recording failed",
+          description: "Please try again",
+        });
       };
 
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
+      console.log("Recording started");
     } catch (error) {
       console.error("Error accessing microphone:", error);
+      setError("Could not access microphone");
+      toast({
+        variant: "destructive",
+        title: "Microphone access denied",
+        description: "Please allow microphone access to record",
+      });
     }
   };
 
   const stopRecording = () => {
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      console.log("Stopping recording...");
       mediaRecorder.stop();
       mediaRecorder.stream.getTracks().forEach(track => track.stop());
       setIsRecording(false);
+      console.log("Recording stopped");
     }
   };
+
+  // Cleanup function
+  useEffect(() => {
+    return () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [mediaRecorder]);
 
   return (
     <div className="min-h-screen bg-white px-4 pt-12 pb-6 flex flex-col">
@@ -81,6 +119,13 @@ const VoiceRecorder = () => {
           </motion.div>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <div className="w-full mb-4">
+            <p className="text-red-500 text-center">{error}</p>
+          </div>
+        )}
+
         {/* Transcription */}
         {transcription && (
           <div className="w-full mb-20">
@@ -101,7 +146,7 @@ const VoiceRecorder = () => {
 
           <button
             onClick={isRecording ? stopRecording : startRecording}
-            className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center"
+            className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200 active:scale-95"
           >
             {isRecording ? (
               <Pause className="w-8 h-8 text-gray-900" />
