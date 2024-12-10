@@ -33,6 +33,27 @@ export type Database = {
         }
         Relationships: []
       }
+      prompt_config: {
+        Row: {
+          created_at: string | null
+          id: string
+          prompt: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          prompt: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          prompt?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       recordings: {
         Row: {
           analysis: string | null
