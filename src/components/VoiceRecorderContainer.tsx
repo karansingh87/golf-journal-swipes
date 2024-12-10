@@ -57,6 +57,7 @@ const VoiceRecorderContainer = () => {
               onSwitchToText={() => setShowTextInput(true)}
               onRecordingStart={handleRecordingStart}
               sessionType={sessionType}
+              autoStartRecording={true}
             />
           </div>
         </>

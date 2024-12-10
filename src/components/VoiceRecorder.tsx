@@ -5,6 +5,7 @@ import RecordingTimer from "./RecordingTimer";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 interface VoiceRecorderProps {
   isTranscribing: boolean;
@@ -13,6 +14,7 @@ interface VoiceRecorderProps {
   onSwitchToText: () => void;
   onRecordingStart: () => void;
   sessionType: "course" | "practice" | null;
+  autoStartRecording?: boolean;
 }
 
 const VoiceRecorder = ({
@@ -22,6 +24,7 @@ const VoiceRecorder = ({
   onSwitchToText,
   onRecordingStart,
   sessionType,
+  autoStartRecording = false,
 }: VoiceRecorderProps) => {
   const {
     isRecording,
@@ -35,6 +38,12 @@ const VoiceRecorder = ({
     stopRecording,
     resetRecording,
   } = useRecorder();
+
+  useEffect(() => {
+    if (sessionType && autoStartRecording && !isRecording) {
+      startRecording();
+    }
+  }, [sessionType, autoStartRecording, startRecording, isRecording]);
 
   const handleStartRecording = () => {
     if (!sessionType) {
