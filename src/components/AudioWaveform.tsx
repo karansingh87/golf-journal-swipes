@@ -77,7 +77,7 @@ const AudioWaveform = ({ isRecording, mediaStream }: AudioWaveformProps) => {
           {amplitudes.map((height, index) => (
             <motion.div
               key={index}
-              className="w-4 bg-green-500 rounded-full"
+              className="w-4 bg-green-500 rounded-full self-center"
               animate={{
                 height: isRecording ? `${Math.max(20, height * 100)}%` : "20%",
               }}
