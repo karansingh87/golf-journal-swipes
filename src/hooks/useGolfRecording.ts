@@ -3,6 +3,7 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "../integrations/supabase/client";
 import { transcribeAudio } from "../utils/transcription";
+import { useNavigate } from "react-router-dom";
 
 export const useGolfRecording = () => {
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -10,6 +11,7 @@ export const useGolfRecording = () => {
   const [transcription, setTranscription] = useState("");
   const session = useSession();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const analyzeTranscription = async (transcriptionText: string) => {
     try {
@@ -50,6 +52,9 @@ export const useGolfRecording = () => {
         title: "Success!",
         description: "Your golf note has been saved and analyzed.",
       });
+
+      // Navigate to history page after successful save
+      navigate('/history');
     } catch (error) {
       console.error("Error saving recording:", error);
       throw error;
