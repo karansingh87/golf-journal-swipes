@@ -27,8 +27,6 @@ const VoiceRecorderContainer = () => {
         
         <div className="relative w-full aspect-square max-w-[280px] sm:max-w-sm mx-auto flex items-center justify-center">
           <div className="absolute inset-0 bg-green-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute inset-0 bg-green-400/10 rounded-full blur-2xl animate-pulse delay-100" />
-          <div className="absolute inset-0 bg-green-300/5 rounded-full blur-xl animate-pulse delay-200" />
         </div>
       </div>
 
