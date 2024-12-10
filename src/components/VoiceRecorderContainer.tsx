@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 const VoiceRecorderContainer = () => {
   const navigate = useNavigate();
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [isProcessingText, setIsProcessingText] = useState(false);
   const [transcription, setTranscription] = useState("");
   const [showTextInput, setShowTextInput] = useState(false);
   const { toast } = useToast();
@@ -105,6 +106,7 @@ const VoiceRecorderContainer = () => {
     }
 
     try {
+      setIsProcessingText(true);
       await saveRecording(null, text);
       setShowTextInput(false);
     } catch (error) {
@@ -113,6 +115,8 @@ const VoiceRecorderContainer = () => {
         title: "Error saving note",
         description: "Could not save your note. Please try again.",
       });
+    } finally {
+      setIsProcessingText(false);
     }
   };
 
@@ -139,6 +143,7 @@ const VoiceRecorderContainer = () => {
         <TextInput
           onSubmit={handleTextSubmit}
           onCancel={() => setShowTextInput(false)}
+          isProcessing={isProcessingText}
         />
       ) : (
         <VoiceRecorder
