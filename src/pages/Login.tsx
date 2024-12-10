@@ -5,18 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { useSession } from "@supabase/auth-helpers-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const session = useSession();
 
   useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/");
-      }
-    });
+    // Only redirect if we have a valid session
+    if (session?.user) {
+      navigate("/record");
+    }
 
     // Check for any error parameters in the URL (from OAuth redirects)
     const params = new URLSearchParams(window.location.search);
@@ -28,7 +28,7 @@ const Login = () => {
         description: error,
       });
     }
-  }, [navigate, toast]);
+  }, [navigate, toast, session]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-4">
