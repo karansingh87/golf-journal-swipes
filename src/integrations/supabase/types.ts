@@ -14,6 +14,7 @@ export type Database = {
           age: number | null
           email: string | null
           id: string
+          is_admin: boolean | null
           location: string | null
           updated_at: string | null
         }
@@ -21,6 +22,7 @@ export type Database = {
           age?: number | null
           email?: string | null
           id: string
+          is_admin?: boolean | null
           location?: string | null
           updated_at?: string | null
         }
@@ -28,6 +30,7 @@ export type Database = {
           age?: number | null
           email?: string | null
           id?: string
+          is_admin?: boolean | null
           location?: string | null
           updated_at?: string | null
         }
