@@ -1,4 +1,4 @@
-import { Pause, Square, Mic, X, ChevronRight } from "lucide-react";
+import { Pause, Square, Mic, X } from "lucide-react";
 
 interface RecordingControlsProps {
   isRecording: boolean;
@@ -35,7 +35,10 @@ const RecordingControls = ({
             className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center transition-all duration-200 hover:bg-gray-200 active:scale-95"
           >
             {isPaused ? (
-              <ChevronRight className="w-8 h-8 text-gray-900" />
+              <div className="flex flex-col items-center">
+                <Mic className="w-8 h-8 text-gray-900" />
+                <span className="text-xs text-gray-600 mt-1">Continue</span>
+              </div>
             ) : (
               <Pause className="w-8 h-8 text-gray-900" />
             )}
