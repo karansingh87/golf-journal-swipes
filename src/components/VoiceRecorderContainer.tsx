@@ -6,6 +6,7 @@ import { transcribeAudio } from "../utils/transcription";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const VoiceRecorderContainer = () => {
   const navigate = useNavigate();
@@ -14,6 +15,20 @@ const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
   const { toast } = useToast();
   const session = useSession();
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile', session?.user?.id],
+    queryFn: async () => {
+      if (!session?.user?.id) return null;
+      const { data } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', session.user.id)
+        .single();
+      return data;
+    },
+    enabled: !!session?.user?.id,
+  });
 
   const analyzeTranscription = async (transcriptionText: string) => {
     try {
@@ -103,13 +118,21 @@ const VoiceRecorderContainer = () => {
 
   return (
     <div className="min-h-screen bg-white px-4 pt-12 pb-6">
-      <div className="max-w-2xl mx-auto mb-6 flex justify-end">
+      <div className="max-w-2xl mx-auto mb-6 flex justify-end gap-2">
         <button
           onClick={() => navigate('/history')}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
         >
           View History
         </button>
+        {profile?.is_admin && (
+          <button
+            onClick={() => navigate('/admin')}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          >
+            Admin Panel
+          </button>
+        )}
       </div>
 
       {showTextInput ? (
