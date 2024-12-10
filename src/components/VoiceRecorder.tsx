@@ -8,6 +8,7 @@ import RecordingTimer from "./RecordingTimer";
 import StatusBar from "./StatusBar";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
+import RecordingHistory from "./RecordingHistory";
 import { useRecorder } from "../hooks/useRecorder";
 
 const VoiceRecorder = () => {
@@ -92,11 +93,11 @@ const VoiceRecorder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white px-4 pt-12 pb-6 flex flex-col">
+    <div className="min-h-screen bg-white px-4 pt-12 pb-6">
       <StatusBar />
 
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center gap-6">
+      <div className="flex flex-col items-center justify-center">
+        <div className="w-full max-w-2xl mx-auto flex flex-col items-center">
           <AudioWaveform isRecording={isRecording && !isPaused} mediaStream={mediaStream} />
           <RecordingTimer recordingTime={recordingTime} />
         </div>
@@ -116,6 +117,8 @@ const VoiceRecorder = () => {
           onCancel={handleCancel}
         />
       </div>
+
+      <RecordingHistory />
     </div>
   );
 };
