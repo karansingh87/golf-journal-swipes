@@ -2,3 +2,6 @@ project_id = "ffrdieftaulfjaymmexb"
 
 [functions.transcribe]
 verify_jwt = false
+
+[functions.analyze-golf]
+verify_jwt = false

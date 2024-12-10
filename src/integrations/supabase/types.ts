@@ -35,6 +35,7 @@ export type Database = {
       }
       recordings: {
         Row: {
+          analysis: string | null
           audio_url: string | null
           created_at: string | null
           duration: number | null
@@ -43,6 +44,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          analysis?: string | null
           audio_url?: string | null
           created_at?: string | null
           duration?: number | null
@@ -51,6 +53,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          analysis?: string | null
           audio_url?: string | null
           created_at?: string | null
           duration?: number | null

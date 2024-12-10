@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { format } from "date-fns";
-import { Pencil, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { Pencil, Trash2, ChevronDown, ChevronUp, Loader2, ArrowLeft } from "lucide-react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { Button } from "./ui/button";
 
 interface Recording {
   id: string;
   audio_url: string;
   transcription: string;
+  analysis: string;
   duration: number;
   created_at: string;
 }
@@ -21,6 +24,7 @@ const RecordingHistory = () => {
   const [editedTranscription, setEditedTranscription] = useState("");
   const session = useSession();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRecordings();
@@ -106,12 +110,6 @@ const RecordingHistory = () => {
     }
   };
 
-  const formatDuration = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
@@ -122,7 +120,19 @@ const RecordingHistory = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto mt-8 px-4 space-y-4">
+      <div className="flex items-center mb-6">
+        <Button
+          variant="outline"
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Recorder
+        </Button>
+      </div>
+
       <h2 className="text-xl font-semibold text-gray-900 mb-4">Recording History</h2>
+      
       {recordings.length === 0 ? (
         <p className="text-center text-gray-600 py-8">No recordings yet</p>
       ) : (
@@ -133,9 +143,7 @@ const RecordingHistory = () => {
           >
             <div className="flex items-center justify-between mb-2">
               <div className="text-sm text-gray-600">
-                {format(new Date(recording.created_at), "MMM d, yyyy h:mm a")} 
-                <span className="mx-2">•</span>
-                {formatDuration(recording.duration)}
+                {format(new Date(recording.created_at), "MMM d, yyyy h:mm a")}
               </div>
               <div className="flex items-center space-x-2">
                 <button
@@ -163,34 +171,45 @@ const RecordingHistory = () => {
               </div>
             </div>
             {expandedId === recording.id && (
-              <div className="mt-2">
-                {editingId === recording.id ? (
-                  <div className="space-y-2">
-                    <textarea
-                      value={editedTranscription}
-                      onChange={(e) => setEditedTranscription(e.target.value)}
-                      className="w-full p-2 border border-gray-200 rounded-md text-gray-700"
-                      rows={4}
-                    />
-                    <div className="flex justify-end space-x-2">
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => handleSave(recording.id)}
-                        className="px-3 py-1 text-sm bg-golf-green text-white rounded hover:bg-golf-accent"
-                      >
-                        Save
-                      </button>
+              <div className="mt-2 space-y-4">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-900 mb-2">Transcription</h3>
+                  {editingId === recording.id ? (
+                    <div className="space-y-2">
+                      <textarea
+                        value={editedTranscription}
+                        onChange={(e) => setEditedTranscription(e.target.value)}
+                        className="w-full p-2 border border-gray-200 rounded-md text-gray-700"
+                        rows={4}
+                      />
+                      <div className="flex justify-end space-x-2">
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() => handleSave(recording.id)}
+                          className="px-3 py-1 text-sm bg-golf-green text-white rounded hover:bg-golf-accent"
+                        >
+                          Save
+                        </button>
+                      </div>
                     </div>
+                  ) : (
+                    <p className="text-gray-700 whitespace-pre-wrap">
+                      {recording.transcription}
+                    </p>
+                  )}
+                </div>
+                {recording.analysis && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-2">Analysis</h3>
+                    <p className="text-gray-700 whitespace-pre-wrap">
+                      {recording.analysis}
+                    </p>
                   </div>
-                ) : (
-                  <p className="text-gray-700 whitespace-pre-wrap">
-                    {recording.transcription}
-                  </p>
                 )}
               </div>
             )}
