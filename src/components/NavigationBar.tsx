@@ -16,7 +16,7 @@ const NavigationBar = () => {
       title: "Logged out",
       description: "You have been successfully logged out",
     });
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -26,10 +26,10 @@ const NavigationBar = () => {
           <div className="flex items-center">
             <Button
               variant="ghost"
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/record')}
               className="text-gray-700 hover:text-gray-900"
             >
-              Home
+              Record
             </Button>
             <Button
               variant="ghost"
