@@ -2,13 +2,39 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X, Pause } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { format } from "date-fns";
 
 const VoiceRecorder = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [transcription, setTranscription] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const [recordings, setRecordings] = useState<Array<{
+    audio: string;
+    timestamp: string;
+    duration: number;
+  }>>([]);
   const { toast } = useToast();
+
+  // Timer effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isRecording) {
+      interval = setInterval(() => {
+        setRecordingTime((prev) => prev + 1);
+      }, 1000);
+    } else {
+      setRecordingTime(0);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const startRecording = async () => {
     try {
@@ -21,8 +47,13 @@ const VoiceRecorder = () => {
       recorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
           const audioUrl = URL.createObjectURL(e.data);
+          const timestamp = format(new Date(), "MMM d, yyyy HH:mm:ss");
+          setRecordings(prev => [...prev, {
+            audio: audioUrl,
+            timestamp,
+            duration: recordingTime
+          }]);
           console.log("Recording saved:", audioUrl);
-          // Simulate transcription (in real app, this would come from OpenAI)
           setTranscription("Sample transcription of your golf notes...");
           toast({
             title: "Recording saved!",
@@ -79,7 +110,9 @@ const VoiceRecorder = () => {
     <div className="min-h-screen bg-white px-4 pt-12 pb-6 flex flex-col">
       {/* Status Bar */}
       <div className="fixed top-0 left-0 right-0 h-12 bg-white flex items-center justify-between px-4">
-        <div className="text-sm font-medium text-gray-900">9:41</div>
+        <div className="text-sm font-medium text-gray-900">
+          {format(new Date(), "HH:mm")}
+        </div>
         <div className="flex items-center gap-1">
           <div className="w-4 h-4">
             <svg viewBox="0 0 24 24" className="w-full h-full">
@@ -97,6 +130,11 @@ const VoiceRecorder = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col items-center justify-between">
+        {/* Timer Display */}
+        <div className="text-4xl font-bold text-gray-900 mb-4">
+          {formatTime(recordingTime)}
+        </div>
+
         {/* Waveform */}
         <div className="w-full aspect-square flex items-center justify-center">
           <motion.div
@@ -106,15 +144,26 @@ const VoiceRecorder = () => {
             }}
             transition={{
               duration: 2,
-              repeat: Infinity,
+              repeat: isRecording ? Infinity : 0,
               ease: "easeInOut",
             }}
           >
-            <div className="absolute inset-0 bg-golf-green/20 rounded-full blur-xl" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-32 bg-golf-green rounded-full mx-1" />
-              <div className="w-16 h-40 bg-golf-green rounded-full mx-1" />
-              <div className="w-16 h-32 bg-golf-green rounded-full mx-1" />
+            <div className="absolute inset-0 bg-green-500/20 rounded-full blur-xl" />
+            <div className="absolute inset-0 flex items-center justify-center gap-2">
+              {[0.7, 0.9, 0.8, 1, 0.75].map((height, index) => (
+                <motion.div
+                  key={index}
+                  className="w-4 bg-green-500 rounded-full"
+                  animate={{
+                    height: isRecording ? ["20%", `${height * 100}%`, "20%"] : "20%",
+                  }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    delay: index * 0.2,
+                  }}
+                />
+              ))}
             </div>
           </motion.div>
         </div>
@@ -151,7 +200,7 @@ const VoiceRecorder = () => {
             {isRecording ? (
               <Pause className="w-8 h-8 text-gray-900" />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-golf-green" />
+              <div className="w-8 h-8 rounded-full bg-green-500" />
             )}
           </button>
 
