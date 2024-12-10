@@ -2,7 +2,6 @@ import { useState } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
-import { Keyboard } from "lucide-react";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -47,11 +46,6 @@ const VoiceRecorderContainer = () => {
           onSwitchToText={() => setShowTextInput(true)}
         />
       )}
-
-      <div className="w-full max-w-xs mx-auto flex items-center justify-center space-x-2 text-green-400/60">
-        <Keyboard className="w-4 h-4" />
-        <span className="text-sm">Use Keyboard</span>
-      </div>
     </div>
   );
 };
