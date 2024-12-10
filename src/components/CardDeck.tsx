@@ -1,23 +1,36 @@
 import { useState } from "react";
 import SwipeableCard from "./SwipeableCard";
 
-const INITIAL_CARDS = [
-  "Stay focused and trust your swing.",
-  "Take a deep breath before each shot.",
-  "Visualize your perfect shot.",
-  "Keep your head still through impact.",
-  "Play one shot at a time.",
+const COURSE_PROMPTS = [
+  "What club did you use for this shot?",
+  "How's your confidence level right now?",
+  "What's your target and strategy?",
+  "How's the wind affecting your shot?",
+  "What's your score on this hole?",
 ];
 
-const CardDeck = () => {
-  const [cards, setCards] = useState(INITIAL_CARDS);
+const PRACTICE_PROMPTS = [
+  "What aspect are you working on?",
+  "How's your form feeling?",
+  "What's working well today?",
+  "What adjustments are you making?",
+  "Rate your progress (1-10)",
+];
+
+interface CardDeckProps {
+  type: "course" | "practice";
+}
+
+const CardDeck = ({ type }: CardDeckProps) => {
+  const initialPrompts = type === "course" ? COURSE_PROMPTS : PRACTICE_PROMPTS;
+  const [cards, setCards] = useState(initialPrompts);
 
   const handleSwipe = () => {
     setCards((prev) => prev.slice(1));
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto h-[250px] md:h-[300px] touch-manipulation">
+    <div className="relative w-full max-w-md mx-auto h-[250px] md:h-[300px] touch-manipulation mb-8">
       {cards.map((content, index) => (
         <div
           key={index}

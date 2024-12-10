@@ -11,6 +11,8 @@ interface VoiceRecorderProps {
   transcription: string;
   onRecordingComplete: (audioBlob: Blob, recordingTime: number) => void;
   onSwitchToText: () => void;
+  onRecordingStart: () => void;
+  sessionType: "course" | "practice" | null;
 }
 
 const VoiceRecorder = ({
@@ -18,6 +20,8 @@ const VoiceRecorder = ({
   transcription,
   onRecordingComplete,
   onSwitchToText,
+  onRecordingStart,
+  sessionType,
 }: VoiceRecorderProps) => {
   const {
     isRecording,
@@ -31,6 +35,14 @@ const VoiceRecorder = ({
     stopRecording,
     resetRecording,
   } = useRecorder();
+
+  const handleStartRecording = () => {
+    if (!sessionType) {
+      onRecordingStart();
+    } else {
+      startRecording();
+    }
+  };
 
   const handleStopRecording = async () => {
     stopRecording();
@@ -74,7 +86,7 @@ const VoiceRecorder = ({
       <RecordingControls
         isRecording={isRecording}
         isPaused={isPaused}
-        onStart={startRecording}
+        onStart={handleStartRecording}
         onPause={pauseRecording}
         onResume={resumeRecording}
         onStop={handleStopRecording}
