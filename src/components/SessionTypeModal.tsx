@@ -1,5 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { GolfBall, Target } from "lucide-react";
+import { Golf, Target } from "lucide-react";
 
 interface SessionTypeModalProps {
   isOpen: boolean;
@@ -20,7 +20,7 @@ const SessionTypeModal = ({ isOpen, onSelect }: SessionTypeModalProps) => {
               onClick={() => onSelect("course")}
               className="flex flex-col items-center gap-3 p-6 rounded-lg bg-green-950/30 border border-green-500/20 hover:bg-green-900/40 transition-all duration-200"
             >
-              <GolfBall className="w-8 h-8 text-green-400" />
+              <Golf className="w-8 h-8 text-green-400" />
               <h3 className="text-lg font-medium text-green-400">Course Play</h3>
               <p className="text-sm text-green-400/60 text-center">
                 Record your thoughts during an actual round
