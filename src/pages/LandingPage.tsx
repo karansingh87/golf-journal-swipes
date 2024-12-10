@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Golf, Flag, Trophy } from "lucide-react";
+import { Mic, Flag, Trophy } from "lucide-react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
             <div className="flex flex-col items-center text-center">
               <div className="rounded-lg bg-green-100 p-3">
-                <Golf className="h-6 w-6 text-green-600" />
+                <Mic className="h-6 w-6 text-green-600" />
               </div>
               <h3 className="mt-6 text-lg font-semibold">Voice Recording</h3>
               <p className="mt-2 text-gray-600">
