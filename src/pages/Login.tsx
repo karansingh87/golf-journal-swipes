@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,12 +60,22 @@ const Login = () => {
             }}
             theme="light"
             providers={[]}
-            onError={(error) => {
-              toast({
-                variant: "destructive",
-                title: "Authentication Error",
-                description: error.message,
-              });
+            view="sign_in"
+            localization={{
+              variables: {
+                sign_in: {
+                  email_label: 'Email',
+                  password_label: 'Password',
+                  button_label: 'Sign In',
+                  loading_button_label: 'Signing in...',
+                },
+                sign_up: {
+                  email_label: 'Email',
+                  password_label: 'Password',
+                  button_label: 'Sign Up',
+                  loading_button_label: 'Signing up...',
+                },
+              },
             }}
           />
         </div>
