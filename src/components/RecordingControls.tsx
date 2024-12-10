@@ -1,4 +1,4 @@
-import { Pause, Mic, History, Eye, Check } from "lucide-react";
+import { Pause, Mic, History, Eye, Square } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface RecordingControlsProps {
@@ -28,7 +28,7 @@ const RecordingControls = ({
           onClick={onStop}
           className="mb-2 px-6 py-2 bg-green-950/30 rounded-full flex items-center justify-center gap-2 border border-green-500/20 transition-all duration-200 hover:bg-green-900/40"
         >
-          <Check className="w-5 h-5 text-green-400" />
+          <Square className="w-5 h-5 text-green-400 fill-green-400" />
           <span className="text-green-400 text-sm">Finish Recording</span>
         </button>
       )}
