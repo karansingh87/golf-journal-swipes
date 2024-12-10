@@ -8,6 +8,7 @@ import { supabase } from "./integrations/supabase/client";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import Login from "./pages/Login";
 import History from "./pages/History";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<VoiceRecorderContainer />} />
             <Route path="/history" element={<History />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
