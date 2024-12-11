@@ -1,9 +1,9 @@
 import { useRecorder } from "../hooks/useRecorder";
-import { Keyboard } from "lucide-react";
-import RecordingTimer from "./RecordingTimer";
+import RecordingTimer from "./recorder/RecordingTimer";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
-import { Button } from "@/components/ui/button";
+import KeyboardToggle from "./recorder/KeyboardToggle";
+import FinishButton from "./recorder/FinishButton";
 import { useEffect } from "react";
 
 interface VoiceRecorderProps {
@@ -28,7 +28,6 @@ const VoiceRecorder = ({
   const {
     isRecording,
     isPaused,
-    mediaStream,
     audioChunks,
     recordingTime,
     startRecording,
@@ -74,25 +73,12 @@ const VoiceRecorder = ({
 
       <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0 px-4">
         <RecordingTimer recordingTime={recordingTime} />
-        
-        <Button
-          variant="ghost"
-          onClick={onSwitchToText}
-          className="flex items-center gap-2 text-green-400/70 hover:text-green-400/90 transition-colors"
-        >
-          <Keyboard className="w-4 h-4" />
-          <span className="text-sm">Use Keyboard</span>
-        </Button>
+        <KeyboardToggle onSwitchToText={onSwitchToText} />
       </div>
 
       <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-6 pb-8 pt-4">
         {isRecording && (
-          <button
-            onClick={handleStopRecording}
-            className="relative z-20 min-h-[44px] px-6 py-2 rounded-full bg-green-950/30 border border-green-500/20 hover:bg-green-900/40 text-green-400 flex items-center justify-center gap-2 transition-all duration-200"
-          >
-            <span className="text-sm">Finish</span>
-          </button>
+          <FinishButton onClick={handleStopRecording} />
         )}
         
         <RecordingControls
