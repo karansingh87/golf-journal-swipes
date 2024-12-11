@@ -32,8 +32,8 @@ const CardDeck = ({ type }: CardDeckProps) => {
   };
 
   return (
-    <div className="relative w-full flex flex-col items-center mt-12">
-      <div className="relative w-[85%] max-w-md mx-auto h-[160px] touch-manipulation">
+    <div className="relative w-full flex flex-col items-center">
+      <div className="relative w-[85%] max-w-md mx-auto h-[120px] touch-manipulation">
         {cards.map((content, index) => (
           <div
             key={index}
@@ -48,7 +48,6 @@ const CardDeck = ({ type }: CardDeckProps) => {
         ))}
       </div>
       
-      {/* Pagination dots */}
       <div className="flex justify-center space-x-1.5 mt-3">
         {Array.from({ length: initialPrompts.length }).map((_, index) => (
           <div

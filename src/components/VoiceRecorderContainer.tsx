@@ -38,8 +38,11 @@ const VoiceRecorderContainer = () => {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-      <div className="min-h-screen flex flex-col items-center justify-between bg-background text-foreground transition-colors duration-300 px-4 pb-8">
-        <ThemeToggle />
+      <div className="fixed inset-0 flex flex-col bg-background text-foreground transition-colors duration-300 overflow-hidden">
+        <div className="absolute top-4 left-4">
+          <ThemeToggle />
+        </div>
+        
         {showTextInput ? (
           <TextInput
             onSubmit={handleTextSubmitAndClose}
@@ -47,24 +50,28 @@ const VoiceRecorderContainer = () => {
             isProcessing={isProcessingText}
           />
         ) : (
-          <>
+          <div className="flex-1 flex flex-col h-[100dvh] relative">
             <SessionTypeModal 
               isOpen={showSessionModal} 
               onSelect={handleSessionSelect} 
             />
-            {sessionType && <CardDeck type={sessionType} />}
-            <div className="w-full flex-1 flex flex-col justify-end">
-              <VoiceRecorder
-                isTranscribing={isTranscribing}
-                transcription={transcription}
-                onRecordingComplete={handleAudioRecording}
-                onSwitchToText={() => setShowTextInput(true)}
-                onRecordingStart={handleRecordingStart}
-                sessionType={sessionType}
-                autoStartRecording={true}
-              />
-            </div>
-          </>
+            
+            {sessionType && (
+              <div className="absolute top-[20%] left-0 right-0 max-h-[20vh]">
+                <CardDeck type={sessionType} />
+              </div>
+            )}
+            
+            <VoiceRecorder
+              isTranscribing={isTranscribing}
+              transcription={transcription}
+              onRecordingComplete={handleAudioRecording}
+              onSwitchToText={() => setShowTextInput(true)}
+              onRecordingStart={handleRecordingStart}
+              sessionType={sessionType}
+              autoStartRecording={true}
+            />
+          </div>
         )}
       </div>
     </ThemeProvider>

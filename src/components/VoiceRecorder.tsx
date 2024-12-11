@@ -66,23 +66,13 @@ const VoiceRecorder = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-[100dvh] relative">
+    <div className="relative flex flex-col items-center justify-between h-full">
       <TranscriptionDisplay 
         transcription={transcription}
         isTranscribing={isTranscribing}
       />
 
-      <div className="absolute top-1/4 left-0 right-0">
-        <div className="w-full px-4">
-          {sessionType && (
-            <div className="card-container">
-              {/* Card content will be rendered here */}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-6">
+      <div className="flex-1 flex flex-col items-center justify-center gap-6 min-h-0">
         <RecordingTimer recordingTime={recordingTime} />
         
         <Button
@@ -95,7 +85,7 @@ const VoiceRecorder = ({
         </Button>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 w-full px-6 pb-8">
+      <div className="w-full px-6 pb-8 pt-4">
         <RecordingControls
           isRecording={isRecording}
           isPaused={isPaused}
