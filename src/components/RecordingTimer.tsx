@@ -10,7 +10,7 @@ const RecordingTimer = ({ recordingTime }: RecordingTimerProps) => {
   };
 
   return (
-    <div className="text-3xl sm:text-4xl font-bold text-green-400 mb-4">
+    <div className="font-mono text-4xl font-bold text-green-400 tracking-wider">
       {formatTime(recordingTime)}
     </div>
   );

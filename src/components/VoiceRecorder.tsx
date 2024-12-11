@@ -66,21 +66,19 @@ const VoiceRecorder = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-between flex-1 gap-4 py-6">
+    <div className="flex flex-col items-center justify-between min-h-[60vh] py-6">
       <TranscriptionDisplay 
         transcription={transcription}
         isTranscribing={isTranscribing}
       />
 
-      <div className="flex flex-col items-center justify-center gap-3 mb-4">
+      <div className="flex-1 flex flex-col items-center justify-center gap-6">
         <RecordingTimer recordingTime={recordingTime} />
-      </div>
-
-      <div className="w-full max-w-xs mx-auto flex items-center justify-center mb-4">
+        
         <Button
           variant="ghost"
           onClick={onSwitchToText}
-          className="flex items-center gap-2 text-green-400/60 hover:text-green-400/80"
+          className="flex items-center gap-2 text-green-400/70 hover:text-green-400/90 transition-colors"
         >
           <Keyboard className="w-4 h-4" />
           <span className="text-sm">Use Keyboard</span>
