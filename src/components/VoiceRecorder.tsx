@@ -66,7 +66,7 @@ const VoiceRecorder = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-[100dvh] relative pb-safe">
+    <div className="flex flex-col items-center justify-between min-h-[100dvh] relative">
       <TranscriptionDisplay 
         transcription={transcription}
         isTranscribing={isTranscribing}
@@ -95,7 +95,7 @@ const VoiceRecorder = ({
         </Button>
       </div>
 
-      <div className="w-full px-6 pb-8">
+      <div className="fixed bottom-0 left-0 right-0 w-full px-6 pb-8">
         <RecordingControls
           isRecording={isRecording}
           isPaused={isPaused}
