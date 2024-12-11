@@ -24,16 +24,24 @@ const SwipeableCard = ({ content, onSwipe }: SwipeableCardProps) => {
         setIsDragging(false);
         handleDragEnd(event, info);
       }}
-      className={`w-full bg-black/70 backdrop-blur-sm rounded-xl shadow-lg 
-                  border border-green-500/20 p-6 cursor-grab active:cursor-grabbing 
-                  touch-manipulation hover:shadow-green-400/5 hover:border-green-500/30
-                  ${isDragging ? 'rotate-3 scale-105' : 'rotate-0 scale-100'}
-                  transition-all duration-200 ease-out`}
-      style={{
-        boxShadow: "0 4px 20px rgba(0, 255, 0, 0.1)",
+      initial={{ scale: 0.95, opacity: 0 }}
+      animate={{ 
+        scale: isDragging ? 1.02 : 1,
+        opacity: 1
       }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 25
+      }}
+      className={`w-full bg-black/40 backdrop-blur-sm rounded-xl
+                  border border-green-500/20 p-6 cursor-grab active:cursor-grabbing 
+                  touch-manipulation transition-shadow duration-200
+                  hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]
+                  relative`}
     >
-      <p className="text-green-400 text-lg md:text-xl font-medium text-center leading-relaxed">
+      <div className="absolute inset-0 rounded-xl bg-green-400/5 blur-xl" />
+      <p className="text-green-400 text-lg md:text-xl font-medium text-center leading-relaxed relative">
         {content}
       </p>
     </motion.div>

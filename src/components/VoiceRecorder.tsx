@@ -1,6 +1,5 @@
 import { useRecorder } from "../hooks/useRecorder";
 import { Keyboard } from "lucide-react";
-import AudioWaveform from "./AudioWaveform";
 import RecordingTimer from "./RecordingTimer";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
@@ -67,21 +66,17 @@ const VoiceRecorder = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 gap-6 py-8">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <AudioWaveform 
-          isRecording={isRecording && !isPaused} 
-          mediaStream={mediaStream} 
-        />
-        <RecordingTimer recordingTime={recordingTime} />
-      </div>
-
+    <div className="flex flex-col items-center justify-between flex-1 gap-4 py-6">
       <TranscriptionDisplay 
         transcription={transcription}
         isTranscribing={isTranscribing}
       />
 
-      <div className="w-full max-w-xs mx-auto flex items-center justify-center space-x-2 text-green-400/60">
+      <div className="flex flex-col items-center justify-center gap-3 mb-4">
+        <RecordingTimer recordingTime={recordingTime} />
+      </div>
+
+      <div className="w-full max-w-xs mx-auto flex items-center justify-center mb-4">
         <Button
           variant="ghost"
           onClick={onSwitchToText}
