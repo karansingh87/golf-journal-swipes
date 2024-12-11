@@ -11,12 +11,29 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import History from "./pages/History";
 import Admin from "./pages/Admin";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
+  const navigate = useNavigate();
   
+  useEffect(() => {
+    // Check session validity
+    const checkSession = async () => {
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      if (!currentSession) {
+        // Clear any stale session data
+        await supabase.auth.signOut();
+        navigate('/login', { replace: true });
+      }
+    };
+    
+    checkSession();
+  }, [navigate]);
+
   if (!session) {
     return <Navigate to="/login" replace />;
   }
@@ -31,7 +48,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <SessionContextProvider supabaseClient={supabase}>
+    <SessionContextProvider supabaseClient={supabase} initialSession={null}>
       <TooltipProvider>
         <Toaster />
         <Sonner />
