@@ -25,10 +25,10 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         golf: {
-          green: "#2D5A27",
-          sand: "#E6D5AC",
+          green: "#4A9D3E",
+          sand: "#E5E5E5",
           white: "#FFFFFF",
-          gray: "#4A5568",
+          gray: "#333333",
           accent: "#1A472A",
         },
         primary: {
@@ -60,6 +60,10 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      boxShadow: {
+        'card-light': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'card-dark': '0 0 15px rgba(74, 222, 128, 0.2)',
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -69,15 +73,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "card-swipe": {
-          "0%": { transform: "translateX(0) rotate(0)", opacity: "1" },
-          "100%": { transform: "translateX(200%) rotate(20deg)", opacity: "0" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "card-swipe": "card-swipe 0.5s ease-out forwards",
       },
     },
   },

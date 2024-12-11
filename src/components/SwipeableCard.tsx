@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, PanInfo } from "framer-motion";
+import { useTheme } from "next-themes";
 
 interface SwipeableCardProps {
   content: string;
@@ -8,6 +9,7 @@ interface SwipeableCardProps {
 
 const SwipeableCard = ({ content, onSwipe }: SwipeableCardProps) => {
   const [isDragging, setIsDragging] = useState(false);
+  const { theme } = useTheme();
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (Math.abs(info.offset.x) > 100) {
@@ -34,14 +36,16 @@ const SwipeableCard = ({ content, onSwipe }: SwipeableCardProps) => {
         stiffness: 300,
         damping: 25
       }}
-      className={`w-full bg-black/40 backdrop-blur-sm rounded-xl
-                  border border-green-500/20 p-6 cursor-grab active:cursor-grabbing 
-                  touch-manipulation transition-shadow duration-200
-                  hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]
-                  relative`}
+      className={`w-full rounded-xl cursor-grab active:cursor-grabbing 
+                  touch-manipulation transition-all duration-300
+                  ${theme === 'dark' 
+                    ? 'bg-black/40 backdrop-blur-sm border border-green-500/20 shadow-card-dark hover:shadow-[0_0_15px_rgba(74,222,128,0.2)]'
+                    : 'bg-white border border-golf-sand shadow-card-light hover:shadow-lg'
+                  }
+                  p-6 relative`}
     >
-      <div className="absolute inset-0 rounded-xl bg-green-400/5 blur-xl" />
-      <p className="text-green-400 text-lg md:text-xl font-medium text-center leading-relaxed relative">
+      <p className={`text-lg md:text-xl font-medium text-center leading-relaxed
+                    ${theme === 'dark' ? 'text-green-400' : 'text-golf-gray'}`}>
         {content}
       </p>
     </motion.div>

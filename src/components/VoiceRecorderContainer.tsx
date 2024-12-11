@@ -4,6 +4,8 @@ import TextInput from "./TextInput";
 import SessionTypeModal from "./SessionTypeModal";
 import CardDeck from "./CardDeck";
 import { useGolfRecording } from "../hooks/useGolfRecording";
+import { ThemeToggle } from "./ThemeToggle";
+import { ThemeProvider } from "next-themes";
 
 type SessionType = "course" | "practice" | null;
 
@@ -35,34 +37,37 @@ const VoiceRecorderContainer = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-black to-[#0a1f0a] text-white px-4 pb-8">
-      {showTextInput ? (
-        <TextInput
-          onSubmit={handleTextSubmitAndClose}
-          onCancel={() => setShowTextInput(false)}
-          isProcessing={isProcessingText}
-        />
-      ) : (
-        <>
-          <SessionTypeModal 
-            isOpen={showSessionModal} 
-            onSelect={handleSessionSelect} 
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <div className="min-h-screen flex flex-col items-center justify-between bg-background text-foreground transition-colors duration-300 px-4 pb-8">
+        <ThemeToggle />
+        {showTextInput ? (
+          <TextInput
+            onSubmit={handleTextSubmitAndClose}
+            onCancel={() => setShowTextInput(false)}
+            isProcessing={isProcessingText}
           />
-          {sessionType && <CardDeck type={sessionType} />}
-          <div className="w-full flex-1 flex flex-col justify-end">
-            <VoiceRecorder
-              isTranscribing={isTranscribing}
-              transcription={transcription}
-              onRecordingComplete={handleAudioRecording}
-              onSwitchToText={() => setShowTextInput(true)}
-              onRecordingStart={handleRecordingStart}
-              sessionType={sessionType}
-              autoStartRecording={true}
+        ) : (
+          <>
+            <SessionTypeModal 
+              isOpen={showSessionModal} 
+              onSelect={handleSessionSelect} 
             />
-          </div>
-        </>
-      )}
-    </div>
+            {sessionType && <CardDeck type={sessionType} />}
+            <div className="w-full flex-1 flex flex-col justify-end">
+              <VoiceRecorder
+                isTranscribing={isTranscribing}
+                transcription={transcription}
+                onRecordingComplete={handleAudioRecording}
+                onSwitchToText={() => setShowTextInput(true)}
+                onRecordingStart={handleRecordingStart}
+                sessionType={sessionType}
+                autoStartRecording={true}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </ThemeProvider>
   );
 };
 
