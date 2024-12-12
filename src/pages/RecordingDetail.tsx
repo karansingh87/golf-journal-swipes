@@ -8,6 +8,8 @@ import { useToast } from "@/components/ui/use-toast";
 import ReactMarkdown from "react-markdown";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const RecordingDetail = () => {
   const { id } = useParams();
@@ -78,8 +80,8 @@ const RecordingDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-3xl mx-auto p-4">
         <Button
           variant="ghost"
           onClick={() => navigate('/history')}
@@ -90,68 +92,85 @@ const RecordingDetail = () => {
         </Button>
 
         <div className={cn(
-          "p-6 rounded-2xl border border-border/50 backdrop-blur-sm",
+          "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",
           "transition-all duration-300",
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-10 w-10 rounded-full"
-                onClick={() => {
-                  // Add audio playback logic here
-                  console.log("Play audio:", recording.audio_url);
-                }}
-              >
-                <PlayCircle className="h-6 w-6 text-primary" />
-              </Button>
-              <div>
-                <div className="text-lg font-medium">
-                  {format(new Date(recording.created_at), "MMMM d, yyyy")}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {format(new Date(recording.created_at), "h:mm a")}
+          <div className="p-6 border-b border-border/50">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 rounded-full"
+                  onClick={() => {
+                    // Add audio playback logic here
+                    console.log("Play audio:", recording.audio_url);
+                  }}
+                >
+                  <PlayCircle className="h-6 w-6 text-primary" />
+                </Button>
+                <div>
+                  <div className="text-lg font-medium">
+                    {format(new Date(recording.created_at), "MMMM d, yyyy")}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {format(new Date(recording.created_at), "h:mm a")}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  // Implement edit functionality
-                  console.log("Edit recording:", recording.id);
-                }}
-              >
-                <Pencil className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleDelete}
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    // Implement edit functionality
+                    console.log("Edit recording:", recording.id);
+                  }}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDelete}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-medium mb-2">Analysis</h3>
-              <div className="prose prose-sm max-w-none dark:prose-invert">
-                <ReactMarkdown>{recording.analysis}</ReactMarkdown>
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-medium mb-2">Transcription</h3>
-              <div className="text-foreground whitespace-pre-wrap">
-                {recording.transcription}
-              </div>
-            </div>
-          </div>
+          <Tabs defaultValue="analysis" className="w-full">
+            <TabsList className="w-full grid grid-cols-2 rounded-none border-b border-border/50">
+              <TabsTrigger 
+                value="analysis"
+                className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
+              >
+                Analysis
+              </TabsTrigger>
+              <TabsTrigger 
+                value="transcription"
+                className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
+              >
+                Transcription
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="analysis" className="mt-0">
+              <ScrollArea className="h-[calc(100vh-300px)] px-6 py-4">
+                <div className="prose prose-sm max-w-none dark:prose-invert">
+                  <ReactMarkdown>{recording.analysis || "No analysis available"}</ReactMarkdown>
+                </div>
+              </ScrollArea>
+            </TabsContent>
+            <TabsContent value="transcription" className="mt-0">
+              <ScrollArea className="h-[calc(100vh-300px)] px-6 py-4">
+                <div className="text-foreground whitespace-pre-wrap">
+                  {recording.transcription || "No transcription available"}
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
