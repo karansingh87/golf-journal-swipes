@@ -18,7 +18,6 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Fetch the current prompt from the database
     const { data: promptConfig, error: promptError } = await supabase
       .from('prompt_config')
       .select('prompt')
@@ -43,7 +42,30 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: promptConfig.prompt
+            content: `${promptConfig.prompt}\n\nPlease format your response using markdown with the following structure:
+# Overall Analysis
+
+[Brief overview of the session]
+
+## Technique Analysis
+- Point 1
+- Point 2
+
+## Areas for Improvement
+1. First area
+2. Second area
+
+## Recommendations
+### Short-term Goals
+- Goal 1
+- Goal 2
+
+### Long-term Development
+- Development point 1
+- Development point 2
+
+## Next Steps
+[Actionable next steps]`
           },
           {
             role: 'user',
@@ -56,6 +78,7 @@ serve(async (req) => {
     const data = await response.json();
     console.log('GPT Analysis completed successfully');
     
+    // Return the raw markdown without any processing
     return new Response(JSON.stringify({ 
       analysis: data.choices[0].message.content 
     }), {
