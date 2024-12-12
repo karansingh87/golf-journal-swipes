@@ -60,7 +60,16 @@ const Login = () => {
             }}
             theme="light"
             providers={[]}
+            onError={(error) => {
+              toast({
+                variant: "destructive",
+                title: "Authentication Error",
+                description: error.message,
+              });
+            }}
+            magicLink={false}
             view="sign_in"
+            redirectTo={`${window.location.origin}/record`}
             localization={{
               variables: {
                 sign_in: {
