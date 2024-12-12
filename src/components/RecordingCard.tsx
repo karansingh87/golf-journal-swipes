@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 interface RecordingCardProps {
   recording: {
