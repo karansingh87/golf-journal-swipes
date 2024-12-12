@@ -19,7 +19,6 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   const [text, setText] = useState("");
   const [isOpen, setIsOpen] = useState(true);
 
-  // Auto-focus the textarea when opened
   useEffect(() => {
     const timer = setTimeout(() => {
       const textarea = document.querySelector('textarea');
@@ -65,7 +64,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
             </div>
           </DrawerHeader>
 
-          <div className="flex-1 p-6 space-y-6 overflow-hidden relative">
+          <div className="flex-1 p-6 space-y-6 overflow-hidden">
             <Textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -73,20 +72,20 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
               className="min-h-[200px] h-full max-h-[calc(80vh-8rem)] bg-transparent border-0 text-golf-gray-text-primary placeholder:text-golf-gray-text-hint focus-visible:ring-0 resize-none text-lg leading-relaxed"
               disabled={isProcessing}
             />
-            
-            {isProcessing && (
-              <div className="absolute inset-0 flex items-center justify-center bg-[#F5F5F5]/80 backdrop-blur-[2px] animate-in fade-in duration-200">
-                <div className="flex flex-col items-center space-y-4">
-                  <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
-                  <p className="text-golf-green/80 text-sm font-medium">
-                    Processing your note...
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </DrawerContent>
+      
+      {isProcessing && (
+        <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-[2px] animate-in fade-in duration-200 z-50">
+          <div className="flex flex-col items-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+            <p className="text-golf-green/80 text-sm font-medium">
+              Processing your note...
+            </p>
+          </div>
+        </div>
+      )}
     </Drawer>
   );
 };
