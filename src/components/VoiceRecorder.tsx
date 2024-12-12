@@ -3,8 +3,24 @@ import RecordingTimer from "./recorder/RecordingTimer";
 import RecordingControls from "./RecordingControls";
 import TranscriptionDisplay from "./TranscriptionDisplay";
 import KeyboardToggle from "./recorder/KeyboardToggle";
-import FinishButton from "./recorder/FinishButton";
+import QuestionPrompt from "./QuestionPrompt";
 import { useEffect } from "react";
+
+const COURSE_PROMPTS = [
+  "What club did you use for this shot?",
+  "How's your confidence level right now?",
+  "What's your target and strategy?",
+  "How's the wind affecting your shot?",
+  "What's your score on this hole?",
+];
+
+const PRACTICE_PROMPTS = [
+  "What aspect are you working on?",
+  "How's your form feeling?",
+  "What's working well today?",
+  "What adjustments are you making?",
+  "Rate your progress (1-10)",
+];
 
 interface VoiceRecorderProps {
   isTranscribing: boolean;
@@ -64,10 +80,7 @@ const VoiceRecorder = ({
     }
   };
 
-  const handleCancel = () => {
-    stopRecording();
-    resetRecording();
-  };
+  const prompts = sessionType === 'course' ? COURSE_PROMPTS : PRACTICE_PROMPTS;
 
   return (
     <div className="relative flex flex-col items-center justify-between h-[100dvh] overflow-hidden">
@@ -76,26 +89,26 @@ const VoiceRecorder = ({
         isTranscribing={isTranscribing}
       />
 
+      {sessionType && (
+        <QuestionPrompt 
+          prompts={prompts}
+          isPaused={isPaused}
+        />
+      )}
+
       <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0 px-4">
         <RecordingTimer recordingTime={recordingTime} />
         <KeyboardToggle onSwitchToText={onSwitchToText} />
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-6 pb-8 pt-4">
-        {isRecording && (
-          <FinishButton onClick={handleStopRecording} />
-        )}
-        
-        <RecordingControls
-          isRecording={isRecording}
-          isPaused={isPaused}
-          onStart={handleStartRecording}
-          onPause={pauseRecording}
-          onResume={resumeRecording}
-          onStop={handleStopRecording}
-          onCancel={handleCancel}
-        />
-      </div>
+      <RecordingControls
+        isRecording={isRecording}
+        isPaused={isPaused}
+        onStart={handleStartRecording}
+        onPause={pauseRecording}
+        onResume={resumeRecording}
+        onStop={handleStopRecording}
+      />
     </div>
   );
 };

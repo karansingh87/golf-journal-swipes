@@ -9,6 +9,7 @@ interface ControlButtonProps {
   isActive?: boolean;
   isPaused?: boolean;
   variant?: "primary" | "secondary";
+  size?: "small" | "default" | "large";
   className?: string;
 }
 
@@ -19,21 +20,31 @@ const ControlButton = ({
   isActive = false,
   isPaused = false,
   variant = "primary",
+  size = "default",
   className
 }: ControlButtonProps) => {
-  const size = isLarge ? 'w-20 h-20' : 'w-12 h-12';
-  const iconSize = isLarge ? 'w-8 h-8' : 'w-5 h-5';
+  const sizeClasses = {
+    small: 'w-10 h-10',
+    default: 'w-12 h-12',
+    large: 'w-20 h-20'
+  };
+
+  const iconSizes = {
+    small: 'w-4 h-4',
+    default: 'w-5 h-5',
+    large: 'w-8 h-8'
+  };
+  
+  const buttonSize = isLarge ? sizeClasses.large : sizeClasses[size];
+  const iconSize = isLarge ? iconSizes.large : iconSizes[size];
   
   const baseStyles = cn(
     "relative z-10 rounded-full flex items-center justify-center transition-all duration-200",
     "touch-manipulation focus:outline-none focus:ring-2 focus:ring-golf-green/20",
-    size,
+    buttonSize,
     {
-      // Primary variant (record button)
       "bg-golf-green text-white hover:bg-golf-green/90": variant === "primary" && isActive && !isPaused,
       "border-2 border-golf-green text-golf-green hover:bg-golf-green/10": variant === "primary" && (!isActive || isPaused),
-      
-      // Secondary variant (side buttons)
       "bg-golf-gray-light hover:bg-golf-gray-card text-golf-gray-text-primary": variant === "secondary",
     },
     className

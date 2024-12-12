@@ -1,4 +1,4 @@
-import { Pause, Mic, History, Eye } from "lucide-react";
+import { Pause, Mic, History, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ControlButton from "./recorder/ControlButton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +10,6 @@ interface RecordingControlsProps {
   onPause: () => void;
   onResume: () => void;
   onStop: () => void;
-  onCancel: () => void;
 }
 
 const RecordingControls = ({
@@ -24,12 +23,13 @@ const RecordingControls = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="flex items-center justify-center gap-8 sm:gap-10 px-4">
+    <div className="fixed bottom-0 inset-x-0 pb-8 pt-4 bg-gradient-to-t from-background to-transparent">
+      <div className="flex items-center justify-between max-w-md mx-auto px-12">
         <ControlButton
           icon={History}
           onClick={() => navigate('/notes')}
           variant="secondary"
+          size="small"
         />
 
         <ControlButton
@@ -41,27 +41,24 @@ const RecordingControls = ({
           variant="primary"
         />
 
-        <ControlButton
-          icon={Eye}
-          onClick={() => {}} // Placeholder for insights
-          variant="secondary"
-        />
+        <AnimatePresence>
+          {isRecording && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+            >
+              <ControlButton
+                icon={Check}
+                onClick={onStop}
+                variant="secondary"
+                size="small"
+                className="text-golf-green hover:text-golf-green/90"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      <AnimatePresence>
-        {isRecording && (
-          <motion.button
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            onClick={onStop}
-            className="px-6 py-2 text-sm font-medium text-golf-green hover:text-golf-green/90 
-                     transition-colors duration-200"
-          >
-            Finish Recording
-          </motion.button>
-        )}
-      </AnimatePresence>
     </div>
   );
 };

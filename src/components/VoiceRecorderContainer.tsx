@@ -2,7 +2,6 @@ import { useState } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import SessionTypeModal from "./SessionTypeModal";
-import CardDeck from "./CardDeck";
 import { useGolfRecording } from "../hooks/useGolfRecording";
 
 type SessionType = "course" | "practice" | null;
@@ -53,12 +52,6 @@ const VoiceRecorderContainer = () => {
             onSelect={handleSessionSelect}
             onClose={() => setShowSessionModal(false)}
           />
-          
-          {sessionType && (
-            <div className="absolute top-[20%] left-0 right-0 max-h-[20vh]">
-              <CardDeck type={sessionType} />
-            </div>
-          )}
           
           <VoiceRecorder
             isTranscribing={isTranscribing}
