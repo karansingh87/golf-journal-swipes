@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardHeader } from "./ui/card";
+import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import PlayButton from "./recording-card/PlayButton";
-import CardHeader from "./recording-card/CardHeader";
+import RecordingCardHeader from "./recording-card/CardHeader";
 import AudioProgress from "./recording-card/AudioProgress";
 
 interface RecordingCardProps {
@@ -99,7 +99,7 @@ const RecordingCard = ({
         "bg-white/80"
       )}
     >
-      <CardHeader className="flex flex-col gap-4 py-5 px-6">
+      <div className="flex flex-col gap-4 py-5 px-6">
         <div className="flex items-start gap-4">
           <PlayButton
             isPlaying={isPlaying}
@@ -107,7 +107,7 @@ const RecordingCard = ({
             onClick={togglePlayback}
           />
           <div className="flex-1">
-            <CardHeader
+            <RecordingCardHeader
               createdAt={recording.created_at}
               onEdit={(e) => handleAction(e, () => onEdit(recording))}
               onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
@@ -127,7 +127,7 @@ const RecordingCard = ({
             duration={recording.duration}
           />
         )}
-      </CardHeader>
+      </div>
     </Card>
   );
 };
