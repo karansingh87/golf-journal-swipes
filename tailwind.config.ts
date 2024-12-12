@@ -25,11 +25,11 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         golf: {
-          green: "#4A9D3E",
-          sand: "#E5E5E5",
+          green: "#4CAF50",
+          sand: "#2E7D32",
           white: "#FFFFFF",
-          gray: "#333333",
-          accent: "#1A472A",
+          gray: "#1E1E1E",
+          accent: "#282828",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
