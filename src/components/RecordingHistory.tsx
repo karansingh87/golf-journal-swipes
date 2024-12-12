@@ -136,28 +136,30 @@ const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
   const expandedRecordingId = searchParams.get('recordingId');
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-6 px-4 py-6 sm:px-6 md:px-8">
       {filteredRecordings.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
+        <div className="text-center py-12 text-muted-foreground">
           {searchQuery || filter !== "all"
             ? "No recordings match your search"
             : "No recordings yet"}
         </div>
       ) : (
-        filteredRecordings.map((recording) => (
-          <RecordingCard
-            key={recording.id}
-            recording={recording}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            isEditing={editingId === recording.id}
-            editedTranscription={editedTranscription}
-            onEditChange={setEditedTranscription}
-            onSave={handleSave}
-            onCancelEdit={() => setEditingId(null)}
-            defaultExpanded={recording.id === expandedRecordingId}
-          />
-        ))
+        <div className="grid gap-4 sm:gap-6">
+          {filteredRecordings.map((recording) => (
+            <RecordingCard
+              key={recording.id}
+              recording={recording}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              isEditing={editingId === recording.id}
+              editedTranscription={editedTranscription}
+              onEditChange={setEditedTranscription}
+              onSave={handleSave}
+              onCancelEdit={() => setEditingId(null)}
+              defaultExpanded={recording.id === expandedRecordingId}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
