@@ -77,6 +77,8 @@ const App = () => (
                 <Admin />
               </ProtectedRoute>
             } />
+            {/* Redirect /history to /notes */}
+            <Route path="/history" element={<Navigate to="/notes" replace />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
