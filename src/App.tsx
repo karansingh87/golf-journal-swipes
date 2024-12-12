@@ -9,7 +9,7 @@ import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
-import Notes from "./pages/History";
+import Notes from "./pages/Notes";
 import Admin from "./pages/Admin";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect } from "react";

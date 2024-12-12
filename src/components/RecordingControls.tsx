@@ -25,7 +25,7 @@ const RecordingControls = ({
     <div className="flex items-center justify-center gap-8 sm:gap-10 px-4">
       <ControlButton
         icon={History}
-        onClick={() => navigate('/history')}
+        onClick={() => navigate('/notes')}
       />
 
       <ControlButton
