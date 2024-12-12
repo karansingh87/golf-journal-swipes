@@ -1,15 +1,11 @@
 import { useState } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
-import SessionTypeModal from "./SessionTypeModal";
 import { useGolfRecording } from "../hooks/useGolfRecording";
-
-type SessionType = "course" | "practice" | null;
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
-  const [sessionType, setSessionType] = useState<SessionType>(null);
-  const [showSessionModal, setShowSessionModal] = useState(false);
+  const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   
   const {
     isTranscribing,
@@ -19,22 +15,13 @@ const VoiceRecorderContainer = () => {
     handleTextSubmit,
   } = useGolfRecording();
 
-  const handleTextSubmitAndClose = async (text: string) => {
-    if (!sessionType) {
-      console.error("Session type not set");
-      return;
-    }
-    await handleTextSubmit(text, sessionType);
+  const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
+    await handleTextSubmit(text, type);
     setShowTextInput(false);
   };
 
   const handleRecordingStart = () => {
-    setShowSessionModal(true);
-  };
-
-  const handleSessionSelect = (type: "course" | "practice") => {
-    setSessionType(type);
-    setShowSessionModal(false);
+    setSessionType(null);
   };
 
   return (
@@ -47,12 +34,6 @@ const VoiceRecorderContainer = () => {
         />
       ) : (
         <div className="flex-1 flex flex-col h-[100dvh] relative">
-          <SessionTypeModal 
-            isOpen={showSessionModal} 
-            onSelect={handleSessionSelect}
-            onClose={() => setShowSessionModal(false)}
-          />
-          
           <VoiceRecorder
             isTranscribing={isTranscribing}
             transcription={transcription}
@@ -60,7 +41,7 @@ const VoiceRecorderContainer = () => {
             onSwitchToText={() => setShowTextInput(true)}
             onRecordingStart={handleRecordingStart}
             sessionType={sessionType}
-            autoStartRecording={true}
+            autoStartRecording={false}
           />
         </div>
       )}

@@ -8,9 +8,10 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import SessionTypeModal from "./SessionTypeModal";
 
 interface TextInputProps {
-  onSubmit: (text: string) => Promise<void>;
+  onSubmit: (text: string, sessionType: "course" | "practice") => Promise<void>;
   onCancel: () => void;
   isProcessing: boolean;
 }
@@ -18,14 +19,18 @@ interface TextInputProps {
 const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   const [text, setText] = useState("");
   const [isOpen, setIsOpen] = useState(true);
+  const [showSessionModal, setShowSessionModal] = useState(true);
+  const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const textarea = document.querySelector('textarea');
-      textarea?.focus();
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
+    if (sessionType) {
+      const timer = setTimeout(() => {
+        const textarea = document.querySelector('textarea');
+        textarea?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [sessionType]);
 
   const handleDismiss = () => {
     setIsOpen(false);
@@ -33,9 +38,28 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   };
 
   const handleSubmit = async () => {
-    await onSubmit(text);
+    if (!sessionType) return;
+    await onSubmit(text, sessionType);
     setIsOpen(false);
   };
+
+  const handleSessionSelect = (type: "course" | "practice") => {
+    setSessionType(type);
+    setShowSessionModal(false);
+  };
+
+  if (showSessionModal) {
+    return (
+      <SessionTypeModal
+        isOpen={showSessionModal}
+        onSelect={handleSessionSelect}
+        onClose={() => {
+          setShowSessionModal(false);
+          handleDismiss();
+        }}
+      />
+    );
+  }
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen} onClose={handleDismiss}>
