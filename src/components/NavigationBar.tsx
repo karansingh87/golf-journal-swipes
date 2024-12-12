@@ -24,7 +24,7 @@ const NavigationBar = () => {
         variant="ghost"
         size="icon"
         onClick={handleLogout}
-        className="text-green-400 hover:text-green-300 hover:bg-green-950/30"
+        className="text-golf-green hover:text-golf-muted hover:bg-golf-subtle"
       >
         <LogOut className="h-5 w-5" />
       </Button>
