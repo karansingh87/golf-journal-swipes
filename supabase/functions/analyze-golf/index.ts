@@ -38,7 +38,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4o',
         messages: [
           {
             role: 'system',
@@ -78,7 +78,6 @@ serve(async (req) => {
     const data = await response.json();
     console.log('GPT Analysis completed successfully');
     
-    // Return the raw markdown without any processing
     return new Response(JSON.stringify({ 
       analysis: data.choices[0].message.content 
     }), {
