@@ -13,6 +13,7 @@ const AdminPromptPanel = () => {
 
   useEffect(() => {
     const fetchPrompts = async () => {
+      console.log('Fetching prompt configurations...');
       const { data, error } = await supabase
         .from('prompt_config')
         .select('prompt, insights_prompt')
@@ -29,6 +30,10 @@ const AdminPromptPanel = () => {
       }
 
       if (data) {
+        console.log('Prompts fetched successfully:', {
+          analysisPromptLength: data.prompt?.length,
+          insightsPromptLength: data.insights_prompt?.length
+        });
         setPrompt(data.prompt);
         setInsightsPrompt(data.insights_prompt);
       }
@@ -38,19 +43,36 @@ const AdminPromptPanel = () => {
   }, []);
 
   const handleSave = async (type: 'analysis' | 'insights') => {
+    console.log(`Saving ${type} prompt...`);
     setIsLoading(true);
     try {
       const updateData = type === 'analysis' 
         ? { prompt }
         : { insights_prompt: insightsPrompt };
 
+      console.log('Update data:', updateData);
+
+      const { data: configData, error: configError } = await supabase
+        .from('prompt_config')
+        .select('id')
+        .single();
+
+      if (configError) {
+        console.error('Error fetching config ID:', configError);
+        throw configError;
+      }
+
       const { error } = await supabase
         .from('prompt_config')
         .update(updateData)
-        .eq('id', (await supabase.from('prompt_config').select('id').single()).data?.id);
+        .eq('id', configData.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating prompt:', error);
+        throw error;
+      }
 
+      console.log(`${type} prompt updated successfully`);
       toast({
         title: "Success",
         description: `${type === 'analysis' ? 'Analysis' : 'Insights'} prompt configuration has been updated.`,
