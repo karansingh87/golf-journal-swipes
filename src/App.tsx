@@ -11,6 +11,7 @@ import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import History from "./pages/History";
 import Admin from "./pages/Admin";
+import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -64,6 +65,11 @@ const App = () => (
             <Route path="/history" element={
               <ProtectedRoute>
                 <History />
+              </ProtectedRoute>
+            } />
+            <Route path="/recording/:id" element={
+              <ProtectedRoute>
+                <RecordingDetail />
               </ProtectedRoute>
             } />
             <Route path="/admin" element={
