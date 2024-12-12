@@ -144,23 +144,14 @@ const RecordingDetail = () => {
           </div>
 
           <Tabs defaultValue="analysis" className="w-full">
-            <TabsList className="w-full grid grid-cols-3 rounded-none border-b border-border/50">
-              <TabsTrigger 
-                value="analysis"
-                className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
-              >
+            <TabsList className="w-full grid grid-cols-3">
+              <TabsTrigger value="analysis">
                 Analysis
               </TabsTrigger>
-              <TabsTrigger 
-                value="insights"
-                className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
-              >
+              <TabsTrigger value="insights">
                 Insights
               </TabsTrigger>
-              <TabsTrigger 
-                value="transcription"
-                className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
-              >
+              <TabsTrigger value="transcription">
                 Transcription
               </TabsTrigger>
             </TabsList>
