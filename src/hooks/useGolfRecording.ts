@@ -15,12 +15,24 @@ export const useGolfRecording = () => {
 
   const analyzeTranscription = async (transcriptionText: string) => {
     try {
+      console.log('Analyzing transcription:', { length: transcriptionText.length });
       const { data, error } = await supabase.functions.invoke('analyze-golf', {
         body: { transcription: transcriptionText },
       });
 
-      if (error) throw error;
-      return data.analysis;
+      if (error) {
+        console.error('Error analyzing transcription:', error);
+        throw error;
+      }
+      
+      console.log('Analysis response:', {
+        hasAnalysis: !!data.analysis,
+        hasInsights: !!data.insights,
+        analysisLength: data.analysis?.length,
+        insightsLength: data.insights?.length
+      });
+      
+      return data;
     } catch (error) {
       console.error("Error analyzing transcription:", error);
       throw error;
@@ -38,7 +50,14 @@ export const useGolfRecording = () => {
     }
 
     try {
-      const analysis = await analyzeTranscription(transcriptionText);
+      console.log('Starting analysis for recording...');
+      const { analysis, insights } = await analyzeTranscription(transcriptionText);
+      console.log('Analysis completed:', { 
+        hasAnalysis: !!analysis,
+        hasInsights: !!insights,
+        analysisLength: analysis?.length,
+        insightsLength: insights?.length
+      });
       
       const { data, error: insertError } = await supabase
         .from('recordings')
@@ -48,12 +67,22 @@ export const useGolfRecording = () => {
           transcription: transcriptionText,
           duration: audioUrl ? 0 : 0,
           analysis,
+          insights,
           session_type: sessionType
         })
         .select()
         .single();
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.error('Error saving recording:', insertError);
+        throw insertError;
+      }
+      
+      console.log('Recording saved successfully:', {
+        id: data.id,
+        hasAnalysis: !!data.analysis,
+        hasInsights: !!data.insights
+      });
       
       toast({
         title: "Success!",
@@ -104,9 +133,11 @@ export const useGolfRecording = () => {
     }
 
     try {
+      console.log('Processing text submission:', { length: text.length });
       setIsProcessingText(true);
       await saveRecording(null, text, sessionType);
     } catch (error) {
+      console.error('Error processing text:', error);
       toast({
         variant: "destructive",
         title: "Error saving note",
