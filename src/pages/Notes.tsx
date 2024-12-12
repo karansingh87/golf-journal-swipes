@@ -14,7 +14,7 @@ const History = () => {
     <div className="min-h-[100dvh] bg-golf-gray-light pb-32">
       <div className="max-w-4xl mx-auto py-8 space-y-6">
         <div className="space-y-4 px-4 sm:px-6 md:px-8">
-          <h1 className="text-2xl font-semibold text-golf-gray-text-primary">Recording History</h1>
+          <h1 className="text-2xl font-semibold text-golf-gray-text-primary">Notes</h1>
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
           <FilterPills selectedFilter={selectedFilter} onFilterChange={setSelectedFilter} />
         </div>
