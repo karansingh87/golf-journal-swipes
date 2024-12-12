@@ -1,5 +1,6 @@
 import { useTheme } from "next-themes";
 import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ControlButtonProps {
   icon: LucideIcon;
@@ -7,6 +8,7 @@ interface ControlButtonProps {
   isLarge?: boolean;
   isActive?: boolean;
   isPaused?: boolean;
+  className?: string;
 }
 
 const ControlButton = ({ 
@@ -14,7 +16,8 @@ const ControlButton = ({
   onClick, 
   isLarge = false,
   isActive = false,
-  isPaused = false
+  isPaused = false,
+  className
 }: ControlButtonProps) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
@@ -47,7 +50,12 @@ const ControlButton = ({
   return (
     <button
       onClick={onClick}
-      className={`relative z-10 rounded-full flex items-center justify-center border transition-all duration-200 touch-manipulation ${size} ${buttonStyle}`}
+      className={cn(
+        "relative z-10 rounded-full flex items-center justify-center border transition-all duration-200 touch-manipulation",
+        size,
+        buttonStyle,
+        className
+      )}
     >
       {isDark && isLarge && (
         <div className={`absolute inset-0 rounded-full blur-md transition-opacity
