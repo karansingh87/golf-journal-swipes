@@ -40,18 +40,21 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          insights_prompt: string
           prompt: string
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
+          insights_prompt?: string
           prompt: string
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
+          insights_prompt?: string
           prompt?: string
           updated_at?: string | null
         }
@@ -64,6 +67,7 @@ export type Database = {
           created_at: string | null
           duration: number | null
           id: string
+          insights: string | null
           session_type: Database["public"]["Enums"]["session_type"]
           transcription: string | null
           user_id: string
@@ -74,6 +78,7 @@ export type Database = {
           created_at?: string | null
           duration?: number | null
           id?: string
+          insights?: string | null
           session_type: Database["public"]["Enums"]["session_type"]
           transcription?: string | null
           user_id: string
@@ -84,6 +89,7 @@ export type Database = {
           created_at?: string | null
           duration?: number | null
           id?: string
+          insights?: string | null
           session_type?: Database["public"]["Enums"]["session_type"]
           transcription?: string | null
           user_id?: string

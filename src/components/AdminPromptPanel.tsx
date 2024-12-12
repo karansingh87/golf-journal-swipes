@@ -3,57 +3,64 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const AdminPromptPanel = () => {
   const [prompt, setPrompt] = useState("");
+  const [insightsPrompt, setInsightsPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchPrompt = async () => {
+    const fetchPrompts = async () => {
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt')
+        .select('prompt, insights_prompt')
         .single();
 
       if (error) {
-        console.error('Error fetching prompt:', error);
+        console.error('Error fetching prompts:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load the prompt configuration.",
+          description: "Failed to load the prompt configurations.",
         });
         return;
       }
 
       if (data) {
         setPrompt(data.prompt);
+        setInsightsPrompt(data.insights_prompt);
       }
     };
 
-    fetchPrompt();
+    fetchPrompts();
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = async (type: 'analysis' | 'insights') => {
     setIsLoading(true);
     try {
+      const updateData = type === 'analysis' 
+        ? { prompt }
+        : { insights_prompt: insightsPrompt };
+
       const { error } = await supabase
         .from('prompt_config')
-        .update({ prompt })
+        .update(updateData)
         .eq('id', (await supabase.from('prompt_config').select('id').single()).data?.id);
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Prompt configuration has been updated.",
+        description: `${type === 'analysis' ? 'Analysis' : 'Insights'} prompt configuration has been updated.`,
       });
     } catch (error) {
       console.error('Error updating prompt:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to update the prompt configuration.",
+        description: `Failed to update the ${type === 'analysis' ? 'analysis' : 'insights'} prompt configuration.`,
       });
     } finally {
       setIsLoading(false);
@@ -63,18 +70,43 @@ const AdminPromptPanel = () => {
   return (
     <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
       <h2 className="text-lg font-semibold mb-4">Admin Panel - GPT Prompt Configuration</h2>
-      <Textarea
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-        className="min-h-[300px] mb-4 font-mono text-sm"
-        placeholder="Enter the GPT prompt configuration..."
-      />
-      <Button 
-        onClick={handleSave}
-        disabled={isLoading}
-      >
-        {isLoading ? "Saving..." : "Save Changes"}
-      </Button>
+      
+      <Tabs defaultValue="analysis" className="w-full">
+        <TabsList className="mb-4">
+          <TabsTrigger value="analysis">Analysis Prompt</TabsTrigger>
+          <TabsTrigger value="insights">Insights Prompt</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="analysis">
+          <Textarea
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            className="min-h-[300px] mb-4 font-mono text-sm"
+            placeholder="Enter the GPT analysis prompt configuration..."
+          />
+          <Button 
+            onClick={() => handleSave('analysis')}
+            disabled={isLoading}
+          >
+            {isLoading ? "Saving..." : "Save Analysis Prompt"}
+          </Button>
+        </TabsContent>
+        
+        <TabsContent value="insights">
+          <Textarea
+            value={insightsPrompt}
+            onChange={(e) => setInsightsPrompt(e.target.value)}
+            className="min-h-[300px] mb-4 font-mono text-sm"
+            placeholder="Enter the GPT insights prompt configuration..."
+          />
+          <Button 
+            onClick={() => handleSave('insights')}
+            disabled={isLoading}
+          >
+            {isLoading ? "Saving..." : "Save Insights Prompt"}
+          </Button>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

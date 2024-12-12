@@ -20,29 +20,29 @@ serve(async (req) => {
 
     const { data: promptConfig, error: promptError } = await supabase
       .from('prompt_config')
-      .select('prompt')
+      .select('prompt, insights_prompt')
       .single();
 
     if (promptError) {
-      throw new Error(`Error fetching prompt: ${promptError.message}`);
+      throw new Error(`Error fetching prompts: ${promptError.message}`);
     }
 
     const { transcription } = await req.json();
     
-    console.log('Using prompt:', promptConfig.prompt);
-    
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [
-          {
-            role: 'system',
-            content: `${promptConfig.prompt}\n\nPlease format your response using markdown with the following structure:
+    // Run both analyses in parallel
+    const [analysisResponse, insightsResponse] = await Promise.all([
+      fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [
+            {
+              role: 'system',
+              content: `${promptConfig.prompt}\n\nPlease format your response using markdown with the following structure:
 # Overall Analysis
 
 [Brief overview of the session]
@@ -66,20 +66,46 @@ serve(async (req) => {
 
 ## Next Steps
 [Actionable next steps]`
-          },
-          {
-            role: 'user',
-            content: transcription
-          }
-        ],
+            },
+            {
+              role: 'user',
+              content: transcription
+            }
+          ],
+        }),
       }),
-    });
+      fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [
+            {
+              role: 'system',
+              content: promptConfig.insights_prompt
+            },
+            {
+              role: 'user',
+              content: transcription
+            }
+          ],
+        }),
+      })
+    ]);
 
-    const data = await response.json();
-    console.log('GPT Analysis completed successfully');
+    const [analysisData, insightsData] = await Promise.all([
+      analysisResponse.json(),
+      insightsResponse.json()
+    ]);
+
+    console.log('GPT Analysis and Insights completed successfully');
     
     return new Response(JSON.stringify({ 
-      analysis: data.choices[0].message.content 
+      analysis: analysisData.choices[0].message.content,
+      insights: insightsData.choices[0].message.content
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

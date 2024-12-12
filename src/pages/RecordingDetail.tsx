@@ -5,11 +5,12 @@ import { Loader2, ArrowLeft, Pencil, Trash2, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
-import ReactMarkdown from "react-markdown";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import AnalysisTab from "@/components/recording-detail/AnalysisTab";
+import InsightsTab from "@/components/recording-detail/InsightsTab";
+import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
 
 const RecordingDetail = () => {
   const { id } = useParams();
@@ -126,7 +127,6 @@ const RecordingDetail = () => {
                   variant="ghost"
                   size="icon"
                   onClick={() => {
-                    // Implement edit functionality
                     console.log("Edit recording:", recording.id);
                   }}
                 >
@@ -144,12 +144,18 @@ const RecordingDetail = () => {
           </div>
 
           <Tabs defaultValue="analysis" className="w-full">
-            <TabsList className="w-full grid grid-cols-2 rounded-none border-b border-border/50">
+            <TabsList className="w-full grid grid-cols-3 rounded-none border-b border-border/50">
               <TabsTrigger 
                 value="analysis"
                 className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
               >
                 Analysis
+              </TabsTrigger>
+              <TabsTrigger 
+                value="insights"
+                className="data-[state=active]:bg-transparent data-[state=active]:text-primary"
+              >
+                Insights
               </TabsTrigger>
               <TabsTrigger 
                 value="transcription"
@@ -159,58 +165,13 @@ const RecordingDetail = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="analysis" className="mt-0">
-              <ScrollArea className="h-[calc(100vh-300px)] px-6 py-4">
-                <div className="prose prose-sm max-w-none dark:prose-invert prose-headings:text-golf-gray-text-primary prose-p:text-golf-gray-text-secondary prose-li:text-golf-gray-text-secondary">
-                  <ReactMarkdown
-                    components={{
-                      h1: ({ children }) => (
-                        <h1 className="text-2xl font-bold mb-4 text-golf-gray-text-primary">
-                          {children}
-                        </h1>
-                      ),
-                      h2: ({ children }) => (
-                        <h2 className="text-xl font-semibold mb-3 mt-6 text-golf-gray-text-primary">
-                          {children}
-                        </h2>
-                      ),
-                      h3: ({ children }) => (
-                        <h3 className="text-lg font-medium mb-2 mt-4 text-golf-gray-text-primary">
-                          {children}
-                        </h3>
-                      ),
-                      p: ({ children }) => (
-                        <p className="mb-4 leading-relaxed">
-                          {children}
-                        </p>
-                      ),
-                      ul: ({ children }) => (
-                        <ul className="mb-4 space-y-2 list-disc list-inside">
-                          {children}
-                        </ul>
-                      ),
-                      ol: ({ children }) => (
-                        <ol className="mb-4 space-y-2 list-decimal list-inside">
-                          {children}
-                        </ol>
-                      ),
-                      li: ({ children }) => (
-                        <li className="leading-relaxed">
-                          {children}
-                        </li>
-                      ),
-                    }}
-                  >
-                    {recording.analysis || "No analysis available"}
-                  </ReactMarkdown>
-                </div>
-              </ScrollArea>
+              <AnalysisTab analysis={recording.analysis} />
+            </TabsContent>
+            <TabsContent value="insights" className="mt-0">
+              <InsightsTab insights={recording.insights} />
             </TabsContent>
             <TabsContent value="transcription" className="mt-0">
-              <ScrollArea className="h-[calc(100vh-300px)] px-6 py-4">
-                <div className="text-foreground whitespace-pre-wrap">
-                  {recording.transcription || "No transcription available"}
-                </div>
-              </ScrollArea>
+              <TranscriptionTab transcription={recording.transcription} />
             </TabsContent>
           </Tabs>
         </div>
