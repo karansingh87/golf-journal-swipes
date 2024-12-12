@@ -26,10 +26,18 @@ export default {
         foreground: "hsl(var(--foreground))",
         golf: {
           green: "#4CAF50",
-          sand: "#2E7D32",
+          muted: "rgba(76, 175, 80, 0.8)",
+          subtle: "rgba(76, 175, 80, 0.1)",
           white: "#FFFFFF",
-          gray: "#1E1E1E",
-          accent: "#282828",
+          gray: {
+            light: "#F5F5F5",
+            card: "#E8E8E8",
+            text: {
+              primary: "#333333",
+              secondary: "#666666",
+              hint: "#999999",
+            },
+          },
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
