@@ -40,9 +40,9 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen} onClose={handleDismiss}>
-      <DrawerContent className="bg-[#F5F5F5] focus:outline-none">
-        <div className="mx-auto w-full max-w-2xl">
-          <DrawerHeader className="border-b border-golf-gray-card px-4 py-3">
+      <DrawerContent className="h-[80vh] bg-[#F5F5F5] focus:outline-none">
+        <div className="mx-auto w-full max-w-3xl h-full flex flex-col">
+          <DrawerHeader className="border-b border-golf-gray-card px-6 py-4">
             <div className="flex items-center justify-between">
               <Button
                 variant="ghost"
@@ -65,17 +65,17 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
             </div>
           </DrawerHeader>
 
-          <div className="p-4 space-y-4">
+          <div className="flex-1 p-6 space-y-6 overflow-hidden">
             <Textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="What's on your mind about your game?"
-              className="min-h-[200px] max-h-[50vh] bg-transparent border-0 text-golf-gray-text-primary placeholder:text-golf-gray-text-hint focus-visible:ring-0 resize-none text-base"
+              className="min-h-[200px] h-full max-h-[calc(80vh-8rem)] bg-transparent border-0 text-golf-gray-text-primary placeholder:text-golf-gray-text-hint focus-visible:ring-0 resize-none text-lg leading-relaxed"
               disabled={isProcessing}
             />
             
             {isProcessing && (
-              <div className="flex flex-col items-center justify-center space-y-2 py-4">
+              <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 bg-[#F5F5F5]/80 backdrop-blur-sm">
                 <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
                 <p className="text-golf-green/60">
                   Processing your note...
