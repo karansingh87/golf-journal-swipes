@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface ControlButtonProps {
   icon: LucideIcon;
@@ -7,6 +8,7 @@ interface ControlButtonProps {
   isLarge?: boolean;
   isActive?: boolean;
   isPaused?: boolean;
+  variant?: "primary" | "secondary";
   className?: string;
 }
 
@@ -16,36 +18,40 @@ const ControlButton = ({
   isLarge = false,
   isActive = false,
   isPaused = false,
+  variant = "primary",
   className
 }: ControlButtonProps) => {
-  const size = isLarge ? 'w-20 h-20 min-w-[80px] min-h-[80px]' : 'w-12 h-12 min-w-[48px] min-h-[48px]';
+  const size = isLarge ? 'w-20 h-20' : 'w-12 h-12';
   const iconSize = isLarge ? 'w-8 h-8' : 'w-5 h-5';
   
-  let buttonStyle = '';
-  let iconStyle = '';
-  
-  if (isLarge) {
-    // Main record button - always solid green
-    buttonStyle = 'bg-golf-green hover:bg-golf-green/90 border-golf-green';
-    iconStyle = 'text-white';
-  } else {
-    // Secondary buttons
-    buttonStyle = 'bg-golf-gray-light hover:bg-golf-gray-card border-golf-gray-card';
-    iconStyle = 'text-golf-gray-text-primary';
-  }
+  const baseStyles = cn(
+    "relative z-10 rounded-full flex items-center justify-center transition-all duration-200",
+    "touch-manipulation focus:outline-none focus:ring-2 focus:ring-golf-green/20",
+    size,
+    {
+      // Primary variant (record button)
+      "bg-golf-green text-white hover:bg-golf-green/90": variant === "primary" && isActive && !isPaused,
+      "border-2 border-golf-green text-golf-green hover:bg-golf-green/10": variant === "primary" && (!isActive || isPaused),
+      
+      // Secondary variant (side buttons)
+      "bg-golf-gray-light hover:bg-golf-gray-card text-golf-gray-text-primary": variant === "secondary",
+    },
+    className
+  );
 
   return (
-    <button
+    <motion.button
       onClick={onClick}
-      className={cn(
-        "relative z-10 rounded-full flex items-center justify-center border transition-all duration-200 touch-manipulation shadow-md hover:shadow-lg",
-        size,
-        buttonStyle,
-        className
-      )}
+      className={baseStyles}
+      whileTap={{ scale: 0.95 }}
+      animate={isActive ? { scale: [1, 1.05, 1] } : {}}
+      transition={{ duration: 0.2 }}
     >
-      <Icon className={`relative z-20 ${iconSize} ${iconStyle}`} />
-    </button>
+      <Icon className={cn("relative z-20", iconSize)} />
+      {isActive && !isPaused && variant === "primary" && (
+        <div className="absolute inset-0 bg-golf-green/20 rounded-full animate-pulse" />
+      )}
+    </motion.button>
   );
 };
 

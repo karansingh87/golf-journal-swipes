@@ -38,7 +38,8 @@ const CardDeck = ({ type }: CardDeckProps) => {
           <div
             key={index}
             className={`absolute top-0 left-0 right-0 
-                     ${index === 0 ? "z-20" : "z-10 -rotate-3"}`}
+                     ${index === 0 ? "z-20" : "z-10"}
+                     ${index === 1 ? "-rotate-2" : index === 2 ? "-rotate-3" : ""}`}
             style={{
               opacity: index === 0 ? 1 : index === 1 ? 0.5 : 0.2,
             }}
@@ -54,8 +55,8 @@ const CardDeck = ({ type }: CardDeckProps) => {
             key={index}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
               index === currentIndex
-                ? "bg-green-400 w-3"
-                : "bg-green-400/30"
+                ? "bg-golf-green w-3"
+                : "bg-golf-green/30"
             }`}
           />
         ))}

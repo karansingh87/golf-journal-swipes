@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 interface RecordingTimerProps {
   recordingTime: number;
 }
@@ -10,9 +12,17 @@ const RecordingTimer = ({ recordingTime }: RecordingTimerProps) => {
   };
 
   return (
-    <div className="font-mono text-4xl font-bold text-golf-green tracking-wider">
+    <motion.div 
+      className="font-mono text-4xl font-bold text-golf-green tracking-wider"
+      animate={{ scale: [1, 1.05, 1] }}
+      transition={{ 
+        duration: 1,
+        repeat: Infinity,
+        repeatType: "reverse"
+      }}
+    >
       {formatTime(recordingTime)}
-    </div>
+    </motion.div>
   );
 };
 
