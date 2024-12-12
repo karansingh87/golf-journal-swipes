@@ -9,7 +9,7 @@ import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
-import History from "./pages/History";
+import Notes from "./pages/History";
 import Admin from "./pages/Admin";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect } from "react";
@@ -62,9 +62,9 @@ const App = () => (
                 <VoiceRecorderContainer />
               </ProtectedRoute>
             } />
-            <Route path="/history" element={
+            <Route path="/notes" element={
               <ProtectedRoute>
-                <History />
+                <Notes />
               </ProtectedRoute>
             } />
             <Route path="/recording/:id" element={

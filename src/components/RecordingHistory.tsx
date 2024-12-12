@@ -136,15 +136,15 @@ const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
   const expandedRecordingId = searchParams.get('recordingId');
 
   return (
-    <div className="w-full space-y-6 px-4 py-6 sm:px-6 md:px-8">
+    <div className="w-full space-y-4 px-4 py-6 sm:px-6 md:px-8">
       {filteredRecordings.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           {searchQuery || filter !== "all"
-            ? "No recordings match your search"
-            : "No recordings yet"}
+            ? "No notes match your search"
+            : "No notes yet"}
         </div>
       ) : (
-        <div className="grid gap-4 sm:gap-6">
+        <div className="grid gap-2 sm:gap-3">
           {filteredRecordings.map((recording) => (
             <RecordingCard
               key={recording.id}
