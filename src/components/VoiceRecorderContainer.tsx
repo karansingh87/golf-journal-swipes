@@ -2,10 +2,12 @@ import { useState } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
+import SessionTypeModal from "./SessionTypeModal";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
+  const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   
   const {
     isTranscribing,
@@ -21,7 +23,12 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = () => {
-    setSessionType(null);
+    setShowSessionTypeModal(true);
+  };
+
+  const handleSessionTypeSelect = (type: "course" | "practice") => {
+    setSessionType(type);
+    setShowSessionTypeModal(false);
   };
 
   return (
@@ -42,6 +49,11 @@ const VoiceRecorderContainer = () => {
             onRecordingStart={handleRecordingStart}
             sessionType={sessionType}
             autoStartRecording={false}
+          />
+          <SessionTypeModal 
+            isOpen={showSessionTypeModal}
+            onClose={() => setShowSessionTypeModal(false)}
+            onSelect={handleSessionTypeSelect}
           />
         </div>
       )}

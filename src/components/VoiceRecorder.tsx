@@ -50,7 +50,6 @@ const VoiceRecorder = ({
     pauseRecording,
     resumeRecording,
     stopRecording,
-    resetRecording,
   } = useRecorder();
 
   useEffect(() => {
