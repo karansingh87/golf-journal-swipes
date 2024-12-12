@@ -17,12 +17,24 @@ interface RecordingCardProps {
   };
   onEdit: (recording: any) => void;
   onDelete: (id: string) => void;
+  isEditing: boolean;
+  editedTranscription: string;
+  onEditChange: (value: string) => void;
+  onSave: (id: string) => Promise<void>;
+  onCancelEdit: () => void;
+  defaultExpanded: boolean;
 }
 
 const RecordingCard = ({
   recording,
   onEdit,
   onDelete,
+  isEditing,
+  editedTranscription,
+  onEditChange,
+  onSave,
+  onCancelEdit,
+  defaultExpanded,
 }: RecordingCardProps) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
