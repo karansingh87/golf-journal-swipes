@@ -13,18 +13,18 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   const [text, setText] = useState("");
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6">
+    <div className="flex-1 flex flex-col p-4 max-w-2xl mx-auto">
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Type your golf note here..."
-        className="min-h-[200px] mb-4 bg-black/20 border-green-500/20 text-white placeholder:text-green-400/40 focus-visible:ring-green-500/30 focus-visible:ring-offset-0"
+        className="min-h-[200px] mb-4 bg-golf-subtle border-golf-green/20 text-golf-gray-text-primary placeholder:text-golf-green/40 focus-visible:ring-golf-green/30 focus-visible:ring-offset-0"
         disabled={isProcessing}
       />
       {isProcessing && (
         <div className="flex flex-col items-center justify-center space-y-2 py-4">
-          <Loader2 className="h-8 w-8 animate-spin text-green-400" />
-          <p className="text-green-400/60">
+          <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+          <p className="text-golf-green/60">
             Processing your note...
           </p>
         </div>
@@ -34,14 +34,14 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
           variant="ghost"
           onClick={onCancel}
           disabled={isProcessing}
-          className="text-green-400/60 hover:text-green-400/80 hover:bg-green-950/30"
+          className="text-golf-green hover:text-golf-muted hover:bg-golf-subtle"
         >
           Cancel
         </Button>
         <Button
           onClick={() => onSubmit(text)}
           disabled={isProcessing}
-          className="bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/20"
+          className="bg-golf-green hover:bg-golf-muted text-golf-white"
         >
           Save Note
         </Button>
