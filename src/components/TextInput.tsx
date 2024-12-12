@@ -65,7 +65,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
             </div>
           </DrawerHeader>
 
-          <div className="flex-1 p-6 space-y-6 overflow-hidden">
+          <div className="flex-1 p-6 space-y-6 overflow-hidden relative">
             <Textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -75,11 +75,13 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
             />
             
             {isProcessing && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center space-y-2 bg-[#F5F5F5]/80 backdrop-blur-sm">
-                <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
-                <p className="text-golf-green/60">
-                  Processing your note...
-                </p>
+              <div className="absolute inset-0 flex items-center justify-center bg-[#F5F5F5]/80 backdrop-blur-[2px] animate-in fade-in duration-200">
+                <div className="flex flex-col items-center space-y-4">
+                  <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+                  <p className="text-golf-green/80 text-sm font-medium">
+                    Processing your note...
+                  </p>
+                </div>
               </div>
             )}
           </div>

@@ -11,11 +11,13 @@ const TranscriptionDisplay = ({ transcription, isTranscribing }: TranscriptionDi
   return (
     <div className="w-full max-w-2xl mx-auto mb-20 px-4">
       {isTranscribing && (
-        <div className="flex flex-col items-center justify-center space-y-2 py-8">
-          <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
-          <p className="text-gray-600 text-center">
-            Processing your recording...
-          </p>
+        <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-[2px] animate-in fade-in duration-200 z-50">
+          <div className="flex flex-col items-center space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+            <p className="text-golf-green/80 text-sm font-medium">
+              Processing your recording...
+            </p>
+          </div>
         </div>
       )}
       {transcription && (
