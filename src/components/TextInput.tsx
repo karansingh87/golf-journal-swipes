@@ -21,6 +21,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   const [isOpen, setIsOpen] = useState(true);
   const [showSessionModal, setShowSessionModal] = useState(true);
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (sessionType) {
@@ -33,14 +34,21 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   }, [sessionType]);
 
   const handleDismiss = () => {
+    if (isSaving) return; // Prevent dismissal while saving
     setIsOpen(false);
     onCancel();
   };
 
   const handleSubmit = async () => {
-    if (!sessionType) return;
-    await onSubmit(text, sessionType);
-    setIsOpen(false);
+    if (!sessionType || isSaving) return;
+    try {
+      setIsSaving(true);
+      await onSubmit(text, sessionType);
+      setIsOpen(false);
+    } catch (error) {
+      setIsSaving(false);
+      // Error handling is managed by the parent component through the toast system
+    }
   };
 
   const handleSessionSelect = (type: "course" | "practice") => {
@@ -70,7 +78,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
               <Button
                 variant="ghost"
                 onClick={handleDismiss}
-                disabled={isProcessing}
+                disabled={isSaving}
                 className="text-golf-gray-text-primary hover:text-golf-gray-text-primary/80 hover:bg-golf-gray-card"
               >
                 Cancel
@@ -80,7 +88,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
               </DrawerTitle>
               <Button
                 onClick={handleSubmit}
-                disabled={isProcessing || !text.trim()}
+                disabled={isSaving || !text.trim()}
                 className="bg-golf-green hover:bg-golf-muted text-golf-white disabled:opacity-50"
               >
                 Save
@@ -94,13 +102,13 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
               onChange={(e) => setText(e.target.value)}
               placeholder="What's on your mind about your game?"
               className="min-h-[200px] h-full max-h-[calc(80vh-8rem)] bg-transparent border-0 text-golf-gray-text-primary placeholder:text-golf-gray-text-hint focus-visible:ring-0 resize-none text-lg leading-relaxed"
-              disabled={isProcessing}
+              disabled={isSaving}
             />
           </div>
         </div>
       </DrawerContent>
       
-      {isProcessing && (
+      {(isSaving || isProcessing) && (
         <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-[2px] animate-in fade-in duration-200 z-50">
           <div className="flex flex-col items-center space-y-4">
             <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
