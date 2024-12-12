@@ -4,11 +4,12 @@ import { Flag, Target } from "lucide-react";
 interface SessionTypeModalProps {
   isOpen: boolean;
   onSelect: (type: "course" | "practice") => void;
+  onClose: () => void;
 }
 
-const SessionTypeModal = ({ isOpen, onSelect }: SessionTypeModalProps) => {
+const SessionTypeModal = ({ isOpen, onSelect, onClose }: SessionTypeModalProps) => {
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-golf-white border-golf-gray-card">
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold text-center text-golf-gray-text-primary">
