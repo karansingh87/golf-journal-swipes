@@ -13,6 +13,7 @@ const FloatingRecordButton = () => {
           icon={Mic}
           onClick={() => navigate('/record')}
           isLarge
+          isActive={true}
           className="hover:scale-105 active:scale-95 transition-transform duration-200"
         />
       </div>

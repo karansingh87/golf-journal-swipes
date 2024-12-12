@@ -36,9 +36,9 @@ const ControlButton = ({
       iconStyle = isDark ? 'text-green-400' : 'text-golf-gray';
     } else {
       buttonStyle = isDark
-        ? 'bg-green-500 border-green-500/50 hover:bg-green-500/90'
+        ? 'bg-golf-green border-golf-green hover:bg-golf-green/90'
         : 'bg-golf-green border-golf-green hover:bg-golf-green/90';
-      iconStyle = isDark ? 'text-green-950' : 'text-white';
+      iconStyle = 'text-white';
     }
   } else {
     buttonStyle = isDark 
