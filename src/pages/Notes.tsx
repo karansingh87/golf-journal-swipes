@@ -5,16 +5,16 @@ import FilterPills, { FilterType } from "@/components/history/FilterPills";
 import RecordingHistory from "@/components/RecordingHistory";
 import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 
-const History = () => {
+const Notes = () => {
   const session = useSession();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState<FilterType>("all");
 
   return (
-    <div className="min-h-[100dvh] bg-golf-gray-light pb-32">
+    <div className="min-h-[100dvh] bg-background">
       <div className="max-w-4xl mx-auto py-8 space-y-6">
         <div className="space-y-4 px-4 sm:px-6 md:px-8">
-          <h1 className="text-2xl font-semibold text-golf-gray-text-primary">Notes</h1>
+          <h1 className="text-2xl font-semibold text-foreground">Notes</h1>
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
           <FilterPills selectedFilter={selectedFilter} onFilterChange={setSelectedFilter} />
         </div>
@@ -25,4 +25,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default Notes;

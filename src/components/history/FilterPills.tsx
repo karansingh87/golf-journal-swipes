@@ -18,8 +18,8 @@ const FilterPills = ({ selectedFilter, onFilterChange }: FilterPillsProps) => {
             "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
             "whitespace-nowrap min-w-[80px] backdrop-blur-sm",
             selectedFilter === filter
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary/50 text-secondary-foreground hover:bg-secondary/80"
+              ? "bg-golf-green text-white shadow-sm"
+              : "bg-background/50 text-muted-foreground hover:bg-background/80"
           )}
         >
           {filter.charAt(0).toUpperCase() + filter.slice(1)}
