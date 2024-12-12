@@ -9,7 +9,7 @@ import { useEffect } from "react";
 interface VoiceRecorderProps {
   isTranscribing: boolean;
   transcription: string;
-  onRecordingComplete: (audioBlob: Blob, recordingTime: number) => void;
+  onRecordingComplete: (audioBlob: Blob, recordingTime: number, sessionType: 'course' | 'practice') => void;
   onSwitchToText: () => void;
   onRecordingStart: () => void;
   sessionType: "course" | "practice" | null;
@@ -52,10 +52,15 @@ const VoiceRecorder = ({
   };
 
   const handleStopRecording = async () => {
+    if (!sessionType) {
+      console.error("Session type not set");
+      return;
+    }
+    
     stopRecording();
     if (audioChunks.length > 0) {
       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      onRecordingComplete(audioBlob, recordingTime);
+      onRecordingComplete(audioBlob, recordingTime, sessionType);
     }
   };
 

@@ -27,7 +27,11 @@ export const useGolfRecording = () => {
     }
   };
 
-  const saveRecording = async (audioUrl: string | null, transcriptionText: string) => {
+  const saveRecording = async (
+    audioUrl: string | null, 
+    transcriptionText: string,
+    sessionType: 'course' | 'practice'
+  ) => {
     if (!session?.user?.id) {
       console.error("No user session found");
       return;
@@ -43,7 +47,8 @@ export const useGolfRecording = () => {
           audio_url: audioUrl,
           transcription: transcriptionText,
           duration: audioUrl ? 0 : 0,
-          analysis
+          analysis,
+          session_type: sessionType
         })
         .select()
         .single();
@@ -55,7 +60,6 @@ export const useGolfRecording = () => {
         description: "Your golf note has been saved and analyzed.",
       });
 
-      // Navigate to history with the new recording ID
       navigate(`/history?recordingId=${data.id}`);
     } catch (error) {
       console.error("Error saving recording:", error);
@@ -63,13 +67,17 @@ export const useGolfRecording = () => {
     }
   };
 
-  const handleAudioRecording = async (audioBlob: Blob, recordingTime: number) => {
+  const handleAudioRecording = async (
+    audioBlob: Blob, 
+    recordingTime: number,
+    sessionType: 'course' | 'practice'
+  ) => {
     try {
       setIsTranscribing(true);
       const audioUrl = URL.createObjectURL(audioBlob);
       const text = await transcribeAudio(audioBlob);
       setTranscription(text);
-      await saveRecording(audioUrl, text);
+      await saveRecording(audioUrl, text, sessionType);
     } catch (error) {
       console.error("Error processing recording:", error);
       toast({
@@ -82,7 +90,10 @@ export const useGolfRecording = () => {
     }
   };
 
-  const handleTextSubmit = async (text: string) => {
+  const handleTextSubmit = async (
+    text: string,
+    sessionType: 'course' | 'practice'
+  ) => {
     if (!text.trim()) {
       toast({
         variant: "destructive",
@@ -94,7 +105,7 @@ export const useGolfRecording = () => {
 
     try {
       setIsProcessingText(true);
-      await saveRecording(null, text);
+      await saveRecording(null, text, sessionType);
     } catch (error) {
       toast({
         variant: "destructive",

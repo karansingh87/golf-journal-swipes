@@ -21,7 +21,11 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string) => {
-    await handleTextSubmit(text);
+    if (!sessionType) {
+      console.error("Session type not set");
+      return;
+    }
+    await handleTextSubmit(text, sessionType);
     setShowTextInput(false);
   };
 

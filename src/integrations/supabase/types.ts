@@ -64,6 +64,7 @@ export type Database = {
           created_at: string | null
           duration: number | null
           id: string
+          session_type: Database["public"]["Enums"]["session_type"]
           transcription: string | null
           user_id: string
         }
@@ -73,6 +74,7 @@ export type Database = {
           created_at?: string | null
           duration?: number | null
           id?: string
+          session_type: Database["public"]["Enums"]["session_type"]
           transcription?: string | null
           user_id: string
         }
@@ -82,6 +84,7 @@ export type Database = {
           created_at?: string | null
           duration?: number | null
           id?: string
+          session_type?: Database["public"]["Enums"]["session_type"]
           transcription?: string | null
           user_id?: string
         }
@@ -95,7 +98,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      session_type: "course" | "practice"
     }
     CompositeTypes: {
       [_ in never]: never
