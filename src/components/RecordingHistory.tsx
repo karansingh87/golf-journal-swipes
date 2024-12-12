@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
 import RecordingCard from "./RecordingCard";
+import { FilterType } from "./history/FilterPills";
 
 interface Recording {
   id: string;
@@ -15,7 +16,12 @@ interface Recording {
   created_at: string;
 }
 
-const RecordingHistory = () => {
+interface RecordingHistoryProps {
+  searchQuery: string;
+  filter: FilterType;
+}
+
+const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
   const [recordings, setRecordings] = useState<Recording[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -108,10 +114,21 @@ const RecordingHistory = () => {
     }
   };
 
+  const filteredRecordings = recordings.filter(recording => {
+    const matchesSearch = searchQuery
+      ? recording.transcription?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        recording.analysis?.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
+    const matchesFilter = filter === "all" ? true : true; // Implement specific filter logic here
+
+    return matchesSearch && matchesFilter;
+  });
+
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -119,11 +136,15 @@ const RecordingHistory = () => {
   const expandedRecordingId = searchParams.get('recordingId');
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 space-y-4">
-      {recordings.length === 0 ? (
-        <p className="text-center text-gray-600 py-8">No recordings yet</p>
+    <div className="w-full space-y-4">
+      {filteredRecordings.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          {searchQuery || filter !== "all"
+            ? "No recordings match your search"
+            : "No recordings yet"}
+        </div>
       ) : (
-        recordings.map((recording) => (
+        filteredRecordings.map((recording) => (
           <RecordingCard
             key={recording.id}
             recording={recording}
