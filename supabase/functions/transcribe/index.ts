@@ -1,5 +1,5 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -13,6 +13,14 @@ serve(async (req) => {
   }
 
   try {
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    
+    if (!openAIApiKey) {
+      console.error('OpenAI API key is not set');
+      throw new Error('OpenAI API key is not configured');
+    }
+
+    console.log('Received audio file, sending to OpenAI...');
     const formData = await req.formData();
     const audioFile = formData.get('file');
     
@@ -20,12 +28,10 @@ serve(async (req) => {
       throw new Error('No audio file provided');
     }
 
-    console.log('Received audio file, sending to OpenAI...');
-
     const openAIResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Authorization': `Bearer ${openAIApiKey}`,
       },
       body: formData,
     });
