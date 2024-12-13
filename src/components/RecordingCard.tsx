@@ -1,10 +1,8 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
-import PlayButton from "./recording-card/PlayButton";
 import CardHeader from "./recording-card/CardHeader";
-import AudioProgress from "./recording-card/AudioProgress";
 
 interface RecordingCardProps {
   recording: {
@@ -32,53 +30,6 @@ const RecordingCard = ({
   defaultExpanded,
 }: RecordingCardProps) => {
   const navigate = useNavigate();
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-      audioRef.current.addEventListener('ended', handleAudioEnded);
-    }
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-        audioRef.current.removeEventListener('ended', handleAudioEnded);
-      }
-    };
-  }, []);
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      const progress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
-      setProgress(progress);
-      setCurrentTime(audioRef.current.currentTime);
-    }
-  };
-
-  const handleAudioEnded = () => {
-    setIsPlaying(false);
-    setProgress(0);
-    setCurrentTime(0);
-  };
-
-  const togglePlayback = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!audioRef.current) {
-      audioRef.current = new Audio(recording.audio_url);
-      audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-      audioRef.current.addEventListener('ended', handleAudioEnded);
-    }
-
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
 
   const handleCardClick = () => {
     navigate(`/recording/${recording.id}`);
@@ -98,35 +49,18 @@ const RecordingCard = ({
         "bg-white/80 p-5"
       )}
     >
-      <div className="flex items-start gap-4">
-        <PlayButton
-          isPlaying={isPlaying}
-          progress={progress}
-          onClick={togglePlayback}
+      <div className="flex flex-col">
+        <CardHeader
+          createdAt={recording.created_at}
+          onEdit={(e) => handleAction(e, () => onEdit(recording))}
+          onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
         />
-        <div className="flex-1">
-          <CardHeader
-            createdAt={recording.created_at}
-            onEdit={(e) => handleAction(e, () => onEdit(recording))}
-            onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
-          />
-          {recording.transcription && (
-            <div className="text-sm text-muted-foreground line-clamp-2 mt-3">
-              {recording.transcription}
-            </div>
-          )}
-        </div>
+        {recording.transcription && (
+          <div className="text-sm text-muted-foreground line-clamp-2 mt-3">
+            {recording.transcription}
+          </div>
+        )}
       </div>
-
-      {isPlaying && (
-        <div className="mt-4">
-          <AudioProgress
-            progress={progress}
-            currentTime={currentTime}
-            duration={recording.duration}
-          />
-        </div>
-      )}
     </Card>
   );
 };
