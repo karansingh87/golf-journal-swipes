@@ -56,6 +56,8 @@ const Login = () => {
                 button: 'w-full px-4 py-2 text-white bg-black hover:bg-gray-800',
                 input: 'w-full px-3 py-2 border rounded-md',
                 label: 'text-sm font-medium text-gray-700',
+                checkbox: 'mr-2',
+                checkboxLabel: 'text-sm text-gray-600 flex items-center gap-2',
               },
             }}
             theme="light"
@@ -70,6 +72,7 @@ const Login = () => {
                   password_label: 'Password',
                   button_label: 'Sign In',
                   loading_button_label: 'Signing in...',
+                  remember_me_label: 'Remember me',
                 },
                 sign_up: {
                   email_label: 'Email',
@@ -79,6 +82,7 @@ const Login = () => {
                 },
               },
             }}
+            showRememberMe={true}
           />
         </div>
 
