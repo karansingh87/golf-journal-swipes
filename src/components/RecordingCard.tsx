@@ -46,23 +46,23 @@ const RecordingCard = ({
       className={cn(
         "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer relative",
         "rounded-2xl border border-border/50 backdrop-blur-sm active:scale-[0.99]",
-        "bg-white/80 p-5"
+        "bg-white/80 p-6"
       )}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-4">
         <CardHeader
           createdAt={recording.created_at}
           onEdit={(e) => handleAction(e, () => onEdit(recording))}
           onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
         />
         {recording.transcription && (
-          <div className="text-sm text-muted-foreground line-clamp-2 mt-3">
+          <div className="text-sm text-muted-foreground line-clamp-2 pb-8">
             {recording.transcription}
           </div>
         )}
-        <div className="absolute bottom-2 right-2">
+        <div className="absolute bottom-6 right-6">
           <span className={cn(
-            "px-2 py-1 rounded-full text-xs font-medium",
+            "px-3 py-1.5 rounded-full text-sm font-medium",
             recording.session_type === "course" 
               ? "bg-golf-green/10 text-golf-green"
               : "bg-golf-gray-light text-golf-gray-text-secondary"
