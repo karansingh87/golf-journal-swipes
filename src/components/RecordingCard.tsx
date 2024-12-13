@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
-import CardHeader from "./recording-card/CardHeader";
+import { format } from "date-fns";
 
 interface RecordingCardProps {
   recording: {
@@ -25,19 +25,12 @@ interface RecordingCardProps {
 
 const RecordingCard = ({
   recording,
-  onEdit,
-  onDelete,
   defaultExpanded,
 }: RecordingCardProps) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate(`/recording/${recording.id}`);
-  };
-
-  const handleAction = (e: React.MouseEvent, action: () => void) => {
-    e.stopPropagation();
-    action();
   };
 
   return (
@@ -50,17 +43,15 @@ const RecordingCard = ({
       )}
     >
       <div className="flex flex-col">
-        <CardHeader
-          createdAt={recording.created_at}
-          onEdit={(e) => handleAction(e, () => onEdit(recording))}
-          onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
-        />
-        {recording.transcription && (
-          <div className="text-sm text-muted-foreground line-clamp-2 mt-3">
-            {recording.transcription}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <div className="text-sm font-medium">
+              {format(new Date(recording.created_at), "MMM d, yyyy")}
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {format(new Date(recording.created_at), "h:mm a")}
+            </div>
           </div>
-        )}
-        <div className="absolute bottom-2 right-2">
           <span className={cn(
             "px-2 py-1 rounded-full text-xs font-medium",
             recording.session_type === "course" 
@@ -70,6 +61,11 @@ const RecordingCard = ({
             {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
           </span>
         </div>
+        {recording.transcription && (
+          <div className="text-sm text-muted-foreground line-clamp-1 mt-3">
+            {recording.transcription}
+          </div>
+        )}
       </div>
     </Card>
   );
