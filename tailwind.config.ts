@@ -24,17 +24,17 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         golf: {
-          green: "#4CAF50",
-          muted: "rgba(76, 175, 80, 0.8)",
-          subtle: "rgba(76, 175, 80, 0.1)",
+          green: "hsl(240 5.9% 10%)", // zinc-950
+          muted: "hsl(240 3.7% 15.9%)", // zinc-900
+          subtle: "hsl(240 3.7% 15.9% / 0.1)",
           white: "#FFFFFF",
           gray: {
-            light: "#F5F5F5",
-            card: "#E8E8E8",
+            light: "hsl(240 5.2% 33.9%)", // zinc-700
+            card: "hsl(240 3.8% 46.1%)", // zinc-500
             text: {
-              primary: "#333333",
-              secondary: "#666666",
-              hint: "#999999",
+              primary: "hsl(240 5.9% 10%)",
+              secondary: "hsl(240 3.8% 46.1%)",
+              hint: "hsl(240 5.2% 33.9%)",
             },
           },
         },
