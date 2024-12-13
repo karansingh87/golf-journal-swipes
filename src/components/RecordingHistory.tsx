@@ -121,7 +121,7 @@ const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
         recording.analysis?.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
-    const matchesFilter = filter === "all" ? true : true; // Implement specific filter logic here
+    const matchesFilter = filter === "all" ? true : recording.session_type === filter;
 
     return matchesSearch && matchesFilter;
   });
