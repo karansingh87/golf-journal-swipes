@@ -43,8 +43,7 @@ const ControlButton = ({
     "touch-manipulation focus:outline-none focus:ring-2 focus:ring-zinc-950/20",
     buttonSize,
     {
-      "bg-zinc-950 text-white hover:bg-zinc-900": variant === "dark",
-      "bg-zinc-950 text-white hover:bg-zinc-900": variant === "primary" && isActive && !isPaused,
+      "bg-zinc-950 text-white hover:bg-zinc-900": variant === "dark" || (variant === "primary" && isActive && !isPaused),
       "border-2 border-zinc-950 text-zinc-950 hover:bg-zinc-950/10": variant === "primary" && (!isActive || isPaused),
       "bg-zinc-700 hover:bg-zinc-600 text-white": variant === "secondary",
     },
