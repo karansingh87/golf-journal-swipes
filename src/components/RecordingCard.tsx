@@ -52,7 +52,7 @@ const RecordingCard = ({
               {format(new Date(recording.created_at), "h:mm a")}
             </div>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-zinc-900 text-zinc-100 shadow-sm">
+          <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#F1F1F1] text-zinc-600 shadow-sm hover:bg-[#E8E8E8] transition-colors">
             {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
           </span>
         </div>
