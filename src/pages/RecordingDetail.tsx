@@ -152,7 +152,7 @@ const RecordingDetail = () => {
                 Insights
               </TabsTrigger>
               <TabsTrigger value="transcription">
-                Transcription
+                Transcript
               </TabsTrigger>
             </TabsList>
             <TabsContent value="analysis" className="mt-0">
