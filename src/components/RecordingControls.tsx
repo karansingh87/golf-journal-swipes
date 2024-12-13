@@ -38,7 +38,7 @@ const RecordingControls = ({
           isLarge
           isActive={isRecording}
           isPaused={isPaused}
-          variant="primary"
+          variant="dark"
         />
 
         <AnimatePresence>
@@ -53,7 +53,7 @@ const RecordingControls = ({
                 onClick={onStop}
                 variant="secondary"
                 size="small"
-                className="text-golf-green hover:text-golf-green/90"
+                className="text-white hover:text-white/90"
               />
             </motion.div>
           )}

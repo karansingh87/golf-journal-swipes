@@ -8,7 +8,7 @@ interface ControlButtonProps {
   isLarge?: boolean;
   isActive?: boolean;
   isPaused?: boolean;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "dark";
   size?: "small" | "default" | "large";
   className?: string;
 }
@@ -40,12 +40,13 @@ const ControlButton = ({
   
   const baseStyles = cn(
     "relative z-10 rounded-full flex items-center justify-center transition-all duration-200",
-    "touch-manipulation focus:outline-none focus:ring-2 focus:ring-golf-green/20",
+    "touch-manipulation focus:outline-none focus:ring-2 focus:ring-zinc-950/20",
     buttonSize,
     {
-      "bg-golf-green text-white hover:bg-golf-green/90": variant === "primary" && isActive && !isPaused,
-      "border-2 border-golf-green text-golf-green hover:bg-golf-green/10": variant === "primary" && (!isActive || isPaused),
-      "bg-golf-gray-light hover:bg-golf-gray-card text-golf-gray-text-primary": variant === "secondary",
+      "bg-zinc-950 text-white hover:bg-zinc-900": variant === "dark",
+      "bg-zinc-950 text-white hover:bg-zinc-900": variant === "primary" && isActive && !isPaused,
+      "border-2 border-zinc-950 text-zinc-950 hover:bg-zinc-950/10": variant === "primary" && (!isActive || isPaused),
+      "bg-zinc-700 hover:bg-zinc-600 text-white": variant === "secondary",
     },
     className
   );
@@ -60,7 +61,7 @@ const ControlButton = ({
     >
       <Icon className={cn("relative z-20", iconSize)} />
       {isActive && !isPaused && variant === "primary" && (
-        <div className="absolute inset-0 bg-golf-green/20 rounded-full animate-pulse" />
+        <div className="absolute inset-0 bg-zinc-950/20 rounded-full animate-pulse" />
       )}
     </motion.button>
   );
