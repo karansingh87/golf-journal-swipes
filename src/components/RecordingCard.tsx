@@ -49,16 +49,6 @@ const RecordingCard = ({
         "bg-white/80 p-5"
       )}
     >
-      <div className="absolute top-2 right-2">
-        <span className={cn(
-          "px-2 py-1 rounded-full text-xs font-medium",
-          recording.session_type === "course" 
-            ? "bg-golf-green/10 text-golf-green"
-            : "bg-golf-gray-light text-golf-gray-text-secondary"
-        )}>
-          {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
-        </span>
-      </div>
       <div className="flex flex-col">
         <CardHeader
           createdAt={recording.created_at}
@@ -70,6 +60,16 @@ const RecordingCard = ({
             {recording.transcription}
           </div>
         )}
+        <div className="absolute bottom-2 right-2">
+          <span className={cn(
+            "px-2 py-1 rounded-full text-xs font-medium",
+            recording.session_type === "course" 
+              ? "bg-golf-green/10 text-golf-green"
+              : "bg-golf-gray-light text-golf-gray-text-secondary"
+          )}>
+            {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
+          </span>
+        </div>
       </div>
     </Card>
   );

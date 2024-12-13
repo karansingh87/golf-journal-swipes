@@ -14,6 +14,7 @@ interface Recording {
   analysis: string;
   duration: number;
   created_at: string;
+  session_type: "course" | "practice";
 }
 
 interface RecordingHistoryProps {
