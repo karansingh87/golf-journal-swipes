@@ -6,9 +6,11 @@ interface TranscriptionTabProps {
 
 const TranscriptionTab = ({ transcription }: TranscriptionTabProps) => {
   return (
-    <ScrollArea className="h-[calc(100vh-300px)] px-6 py-4">
-      <div className="text-foreground whitespace-pre-wrap">
-        {transcription || "No transcription available"}
+    <ScrollArea className="h-[calc(100vh-300px)] px-6">
+      <div className="prose prose-sm max-w-none">
+        <p className="text-base leading-relaxed text-golf-gray-text-secondary whitespace-pre-wrap">
+          {transcription || "No transcription available"}
+        </p>
       </div>
     </ScrollArea>
   );
