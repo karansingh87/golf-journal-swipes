@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Pencil, Trash2 } from "lucide-react";
+import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
@@ -108,15 +108,6 @@ const RecordingDetail = () => {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    console.log("Edit recording:", recording.id);
-                  }}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
                 <Button
                   variant="ghost"
                   size="icon"
