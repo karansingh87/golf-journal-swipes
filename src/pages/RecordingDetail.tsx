@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Pencil, Trash2, PlayCircle } from "lucide-react";
+import { Loader2, ArrowLeft, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
@@ -99,27 +99,12 @@ const RecordingDetail = () => {
         )}>
           <div className="p-6 border-b border-border/50">
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full"
-                  onClick={() => {
-                    if (recording.audio_url) {
-                      const audio = new Audio(recording.audio_url);
-                      audio.play();
-                    }
-                  }}
-                >
-                  <PlayCircle className="h-6 w-6 text-primary" />
-                </Button>
-                <div>
-                  <div className="text-lg font-medium">
-                    {format(new Date(recording.created_at), "MMMM d, yyyy")}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {format(new Date(recording.created_at), "h:mm a")}
-                  </div>
+              <div>
+                <div className="text-lg font-medium">
+                  {format(new Date(recording.created_at), "MMMM d, yyyy")}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {format(new Date(recording.created_at), "h:mm a")}
                 </div>
               </div>
               <div className="flex gap-2">
