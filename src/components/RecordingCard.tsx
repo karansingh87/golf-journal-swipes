@@ -61,12 +61,7 @@ const RecordingCard = ({
           </div>
         )}
         <div className="absolute bottom-6 right-6">
-          <span className={cn(
-            "px-3 py-1.5 rounded-full text-sm font-medium",
-            recording.session_type === "course" 
-              ? "bg-golf-green/10 text-golf-green"
-              : "bg-golf-gray-light text-golf-gray-text-secondary"
-          )}>
+          <span className="px-3 py-1.5 rounded-full text-sm font-medium bg-golf-green/10 text-golf-green">
             {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
           </span>
         </div>
