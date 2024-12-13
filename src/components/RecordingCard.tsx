@@ -56,14 +56,16 @@ const RecordingCard = ({
           onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
         />
         {recording.transcription && (
-          <div className="text-sm text-muted-foreground line-clamp-1 py-3">
+          <div className="text-sm text-muted-foreground line-clamp-2 mt-3">
             {recording.transcription}
           </div>
         )}
-        <div className="absolute bottom-5 right-5">
+        <div className="absolute bottom-2 right-2">
           <span className={cn(
             "px-2 py-1 rounded-full text-xs font-medium",
-            "bg-golf-green/10 text-golf-green"
+            recording.session_type === "course" 
+              ? "bg-golf-green/10 text-golf-green"
+              : "bg-golf-gray-light text-golf-gray-text-secondary"
           )}>
             {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
           </span>
