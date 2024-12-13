@@ -7,8 +7,8 @@ interface AnalysisTabProps {
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   return (
-    <ScrollArea className="h-[calc(100vh-300px)] px-6">
-      <div className="prose prose-sm max-w-none">
+    <ScrollArea className="h-[calc(100vh-300px)]">
+      <div className="prose prose-sm max-w-none px-6 py-8">
         <ReactMarkdown
           components={{
             h1: ({ children }) => (
