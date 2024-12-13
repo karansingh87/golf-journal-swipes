@@ -56,7 +56,7 @@ const RecordingCard = ({
           onDelete={(e) => handleAction(e, () => onDelete(recording.id))}
         />
         {recording.transcription && (
-          <div className="text-sm text-muted-foreground line-clamp-2 pb-8">
+          <div className="text-sm text-muted-foreground line-clamp-2 pb-14">
             {recording.transcription}
           </div>
         )}
