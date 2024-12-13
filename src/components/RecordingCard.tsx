@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
@@ -12,6 +11,7 @@ interface RecordingCardProps {
     analysis: string;
     duration: number;
     created_at: string;
+    session_type: "course" | "practice";
   };
   onEdit: (recording: any) => void;
   onDelete: (id: string) => void;
@@ -44,11 +44,21 @@ const RecordingCard = ({
     <Card 
       onClick={handleCardClick}
       className={cn(
-        "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer",
+        "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer relative",
         "rounded-2xl border border-border/50 backdrop-blur-sm active:scale-[0.99]",
         "bg-white/80 p-5"
       )}
     >
+      <div className="absolute top-2 right-2">
+        <span className={cn(
+          "px-2 py-1 rounded-full text-xs font-medium",
+          recording.session_type === "course" 
+            ? "bg-golf-green/10 text-golf-green"
+            : "bg-golf-gray-light text-golf-gray-text-secondary"
+        )}>
+          {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
+        </span>
+      </div>
       <div className="flex flex-col">
         <CardHeader
           createdAt={recording.created_at}

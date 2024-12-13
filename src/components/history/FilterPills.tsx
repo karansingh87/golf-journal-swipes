@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type FilterType = "all" | "course" | "range";
+export type FilterType = "all" | "course" | "practice";
 
 interface FilterPillsProps {
   selectedFilter: FilterType;
@@ -10,7 +10,7 @@ interface FilterPillsProps {
 const FilterPills = ({ selectedFilter, onFilterChange }: FilterPillsProps) => {
   return (
     <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-      {(["all", "course", "range"] as FilterType[]).map((filter) => (
+      {(["all", "course", "practice"] as FilterType[]).map((filter) => (
         <button
           key={filter}
           onClick={() => onFilterChange(filter)}

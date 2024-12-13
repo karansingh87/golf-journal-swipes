@@ -12,9 +12,11 @@ const Notes = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-4xl mx-auto py-8 space-y-6">
+      <div className="max-w-4xl mx-auto py-6 space-y-4">
         <div className="space-y-4 px-4 sm:px-6 md:px-8">
-          <h1 className="text-2xl font-semibold text-foreground">Notes</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold text-foreground">Notes</h1>
+          </div>
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
           <FilterPills selectedFilter={selectedFilter} onFilterChange={setSelectedFilter} />
         </div>
