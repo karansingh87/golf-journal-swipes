@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 
 const Login = () => {
@@ -79,8 +79,6 @@ const Login = () => {
               },
             }}
             showLinks={false}
-            // The remember me functionality is built into the Auth component
-            // and doesn't need explicit configuration
           />
         </div>
 
