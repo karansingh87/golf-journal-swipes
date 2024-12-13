@@ -15,11 +15,11 @@ const FilterPills = ({ selectedFilter, onFilterChange }: FilterPillsProps) => {
           key={filter}
           onClick={() => onFilterChange(filter)}
           className={cn(
-            "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-            "whitespace-nowrap min-w-[80px] backdrop-blur-sm",
+            "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+            "whitespace-nowrap min-w-[80px]",
             selectedFilter === filter
-              ? "bg-golf-green text-white shadow-sm"
-              : "bg-background/50 text-muted-foreground hover:bg-background/80"
+              ? "bg-zinc-950 text-white shadow-sm"
+              : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700"
           )}
         >
           {filter.charAt(0).toUpperCase() + filter.slice(1)}
