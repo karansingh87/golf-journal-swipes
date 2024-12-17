@@ -17,19 +17,19 @@ const LandingPage = () => {
         className="pt-40 pb-24 lg:pt-48 px-4 sm:px-6 lg:px-8 text-center"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center justify-center space-y-6">
+          <div className="flex flex-col items-center justify-center space-y-4">
             {/* Mic Icon */}
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-24 h-24 mb-8 bg-zinc-900 rounded-full flex items-center justify-center text-white"
+              className="w-20 h-20 mb-4 bg-zinc-900 rounded-full flex items-center justify-center text-white"
             >
-              <Mic size={48} />
+              <Mic size={40} />
             </motion.div>
             
             {/* Main Heading - Split into two lines */}
-            <h1 className="text-[2.5rem] sm:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
+            <h1 className="text-[2.25rem] sm:text-4xl font-bold tracking-tight text-zinc-900 leading-tight">
               Your golf insights
               <br />
               like never before.
