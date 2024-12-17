@@ -4,8 +4,8 @@ import { useRef } from "react";
 const screens = [
   {
     id: 1,
-    image: "/lovable-uploads/20b29773-caad-40f5-bd34-ce4892ca9b9a.png",
-    alt: "Golf app analytics screen"
+    image: "/lovable-uploads/6e27a5bc-120a-4369-aa38-a4d62af73c6a.png",
+    alt: "Golf app recording interface"
   },
   {
     id: 2,
