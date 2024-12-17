@@ -30,7 +30,7 @@ const LandingPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative pt-32 pb-24 text-center lg:pt-40 px-4 sm:px-6 lg:px-8"
+        className="relative pt-32 pb-24 lg:pt-40 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-8 lg:mb-10">
