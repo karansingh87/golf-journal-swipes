@@ -53,7 +53,11 @@ const LandingPage = () => {
 
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-lg font-medium text-zinc-600 text-center mb-16">Features</h2>
+          <div className="flex justify-center mb-16">
+            <div className="bg-white px-8 py-2 rounded-full shadow-card-light">
+              <h2 className="text-lg font-medium text-zinc-900">Features</h2>
+            </div>
+          </div>
           <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
               index={0}
