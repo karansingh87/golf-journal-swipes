@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart, MessageSquare, Target } from "lucide-react";
+import { Mic, Brain, LineChart, MessageSquare, Target, Flag } from "lucide-react";
 import P5Background from "@/components/landing/P5Background";
 import FeatureCard from "@/components/landing/FeatureCard";
 import { motion } from "framer-motion";
@@ -11,6 +11,19 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen">
       <P5Background />
+      
+      {/* App Name */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="absolute top-0 left-0 right-0 p-6 z-10"
+      >
+        <div className="flex items-center justify-center gap-2 text-2xl font-semibold text-zinc-900">
+          <Flag className="w-6 h-6" />
+          <span>GolfLog.ai</span>
+        </div>
+      </motion.div>
       
       {/* Hero Section */}
       <motion.section 
@@ -115,7 +128,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Benefits Section */}
+      {/* Feature Benefits Section */}
       <section className="py-24 bg-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Why Golfers Love Us</h2>
