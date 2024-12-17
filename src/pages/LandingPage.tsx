@@ -27,10 +27,10 @@ const LandingPage = () => {
               <Mic size={40} />
             </motion.div>
             
-            <h1 className="text-[2.25rem] sm:text-4xl font-medium tracking-tight text-zinc-900 leading-tight">
+            <h1 className="text-[2.25rem] sm:text-6xl font-extrabold tracking-tight text-zinc-900 leading-tight">
               Unlock Your Golf Insights
             </h1>
-            <p className="text-lg text-zinc-600 mt-4 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-zinc-600 mt-4 max-w-2xl mx-auto font-normal">
               Capture your post-round thoughts, analyze your game, and watch your progress soar.
             </p>
 
