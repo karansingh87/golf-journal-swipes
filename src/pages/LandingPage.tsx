@@ -28,10 +28,11 @@ const LandingPage = () => {
             </motion.div>
             
             <h1 className="text-[2.25rem] sm:text-4xl font-medium tracking-tight text-zinc-900 leading-tight">
-              Your golf insights
-              <br />
-              like never before.
+              Unlock Your Golf Insights
             </h1>
+            <p className="text-lg text-zinc-600 mt-4 max-w-2xl mx-auto">
+              Capture your post-round thoughts, analyze your game, and watch your progress soar.
+            </p>
 
             <motion.div 
               whileHover={{ scale: 1.05 }}
