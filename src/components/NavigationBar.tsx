@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu, LogIn } from "lucide-react";
+import { Menu } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
 
 const NavigationBar = () => {
   const supabaseClient = useSupabaseClient();
@@ -51,51 +50,39 @@ const NavigationBar = () => {
             GolfLog
           </div>
           
-          <div className="flex items-center gap-4">
-            <Link to="/login">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
                 className="rounded-full bg-gray-100/80 hover:bg-gray-200/80 transition-colors duration-200"
               >
-                <LogIn className="h-5 w-5 text-gray-700" />
+                <Menu className="h-5 w-5 text-gray-700" />
               </Button>
-            </Link>
-            
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-gray-100/80 hover:bg-gray-200/80 transition-colors duration-200"
-                >
-                  <Menu className="h-5 w-5 text-gray-700" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end"
-                className="w-48 bg-white rounded-md shadow-md animate-in fade-in-80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0"
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end"
+              className="w-48 bg-white rounded-md shadow-md animate-in fade-in-80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0"
+            >
+              {profile?.is_admin && (
+                <>
+                  <DropdownMenuItem 
+                    className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                    onClick={() => navigate('/admin')}
+                  >
+                    Admin Panel
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-gray-200" />
+                </>
+              )}
+              <DropdownMenuItem 
+                className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                onClick={handleLogout}
               >
-                {profile?.is_admin && (
-                  <>
-                    <DropdownMenuItem 
-                      className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
-                      onClick={() => navigate('/admin')}
-                    >
-                      Admin Panel
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator className="bg-gray-200" />
-                  </>
-                )}
-                <DropdownMenuItem 
-                  className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
