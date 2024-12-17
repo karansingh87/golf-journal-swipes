@@ -56,15 +56,15 @@ const PhoneMockup = () => {
                         style={{
                           opacity: useTransform(
                             currentIndex,
-                            index - 0.3 > 0 ? [index - 0.3, index, index + 0.3] : [0, index, index + 0.3],
-                            [0, 1, 0]
+                            index === 0 ? [0, 0.3, 0.7] : [index - 0.3, index, index + 0.3],
+                            [1, 1, 0]
                           )
                         }}
                       >
                         <img 
                           src={screen.image}
                           alt={screen.alt}
-                          className="w-full h-full object-cover object-top"
+                          className="w-full h-full object-contain"
                         />
                       </motion.div>
                     ))}
