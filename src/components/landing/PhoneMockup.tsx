@@ -29,45 +29,47 @@ const PhoneMockup = () => {
   const currentIndex = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 2]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div ref={containerRef} className="relative w-full max-w-[400px] mx-auto px-6 h-[600px]">
-        <motion.div 
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative flex justify-center items-center"
-        >
-          <div className="relative w-[280px]">
-            {/* Phone Frame */}
-            <div className="relative rounded-[50px] bg-black p-3 shadow-2xl">
-              {/* Dynamic Island */}
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-b-[20px] z-20" />
-              
-              {/* Screen Content */}
-              <div className="relative rounded-[40px] overflow-hidden bg-white aspect-[9/19.5]">
-                {screens.map((screen, index) => (
-                  <motion.div
-                    key={screen.id}
-                    className="absolute inset-0 w-full h-full"
-                    style={{
-                      opacity: useTransform(
-                        currentIndex,
-                        index - 0.5 > 0 ? [index - 0.5, index, index + 0.5] : [0, index, index + 0.5],
-                        [0, 1, 0]
-                      )
-                    }}
-                  >
-                    <img 
-                      src={screen.image}
-                      alt={screen.alt}
-                      className="w-full h-full object-cover"
-                    />
-                  </motion.div>
-                ))}
+    <div className="relative h-[300vh]">
+      <div className="sticky top-0 h-screen flex items-center justify-center">
+        <div ref={containerRef} className="relative w-full max-w-[400px] mx-auto px-6">
+          <motion.div 
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative flex justify-center items-center"
+          >
+            <div className="relative w-[280px]">
+              {/* Phone Frame */}
+              <div className="relative rounded-[50px] bg-black p-3 shadow-2xl">
+                {/* Dynamic Island */}
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-b-[20px] z-20" />
+                
+                {/* Screen Content */}
+                <div className="relative rounded-[40px] overflow-hidden bg-white aspect-[9/19.5]">
+                  {screens.map((screen, index) => (
+                    <motion.div
+                      key={screen.id}
+                      className="absolute inset-0 w-full h-full"
+                      style={{
+                        opacity: useTransform(
+                          currentIndex,
+                          index - 0.5 > 0 ? [index - 0.5, index, index + 0.5] : [0, index, index + 0.5],
+                          [0, 1, 0]
+                        )
+                      }}
+                    >
+                      <img 
+                        src={screen.image}
+                        alt={screen.alt}
+                        className="w-full h-full object-cover"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
