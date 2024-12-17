@@ -29,7 +29,7 @@ const LandingPage = () => {
             </motion.div>
             
             {/* Main Heading - Split into two lines */}
-            <h1 className="text-[2.75rem] sm:text-6xl font-bold tracking-tight text-zinc-900 leading-tight">
+            <h1 className="text-[2.5rem] sm:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
               Your golf insights
               <br />
               like never before.
