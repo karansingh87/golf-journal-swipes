@@ -18,18 +18,14 @@ const LandingPage = () => {
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center space-y-6">
-            {/* App Icon */}
+            {/* Mic Icon */}
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-24 h-24 mb-8"
+              className="w-24 h-24 mb-8 bg-zinc-900 rounded-full flex items-center justify-center text-white"
             >
-              <img
-                src="/favicon.ico"
-                alt="GolfLog Icon"
-                className="w-full h-full object-contain"
-              />
+              <Mic size={48} />
             </motion.div>
             
             {/* Main Heading - Split into two lines */}
