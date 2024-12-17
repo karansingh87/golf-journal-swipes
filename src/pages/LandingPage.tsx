@@ -29,7 +29,7 @@ const LandingPage = () => {
             </motion.div>
             
             {/* Main Heading - Split into two lines */}
-            <h1 className="text-[2.25rem] sm:text-4xl font-bold tracking-tight text-zinc-900 leading-tight">
+            <h1 className="text-[2.25rem] sm:text-4xl font-extrabold tracking-tight text-zinc-900 leading-tight">
               Your golf insights
               <br />
               like never before.
@@ -44,9 +44,9 @@ const LandingPage = () => {
               <Button
                 onClick={() => navigate("/login")}
                 size="lg"
-                className="bg-[#0066FF] hover:bg-[#0052CC] text-white px-8 py-6 text-lg rounded-full shadow-lg"
+                className="bg-zinc-900 hover:bg-zinc-800 text-white px-12 py-6 text-lg rounded-full shadow-md font-medium"
               >
-                Try GolfLog For Free
+                Start for Free
               </Button>
             </motion.div>
           </div>
