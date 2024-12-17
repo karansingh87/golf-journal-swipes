@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart, MessageSquare, Target, BookOpen } from "lucide-react";
+import { Mic, Brain, LineChart, MessageSquare, Target } from "lucide-react";
 import P5Background from "@/components/landing/P5Background";
 import FeatureCard from "@/components/landing/FeatureCard";
 import { motion } from "framer-motion";
@@ -21,11 +21,10 @@ const LandingPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-6">
-            Turn Post-Round Thoughts Into Game-Changing Insights
+            Unlock Your Golf Insights
           </h1>
           <p className="mt-6 text-xl text-zinc-600 max-w-3xl mx-auto">
-            Every golfer has that moment after a round - analyzing shots, sharing breakthroughs, 
-            planning improvements. Capture those valuable insights when they matter most.
+            Capture your post-round thoughts, analyze your game, and watch your progress soar.
           </p>
           <motion.div 
             className="mt-10 flex flex-col items-center space-y-2"
@@ -52,20 +51,20 @@ const LandingPage = () => {
           <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
               index={0}
-              title="Capture Insights In The Moment"
-              description="Just like calling your coach or texting your buddy after a round. Simply open GolfLog.ai and talk through your thoughts while they're fresh. No typing needed - your voice is all it takes."
+              title="Voice-First Capture"
+              description="Record your thoughts naturally, just like talking to your coach. No typing needed - your voice is all it takes."
               Icon={Mic}
             />
             <FeatureCard
               index={1}
-              title="Your Personal Golf Journey"
-              description="Every round has a story. Every breakthrough deserves to be remembered. From parking lot revelations to practice session discoveries, build your personal roadmap to better golf."
-              Icon={MessageSquare}
+              title="Personal Golf Journey"
+              description="Build your roadmap to better golf. Track breakthroughs, lessons learned, and progress over time."
+              Icon={LineChart}
             />
             <FeatureCard
               index={2}
               title="AI-Powered Analysis"
-              description="Watch patterns emerge. See your game evolve. Our AI helps you spot trends and turn random thoughts into actionable insights."
+              description="Turn your thoughts into actionable insights. Our AI helps spot patterns and improvement opportunities."
               Icon={Brain}
             />
           </div>
@@ -91,28 +90,25 @@ const LandingPage = () => {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Perfect For Every Golf Moment</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: "Post-round reflections", icon: MessageSquare },
-              { title: "Swing breakthrough moments", icon: Target },
-              { title: "Practice session insights", icon: LineChart },
-              { title: "Pre-lesson notes", icon: BookOpen }
+              { title: "Post-Round Reflections", icon: MessageSquare, description: "Capture immediate thoughts after your round" },
+              { title: "Practice Insights", icon: Target, description: "Track breakthroughs during practice sessions" },
+              { title: "Progress Tracking", icon: LineChart, description: "Monitor your improvement over time" }
             ].map((scenario, index) => (
               <motion.div
                 key={scenario.title}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="bg-zinc-50 rounded-lg p-6"
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 mb-3">
                   <scenario.icon className="w-6 h-6 text-zinc-900" />
                   <h3 className="text-xl font-medium">{scenario.title}</h3>
                 </div>
-                <p className="mt-2 text-zinc-600">
-                  Capture your thoughts and insights whenever inspiration strikes.
-                </p>
+                <p className="text-zinc-600">{scenario.description}</p>
               </motion.div>
             ))}
           </div>
@@ -123,24 +119,30 @@ const LandingPage = () => {
       <section className="py-24 bg-zinc-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Why Golfers Love Us</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <FeatureCard
               index={0}
-              title="Voice-First Design"
-              description="Capture thoughts naturally, just like talking to your coach"
+              title="Quick Capture"
+              description="Record insights instantly, anywhere"
               Icon={Mic}
             />
             <FeatureCard
               index={1}
-              title="Smart Organization"
-              description="Find past thoughts easily with intelligent categorization"
+              title="Smart Analysis"
+              description="AI-powered game improvement"
               Icon={Brain}
             />
             <FeatureCard
               index={2}
-              title="Progress Tracking"
-              description="See your journey and track improvements over time"
+              title="Track Progress"
+              description="See your journey clearly"
               Icon={LineChart}
+            />
+            <FeatureCard
+              index={3}
+              title="Easy Review"
+              description="Find past insights quickly"
+              Icon={MessageSquare}
             />
           </div>
         </div>
@@ -154,10 +156,7 @@ const LandingPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-6">Start Your Golf Journey Today</h2>
-            <p className="text-xl text-zinc-600 mb-10">
-              Join thousands of golfers who are turning their post-round thoughts into lasting improvement.
-            </p>
+            <h2 className="text-3xl font-bold mb-6">Start Your Golf Journey</h2>
             <div className="flex flex-col items-center space-y-2">
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -172,7 +171,7 @@ const LandingPage = () => {
                 </Button>
               </motion.div>
               <span className="text-sm text-zinc-500">
-                Your next round could be your best round
+                Your next round could be your best
               </span>
             </div>
           </motion.div>
