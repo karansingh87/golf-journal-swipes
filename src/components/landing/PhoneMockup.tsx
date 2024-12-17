@@ -33,6 +33,17 @@ const PhoneMockup = () => {
   });
 
   const currentIndex = useTransform(scrollYProgress, [0, 0.7, 1], [0, 1, 2]);
+  
+  // Pre-calculate transforms for each screen
+  const opacityTransforms = screens.map((_, index) => {
+    if (index === 0) {
+      return useTransform(currentIndex, [0, 0.3, 0.7], [1, 1, 0]);
+    }
+    return useTransform(currentIndex, [index - 0.3, index, index + 0.3], [0, 1, 0]);
+  });
+
+  // Feature overlay opacity transform
+  const featureOpacity = useTransform(currentIndex, [0, 0.2, 0.4], [0, 1, 0]);
 
   return (
     <div className="relative h-[300vh]">
@@ -59,11 +70,7 @@ const PhoneMockup = () => {
                         key={screen.id}
                         className="absolute inset-0 w-full h-full"
                         style={{
-                          opacity: useTransform(
-                            currentIndex,
-                            index === 0 ? [0, 0.3, 0.7] : [index - 0.3, index, index + 0.3],
-                            [1, 1, 0]
-                          )
+                          opacity: opacityTransforms[index]
                         }}
                       >
                         <img 
@@ -77,11 +84,7 @@ const PhoneMockup = () => {
                           <motion.div 
                             className="absolute inset-0 flex items-center justify-center"
                             style={{
-                              opacity: useTransform(
-                                currentIndex,
-                                [0, 0.2, 0.4],
-                                [0, 1, 0]
-                              )
+                              opacity: featureOpacity
                             }}
                           >
                             <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg mx-4">
