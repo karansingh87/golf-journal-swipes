@@ -14,34 +14,50 @@ const LandingPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="pt-40 pb-24 lg:pt-48 px-4 sm:px-6 lg:px-8"
+        className="pt-40 pb-24 lg:pt-48 px-4 sm:px-6 lg:px-8 text-center"
       >
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-8 lg:mb-10">
-            Unlock Your Golf Insights
-          </h1>
-          <p className="mt-6 text-xl text-zinc-600 max-w-3xl mx-auto">
-            Capture your post-round thoughts, analyze your game, and watch your progress soar.
-          </p>
-          <motion.div 
-            className="mt-12 lg:mt-16 flex flex-col items-center space-y-3"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <Button
-              onClick={() => navigate("/login")}
-              size="lg"
-              className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 text-lg shadow-lg"
+          <div className="flex flex-col items-center justify-center space-y-6">
+            {/* App Icon */}
+            <motion.div 
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="w-24 h-24 mb-8"
             >
-              Start Your Golf Journal
-            </Button>
-            <span className="text-sm text-zinc-500">
-              As easy as talking about your round
-            </span>
-          </motion.div>
+              <img
+                src="/favicon.ico"
+                alt="GolfLog Icon"
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
+            
+            {/* Main Heading - Split into two lines */}
+            <h1 className="text-[2.75rem] sm:text-6xl font-bold tracking-tight text-zinc-900 leading-tight">
+              Your golf insights
+              <br />
+              like never before.
+            </h1>
+
+            {/* CTA Button */}
+            <motion.div 
+              className="mt-12"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Button
+                onClick={() => navigate("/login")}
+                size="lg"
+                className="bg-[#0066FF] hover:bg-[#0052CC] text-white px-8 py-6 text-lg rounded-full shadow-lg"
+              >
+                Try GolfLog For Free
+              </Button>
+            </motion.div>
+          </div>
         </div>
       </motion.section>
 
+      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
@@ -66,8 +82,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Social Proof Section */}
+      
+      {/* Keep existing sections */}
       <motion.section 
         className="py-20 lg:py-28"
         initial={{ opacity: 0 }}
@@ -81,8 +97,8 @@ const LandingPage = () => {
           <p className="mt-6 text-zinc-600">- Professional Golf Coach</p>
         </div>
       </motion.section>
-
-      {/* Usage Scenarios Section */}
+      
+      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-16">Perfect For Every Golf Moment</h2>
@@ -110,8 +126,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Feature Benefits Section */}
+      
+      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-16">Why Golfers Love Us</h2>
@@ -143,8 +159,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Closing Section */}
+      
+      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
