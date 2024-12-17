@@ -25,7 +25,7 @@ const LandingPage = () => {
         </div>
       </motion.div>
       
-      {/* Hero Section - removed all background styles */}
+      {/* Hero Section */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
