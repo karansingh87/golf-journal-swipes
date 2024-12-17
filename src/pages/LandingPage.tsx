@@ -9,25 +9,12 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#f8faf9]">
-      {/* App Name */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 p-6 z-10 bg-white/80 backdrop-blur-sm"
-      >
-        <div className="flex items-center justify-center gap-2 text-2xl font-semibold text-zinc-900">
-          <Flag className="w-6 h-6" />
-          <span>GolfLog.ai</span>
-        </div>
-      </motion.div>
-      
       {/* Hero Section */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="pt-32 pb-24 lg:pt-40 px-4 sm:px-6 lg:px-8"
+        className="pt-40 pb-24 lg:pt-48 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-8 lg:mb-10">
@@ -55,7 +42,6 @@ const LandingPage = () => {
         </div>
       </motion.section>
 
-      {/* Features Section */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
