@@ -8,13 +8,13 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#eee]">
+    <div className="min-h-screen bg-gradient-to-b from-white to-[#f8faf9]">
       {/* App Name */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 p-6 z-10 bg-[#eee]"
+        className="fixed top-0 left-0 right-0 p-6 z-10 bg-white/80 backdrop-blur-sm"
       >
         <div className="flex items-center justify-center gap-2 text-2xl font-semibold text-zinc-900">
           <Flag className="w-6 h-6" />
