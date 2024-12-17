@@ -8,10 +8,9 @@ interface FeatureCardProps {
   description: string;
   Icon: LucideIcon;
   index?: number;
-  imageSrc?: string;
 }
 
-const FeatureCard = ({ title, description, Icon, index = 0, imageSrc }: FeatureCardProps) => {
+const FeatureCard = ({ title, description, Icon, index = 0 }: FeatureCardProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -25,15 +24,6 @@ const FeatureCard = ({ title, description, Icon, index = 0, imageSrc }: FeatureC
       }}
     >
       <Card className="overflow-hidden transition-all hover:shadow-lg">
-        {imageSrc && (
-          <div className="w-full h-40 overflow-hidden">
-            <img 
-              src={imageSrc} 
-              alt={title} 
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-            />
-          </div>
-        )}
         <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
           <div className="rounded-full bg-zinc-100 p-3 animate-pulse">
             <Icon className="w-6 h-6 text-zinc-900" />

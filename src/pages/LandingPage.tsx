@@ -20,37 +20,28 @@ const LandingPage = () => {
         className="relative pt-20 pb-16 text-center lg:pt-32"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1501854140801-50d01698950b" 
-              alt="Golf Course" 
-              className="absolute inset-0 w-full h-full object-cover opacity-20 rounded-xl"
-            />
-            <div className="relative z-10 py-20">
-              <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-6">
-                Unlock Your Golf Insights
-              </h1>
-              <p className="mt-6 text-xl text-zinc-600 max-w-3xl mx-auto">
-                Capture your post-round thoughts, analyze your game, and watch your progress soar.
-              </p>
-              <motion.div 
-                className="mt-10 flex flex-col items-center space-y-2"
-                whileHover={{ scale: 1.05 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <Button
-                  onClick={() => navigate("/login")}
-                  size="lg"
-                  className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 text-lg"
-                >
-                  Start Your Golf Journal
-                </Button>
-                <span className="text-sm text-zinc-500">
-                  As easy as talking about your round
-                </span>
-              </motion.div>
-            </div>
-          </div>
+          <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-6">
+            Unlock Your Golf Insights
+          </h1>
+          <p className="mt-6 text-xl text-zinc-600 max-w-3xl mx-auto">
+            Capture your post-round thoughts, analyze your game, and watch your progress soar.
+          </p>
+          <motion.div 
+            className="mt-10 flex flex-col items-center space-y-2"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Button
+              onClick={() => navigate("/login")}
+              size="lg"
+              className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 text-lg"
+            >
+              Start Your Golf Journal
+            </Button>
+            <span className="text-sm text-zinc-500">
+              As easy as talking about your round
+            </span>
+          </motion.div>
         </div>
       </motion.section>
 
@@ -63,21 +54,18 @@ const LandingPage = () => {
               title="Voice-First Capture"
               description="Record your thoughts naturally, just like talking to your coach. No typing needed - your voice is all it takes."
               Icon={Mic}
-              imageSrc="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
             />
             <FeatureCard
               index={1}
               title="Personal Golf Journey"
               description="Build your roadmap to better golf. Track breakthroughs, lessons learned, and progress over time."
               Icon={LineChart}
-              imageSrc="https://images.unsplash.com/photo-1469474968028-56623f02e42e"
             />
             <FeatureCard
               index={2}
               title="AI-Powered Analysis"
               description="Turn your thoughts into actionable insights. Our AI helps spot patterns and improvement opportunities."
               Icon={Brain}
-              imageSrc="https://images.unsplash.com/photo-1721322800607-8c38375eef04"
             />
           </div>
         </div>
@@ -85,17 +73,12 @@ const LandingPage = () => {
 
       {/* Social Proof Section */}
       <motion.section 
-        className="py-16 bg-zinc-50 relative overflow-hidden"
+        className="py-16 bg-zinc-50"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        <img 
-          src="https://images.unsplash.com/photo-1501854140801-50d01698950b"
-          alt="Background"
-          className="absolute inset-0 w-full h-full object-cover opacity-10"
-        />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <blockquote className="text-2xl font-medium text-zinc-900 italic">
             "Finally, an app that gets how golfers actually think and talk about their game."
           </blockquote>
@@ -119,29 +102,55 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-zinc-50 rounded-lg p-6 relative overflow-hidden"
+                className="bg-zinc-50 rounded-lg p-6"
               >
-                <div className="relative z-10">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <scenario.icon className="w-6 h-6 text-zinc-900" />
-                    <h3 className="text-xl font-medium">{scenario.title}</h3>
-                  </div>
-                  <p className="text-zinc-600">{scenario.description}</p>
+                <div className="flex items-center space-x-3 mb-3">
+                  <scenario.icon className="w-6 h-6 text-zinc-900" />
+                  <h3 className="text-xl font-medium">{scenario.title}</h3>
                 </div>
+                <p className="text-zinc-600">{scenario.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Benefits Section */}
+      <section className="py-24 bg-zinc-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">Why Golfers Love Us</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <FeatureCard
+              index={0}
+              title="Quick Capture"
+              description="Record insights instantly, anywhere"
+              Icon={Mic}
+            />
+            <FeatureCard
+              index={1}
+              title="Smart Analysis"
+              description="AI-powered game improvement"
+              Icon={Brain}
+            />
+            <FeatureCard
+              index={2}
+              title="Track Progress"
+              description="See your journey clearly"
+              Icon={LineChart}
+            />
+            <FeatureCard
+              index={3}
+              title="Easy Review"
+              description="Find past insights quickly"
+              Icon={MessageSquare}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Closing Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1501854140801-50d01698950b"
-          alt="Golf Course"
-          className="absolute inset-0 w-full h-full object-cover opacity-10"
-        />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <section className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
