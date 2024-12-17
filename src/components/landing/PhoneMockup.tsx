@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const PhoneMockup = () => {
   return (
-    <div className="relative w-full max-w-[600px] mx-auto mt-24 px-6">
+    <div className="relative w-full max-w-[600px] mx-auto mt-32 px-6">
       <motion.div 
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
