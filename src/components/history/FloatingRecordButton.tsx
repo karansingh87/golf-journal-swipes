@@ -9,11 +9,11 @@ const FloatingRecordButton = () => {
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
       <div className="relative">
         {/* Animated border circles */}
-        <div className="absolute inset-0 -m-1 rounded-full border-2 border-golf-green opacity-20 animate-border-pulse" />
-        <div className="absolute inset-0 -m-1 rounded-full border-2 border-golf-green opacity-20 animate-rotate" />
+        <div className="absolute inset-0 -m-2 rounded-full border-4 border-golf-green opacity-40 animate-border-pulse" />
+        <div className="absolute inset-0 -m-3 rounded-full border-4 border-golf-green opacity-30 animate-rotate" />
         
         {/* Background glow */}
-        <div className="absolute inset-0 bg-golf-green/20 rounded-full blur-xl" />
+        <div className="absolute inset-0 bg-golf-green/30 rounded-full blur-xl" />
         
         <ControlButton
           icon={Mic}
