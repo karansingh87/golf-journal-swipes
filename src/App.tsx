@@ -12,28 +12,67 @@ import Login from "./pages/Login";
 import Notes from "./pages/Notes";
 import Admin from "./pages/Admin";
 import RecordingDetail from "./pages/RecordingDetail";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "./components/ui/use-toast";
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const session = useSession();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isValidating, setIsValidating] = useState(true);
   
   useEffect(() => {
-    // Check session validity
-    const checkSession = async () => {
-      const { data: { session: currentSession } } = await supabase.auth.getSession();
-      if (!currentSession) {
-        // Clear any stale session data
+    const validateSession = async () => {
+      try {
+        setIsValidating(true);
+        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Session validation error:', error);
+          throw error;
+        }
+
+        if (!currentSession) {
+          console.log('No valid session found, redirecting to login');
+          await supabase.auth.signOut();
+          navigate('/login', { replace: true });
+          return;
+        }
+
+        // Attempt to refresh the session
+        const { error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError) {
+          console.error('Session refresh error:', refreshError);
+          throw refreshError;
+        }
+
+      } catch (error) {
+        console.error('Auth error:', error);
+        toast({
+          variant: "destructive",
+          title: "Authentication Error",
+          description: "Please sign in again to continue.",
+        });
         await supabase.auth.signOut();
         navigate('/login', { replace: true });
+      } finally {
+        setIsValidating(false);
       }
     };
-    
-    checkSession();
-  }, [navigate]);
+
+    validateSession();
+  }, [navigate, toast]);
+
+  if (isValidating) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!session) {
     return <Navigate to="/login" replace />;
