@@ -23,9 +23,9 @@ const FeatureCard = ({ title, description, Icon, index = 0 }: FeatureCardProps) 
         transition: `all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) ${index * 0.2}s`
       }}
     >
-      <Card className="overflow-hidden transition-all hover:shadow-lg">
+      <Card className="overflow-hidden transition-all hover:shadow-lg bg-white/60 backdrop-blur-sm">
         <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-          <div className="rounded-full bg-zinc-100 p-3 animate-pulse">
+          <div className="rounded-full bg-white/80 p-3 animate-pulse backdrop-blur-sm">
             <Icon className="w-6 h-6 text-zinc-900" />
           </div>
           <h3 className="text-xl font-semibold">{title}</h3>

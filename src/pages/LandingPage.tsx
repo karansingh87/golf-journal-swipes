@@ -59,7 +59,7 @@ const LandingPage = () => {
       </motion.section>
 
       {/* Features Section */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-24 lg:py-32 bg-white/40 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
@@ -86,7 +86,7 @@ const LandingPage = () => {
 
       {/* Social Proof Section */}
       <motion.section 
-        className="py-20 lg:py-28 bg-zinc-50"
+        className="py-20 lg:py-28 bg-white/20 backdrop-blur-[2px]"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -100,7 +100,7 @@ const LandingPage = () => {
       </motion.section>
 
       {/* Usage Scenarios Section */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-24 lg:py-32 bg-white/30 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-16">Perfect For Every Golf Moment</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -115,7 +115,7 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-zinc-50 rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white/50 backdrop-blur-sm rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center space-x-3 mb-4">
                   <scenario.icon className="w-6 h-6 text-zinc-900" />
@@ -129,7 +129,7 @@ const LandingPage = () => {
       </section>
 
       {/* Feature Benefits Section */}
-      <section className="py-24 lg:py-32 bg-zinc-50">
+      <section className="py-24 lg:py-32 bg-white/20 backdrop-blur-[2px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-16">Why Golfers Love Us</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -162,7 +162,7 @@ const LandingPage = () => {
       </section>
 
       {/* Closing Section */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-24 lg:py-32 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
