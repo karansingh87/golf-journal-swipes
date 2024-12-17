@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Mic, Brain, LineChart, MessageSquare, Target, Flag } from "lucide-react";
 import FeatureCard from "@/components/landing/FeatureCard";
+import PhoneMockup from "@/components/landing/PhoneMockup";
 import { motion } from "framer-motion";
 
 const LandingPage = () => {
@@ -9,7 +10,6 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#f8faf9]">
-      {/* Hero Section */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -18,7 +18,6 @@ const LandingPage = () => {
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center space-y-8">
-            {/* Mic Icon */}
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -28,14 +27,12 @@ const LandingPage = () => {
               <Mic size={40} />
             </motion.div>
             
-            {/* Main Heading */}
             <h1 className="text-[2.25rem] sm:text-4xl font-medium tracking-tight text-zinc-900 leading-tight">
               Your golf insights
               <br />
               like never before.
             </h1>
 
-            {/* CTA Button */}
             <motion.div 
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
@@ -47,6 +44,8 @@ const LandingPage = () => {
                 Start Your Golf Journal
               </Button>
             </motion.div>
+
+            <PhoneMockup />
           </div>
         </div>
       </motion.section>
