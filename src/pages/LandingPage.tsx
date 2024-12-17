@@ -17,13 +17,13 @@ const LandingPage = () => {
         className="pt-40 pb-24 lg:pt-48 px-4 sm:px-6 lg:px-8 text-center"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex flex-col items-center justify-center space-y-8">
             {/* Mic Icon */}
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-20 h-20 mb-4 bg-zinc-900 rounded-full flex items-center justify-center text-white"
+              className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center text-white"
             >
               <Mic size={40} />
             </motion.div>
@@ -37,7 +37,6 @@ const LandingPage = () => {
 
             {/* CTA Button */}
             <motion.div 
-              className="mt-12"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -53,7 +52,6 @@ const LandingPage = () => {
         </div>
       </motion.section>
 
-      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
