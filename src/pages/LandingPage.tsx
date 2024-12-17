@@ -40,7 +40,7 @@ const LandingPage = () => {
             >
               <Button
                 onClick={() => navigate("/login")}
-                className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-2 text-base rounded-full shadow-md font-medium"
+                className="bg-zinc-900 hover:bg-zinc-800 text-white px-6 py-2 text-base rounded-full shadow-md font-medium"
               >
                 Start Your Golf Journal
               </Button>
