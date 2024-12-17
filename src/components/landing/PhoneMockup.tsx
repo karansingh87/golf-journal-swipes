@@ -29,7 +29,7 @@ const PhoneMockup = () => {
   const currentIndex = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 2]);
 
   return (
-    <div className="py-36">
+    <div className="min-h-screen flex items-center justify-center">
       <div ref={containerRef} className="relative w-full max-w-[400px] mx-auto px-6 h-[600px]">
         <motion.div 
           initial={{ y: 40, opacity: 0 }}
