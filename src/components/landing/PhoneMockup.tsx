@@ -47,26 +47,28 @@ const PhoneMockup = () => {
                 
                 {/* Screen Content */}
                 <div className="relative rounded-[40px] overflow-hidden bg-white aspect-[9/19.5]">
-                  {screens.map((screen, index) => (
-                    <motion.div
-                      key={screen.id}
-                      className="absolute inset-0 w-full h-full"
-                      style={{
-                        opacity: useTransform(
-                          currentIndex,
-                          // Adjusted the transition points to create a longer display duration
-                          index - 0.3 > 0 ? [index - 0.3, index, index + 0.3] : [0, index, index + 0.3],
-                          [0, 1, 0]
-                        )
-                      }}
-                    >
-                      <img 
-                        src={screen.image}
-                        alt={screen.alt}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.div>
-                  ))}
+                  {/* Add padding top to account for Dynamic Island */}
+                  <div className="absolute inset-0 pt-[35px]">
+                    {screens.map((screen, index) => (
+                      <motion.div
+                        key={screen.id}
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                          opacity: useTransform(
+                            currentIndex,
+                            index - 0.3 > 0 ? [index - 0.3, index, index + 0.3] : [0, index, index + 0.3],
+                            [0, 1, 0]
+                          )
+                        }}
+                      >
+                        <img 
+                          src={screen.image}
+                          alt={screen.alt}
+                          className="w-full h-full object-cover object-top"
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
