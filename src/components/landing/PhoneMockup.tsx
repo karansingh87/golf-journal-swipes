@@ -1,11 +1,17 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { Mic } from "lucide-react";
 
 const screens = [
   {
     id: 1,
-    image: "/lovable-uploads/20b29773-caad-40f5-bd34-ce4892ca9b9a.png",
-    alt: "Golf app analytics screen"
+    image: "/lovable-uploads/6e27a5bc-120a-4369-aa38-a4d62af73c6a.png",
+    alt: "Golf app recording interface",
+    feature: {
+      title: "Voice Recording",
+      description: "Simply tap and speak to capture your post-round thoughts",
+      icon: Mic
+    }
   },
   {
     id: 2,
@@ -26,7 +32,18 @@ const PhoneMockup = () => {
     offset: ["start end", "end start"]
   });
 
-  const currentIndex = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 2]);
+  const currentIndex = useTransform(scrollYProgress, [0, 0.7, 1], [0, 1, 2]);
+  
+  // Pre-calculate transforms for each screen
+  const opacityTransforms = screens.map((_, index) => {
+    if (index === 0) {
+      return useTransform(currentIndex, [0, 0.3, 0.7], [1, 1, 0]);
+    }
+    return useTransform(currentIndex, [index - 0.3, index, index + 0.3], [0, 1, 0]);
+  });
+
+  // Feature overlay opacity transform
+  const featureOpacity = useTransform(currentIndex, [0, 0.2, 0.4], [0, 1, 0]);
 
   return (
     <div className="relative h-[300vh]">
@@ -46,25 +63,48 @@ const PhoneMockup = () => {
                 
                 {/* Screen Content */}
                 <div className="relative rounded-[40px] overflow-hidden bg-white aspect-[9/19.5]">
-                  {screens.map((screen, index) => (
-                    <motion.div
-                      key={screen.id}
-                      className="absolute inset-0 w-full h-full"
-                      style={{
-                        opacity: useTransform(
-                          currentIndex,
-                          index - 0.5 > 0 ? [index - 0.5, index, index + 0.5] : [0, index, index + 0.5],
-                          [0, 1, 0]
-                        )
-                      }}
-                    >
-                      <img 
-                        src={screen.image}
-                        alt={screen.alt}
-                        className="w-full h-full object-cover"
-                      />
-                    </motion.div>
-                  ))}
+                  {/* Add padding top to account for Dynamic Island */}
+                  <div className="absolute inset-0 pt-[35px]">
+                    {screens.map((screen, index) => (
+                      <motion.div
+                        key={screen.id}
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                          opacity: opacityTransforms[index]
+                        }}
+                      >
+                        <img 
+                          src={screen.image}
+                          alt={screen.alt}
+                          className="w-full h-full object-contain"
+                        />
+                        
+                        {/* Feature Overlay */}
+                        {screen.feature && (
+                          <motion.div 
+                            className="absolute inset-0 flex items-center justify-center"
+                            style={{
+                              opacity: featureOpacity
+                            }}
+                          >
+                            <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-lg mx-4">
+                              <div className="flex flex-col items-center text-center space-y-3">
+                                <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center">
+                                  <screen.feature.icon className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="font-semibold text-zinc-900">
+                                  {screen.feature.title}
+                                </h3>
+                                <p className="text-sm text-zinc-600">
+                                  {screen.feature.description}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
