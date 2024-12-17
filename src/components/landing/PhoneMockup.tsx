@@ -26,7 +26,8 @@ const PhoneMockup = () => {
     offset: ["start end", "end start"]
   });
 
-  const currentIndex = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 2]);
+  // Adjusted the transform values to make the first image stay longer
+  const currentIndex = useTransform(scrollYProgress, [0, 0.7, 1], [0, 1, 2]);
 
   return (
     <div className="relative h-[300vh]">
@@ -53,7 +54,8 @@ const PhoneMockup = () => {
                       style={{
                         opacity: useTransform(
                           currentIndex,
-                          index - 0.5 > 0 ? [index - 0.5, index, index + 0.5] : [0, index, index + 0.5],
+                          // Adjusted the transition points to create a longer display duration
+                          index - 0.3 > 0 ? [index - 0.3, index, index + 0.3] : [0, index, index + 0.3],
                           [0, 1, 0]
                         )
                       }}
