@@ -9,11 +9,11 @@ const FloatingRecordButton = () => {
     <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
       <div className="relative">
         {/* Animated border circles */}
-        <div className="absolute inset-0 -m-4 rounded-full border-4 border-golf-green opacity-70 animate-border-pulse" />
-        <div className="absolute inset-0 -m-6 rounded-full border-4 border-golf-green opacity-60 animate-rotate" />
+        <div className="absolute inset-0 -m-6 rounded-full border-[3px] border-golf-green opacity-80 animate-border-pulse" />
+        <div className="absolute inset-0 -m-8 rounded-full border-[3px] border-golf-green opacity-70 animate-rotate" />
         
         {/* Background glow */}
-        <div className="absolute inset-0 bg-golf-green/40 rounded-full blur-xl shadow-neon-glow" />
+        <div className="absolute inset-0 -m-2 bg-golf-green/20 rounded-full blur-lg" />
         
         <ControlButton
           icon={Mic}
@@ -21,7 +21,7 @@ const FloatingRecordButton = () => {
           isLarge
           isActive={true}
           variant="dark"
-          className="hover:scale-105 active:scale-95 transition-transform duration-200 relative z-10"
+          className="relative z-10 shadow-neon-glow hover:scale-105 active:scale-95 transition-transform duration-200"
         />
       </div>
     </div>

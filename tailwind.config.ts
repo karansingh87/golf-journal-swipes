@@ -72,7 +72,7 @@ export default {
       },
       boxShadow: {
         'card-light': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-        'neon-glow': '0 0 5px theme(colors.golf.green), 0 0 20px theme(colors.golf.green)',
+        'neon-glow': '0 0 15px theme(colors.golf.green), 0 0 30px theme(colors.golf.green)',
       },
       keyframes: {
         "accordion-down": {
@@ -86,11 +86,11 @@ export default {
         "border-pulse": {
           "0%, 100%": { 
             transform: "scale(1)",
-            opacity: "0.8"
+            opacity: "1"
           },
           "50%": { 
-            transform: "scale(1.1)",
-            opacity: "0.4"
+            transform: "scale(1.05)",
+            opacity: "0.5"
           }
         },
         "rotate": {
@@ -102,7 +102,7 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "border-pulse": "border-pulse 2s ease-in-out infinite",
-        "rotate": "rotate 8s linear infinite",
+        "rotate": "rotate 12s linear infinite",
       },
     },
   },
