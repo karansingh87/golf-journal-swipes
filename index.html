@@ -10,7 +10,7 @@
     <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 transition-all duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16" id="navContainer">
-          <div class="text-2xl font-bold tracking-tighter transition-all duration-300" id="logo">
+          <div class="text-2xl font-bold tracking-tighter transition-all duration-500 ease-in-out transform" id="logo">
             GolfLog
           </div>
         </div>
@@ -22,21 +22,23 @@
         const logo = document.getElementById('logo');
         const navContainer = document.getElementById('navContainer');
         
-        if (window.scrollY > 50) {
-          logo.classList.remove('text-3xl', 'w-full', 'text-center');
-          navContainer.classList.remove('justify-center');
-          navContainer.classList.add('justify-between');
-        } else {
-          logo.classList.add('text-3xl', 'w-full', 'text-center');
-          navContainer.classList.add('justify-center');
-          navContainer.classList.remove('justify-between');
-        }
+        requestAnimationFrame(() => {
+          if (window.scrollY > 50) {
+            logo.classList.remove('text-3xl', 'w-full', 'text-center', 'scale-110');
+            navContainer.classList.remove('justify-center');
+            navContainer.classList.add('justify-between');
+          } else {
+            logo.classList.add('text-3xl', 'w-full', 'text-center', 'scale-110');
+            navContainer.classList.add('justify-center');
+            navContainer.classList.remove('justify-between');
+          }
+        });
       });
 
       // Set initial state
       const logo = document.getElementById('logo');
       const navContainer = document.getElementById('navContainer');
-      logo.classList.add('text-3xl', 'w-full', 'text-center');
+      logo.classList.add('text-3xl', 'w-full', 'text-center', 'scale-110');
       navContainer.classList.add('justify-center');
       navContainer.classList.remove('justify-between');
     </script>
