@@ -7,51 +7,16 @@
     <title>Golf Recorder</title>
   </head>
   <body>
-    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50 transition-all duration-300">
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center h-16 transition-all duration-500 ease-in-out" id="navContainer">
-          <div class="text-2xl font-bold tracking-tighter transition-transform duration-500 ease-in-out" id="logo" style="transform-origin: center;">
+        <div class="flex justify-between items-center h-16">
+          <div class="text-2xl font-bold tracking-tighter">
             GolfLog
           </div>
         </div>
       </div>
     </nav>
     <div id="root"></div>
-    <script>
-      window.addEventListener('scroll', () => {
-        const logo = document.getElementById('logo');
-        const navContainer = document.getElementById('navContainer');
-        const scrollProgress = Math.min(window.scrollY / 50, 1);
-        
-        requestAnimationFrame(() => {
-          // Calculate the transform values based on scroll progress
-          const scale = 1.1 - (0.1 * scrollProgress);
-          const translateX = -50 * scrollProgress + '%';
-          
-          // Apply smooth transitions using transform
-          logo.style.transform = `translateX(${translateX}) scale(${scale})`;
-          
-          // Update text alignment and container justification
-          if (scrollProgress > 0.5) {
-            logo.classList.remove('text-3xl', 'text-center');
-            navContainer.classList.remove('justify-center');
-            navContainer.classList.add('justify-between');
-          } else {
-            logo.classList.add('text-3xl', 'text-center');
-            navContainer.classList.add('justify-center');
-            navContainer.classList.remove('justify-between');
-          }
-        });
-      });
-
-      // Set initial state
-      const logo = document.getElementById('logo');
-      const navContainer = document.getElementById('navContainer');
-      logo.classList.add('text-3xl', 'text-center');
-      navContainer.classList.add('justify-center');
-      navContainer.classList.remove('justify-between');
-      logo.style.transform = 'translateX(0) scale(1.1)';
-    </script>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
