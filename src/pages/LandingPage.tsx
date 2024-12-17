@@ -14,7 +14,7 @@ const LandingPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="pt-40 pb-24 lg:pt-48 px-4 sm:px-6 lg:px-8 text-center"
+        className="pt-32 pb-24 lg:pt-40 px-4 sm:px-6 lg:px-8 text-center"
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center space-y-8">
@@ -28,7 +28,7 @@ const LandingPage = () => {
               <Mic size={40} />
             </motion.div>
             
-            {/* Main Heading - Split into two lines */}
+            {/* Main Heading */}
             <h1 className="text-[2.25rem] sm:text-4xl font-medium tracking-tight text-zinc-900 leading-tight">
               Your golf insights
               <br />
@@ -76,7 +76,6 @@ const LandingPage = () => {
         </div>
       </section>
       
-      {/* Keep existing sections */}
       <motion.section 
         className="py-20 lg:py-28"
         initial={{ opacity: 0 }}
@@ -91,7 +90,6 @@ const LandingPage = () => {
         </div>
       </motion.section>
       
-      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-16">Perfect For Every Golf Moment</h2>
@@ -120,7 +118,6 @@ const LandingPage = () => {
         </div>
       </section>
       
-      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-16">Why Golfers Love Us</h2>
@@ -153,7 +150,6 @@ const LandingPage = () => {
         </div>
       </section>
       
-      {/* Keep existing sections */}
       <section className="py-24 lg:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
