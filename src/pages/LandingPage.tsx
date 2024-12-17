@@ -9,7 +9,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen">
       <P5Background />
       
       {/* App Name */}
@@ -25,12 +25,12 @@ const LandingPage = () => {
         </div>
       </motion.div>
       
-      {/* Hero Section */}
+      {/* Hero Section - removed all background styles */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="relative pt-32 pb-24 lg:pt-40 px-4 sm:px-6 lg:px-8"
+        className="pt-32 pb-24 lg:pt-40 px-4 sm:px-6 lg:px-8"
       >
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl mb-8 lg:mb-10">
