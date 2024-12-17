@@ -16,6 +16,7 @@ const P5Background = () => {
         vy: number;
         size: number;
         alpha: number;
+        parallaxFactor: number;
       }> = [];
       
       const createParticle = () => ({
@@ -24,7 +25,8 @@ const P5Background = () => {
         vx: p.random(-0.5, 0.5),
         vy: p.random(-0.5, 0.5),
         size: p.random(2, 4),
-        alpha: p.random(10, 30)
+        alpha: p.random(10, 30),
+        parallaxFactor: p.random(0.3, 1) // Different particles move at different speeds
       });
 
       p.setup = () => {
@@ -42,26 +44,42 @@ const P5Background = () => {
         p.clear();
         p.noStroke();
 
-        // Update scroll position
+        // Update scroll position for parallax effect
         scrollRef.current = window.scrollY;
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Draw particles with scroll-based effects
+        // Create gradient background
+        const c1 = p.color(255, 255, 255); // Light color at top
+        const c2 = p.color(244, 244, 245); // Zinc-100 at bottom
+        
+        for (let y = 0; y < p.height; y++) {
+          const inter = y / p.height;
+          const c = p.lerpColor(c1, c2, inter);
+          p.stroke(c);
+          p.line(0, y, p.width, y);
+        }
+
+        // Draw particles with parallax effect
         particles.forEach((particle, index) => {
+          const parallaxOffset = scrollRef.current * particle.parallaxFactor;
           const baseAlpha = particle.alpha * (1 - scrollProgress * 0.5);
           p.fill(200, 200, 200, baseAlpha);
 
-          particle.x += particle.vx * (1 + scrollProgress);
-          particle.y += particle.vy * (1 + scrollProgress);
+          // Update position with parallax
+          particle.x += particle.vx;
+          particle.y = (particle.y + particle.vy + parallaxOffset) % p.height;
 
           // Wrap around edges
           if (particle.x < 0) particle.x = p.width;
           if (particle.x > p.width) particle.x = 0;
-          if (particle.y < 0) particle.y = p.height;
-          if (particle.y > p.height) particle.y = 0;
 
           // Draw particle
-          p.ellipse(particle.x, particle.y, particle.size * (1 + scrollProgress), particle.size * (1 + scrollProgress));
+          p.ellipse(
+            particle.x,
+            particle.y,
+            particle.size * (1 + scrollProgress),
+            particle.size * (1 + scrollProgress)
+          );
 
           // Occasionally regenerate particles
           if (p.random(1) < 0.001) {
@@ -69,7 +87,7 @@ const P5Background = () => {
           }
         });
 
-        // Add scroll-based wave effect
+        // Add parallax wave effect
         const waveAmplitude = 20 * (1 - scrollProgress);
         const waveFrequency = 0.02;
         p.stroke(200, 200, 200, 20);
@@ -78,7 +96,7 @@ const P5Background = () => {
         for (let x = 0; x < p.width; x += 20) {
           const y = p.height / 2 + 
             p.sin(x * waveFrequency + p.frameCount * 0.02) * waveAmplitude;
-          p.vertex(x, y);
+          p.vertex(x, y + scrollRef.current * 0.2); // Add parallax offset
         }
         p.endShape();
       };
