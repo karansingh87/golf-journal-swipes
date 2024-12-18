@@ -48,19 +48,19 @@ const LandingPage = () => {
       </motion.section>
 
       {/* How It Works Section */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#F2FCE2]/80 rounded-2xl shadow-card-light mx-4 sm:mx-8 lg:mx-16 py-24">
+          <div className="bg-[#F2FCE2]/80 rounded-2xl shadow-card-light mx-4 sm:mx-8 lg:mx-16 py-16">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
               {/* Floating Label */}
-              <div className="flex justify-center mb-16">
+              <div className="flex justify-center mb-12">
                 <div className="bg-white px-8 py-2 rounded-full shadow-card-light">
                   <h2 className="text-lg font-medium text-zinc-900">How it works</h2>
                 </div>
               </div>
 
               {/* Steps */}
-              <div className="space-y-24">
+              <div className="space-y-16">
                 {[
                   {
                     title: "Record Your Thoughts",
@@ -84,10 +84,10 @@ const LandingPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
-                    className="flex flex-col items-center text-center space-y-6"
+                    className="flex flex-col items-center text-center space-y-4"
                   >
-                    <div className="w-20 h-20 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
-                      <step.Icon className="w-10 h-10" />
+                    <div className="w-16 h-16 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+                      <step.Icon className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl font-semibold text-zinc-900">{step.title}</h3>
                     <p className="text-zinc-600 text-lg max-w-md leading-relaxed">
