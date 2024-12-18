@@ -49,12 +49,12 @@ const P5Background = () => {
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
         // Create smoother gradient background using multiple color stops
-        const numSteps = 200; // Increase number of steps for smoother transition
+        const numSteps = 200;
         const colors = [
-          p.color('#F2FCE2'), // Light pastel green
-          p.color('#FEF7CD'), // Light pastel yellow
-          p.color('#E5DEFF'), // Light pastel purple
-          p.color('#D3E4FD')  // Light pastel blue
+          p.color('#F2FCE2'),
+          p.color('#FEF7CD'),
+          p.color('#E5DEFF'),
+          p.color('#D3E4FD')
         ];
         
         for (let y = 0; y < p.height; y++) {
@@ -71,6 +71,27 @@ const P5Background = () => {
           
           p.stroke(c);
           p.line(0, y, p.width, y);
+        }
+
+        // Draw notebook dots
+        const dotSpacing = 20;
+        const dotSize = 1;
+        const dotColor = p.color(0, 0, 0, 15); // Very subtle black dots
+
+        p.noStroke();
+        p.fill(dotColor);
+
+        // Calculate the total height needed based on document height
+        const totalHeight = Math.max(p.height, document.documentElement.scrollHeight);
+        
+        // Draw dots in a grid pattern
+        for (let x = dotSpacing; x < p.width; x += dotSpacing) {
+          for (let y = dotSpacing; y < totalHeight; y += dotSpacing) {
+            // Only draw dots that are within the visible area
+            if (y > scrollRef.current && y < scrollRef.current + p.height) {
+              p.ellipse(x, y - scrollRef.current, dotSize, dotSize);
+            }
+          }
         }
 
         // Draw particles with parallax effect
