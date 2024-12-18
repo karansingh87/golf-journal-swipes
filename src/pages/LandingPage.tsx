@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart } from "lucide-react";
+import { Mic, Brain, LineChart, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/landing/TestimonialCard";
 
@@ -94,6 +94,11 @@ const LandingPage = () => {
                     title: "Track Your Progress",
                     description: "Review your journey, spot patterns, and build on what works for your game.",
                     Icon: LineChart
+                  },
+                  {
+                    title: "Share Your Progress",
+                    description: "Keep your coach or golf buddies in the loop with shareable insights.",
+                    Icon: Share2
                   }
                 ].map((step, index) => (
                   <motion.div
