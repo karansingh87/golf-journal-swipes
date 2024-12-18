@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart, Share2 } from "lucide-react";
+import { Mic } from "lucide-react";
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/landing/TestimonialCard";
+import BenefitsSection from "@/components/landing/BenefitsSection";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -150,6 +151,8 @@ const LandingPage = () => {
           </div>
         </div>
       </motion.section>
+
+      <BenefitsSection />
 
       <section className="py-24 lg:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
