@@ -30,6 +30,7 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
           size={32} 
           className="text-golf-gray-light opacity-80" 
           fill="#ACE580"
+          stroke="none"
         />
       </div>
     </motion.div>
