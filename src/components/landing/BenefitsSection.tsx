@@ -13,21 +13,20 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -4 }}
       transition={{ duration: 0.3 }}
-      className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
+      className="p-6"
     >
-      <div className="flex items-center gap-4 mb-4">
-        <div className="rounded-lg bg-[#f8faf9] p-2">
-          <Icon className="w-8 h-8 text-[#047857]" />
+      <div className="flex items-center gap-4 mb-6">
+        <div className="rounded-full bg-[#052e16] p-4">
+          <Icon className="w-6 h-6 text-[#4ade80]" />
         </div>
-        <h3 className="text-xl font-bold text-zinc-900">{title}</h3>
+        <h3 className="text-xl font-bold text-[#111827]">{title}</h3>
       </div>
-      <ul className="space-y-3">
+      <ul className="space-y-4 pl-[calc(4rem+16px)]">
         {benefits.map((benefit, index) => (
-          <li key={index} className="flex items-start gap-2">
-            <span className="text-[#047857] text-lg mt-1">•</span>
-            <span className="text-zinc-600">{benefit}</span>
+          <li key={index} className="flex items-start gap-3">
+            <span className="text-gray-300 text-lg mt-1">•</span>
+            <span className="text-[#4B5563] text-base">{benefit}</span>
           </li>
         ))}
       </ul>
