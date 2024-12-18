@@ -1,4 +1,4 @@
-import { Brain, BookOpen, Sparkles, Zap } from "lucide-react";
+import { Brain, BookOpenText, Target, Mic } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface BenefitCardProps {
@@ -39,42 +39,42 @@ const BenefitsSection = () => {
   const benefits = [
     {
       title: "Unlock Hidden Patterns",
-      Icon: Sparkles,
+      Icon: Target,
       benefits: [
-        "Find the pre-shot routines that lead to your best scores",
-        "Discover which practice drills actually improve your game",
-        "Track swing changes that stick versus temporary fixes",
-        "Identify your optimal mental state for peak performance",
+        "Find your best pre-shot routines",
+        "See which practice drills work",
+        "Track lasting swing changes",
+        "Spot your peak performance triggers",
       ],
     },
     {
       title: "Build Real Confidence",
       Icon: Brain,
       benefits: [
-        "Review past successes before important rounds",
-        "Remember exactly what worked in your best performances",
-        "Turn one-off breakthroughs into repeatable strategies",
-        "Build a library of personal swing thoughts that work",
+        "Review your success patterns",
+        "Remember what works for you",
+        "Turn breakthroughs into habits",
+        "Build your winning mindset",
       ],
     },
     {
       title: "Improve Without Extra Work",
-      Icon: Zap,
+      Icon: Mic,
       benefits: [
-        "Speak naturally, just like you already do after rounds",
-        "No manual tracking or typing required",
-        "Get insights automatically from your normal golf chat",
-        "Access your full golf journey in seconds",
+        "Just talk after you play",
+        "No typing needed",
+        "Get automatic insights",
+        "Find any moment instantly",
       ],
     },
     {
       title: "Never Lose Another Insight",
-      Icon: BookOpen,
+      Icon: BookOpenText,
       benefits: [
-        "Capture those aha moments before they slip away",
-        "Remember the small adjustments that made big differences",
-        "Build on what's working instead of starting over",
-        "Create your personal playbook of proven solutions",
+        "Capture breakthroughs instantly",
+        "Remember what made the difference",
+        "Build on what's working",
+        "Create your playbook",
       ],
     },
   ];
