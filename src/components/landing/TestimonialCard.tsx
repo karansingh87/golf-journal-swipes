@@ -13,24 +13,22 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="relative max-w-[400px] p-7 rounded-[20px] bg-golf-green text-golf-white"
+      className="relative max-w-[400px] p-7 rounded-[20px] bg-white/80 backdrop-blur-sm border border-zinc-200"
       style={{
-        boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
+        boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02)',
       }}
     >
-      <p className="text-base font-light leading-relaxed tracking-[0.2px] text-golf-white mb-5">
+      <p className="text-base font-light leading-relaxed tracking-[0.2px] text-golf-gray-text-primary mb-5">
         "{quote}"
       </p>
       <div className="flex flex-col gap-0.5">
-        <span className="text-sm font-normal text-golf-white">{author}</span>
-        <span className="text-xs text-golf-gray-light">{title}</span>
+        <span className="text-sm font-normal text-golf-gray-text-primary">{author}</span>
+        <span className="text-xs text-golf-gray-text-secondary">{title}</span>
       </div>
       <div className="absolute bottom-5 right-5">
         <MessageSquareQuote 
           size={30} 
-          className="text-golf-gray-light opacity-80" 
-          fill="#ACE580"
-          stroke="hsl(240 5.9% 10%)"
+          className="text-golf-gray-card opacity-30" 
         />
       </div>
     </motion.div>
