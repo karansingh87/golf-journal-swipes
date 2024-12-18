@@ -58,13 +58,6 @@ const LandingPage = () => {
                   <h2 className="text-lg font-medium text-zinc-900">How it works</h2>
                 </div>
               </div>
-              
-              {/* Title */}
-              <div className="text-center mb-20">
-                <h2 className="text-4xl font-bold text-zinc-900 mb-4">
-                  Simplify your workflow with easy steps
-                </h2>
-              </div>
 
               {/* Steps */}
               <div className="space-y-24">
