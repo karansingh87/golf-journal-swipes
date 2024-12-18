@@ -88,8 +88,8 @@ const LandingPage = () => {
                     <div className="w-12 h-12 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
                       <step.Icon className="w-6 h-6" />
                     </div>
-                    <h3 className="text-2xl font-semibold text-zinc-900">{step.title}</h3>
-                    <p className="text-zinc-600 text-lg max-w-md leading-relaxed">
+                    <h3 className="text-xl font-semibold text-zinc-900">{step.title}</h3>
+                    <p className="text-zinc-600 text-base max-w-md leading-relaxed">
                       {step.description}
                     </p>
                   </motion.div>
