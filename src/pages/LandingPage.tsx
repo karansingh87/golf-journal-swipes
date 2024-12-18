@@ -133,11 +133,6 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-8 md:gap-12">
             <TestimonialCard
-              quote="GolfLog remembers the small adjustments that made big differences in my game. Now I can build on what works instead of guessing."
-              author="Chris T."
-              title="Single Digit Handicap"
-            />
-            <TestimonialCard
               quote="Love how it captures my thoughts right after a round. The AI finds patterns I never would have noticed myself."
               author="Jordan M."
               title="Club Champion"
