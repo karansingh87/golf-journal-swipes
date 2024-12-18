@@ -86,7 +86,7 @@ const LandingPage = () => {
                     className="flex flex-col items-center text-center space-y-4"
                   >
                     <div className="w-12 h-12 flex items-center justify-center text-zinc-900">
-                      <step.Icon className="w-6 h-6" fill="currentColor" />
+                      <step.Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-semibold text-zinc-900">{step.title}</h3>
                     <p className="text-zinc-600 text-base max-w-md leading-relaxed">
