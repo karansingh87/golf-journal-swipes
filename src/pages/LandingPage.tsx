@@ -48,6 +48,52 @@ const LandingPage = () => {
         </div>
       </motion.section>
 
+      {/* How It Works Section */}
+      <section className="py-24 bg-[#F2FCE2]/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center mb-16">
+            <div className="bg-white px-8 py-2 rounded-full shadow-card-light">
+              <h2 className="text-lg font-medium text-zinc-900">How It Works</h2>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              {
+                title: "Record Your Thoughts",
+                description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
+                Icon: Mic
+              },
+              {
+                title: "Get Smart Insights",
+                description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
+                Icon: Brain
+              },
+              {
+                title: "Track Your Progress",
+                description: "Review your journey, spot patterns, and build on what works for your game.",
+                Icon: LineChart
+              }
+            ].map((step, index) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className="flex flex-col items-center text-center space-y-4"
+              >
+                <div className="w-16 h-16 rounded-full bg-white shadow-card-light flex items-center justify-center">
+                  <step.Icon className="w-8 h-8 text-zinc-900" />
+                </div>
+                <h3 className="text-xl font-semibold text-[#1A1F2C]">{step.title}</h3>
+                <p className="text-[#8E9196] max-w-sm">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center mb-16">
@@ -91,34 +137,6 @@ const LandingPage = () => {
           <p className="mt-6 text-zinc-600">- Professional Golf Coach</p>
         </div>
       </motion.section>
-      
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-16">Perfect For Every Golf Moment</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              { title: "Post-Round Reflections", icon: MessageSquare, description: "Capture immediate thoughts after your round" },
-              { title: "Practice Insights", icon: Target, description: "Track breakthroughs during practice sessions" },
-              { title: "Progress Tracking", icon: LineChart, description: "Monitor your improvement over time" }
-            ].map((scenario, index) => (
-              <motion.div
-                key={scenario.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center space-x-3 mb-4">
-                  <scenario.icon className="w-6 h-6 text-zinc-900" />
-                  <h3 className="text-xl font-medium">{scenario.title}</h3>
-                </div>
-                <p className="text-zinc-600">{scenario.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
       
       <section className="py-24 lg:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
