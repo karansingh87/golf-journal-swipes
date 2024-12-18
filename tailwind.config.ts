@@ -82,16 +82,15 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "circle-animation": {
-          "0%": { strokeDashoffset: "302" },
-          "50%": { strokeDashoffset: "0" },
-          "100%": { strokeDashoffset: "-302" },
+        "circle-spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "spin-slow": "spin 8s linear infinite",
+        "circle-spin": "circle-spin 3s linear infinite",
       },
     },
   },
