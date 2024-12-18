@@ -63,19 +63,16 @@ const LandingPage = () => {
               <div className="space-y-16">
                 {[
                   {
-                    number: "01",
                     title: "Record Your Thoughts",
                     description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
                     Icon: Mic
                   },
                   {
-                    number: "02",
                     title: "Get Smart Insights",
                     description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
                     Icon: Brain
                   },
                   {
-                    number: "03",
                     title: "Track Your Progress",
                     description: "Review your journey, spot patterns, and build on what works for your game.",
                     Icon: LineChart
@@ -87,22 +84,15 @@ const LandingPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
-                    className="flex items-start space-x-6"
+                    className="flex flex-col items-center text-center space-y-4"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-16 h-16 rounded-full bg-[#F2FCE2] flex items-center justify-center text-2xl font-bold text-zinc-900">
-                        {step.number}
-                      </div>
-                      <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center">
-                        <step.Icon className="w-6 h-6 text-zinc-900" />
-                      </div>
+                    <div className="w-16 h-16 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+                      <step.Icon className="w-8 h-8" />
                     </div>
-                    <div className="flex-1 pt-3">
-                      <h3 className="text-2xl font-semibold text-zinc-900 mb-3">{step.title}</h3>
-                      <p className="text-zinc-600 text-lg leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
+                    <h3 className="text-2xl font-semibold text-zinc-900">{step.title}</h3>
+                    <p className="text-zinc-600 text-lg max-w-md leading-relaxed">
+                      {step.description}
+                    </p>
                   </motion.div>
                 ))}
               </div>
