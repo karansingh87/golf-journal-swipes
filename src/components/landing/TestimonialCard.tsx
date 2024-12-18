@@ -18,7 +18,7 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
         boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02)',
       }}
     >
-      <p className="text-base font-light leading-relaxed tracking-[0.2px] text-golf-gray-text-primary mb-5">
+      <p className="text-base font-normal leading-relaxed tracking-[0.2px] text-golf-gray-text-primary mb-5">
         "{quote}"
       </p>
       <div className="flex flex-col gap-0.5">
