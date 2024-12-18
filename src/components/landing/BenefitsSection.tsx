@@ -74,12 +74,22 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section className="py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
-          {benefits.map((benefit, index) => (
-            <BenefitCard key={index} {...benefit} />
-          ))}
+    <section className="py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center mb-16">
+              <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
+                <h2 className="text-sm font-medium text-zinc-900">Features</h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+              {benefits.map((benefit, index) => (
+                <BenefitCard key={index} {...benefit} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
