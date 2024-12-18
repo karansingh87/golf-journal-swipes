@@ -28,7 +28,7 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
       <div className="absolute bottom-5 right-5">
         <MessageSquareQuote 
           size={30} 
-          className="text-[#ACE580] opacity-30" 
+          className="text-[#ACE580] opacity-60" 
         />
       </div>
     </motion.div>
