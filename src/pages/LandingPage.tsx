@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart, Quote } from "lucide-react";
+import { Mic, Brain, LineChart } from "lucide-react";
 import { motion } from "framer-motion";
+import TestimonialCard from "@/components/landing/TestimonialCard";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -126,49 +127,16 @@ const LandingPage = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-8 md:gap-12">
-            {/* First Testimonial */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative max-w-[480px] p-12 md:p-[48px_40px] rounded-[32px] bg-white shadow-lg border border-gray-100"
-              style={{
-                boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
-              }}
-            >
-              <p className="text-2xl leading-relaxed tracking-[0.2px] text-zinc-900 mb-8">
-                "GolfLog remembers the small adjustments that made big differences in my game. Now I can build on what works instead of guessing."
-              </p>
-              <div className="flex flex-col gap-1">
-                <span className="text-lg font-semibold text-zinc-900">Chris T.</span>
-                <span className="text-base text-zinc-600">Single Digit Handicap</span>
-              </div>
-              <div className="absolute bottom-8 right-8 opacity-90">
-                <Quote size={48} className="text-zinc-300 transform rotate-12" />
-              </div>
-            </motion.div>
-
-            {/* Second Testimonial */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative max-w-[480px] p-12 md:p-[48px_40px] rounded-[32px] bg-white shadow-lg border border-gray-100"
-              style={{
-                boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
-              }}
-            >
-              <p className="text-2xl leading-relaxed tracking-[0.2px] text-zinc-900 mb-8">
-                "Love how it captures my thoughts right after a round. The AI finds patterns I never would have noticed myself."
-              </p>
-              <div className="flex flex-col gap-1">
-                <span className="text-lg font-semibold text-zinc-900">Jordan M.</span>
-                <span className="text-base text-zinc-600">Club Champion</span>
-              </div>
-              <div className="absolute bottom-8 right-8 opacity-90">
-                <Quote size={48} className="text-zinc-300 transform rotate-12" />
-              </div>
-            </motion.div>
+            <TestimonialCard
+              quote="GolfLog remembers the small adjustments that made big differences in my game. Now I can build on what works instead of guessing."
+              author="Chris T."
+              title="Single Digit Handicap"
+            />
+            <TestimonialCard
+              quote="Love how it captures my thoughts right after a round. The AI finds patterns I never would have noticed myself."
+              author="Jordan M."
+              title="Club Champion"
+            />
           </div>
         </div>
       </motion.section>
