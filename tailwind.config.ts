@@ -83,9 +83,18 @@ export default {
           to: { height: "0" },
         },
         "circle-animation": {
-          "0%": { strokeDashoffset: "302" },
-          "50%": { strokeDashoffset: "0" },
-          "100%": { strokeDashoffset: "-302" },
+          "0%": { 
+            strokeDashoffset: "295",
+            strokeDasharray: "295 295"
+          },
+          "99%": { 
+            strokeDashoffset: "0",
+            strokeDasharray: "295 295"
+          },
+          "100%": { 
+            strokeDashoffset: "0",
+            strokeDasharray: "295 295"
+          }
         }
       },
       animation: {
