@@ -33,6 +33,7 @@ const LandingPage = () => {
                       cx="50"
                       cy="50"
                       r="47"
+                      strokeDasharray="295"
                       style={{
                         animation: "circle-animation 3s ease-in-out infinite",
                       }}
