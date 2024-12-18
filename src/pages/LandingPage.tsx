@@ -31,7 +31,7 @@ const LandingPage = () => {
               Turn Golf Thoughts into Insights
             </h1>
             <p className="text-lg sm:text-xl text-zinc-600 mt-4 max-w-2xl mx-auto font-normal">
-              Capture your post-round thoughts, analyze your game, and watch your progress soar.
+              Every insight matters - from breakthroughs at the range to revelations on the course. Just talk, and let AI unlock the patterns in your game.
             </p>
 
             <motion.div 
@@ -174,7 +174,7 @@ const LandingPage = () => {
                   size="lg"
                   className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 text-lg shadow-lg"
                 >
-                  Begin Your Free Trial
+                  Start Your Golf Log
                 </Button>
               </motion.div>
               <span className="text-sm text-zinc-500">
