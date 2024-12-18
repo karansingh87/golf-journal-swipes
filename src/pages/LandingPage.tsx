@@ -54,12 +54,11 @@ const LandingPage = () => {
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
               {/* Floating Label */}
               <div className="flex justify-center mb-12">
-                <div className="bg-white px-8 py-2 rounded-full shadow-card-light">
-                  <h2 className="text-lg font-medium text-zinc-900">How it works</h2>
+                <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
+                  <h2 className="text-sm font-medium text-zinc-900">How it works</h2>
                 </div>
               </div>
 
-              {/* Steps */}
               <div className="space-y-16">
                 {[
                   {
