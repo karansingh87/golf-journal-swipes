@@ -22,7 +22,7 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
         "{quote}"
       </p>
       <div className="flex flex-col gap-0.5">
-        <span className="text-sm font-medium text-golf-white">{author}</span>
+        <span className="text-sm font-normal text-golf-white">{author}</span>
         <span className="text-xs text-golf-gray-light">{title}</span>
       </div>
       <div className="absolute bottom-5 right-5">
