@@ -137,6 +137,16 @@ const LandingPage = () => {
               author="Jordan M."
               title="Club Champion"
             />
+            <TestimonialCard
+              quote="It's like having a golf coach who remembers everything you've ever discussed."
+              author="Mark S."
+              title="12 Handicap"
+            />
+            <TestimonialCard
+              quote="Found swing changes I made 3 months ago that I'd completely forgotten about. Game-changer."
+              author="Sarah T."
+              title="Scratch Golfer"
+            />
           </div>
         </div>
       </motion.section>
