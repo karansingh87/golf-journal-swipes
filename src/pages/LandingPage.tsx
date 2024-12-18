@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic } from "lucide-react";
+import { Mic, Brain, LineChart, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/landing/TestimonialCard";
 import BenefitsSection from "@/components/landing/BenefitsSection";

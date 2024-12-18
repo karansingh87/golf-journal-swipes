@@ -1,4 +1,4 @@
-import { Brain, BookOpen, Sparkles, LightningBolt } from "lucide-react";
+import { Brain, BookOpen, Sparkles, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface BenefitCardProps {
@@ -59,7 +59,7 @@ const BenefitsSection = () => {
     },
     {
       title: "Improve Without Extra Work",
-      Icon: LightningBolt,
+      Icon: Zap,
       benefits: [
         "Speak naturally, just like you already do after rounds",
         "No manual tracking or typing required",
