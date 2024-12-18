@@ -22,11 +22,11 @@ const P5Background = () => {
       const createParticle = () => ({
         x: p.random(p.width),
         y: p.random(p.height),
-        vx: p.random(-0.3, 0.3),
-        vy: p.random(-0.3, 0.3),
-        size: p.random(2, 3),
-        alpha: p.random(5, 15),
-        parallaxFactor: p.random(0.2, 0.8)
+        vx: p.random(-0.5, 0.5),
+        vy: p.random(-0.5, 0.5),
+        size: p.random(2, 4),
+        alpha: p.random(10, 30),
+        parallaxFactor: p.random(0.3, 1)
       });
 
       p.setup = () => {
@@ -35,7 +35,7 @@ const P5Background = () => {
         canvas.style('z-index', '-1');
 
         // Initialize particles
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 50; i++) {
           particles.push(createParticle());
         }
       };
@@ -48,11 +48,27 @@ const P5Background = () => {
         scrollRef.current = window.scrollY;
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Create very subtle gradient background
-        const numSteps = 200;
+        // Create smoother gradient background using multiple color stops
+        const numSteps = 200; // Increase number of steps for smoother transition
+        const colors = [
+          p.color('#F2FCE2'), // Light pastel green
+          p.color('#FEF7CD'), // Light pastel yellow
+          p.color('#E5DEFF'), // Light pastel purple
+          p.color('#D3E4FD')  // Light pastel blue
+        ];
+        
         for (let y = 0; y < p.height; y++) {
           const progress = y / p.height;
-          const c = p.color(255, 255, 255, 3); // Almost transparent white
+          let c;
+          
+          if (progress < 0.33) {
+            c = p.lerpColor(colors[0], colors[1], progress * 3);
+          } else if (progress < 0.66) {
+            c = p.lerpColor(colors[1], colors[2], (progress - 0.33) * 3);
+          } else {
+            c = p.lerpColor(colors[2], colors[3], (progress - 0.66) * 3);
+          }
+          
           p.stroke(c);
           p.line(0, y, p.width, y);
         }
@@ -60,8 +76,8 @@ const P5Background = () => {
         // Draw particles with parallax effect
         particles.forEach((particle, index) => {
           const parallaxOffset = scrollRef.current * particle.parallaxFactor;
-          const baseAlpha = particle.alpha * (1 - scrollProgress * 0.3);
-          p.fill(240, 240, 240, baseAlpha);
+          const baseAlpha = particle.alpha * (1 - scrollProgress * 0.5);
+          p.fill(200, 200, 200, baseAlpha);
 
           particle.x += particle.vx;
           particle.y = (particle.y + particle.vy + parallaxOffset) % p.height;
@@ -72,8 +88,8 @@ const P5Background = () => {
           p.ellipse(
             particle.x,
             particle.y,
-            particle.size,
-            particle.size
+            particle.size * (1 + scrollProgress),
+            particle.size * (1 + scrollProgress)
           );
 
           if (p.random(1) < 0.001) {
@@ -81,16 +97,16 @@ const P5Background = () => {
           }
         });
 
-        // Add very subtle wave effect
-        const waveAmplitude = 10 * (1 - scrollProgress);
-        const waveFrequency = 0.01;
-        p.stroke(240, 240, 240, 10);
+        // Add subtle wave effect
+        const waveAmplitude = 20 * (1 - scrollProgress);
+        const waveFrequency = 0.02;
+        p.stroke(200, 200, 200, 20);
         p.noFill();
         p.beginShape();
-        for (let x = 0; x < p.width; x += 30) {
+        for (let x = 0; x < p.width; x += 20) {
           const y = p.height / 2 + 
-            p.sin(x * waveFrequency + p.frameCount * 0.01) * waveAmplitude;
-          p.vertex(x, y + scrollRef.current * 0.1);
+            p.sin(x * waveFrequency + p.frameCount * 0.02) * waveAmplitude;
+          p.vertex(x, y + scrollRef.current * 0.2);
         }
         p.endShape();
       };

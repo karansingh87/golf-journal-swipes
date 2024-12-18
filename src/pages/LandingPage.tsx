@@ -7,28 +7,28 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <div className="min-h-screen bg-gradient-to-b from-white to-[#f8faf9]">
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         className="pt-20 pb-24 lg:pt-28 px-4 sm:px-6 lg:px-8 text-center"
       >
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center space-y-8">
             <motion.div 
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center text-white"
+              className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center text-white"
             >
-              <Mic size={32} />
+              <Mic size={40} />
             </motion.div>
             
-            <h1 className="text-[2rem] sm:text-5xl font-bold tracking-tight text-zinc-900 leading-tight">
+            <h1 className="text-[2.25rem] sm:text-6xl font-extrabold tracking-tight text-zinc-900 leading-tight">
               Turn Golf Thoughts into Insights
             </h1>
-            <p className="text-base sm:text-lg text-zinc-600 mt-4 max-w-2xl mx-auto font-normal leading-relaxed">
+            <p className="text-lg sm:text-xl text-zinc-600 mt-4 max-w-2xl mx-auto font-normal">
               From range breakthroughs to on-course discoveries, every insight counts. Just talk, and let AI reveal the patterns in your game.
             </p>
 
@@ -49,42 +49,53 @@ const LandingPage = () => {
 
       {/* How It Works Section */}
       <section className="py-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-24">
-            {[
-              {
-                title: "Record Your Thoughts",
-                description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
-                Icon: Mic
-              },
-              {
-                title: "Get Smart Insights",
-                description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
-                Icon: Brain
-              },
-              {
-                title: "Track Your Progress",
-                description: "Review your journey, spot patterns, and build on what works for your game.",
-                Icon: LineChart
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="flex flex-col items-center text-center space-y-4"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-zinc-900 text-white flex items-center justify-center">
-                  <step.Icon size={32} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-[#F2FCE2]/80 rounded-2xl shadow-card-light mx-4 sm:mx-8 lg:mx-16 py-16">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Floating Label */}
+              <div className="flex justify-center mb-12">
+                <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
+                  <h2 className="text-sm font-medium text-zinc-900">How it works</h2>
                 </div>
-                <h3 className="text-2xl font-semibold text-zinc-900">{step.title}</h3>
-                <p className="text-zinc-600 text-base max-w-md leading-relaxed">
-                  {step.description}
-                </p>
-              </motion.div>
-            ))}
+              </div>
+
+              <div className="space-y-16">
+                {[
+                  {
+                    title: "Record Your Thoughts",
+                    description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
+                    Icon: Mic
+                  },
+                  {
+                    title: "Get Smart Insights",
+                    description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
+                    Icon: Brain
+                  },
+                  {
+                    title: "Track Your Progress",
+                    description: "Review your journey, spot patterns, and build on what works for your game.",
+                    Icon: LineChart
+                  }
+                ].map((step, index) => (
+                  <motion.div
+                    key={step.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    className="flex flex-col items-center text-center space-y-4"
+                  >
+                    <div className="w-12 h-12 flex items-center justify-center text-zinc-900">
+                      <step.Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-zinc-900">{step.title}</h3>
+                    <p className="text-zinc-600 text-base max-w-md leading-relaxed">
+                      {step.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -95,23 +106,23 @@ const LandingPage = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <blockquote className="text-2xl font-medium text-zinc-900">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <blockquote className="text-2xl font-medium text-zinc-900 italic">
             "Finally, an app that gets how golfers actually think and talk about their game."
           </blockquote>
           <p className="mt-6 text-zinc-600">- Professional Golf Coach</p>
         </div>
       </motion.section>
       
-      <section className="py-24">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="py-24 lg:py-32">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <h2 className="text-2xl font-bold text-zinc-900">Start Your Golf Journey</h2>
+            <h2 className="text-3xl font-bold mb-8">Start Your Golf Journey</h2>
             <div className="flex flex-col items-center space-y-3">
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -120,7 +131,7 @@ const LandingPage = () => {
                 <Button
                   onClick={() => navigate("/login")}
                   size="lg"
-                  className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 text-lg shadow-lg rounded-full"
+                  className="bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 text-lg shadow-lg"
                 >
                   Start Your Golf Log
                 </Button>
