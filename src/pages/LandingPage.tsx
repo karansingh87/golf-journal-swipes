@@ -50,7 +50,7 @@ const LandingPage = () => {
       {/* How It Works Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#F2FCE2]/80 rounded-2xl shadow-card-light mx-4 sm:mx-8 lg:mx-16 py-16">
+          <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
               {/* Floating Label */}
               <div className="flex justify-center mb-16">
