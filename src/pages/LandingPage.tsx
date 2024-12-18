@@ -34,7 +34,7 @@ const LandingPage = () => {
                       className="stroke-[#ACE580] stroke-[4] fill-none"
                       cx="50"
                       cy="50"
-                      r="49"
+                      r="46"
                       strokeDasharray="302"
                       strokeDashoffset="302"
                       style={{
