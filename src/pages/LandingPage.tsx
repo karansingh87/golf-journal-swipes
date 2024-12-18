@@ -22,11 +22,11 @@ const LandingPage = () => {
               transition={{ duration: 0.5 }}
               className="relative w-20 h-20"
             >
-              {/* Mic icon container - moved below the animated circle */}
+              {/* Mic icon container */}
               <div className="absolute inset-0 bg-zinc-900 rounded-full flex items-center justify-center text-white">
                 <Mic size={40} />
               </div>
-              {/* Animated circle - now above the black background */}
+              {/* Animated circle */}
               <div className="absolute inset-0 w-full h-full">
                 <div className="absolute inset-0 animate-spin-slow">
                   <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -39,6 +39,7 @@ const LandingPage = () => {
                       strokeDashoffset="302"
                       style={{
                         animation: "circle-animation 3s ease-in-out infinite",
+                        filter: "drop-shadow(0 0 2px #22c55e)",
                       }}
                     />
                   </svg>
