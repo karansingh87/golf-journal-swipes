@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart, MessageSquare, Target, Flag } from "lucide-react";
-import FeatureCard from "@/components/landing/FeatureCard";
+import { Mic, Brain, LineChart } from "lucide-react";
 import { motion } from "framer-motion";
 
 const LandingPage = () => {
@@ -50,14 +49,23 @@ const LandingPage = () => {
 
       {/* How It Works Section */}
       <section className="py-24 bg-[#F2FCE2]/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Floating Label */}
           <div className="flex justify-center mb-16">
             <div className="bg-white px-8 py-2 rounded-full shadow-card-light">
-              <h2 className="text-lg font-medium text-zinc-900">How It Works</h2>
+              <h2 className="text-lg font-medium text-zinc-900">How it works</h2>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* Title */}
+          <div className="text-center mb-20">
+            <h2 className="text-4xl font-bold text-zinc-900 mb-4">
+              Simplify your workflow with easy steps
+            </h2>
+          </div>
+
+          {/* Steps */}
+          <div className="space-y-24">
             {[
               {
                 title: "Record Your Thoughts",
@@ -81,49 +89,21 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="flex flex-col items-center text-center space-y-4"
+                className="flex flex-col items-center text-center space-y-6"
               >
-                <div className="w-16 h-16 rounded-full bg-white shadow-card-light flex items-center justify-center">
-                  <step.Icon className="w-8 h-8 text-zinc-900" />
+                <div className="w-20 h-20 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+                  <step.Icon className="w-10 h-10" />
                 </div>
-                <h3 className="text-xl font-semibold text-[#1A1F2C]">{step.title}</h3>
-                <p className="text-[#8E9196] max-w-sm">{step.description}</p>
+                <h3 className="text-2xl font-semibold text-zinc-900">{step.title}</h3>
+                <p className="text-zinc-600 text-lg max-w-md leading-relaxed">
+                  {step.description}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center mb-16">
-            <div className="bg-white px-8 py-2 rounded-full shadow-card-light">
-              <h2 className="text-lg font-medium text-zinc-900">Features</h2>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 gap-16 sm:grid-cols-2 lg:grid-cols-3">
-            <FeatureCard
-              index={0}
-              title="Voice-First Capture"
-              description="Record your thoughts naturally, just like talking to your coach. No typing needed - your voice is all it takes."
-              Icon={Mic}
-            />
-            <FeatureCard
-              index={1}
-              title="Personal Golf Journey"
-              description="Build your roadmap to better golf. Track breakthroughs, lessons learned, and progress over time."
-              Icon={LineChart}
-            />
-            <FeatureCard
-              index={2}
-              title="AI-Powered Analysis"
-              description="Turn your thoughts into actionable insights. Our AI helps spot patterns and improvement opportunities."
-              Icon={Brain}
-            />
-          </div>
-        </div>
-      </section>
-      
       <motion.section 
         className="py-20 lg:py-28"
         initial={{ opacity: 0 }}
