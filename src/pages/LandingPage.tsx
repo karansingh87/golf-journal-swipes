@@ -89,11 +89,16 @@ const LandingPage = () => {
                     transition={{ duration: 0.5, delay: index * 0.2 }}
                     className="flex items-start space-x-6"
                   >
-                    <div className="w-16 h-16 rounded-full bg-[#F2FCE2] flex items-center justify-center text-2xl font-bold text-zinc-900">
-                      {step.number}
+                    <div className="flex items-center space-x-4">
+                      <div className="w-16 h-16 rounded-full bg-[#F2FCE2] flex items-center justify-center text-2xl font-bold text-zinc-900">
+                        {step.number}
+                      </div>
+                      <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center">
+                        <step.Icon className="w-6 h-6 text-zinc-900" />
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-semibold text-zinc-900 mb-2">{step.title}</h3>
+                    <div className="flex-1 pt-3">
+                      <h3 className="text-2xl font-semibold text-zinc-900 mb-3">{step.title}</h3>
                       <p className="text-zinc-600 text-lg leading-relaxed">
                         {step.description}
                       </p>
