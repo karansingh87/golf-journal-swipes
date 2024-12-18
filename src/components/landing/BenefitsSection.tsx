@@ -13,21 +13,16 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.3 }}
-      className="p-6"
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center text-center space-y-4"
     >
-      <div className="flex items-center gap-4 mb-6">
-        <div className="rounded-full bg-[#052e16] p-4">
-          <Icon className="w-6 h-6 text-[#4ade80]" />
-        </div>
-        <h3 className="text-xl font-bold text-[#111827]">{title}</h3>
+      <div className="w-12 h-12 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+        <Icon className="w-6 h-6" />
       </div>
-      <ul className="space-y-4 pl-[calc(4rem+16px)]">
+      <h3 className="text-xl font-semibold text-zinc-900">{title}</h3>
+      <ul className="text-zinc-600 text-base space-y-2">
         {benefits.map((benefit, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <span className="text-gray-300 text-lg mt-1">•</span>
-            <span className="text-[#4B5563] text-base">{benefit}</span>
-          </li>
+          <li key={index}>{benefit}</li>
         ))}
       </ul>
     </motion.div>
@@ -81,7 +76,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
           {benefits.map((benefit, index) => (
             <BenefitCard key={index} {...benefit} />
           ))}
