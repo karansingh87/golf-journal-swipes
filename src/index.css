@@ -38,3 +38,15 @@
     font-family: 'Inter', sans-serif;
   }
 }
+
+@keyframes circle-animation {
+  0% {
+    stroke-dashoffset: 302;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -302;
+  }
+}

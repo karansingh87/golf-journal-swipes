@@ -20,9 +20,30 @@ const LandingPage = () => {
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center text-white"
+              className="relative w-20 h-20"
             >
-              <Mic size={40} />
+              {/* Animated circle */}
+              <div className="absolute inset-0 w-full h-full">
+                <div className="absolute inset-0 animate-spin-slow">
+                  <svg className="w-full h-full" viewBox="0 0 100 100">
+                    <circle
+                      className="stroke-[#22c55e] stroke-2 fill-none"
+                      cx="50"
+                      cy="50"
+                      r="48"
+                      strokeDasharray="302"
+                      strokeDashoffset="302"
+                      style={{
+                        animation: "circle-animation 3s ease-in-out infinite",
+                      }}
+                    />
+                  </svg>
+                </div>
+              </div>
+              {/* Mic icon container */}
+              <div className="absolute inset-0 bg-zinc-900 rounded-full flex items-center justify-center text-white">
+                <Mic size={40} />
+              </div>
             </motion.div>
             
             <h1 className="text-[2.25rem] sm:text-6xl font-extrabold tracking-tight text-zinc-900 leading-tight">
