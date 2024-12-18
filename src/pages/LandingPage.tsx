@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Mic, Brain, LineChart, MessageSquare, Target, Flag } from "lucide-react";
 import FeatureCard from "@/components/landing/FeatureCard";
-import PhoneMockup from "@/components/landing/PhoneMockup";
 import { motion } from "framer-motion";
 
 const LandingPage = () => {
@@ -45,8 +44,6 @@ const LandingPage = () => {
                 Start Your Golf Log
               </Button>
             </motion.div>
-
-            <PhoneMockup />
           </div>
         </div>
       </motion.section>
@@ -119,38 +116,6 @@ const LandingPage = () => {
                 <p className="text-zinc-600">{scenario.description}</p>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-      
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-16">Why Golfers Love Us</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-            <FeatureCard
-              index={0}
-              title="Quick Capture"
-              description="Record insights instantly, anywhere"
-              Icon={Mic}
-            />
-            <FeatureCard
-              index={1}
-              title="Smart Analysis"
-              description="AI-powered game improvement"
-              Icon={Brain}
-            />
-            <FeatureCard
-              index={2}
-              title="Track Progress"
-              description="See your journey clearly"
-              Icon={LineChart}
-            />
-            <FeatureCard
-              index={3}
-              title="Easy Review"
-              description="Find past insights quickly"
-              Icon={MessageSquare}
-            />
           </div>
         </div>
       </section>
