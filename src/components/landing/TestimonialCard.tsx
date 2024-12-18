@@ -1,4 +1,4 @@
-import { Quote } from "lucide-react";
+import { TextQuote } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TestimonialCardProps {
@@ -26,7 +26,7 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
         <span className="text-xs text-golf-gray-light">{title}</span>
       </div>
       <div className="absolute bottom-6 right-6">
-        <Quote 
+        <TextQuote 
           size={32} 
           className="text-[#ACE580] opacity-80 transform rotate-12 stroke-[1.5]" 
         />
