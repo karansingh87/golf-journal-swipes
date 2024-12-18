@@ -31,7 +31,7 @@ const LandingPage = () => {
                 <div className="absolute inset-0 animate-spin-slow">
                   <svg className="w-full h-full" viewBox="0 0 100 100">
                     <circle
-                      className="stroke-[#22c55e] stroke-[3] fill-none"
+                      className="stroke-[#22c55e] stroke-[4] fill-none"
                       cx="50"
                       cy="50"
                       r="49"
