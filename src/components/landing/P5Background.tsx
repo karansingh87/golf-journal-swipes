@@ -9,45 +9,126 @@ const P5Background = () => {
     if (!containerRef.current) return;
 
     const sketch = (p: p5) => {
-      const DOT_SPACING = 20; // Space between dots
-      const DOT_SIZE = 1.5; // Size of each dot
-      const DOT_OPACITY = 25; // Opacity of dots (0-255)
+      let particles: Array<{
+        x: number;
+        y: number;
+        vx: number;
+        vy: number;
+        size: number;
+        alpha: number;
+        parallaxFactor: number;
+      }> = [];
       
+      const createParticle = () => ({
+        x: p.random(p.width),
+        y: p.random(p.height),
+        vx: p.random(-0.5, 0.5),
+        vy: p.random(-0.5, 0.5),
+        size: p.random(2, 4),
+        alpha: p.random(10, 30),
+        parallaxFactor: p.random(0.3, 1)
+      });
+
       p.setup = () => {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
         canvas.position(0, 0);
         canvas.style('z-index', '-1');
+
+        // Initialize particles
+        for (let i = 0; i < 50; i++) {
+          particles.push(createParticle());
+        }
       };
 
       p.draw = () => {
         p.clear();
-        p.noStroke();
         
-        // Update scroll position
+        // Update scroll position for parallax effect
         scrollRef.current = window.scrollY;
+        const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Calculate the number of dots needed based on viewport
-        const startRow = Math.floor(scrollRef.current / DOT_SPACING);
-        const numRows = Math.ceil(p.height / DOT_SPACING) + 1;
-        const numCols = Math.ceil(p.width / DOT_SPACING);
+        // Draw gradient background
+        const colors = [
+          p.color('#F2FCE2'),
+          p.color('#FEF7CD'),
+          p.color('#E5DEFF'),
+          p.color('#D3E4FD')
+        ];
+        
+        for (let y = 0; y < p.height; y++) {
+          const progress = y / p.height;
+          let c;
+          
+          if (progress < 0.33) {
+            c = p.lerpColor(colors[0], colors[1], progress * 3);
+          } else if (progress < 0.66) {
+            c = p.lerpColor(colors[1], colors[2], (progress - 0.33) * 3);
+          } else {
+            c = p.lerpColor(colors[2], colors[3], (progress - 0.66) * 3);
+          }
+          
+          p.stroke(c);
+          p.line(0, y, p.width, y);
+        }
 
-        // Draw dots
-        p.fill(0, DOT_OPACITY); // Black dots with low opacity
-        for (let row = startRow; row < startRow + numRows; row++) {
-          for (let col = 0; col < numCols; col++) {
-            const x = col * DOT_SPACING;
-            const y = (row * DOT_SPACING) - (scrollRef.current % DOT_SPACING);
-            p.circle(x, y, DOT_SIZE);
+        // Draw notebook dots
+        const dotSpacing = 20;
+        const dotSize = 1.5;  // Slightly increased dot size
+        const dotColor = p.color(0, 0, 0, 25);  // Increased opacity
+
+        p.noStroke();
+        p.fill(dotColor);
+
+        // Calculate visible area
+        const startY = Math.floor(scrollRef.current / dotSpacing) * dotSpacing;
+        const endY = startY + p.height + dotSpacing;
+
+        // Draw dots in a grid pattern
+        for (let x = dotSpacing; x < p.width; x += dotSpacing) {
+          for (let y = startY; y < endY; y += dotSpacing) {
+            const screenY = y - scrollRef.current;
+            if (screenY >= -dotSpacing && screenY <= p.height + dotSpacing) {
+              p.ellipse(x, screenY, dotSize, dotSize);
+            }
           }
         }
 
-        // Add subtle gradient overlay
-        const gradient = p.drawingContext as CanvasRenderingContext2D;
-        const transparentGradient = gradient.createLinearGradient(0, 0, 0, p.height);
-        transparentGradient.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
-        transparentGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        gradient.fillStyle = transparentGradient;
-        gradient.fillRect(0, 0, p.width, p.height);
+        // Draw particles with parallax effect
+        particles.forEach((particle, index) => {
+          const parallaxOffset = scrollRef.current * particle.parallaxFactor;
+          const baseAlpha = particle.alpha * (1 - scrollProgress * 0.5);
+          p.fill(200, 200, 200, baseAlpha);
+
+          particle.x += particle.vx;
+          particle.y = (particle.y + particle.vy + parallaxOffset) % p.height;
+
+          if (particle.x < 0) particle.x = p.width;
+          if (particle.x > p.width) particle.x = 0;
+
+          p.ellipse(
+            particle.x,
+            particle.y,
+            particle.size * (1 + scrollProgress),
+            particle.size * (1 + scrollProgress)
+          );
+
+          if (p.random(1) < 0.001) {
+            particles[index] = createParticle();
+          }
+        });
+
+        // Add subtle wave effect
+        const waveAmplitude = 20 * (1 - scrollProgress);
+        const waveFrequency = 0.02;
+        p.stroke(200, 200, 200, 20);
+        p.noFill();
+        p.beginShape();
+        for (let x = 0; x < p.width; x += 20) {
+          const y = p.height / 2 + 
+            p.sin(x * waveFrequency + p.frameCount * 0.02) * waveAmplitude;
+          p.vertex(x, y + scrollRef.current * 0.2);
+        }
+        p.endShape();
       };
 
       p.windowResized = () => {
