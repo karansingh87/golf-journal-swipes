@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart } from "lucide-react";
+import { Mic, Brain, LineChart, Quote } from "lucide-react";
 import { motion } from "framer-motion";
 
 const LandingPage = () => {
@@ -22,11 +22,9 @@ const LandingPage = () => {
               transition={{ duration: 0.5 }}
               className="relative w-20 h-20"
             >
-              {/* Mic icon container - moved below the animated circle */}
               <div className="absolute inset-0 bg-zinc-900 rounded-full flex items-center justify-center text-white">
                 <Mic size={40} />
               </div>
-              {/* Animated circle - now above the black background */}
               <div className="absolute inset-0 w-full h-full">
                 <div className="absolute inset-0 animate-spin-slow">
                   <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -73,7 +71,6 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* Floating Label */}
               <div className="flex justify-center mb-16">
                 <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
                   <h2 className="text-sm font-medium text-zinc-900">How it works</h2>
@@ -127,14 +124,55 @@ const LandingPage = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <blockquote className="text-2xl font-medium text-zinc-900 italic">
-            "Finally, an app that gets how golfers actually think and talk about their game."
-          </blockquote>
-          <p className="mt-6 text-zinc-600">- Professional Golf Coach</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-8 md:gap-12">
+            {/* First Testimonial */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative max-w-[480px] p-12 md:p-[48px_40px] rounded-[32px] bg-white shadow-lg border border-gray-100"
+              style={{
+                boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
+              }}
+            >
+              <p className="text-2xl leading-relaxed tracking-[0.2px] text-zinc-900 mb-8">
+                "GolfLog remembers the small adjustments that made big differences in my game. Now I can build on what works instead of guessing."
+              </p>
+              <div className="flex flex-col gap-1">
+                <span className="text-lg font-semibold text-zinc-900">Chris T.</span>
+                <span className="text-base text-zinc-600">Single Digit Handicap</span>
+              </div>
+              <div className="absolute bottom-8 right-8 opacity-90">
+                <Quote size={48} className="text-zinc-300 transform rotate-12" />
+              </div>
+            </motion.div>
+
+            {/* Second Testimonial */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="relative max-w-[480px] p-12 md:p-[48px_40px] rounded-[32px] bg-white shadow-lg border border-gray-100"
+              style={{
+                boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
+              }}
+            >
+              <p className="text-2xl leading-relaxed tracking-[0.2px] text-zinc-900 mb-8">
+                "Love how it captures my thoughts right after a round. The AI finds patterns I never would have noticed myself."
+              </p>
+              <div className="flex flex-col gap-1">
+                <span className="text-lg font-semibold text-zinc-900">Jordan M.</span>
+                <span className="text-base text-zinc-600">Club Champion</span>
+              </div>
+              <div className="absolute bottom-8 right-8 opacity-90">
+                <Quote size={48} className="text-zinc-300 transform rotate-12" />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </motion.section>
-      
+
       <section className="py-24 lg:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
