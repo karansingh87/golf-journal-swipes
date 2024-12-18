@@ -85,7 +85,7 @@ const LandingPage = () => {
                     transition={{ duration: 0.5, delay: index * 0.2 }}
                     className="flex flex-col items-center text-center space-y-4"
                   >
-                    <div className="w-12 h-12 flex items-center justify-center text-zinc-900">
+                    <div className="w-12 h-12 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
                       <step.Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-semibold text-zinc-900">{step.title}</h3>
