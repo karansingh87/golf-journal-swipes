@@ -12,7 +12,7 @@ const LandingPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="pt-20 pb-24 lg:pt-28 px-4 sm:px-6 lg:px-8 text-center"
+        className="pt-32 pb-24 lg:pt-36 px-4 sm:px-6 lg:px-8 text-center"
       >
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col items-center justify-center space-y-8">
