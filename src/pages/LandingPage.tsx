@@ -96,7 +96,7 @@ const LandingPage = () => {
                     Icon: LineChart
                   },
                   {
-                    title: "Share Your Progress",
+                    title: "Share Your Journey",
                     description: "Keep your coach or golf buddies in the loop with shareable insights.",
                     Icon: Share2
                   }
