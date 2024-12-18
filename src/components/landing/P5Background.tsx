@@ -42,14 +42,12 @@ const P5Background = () => {
 
       p.draw = () => {
         p.clear();
-        p.noStroke();
-
+        
         // Update scroll position for parallax effect
         scrollRef.current = window.scrollY;
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Create smoother gradient background using multiple color stops
-        const numSteps = 200;
+        // Draw gradient background
         const colors = [
           p.color('#F2FCE2'),
           p.color('#FEF7CD'),
@@ -75,21 +73,22 @@ const P5Background = () => {
 
         // Draw notebook dots
         const dotSpacing = 20;
-        const dotSize = 1;
-        const dotColor = p.color(0, 0, 0, 15); // Very subtle black dots
+        const dotSize = 1.5;  // Slightly increased dot size
+        const dotColor = p.color(0, 0, 0, 25);  // Increased opacity
 
         p.noStroke();
         p.fill(dotColor);
 
-        // Calculate the total height needed based on document height
-        const totalHeight = Math.max(p.height, document.documentElement.scrollHeight);
-        
+        // Calculate visible area
+        const startY = Math.floor(scrollRef.current / dotSpacing) * dotSpacing;
+        const endY = startY + p.height + dotSpacing;
+
         // Draw dots in a grid pattern
         for (let x = dotSpacing; x < p.width; x += dotSpacing) {
-          for (let y = dotSpacing; y < totalHeight; y += dotSpacing) {
-            // Only draw dots that are within the visible area
-            if (y > scrollRef.current && y < scrollRef.current + p.height) {
-              p.ellipse(x, y - scrollRef.current, dotSize, dotSize);
+          for (let y = startY; y < endY; y += dotSpacing) {
+            const screenY = y - scrollRef.current;
+            if (screenY >= -dotSpacing && screenY <= p.height + dotSpacing) {
+              p.ellipse(x, screenY, dotSize, dotSize);
             }
           }
         }
