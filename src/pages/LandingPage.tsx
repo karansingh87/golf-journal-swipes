@@ -31,7 +31,7 @@ const LandingPage = () => {
               Turn Golf Thoughts into Insights
             </h1>
             <p className="text-lg sm:text-xl text-zinc-600 mt-4 max-w-2xl mx-auto font-normal">
-              Every insight matters - from breakthroughs at the range to revelations on the course. Just talk, and let AI unlock the patterns in your game.
+              From range breakthroughs to on-course discoveries, every insight counts. Just talk, and let AI reveal the patterns in your game.
             </p>
 
             <motion.div 
