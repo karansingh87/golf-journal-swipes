@@ -28,21 +28,19 @@ const LandingPage = () => {
                 <Mic size={40} />
               </div>
               <div className="absolute inset-0 w-full h-full">
-                <div className="absolute inset-0 animate-spin-slow">
-                  <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <circle
-                      className="stroke-[#ACE580] stroke-[4] fill-none"
-                      cx="50"
-                      cy="50"
-                      r="46"
-                      strokeDasharray="302"
-                      strokeDashoffset="302"
-                      style={{
-                        animation: "circle-animation 3s ease-in-out infinite",
-                      }}
-                    />
-                  </svg>
-                </div>
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <circle
+                    className="stroke-[#ACE580] stroke-[4] fill-none"
+                    cx="50"
+                    cy="50"
+                    r="46"
+                    style={{
+                      transformOrigin: 'center',
+                      animation: 'spin 4s linear infinite',
+                      strokeDasharray: '302',
+                    }}
+                  />
+                </svg>
               </div>
             </motion.div>
             
@@ -68,7 +66,6 @@ const LandingPage = () => {
         </div>
       </motion.section>
 
-      {/* How It Works Section */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">

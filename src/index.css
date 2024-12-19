@@ -39,14 +39,11 @@
   }
 }
 
-@keyframes circle-animation {
-  0% {
-    stroke-dashoffset: 302;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  50% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -302;
+  to {
+    transform: rotate(360deg);
   }
 }
