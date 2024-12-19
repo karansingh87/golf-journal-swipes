@@ -3,6 +3,7 @@ import TestimonialCard from "@/components/landing/TestimonialCard";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import HeroSection from "@/components/landing/HeroSection";
 import P5Background from "@/components/landing/P5Background";
+import { Mic, Brain, LineChart, Share2 } from "lucide-react";
 
 const LandingPage = () => {
   return (
