@@ -16,8 +16,8 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="h-full p-8 bg-white border border-zinc-100 shadow-sm hover:shadow-md transition-all relative">
-        <div className="absolute inset-0 rounded-lg bg-[#F2FCE2]/20 blur-[32px] -z-10" />
+      <Card className="h-full p-8 bg-white border border-zinc-100 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
+        <div className="absolute inset-0 rounded-lg bg-[#F2FCE2]/40 blur-[64px] -z-10" />
         <div className="flex flex-col items-center text-center space-y-6">
           <div className="w-14 h-14 rounded-xl bg-zinc-900 text-white flex items-center justify-center">
             <Icon className="w-7 h-7" />
