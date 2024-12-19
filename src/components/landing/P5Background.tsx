@@ -22,8 +22,8 @@ const P5Background = () => {
       const createParticle = () => ({
         x: p.random(p.width),
         y: p.random(p.height),
-        vx: p.random(-0.3, 0.3),
-        vy: p.random(-0.3, 0.3),
+        vx: p.random(-0.2, 0.2),
+        vy: p.random(-0.2, 0.2),
         size: p.random(2, 4),
         alpha: p.random(10, 20),
         parallaxFactor: p.random(0.2, 0.8)
@@ -48,8 +48,8 @@ const P5Background = () => {
         scrollRef.current = window.scrollY;
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Create smoother gradient background
-        const numSteps = 400; // Increased steps for smoother transition
+        // Create smoother gradient background using cosine interpolation
+        const numSteps = 400;
         for (let i = 0; i < numSteps; i++) {
           const y = (i / numSteps) * p.height;
           const progress = y / p.height;
@@ -57,10 +57,10 @@ const P5Background = () => {
           // Use cosine interpolation for smoother transitions
           const t = (1 - Math.cos(progress * Math.PI)) / 2;
           
-          // Interpolate between soft greens
+          // Interpolate between soft greens with more subtle transition
           const c = p.lerpColor(
-            p.color('#F2FCE2'), // Light mint green
-            p.color('#E8F5D6'), // Slightly darker mint
+            p.color(242, 252, 226, 255), // #F2FCE2
+            p.color(232, 245, 214, 255), // Slightly darker
             t
           );
           
@@ -77,14 +77,15 @@ const P5Background = () => {
           const time = p.frameCount * 0.01;
           const waveOffset = p.sin(time + particle.x * 0.01) * 2;
           
-          particle.x += particle.vx + p.sin(time) * 0.2;
+          // Smoother particle movement
+          particle.x += particle.vx + p.sin(time) * 0.1;
           particle.y = (particle.y + particle.vy + parallaxOffset + waveOffset) % p.height;
 
           if (particle.x < 0) particle.x = p.width;
           if (particle.x > p.width) particle.x = 0;
 
           // Create a subtle glow effect
-          p.fill(220, 230, 210, baseAlpha * 0.5);
+          p.fill(172, 229, 128, baseAlpha * 0.3); // #ACE580 with lower opacity
           p.ellipse(
             particle.x,
             particle.y,
@@ -92,7 +93,7 @@ const P5Background = () => {
             particle.size * 2
           );
           
-          p.fill(200, 220, 190, baseAlpha);
+          p.fill(172, 229, 128, baseAlpha * 0.6);
           p.ellipse(
             particle.x,
             particle.y,
@@ -100,22 +101,23 @@ const P5Background = () => {
             particle.size
           );
 
+          // Occasionally refresh particles
           if (p.random(1) < 0.001) {
             particles[index] = createParticle();
           }
         });
 
-        // Add subtle flowing curves
-        p.stroke(200, 220, 190, 15);
+        // Add flowing curves with varying amplitudes
+        p.stroke(172, 229, 128, 15); // #ACE580 with very low opacity
         p.noFill();
         for (let i = 0; i < 3; i++) {
           p.beginShape();
           for (let x = 0; x < p.width; x += 30) {
-            const frequency = 0.015;
-            const amplitude = 15 * (1 - scrollProgress * 0.5);
+            const frequency = 0.01;
+            const amplitude = 20 * (1 - scrollProgress * 0.5);
             const y = p.height / 2 + 
-              p.sin(x * frequency + p.frameCount * 0.02 + i) * amplitude +
-              p.cos(x * frequency * 0.5 + p.frameCount * 0.01) * amplitude;
+              p.sin(x * frequency + p.frameCount * 0.01 + i) * amplitude +
+              p.cos(x * frequency * 0.5 + p.frameCount * 0.005) * amplitude;
             p.curveVertex(x, y + scrollRef.current * 0.1);
           }
           p.endShape();
