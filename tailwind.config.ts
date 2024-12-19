@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -27,13 +27,13 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         golf: {
-          green: "hsl(240 5.9% 10%)", // zinc-950
-          muted: "hsl(240 3.7% 15.9%)", // zinc-900
+          green: "hsl(240 5.9% 10%)",
+          muted: "hsl(240 3.7% 15.9%)",
           subtle: "hsl(240 3.7% 15.9% / 0.1)",
           white: "#FFFFFF",
           gray: {
-            light: "hsl(240 5.2% 33.9%)", // zinc-700
-            card: "hsl(240 3.8% 46.1%)", // zinc-500
+            light: "hsl(240 5.2% 33.9%)",
+            card: "hsl(240 3.8% 46.1%)",
             text: {
               primary: "hsl(240 5.9% 10%)",
               secondary: "hsl(240 3.8% 46.1%)",
