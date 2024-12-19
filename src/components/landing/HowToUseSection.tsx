@@ -25,7 +25,7 @@ const HowToUseSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-[#F2FCE2] py-24">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#F2FCE2] to-transparent py-24">
       {/* Background glow effect */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ACE580]/10 rounded-full blur-[120px]" />
