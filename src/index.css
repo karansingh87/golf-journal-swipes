@@ -81,20 +81,3 @@
 .card-shadow {
   box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
 }
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.gradient-animate {
-  background-size: 200% 200%;
-  animation: gradient 3s ease infinite;
-}

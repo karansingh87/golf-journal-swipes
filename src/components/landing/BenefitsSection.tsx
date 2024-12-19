@@ -15,17 +15,19 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
-      className="flex flex-col items-center text-center space-y-4"
+      className="bg-white/80 backdrop-blur-sm border border-zinc-200/50 rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all"
     >
-      <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center shadow-lg">
-        <Icon className="w-7 h-7" />
+      <div className="flex flex-col items-center text-center space-y-6">
+        <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center shadow-lg">
+          <Icon className="w-7 h-7" />
+        </div>
+        <h3 className="text-2xl font-bold text-zinc-900">{title}</h3>
+        <ul className="text-zinc-600 text-lg space-y-3">
+          {benefits.map((benefit, index) => (
+            <li key={index}>{benefit}</li>
+          ))}
+        </ul>
       </div>
-      <h3 className="text-2xl font-bold text-zinc-900">{title}</h3>
-      <ul className="text-zinc-600 text-lg space-y-3">
-        {benefits.map((benefit, index) => (
-          <li key={index}>{benefit}</li>
-        ))}
-      </ul>
     </motion.div>
   );
 };
@@ -77,19 +79,17 @@ const BenefitsSection = () => {
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-3xl mx-4 sm:mx-8 lg:mx-16 py-20">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-center mb-16">
-              <div className="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full shadow-md">
-                <h2 className="text-sm font-medium text-zinc-900">Features</h2>
-              </div>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center mb-16">
+            <div className="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full shadow-md">
+              <h2 className="text-sm font-medium text-zinc-900">Features</h2>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
-              {benefits.map((benefit, index) => (
-                <BenefitCard key={index} {...benefit} />
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {benefits.map((benefit, index) => (
+              <BenefitCard key={index} {...benefit} />
+            ))}
           </div>
         </div>
       </div>
