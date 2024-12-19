@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
 import { Mic } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-
+  
   return (
     <motion.section 
       initial={{ opacity: 0, y: 20 }}
@@ -69,7 +69,7 @@ const HeroSection = () => {
           >
             <Button
               onClick={() => navigate("/login")}
-              className="bg-gradient-to-r from-[#ACE580] to-[#F2FCE2] hover:from-[#F2FCE2] hover:to-[#ACE580] text-zinc-900 px-8 py-6 text-lg rounded-full shadow-lg transition-all duration-300 hover:shadow-xl"
+              className="relative overflow-hidden bg-gradient-to-r from-[#ACE580] to-[#F2FCE2] text-zinc-900 px-8 py-6 text-lg rounded-full shadow-lg transition-all duration-300 hover:shadow-xl hover:from-[#F2FCE2] hover:to-[#ACE580] font-medium"
             >
               Start Your Golf Log
             </Button>
