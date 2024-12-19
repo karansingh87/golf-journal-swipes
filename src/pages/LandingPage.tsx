@@ -36,9 +36,10 @@ const LandingPage = () => {
                     cy="50"
                     r="46"
                     fill="none"
+                    strokeLinecap="round"
                     style={{
-                      strokeDasharray: '20,10',
-                      animation: 'dash 15s linear infinite',
+                      strokeDasharray: '289.02652413026095',
+                      strokeDashoffset: '28.902652413026095',
                     }}
                   />
                 </svg>
@@ -187,4 +188,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
