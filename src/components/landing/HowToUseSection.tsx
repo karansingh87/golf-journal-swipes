@@ -35,19 +35,9 @@ const HowToUseSection = () => {
         {/* Header with glowing line decorations */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#ACE580]/50 to-transparent" />
-          <h2 className="text-lg font-medium text-[#ACE580]/80">How to Use</h2>
+          <h2 className="text-lg font-medium text-[#ACE580]/80">How it Works</h2>
           <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#ACE580]/50 to-transparent" />
         </div>
-
-        {/* Main title */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-5xl md:text-6xl font-bold text-center text-white mb-16"
-        >
-          Easy to Use
-        </motion.h1>
 
         {/* Steps Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
