@@ -25,7 +25,7 @@ const HowToUseSection = () => {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-zinc-900 to-zinc-950 py-24">
+    <section className="relative overflow-hidden bg-[#F2FCE2] py-24">
       {/* Background glow effect */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ACE580]/10 rounded-full blur-[120px]" />
@@ -34,9 +34,9 @@ const HowToUseSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header with glowing line decorations */}
         <div className="flex items-center justify-center gap-4 mb-12">
-          <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#ACE580]/50 to-transparent" />
-          <h2 className="text-lg font-medium text-[#ACE580]/80">How it Works</h2>
-          <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#ACE580]/50 to-transparent" />
+          <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#ACE580] to-transparent" />
+          <h2 className="text-lg font-medium text-zinc-800">How it Works</h2>
+          <div className="h-px w-12 bg-gradient-to-r from-transparent via-[#ACE580] to-transparent" />
         </div>
 
         {/* Steps Grid */}
@@ -52,14 +52,14 @@ const HowToUseSection = () => {
             >
               <div className="flex items-start gap-4">
                 {/* Step number */}
-                <div className="text-4xl font-bold text-[#ACE580]/20">
+                <div className="text-4xl font-bold text-[#ACE580]">
                   /{step.number}
                 </div>
 
                 <div>
                   {/* Content */}
-                  <h3 className="text-2xl font-bold text-white mb-3">{step.title}</h3>
-                  <p className="text-zinc-400 leading-relaxed">{step.description}</p>
+                  <h3 className="text-2xl font-bold text-zinc-900 mb-3">{step.title}</h3>
+                  <p className="text-zinc-600 leading-relaxed">{step.description}</p>
                 </div>
               </div>
             </motion.div>
