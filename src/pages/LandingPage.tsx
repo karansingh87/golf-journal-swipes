@@ -24,27 +24,33 @@ const LandingPage = () => {
               transition={{ duration: 0.5 }}
               className="relative w-20 h-20"
             >
-              <div className="absolute inset-0 bg-zinc-900 rounded-full flex items-center justify-center text-white">
+              {/* Pulsing background */}
+              <div className="absolute inset-0 bg-zinc-900/10 rounded-full animate-pulse-ring" />
+              
+              {/* Main circle with icon */}
+              <div className="absolute inset-0 bg-zinc-900 rounded-full flex items-center justify-center text-white shadow-lg">
                 <Mic size={40} />
               </div>
 
+              {/* Rotating circle */}
               <div className="absolute inset-0 w-full h-full">
                 <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
                   <circle
-                    className="stroke-[#ACE580] stroke-[3]"
+                    className="stroke-[#ACE580]"
                     cx="50"
                     cy="50"
                     r="46"
                     fill="none"
+                    strokeWidth="2"
                     strokeLinecap="round"
                     style={{
                       strokeDasharray: '289.02652413026095',
                       strokeDashoffset: '28.902652413026095',
+                      filter: 'drop-shadow(0 0 2px #ACE580)',
                     }}
                   />
                 </svg>
               </div>
-
             </motion.div>
             
             <h1 className="text-[2.25rem] sm:text-6xl font-extrabold tracking-tight text-zinc-900 leading-tight">
