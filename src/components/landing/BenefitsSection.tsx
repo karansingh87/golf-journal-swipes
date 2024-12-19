@@ -13,17 +13,16 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -5 }}
-      transition={{ duration: 0.3 }}
-      className="flex flex-col items-center text-center space-y-4 p-8 rounded-2xl bg-white/80 backdrop-blur-sm card-shadow"
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center text-center space-y-4"
     >
-      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#33C3F0] to-[#ACE580] text-white flex items-center justify-center shadow-lg">
-        <Icon className="w-8 h-8" />
+      <div className="w-12 h-12 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
+        <Icon className="w-6 h-6" />
       </div>
-      <h3 className="text-2xl font-bold text-zinc-900">{title}</h3>
-      <ul className="text-zinc-600 text-base space-y-3">
+      <h3 className="text-xl font-semibold text-zinc-900">{title}</h3>
+      <ul className="text-zinc-600 text-base space-y-2">
         {benefits.map((benefit, index) => (
-          <li key={index} className="leading-relaxed">{benefit}</li>
+          <li key={index}>{benefit}</li>
         ))}
       </ul>
     </motion.div>
@@ -75,19 +74,22 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section className="py-16 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#F2FCE2]/30 to-transparent pointer-events-none" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex justify-center mb-16">
-          <div className="bg-white px-6 py-2 rounded-full shadow-sm">
-            <h2 className="text-sm font-semibold text-zinc-900">Features</h2>
-          </div>
-        </div>
+    <section className="py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center mb-16">
+              <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
+                <h2 className="text-sm font-medium text-zinc-900">Features</h2>
+              </div>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {benefits.map((benefit, index) => (
-            <BenefitCard key={index} {...benefit} />
-          ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+              {benefits.map((benefit, index) => (
+                <BenefitCard key={index} {...benefit} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
