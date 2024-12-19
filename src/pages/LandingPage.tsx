@@ -75,7 +75,7 @@ const LandingPage = () => {
           </div>
         </div>
       </motion.section>
-
+      
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
@@ -132,16 +132,9 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <motion.section 
-        className="py-20 lg:py-28 bg-gradient-to-b from-zinc-900 to-zinc-950"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <TestimonialsCarousel />
-        </div>
-      </motion.section>
+      <div className="bg-gradient-to-b from-white to-[#f8faf9]">
+        <TestimonialsCarousel />
+      </div>
 
       <BenefitsSection />
 

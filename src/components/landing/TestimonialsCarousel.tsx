@@ -33,18 +33,22 @@ const TestimonialsCarousel = () => {
   }, [emblaApi]);
 
   return (
-    <div className="overflow-hidden bg-transparent" ref={emblaRef}>
-      <div className="flex">
-        {testimonials.map((testimonial, index) => (
-          <div 
-            key={index} 
-            className="flex-[0_0_100%] min-w-0"
-          >
-            <TestimonialCard {...testimonial} />
+    <section className="py-20 lg:py-28">
+      <div className="max-w-7xl mx-auto">
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {testimonials.map((testimonial, index) => (
+              <div 
+                key={index} 
+                className="flex-[0_0_100%] min-w-0"
+              >
+                <TestimonialCard {...testimonial} />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
