@@ -26,11 +26,6 @@ const HowToUseSection = () => {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#F2FCE2] to-transparent py-24">
-      {/* Background glow effect */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#ACE580]/10 rounded-full blur-[120px]" />
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Header with glowing line decorations */}
         <div className="flex items-center justify-center gap-4 mb-12">
