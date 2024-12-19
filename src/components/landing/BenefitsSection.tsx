@@ -74,7 +74,7 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section className="py-32">
+    <section className="pt-16 pb-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-b from-zinc-50/80 to-transparent rounded-3xl mx-4 sm:mx-8 lg:mx-16 py-24">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
