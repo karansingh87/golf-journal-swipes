@@ -47,7 +47,7 @@ const HowToUseSection = () => {
         >
           {/* Card background with gradient border */}
           <div className="rounded-2xl overflow-hidden p-px bg-gradient-to-b from-zinc-800 to-transparent">
-            <div className="p-8">
+            <div className="bg-zinc-900/90 backdrop-blur-xl rounded-2xl p-8">
               {/* Content */}
               <div className="text-center space-y-6">
                 <h3 className="text-lg font-medium text-zinc-200 mb-8">Record with</h3>
