@@ -1,31 +1,26 @@
 import { motion } from "framer-motion";
-import { Mic, Brain, LineChart, Share2 } from "lucide-react";
 
 const HowToUseSection = () => {
   const steps = [
     {
       number: "1",
       title: "Record Your Thoughts",
-      description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
-      icon: Mic
+      description: "Just tap record and talk about your game - at the range or after your round. No typing needed."
     },
     {
       number: "2",
       title: "Get Smart Insights",
-      description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
-      icon: Brain
+      description: "AI analyzes your thoughts and organizes them into actionable insights about your game."
     },
     {
       number: "3",
       title: "Track Your Progress",
-      description: "Review your journey, spot patterns, and build on what works for your game.",
-      icon: LineChart
+      description: "Review your journey, spot patterns, and build on what works for your game."
     },
     {
       number: "4",
       title: "Share Your Journey",
-      description: "Keep your coach or golf buddies in the loop with shareable insights.",
-      icon: Share2
+      description: "Keep your coach or golf buddies in the loop with shareable insights."
     }
   ];
 
@@ -65,20 +60,17 @@ const HowToUseSection = () => {
               transition={{ delay: index * 0.2 }}
               className="relative"
             >
-              {/* Step number */}
-              <div className="absolute -left-4 top-0 text-4xl font-bold text-[#ACE580]/20">
-                /{step.number}
-              </div>
-
-              <div className="pl-8">
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-lg bg-zinc-800 text-[#ACE580] flex items-center justify-center mb-4">
-                  <step.icon className="w-6 h-6" />
+              <div className="flex items-start gap-4">
+                {/* Step number */}
+                <div className="text-4xl font-bold text-[#ACE580]/20">
+                  /{step.number}
                 </div>
 
-                {/* Content */}
-                <h3 className="text-2xl font-bold text-white mb-3">{step.title}</h3>
-                <p className="text-zinc-400 leading-relaxed">{step.description}</p>
+                <div>
+                  {/* Content */}
+                  <h3 className="text-2xl font-bold text-white mb-3">{step.title}</h3>
+                  <p className="text-zinc-400 leading-relaxed">{step.description}</p>
+                </div>
               </div>
             </motion.div>
           ))}
