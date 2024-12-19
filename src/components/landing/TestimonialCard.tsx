@@ -1,3 +1,4 @@
+import { MessageSquareQuote } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TestimonialCardProps {
@@ -9,26 +10,28 @@ interface TestimonialCardProps {
 const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
   return (
     <motion.div
-      className="relative w-[400px] p-8 rounded-[32px] bg-zinc-900/95 backdrop-blur-sm border border-zinc-800"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3 }}
+      className="relative max-w-[400px] p-8 rounded-[24px] bg-white/80 backdrop-blur-sm border border-zinc-200/50"
       style={{
-        boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1)',
+        boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02)',
       }}
     >
-      <div className="flex flex-col gap-8">
-        <p className="text-[22px] leading-relaxed text-white/90">
-          "{quote}"
-        </p>
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-[#ACE580]/20 flex items-center justify-center">
-            <span className="text-lg font-semibold text-[#ACE580]">
-              {author[0]}
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg font-semibold text-[#ACE580]">{author}</span>
-            <span className="text-sm text-zinc-400">{title}</span>
-          </div>
-        </div>
+      <p className="text-lg font-medium leading-relaxed tracking-[0.2px] text-zinc-800 mb-6">
+        "{quote}"
+      </p>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-base font-semibold text-zinc-900">{author}</span>
+        <span className="text-sm text-zinc-500">{title}</span>
+      </div>
+      <div className="absolute bottom-6 right-6">
+        <MessageSquareQuote 
+          size={32} 
+          className="text-[#ACE580]" 
+        />
       </div>
     </motion.div>
   );
