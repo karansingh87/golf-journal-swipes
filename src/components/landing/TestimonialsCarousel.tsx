@@ -28,12 +28,12 @@ const TestimonialsCarousel = () => {
 
   useEffect(() => {
     if (emblaApi) {
-      // Optional: Add any additional carousel configuration here
+      console.log("Carousel initialized");
     }
   }, [emblaApi]);
 
   return (
-    <div className="overflow-hidden" ref={emblaRef}>
+    <div className="overflow-hidden bg-transparent" ref={emblaRef}>
       <div className="flex">
         {testimonials.map((testimonial, index) => (
           <div 
