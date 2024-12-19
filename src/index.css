@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,11 +7,11 @@
 
 @layer base {
   :root {
-    --background: 0 0% 96%;
+    --background: 0 0% 98%;
     --foreground: 240 5.9% 10%;
-    --card: 0 0% 91%;
+    --card: 0 0% 100%;
     --card-foreground: 240 5.9% 10%;
-    --popover: 0 0% 91%;
+    --popover: 0 0% 100%;
     --popover-foreground: 240 5.9% 10%;
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
@@ -39,35 +40,25 @@
   }
 }
 
-.hero-gradient {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(242, 252, 226, 0.6) 100%
-  );
-  backdrop-filter: blur(8px);
+.glass-card {
+  @apply bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg;
 }
 
-.feature-card-gradient {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(242, 252, 226, 0.8) 100%
-  );
+.hover-scale {
+  @apply transition-transform duration-300 hover:scale-[1.02];
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
+.fade-in {
+  @apply animate-[fadeIn_0.5s_ease-out];
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

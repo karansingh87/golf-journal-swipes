@@ -26,21 +26,6 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        golf: {
-          green: "hsl(240 5.9% 10%)",
-          muted: "hsl(240 3.7% 15.9%)",
-          subtle: "hsl(240 3.7% 15.9% / 0.1)",
-          white: "#FFFFFF",
-          gray: {
-            light: "hsl(240 5.2% 33.9%)",
-            card: "hsl(240 3.8% 46.1%)",
-            text: {
-              primary: "hsl(240 5.9% 10%)",
-              secondary: "hsl(240 3.8% 46.1%)",
-              hint: "hsl(240 5.2% 33.9%)",
-            },
-          },
-        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
