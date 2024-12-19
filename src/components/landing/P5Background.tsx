@@ -22,11 +22,11 @@ const P5Background = () => {
       const createParticle = () => ({
         x: p.random(p.width),
         y: p.random(p.height),
-        vx: p.random(-0.5, 0.5),
-        vy: p.random(-0.5, 0.5),
+        vx: p.random(-0.3, 0.3),
+        vy: p.random(-0.3, 0.3),
         size: p.random(2, 4),
-        alpha: p.random(10, 30),
-        parallaxFactor: p.random(0.3, 1)
+        alpha: p.random(10, 20),
+        parallaxFactor: p.random(0.2, 0.8)
       });
 
       p.setup = () => {
@@ -35,7 +35,7 @@ const P5Background = () => {
         canvas.style('z-index', '-1');
 
         // Initialize particles
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 40; i++) {
           particles.push(createParticle());
         }
       };
@@ -48,48 +48,56 @@ const P5Background = () => {
         scrollRef.current = window.scrollY;
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Create smoother gradient background using multiple color stops
-        const numSteps = 200; // Increase number of steps for smoother transition
-        const colors = [
-          p.color('#F2FCE2'), // Light pastel green
-          p.color('#FEF7CD'), // Light pastel yellow
-          p.color('#E5DEFF'), // Light pastel purple
-          p.color('#D3E4FD')  // Light pastel blue
-        ];
-        
-        for (let y = 0; y < p.height; y++) {
+        // Create smoother gradient background
+        const numSteps = 400; // Increased steps for smoother transition
+        for (let i = 0; i < numSteps; i++) {
+          const y = (i / numSteps) * p.height;
           const progress = y / p.height;
-          let c;
           
-          if (progress < 0.33) {
-            c = p.lerpColor(colors[0], colors[1], progress * 3);
-          } else if (progress < 0.66) {
-            c = p.lerpColor(colors[1], colors[2], (progress - 0.33) * 3);
-          } else {
-            c = p.lerpColor(colors[2], colors[3], (progress - 0.66) * 3);
-          }
+          // Use cosine interpolation for smoother transitions
+          const t = (1 - Math.cos(progress * Math.PI)) / 2;
+          
+          // Interpolate between soft greens
+          const c = p.lerpColor(
+            p.color('#F2FCE2'), // Light mint green
+            p.color('#E8F5D6'), // Slightly darker mint
+            t
+          );
           
           p.stroke(c);
           p.line(0, y, p.width, y);
         }
 
-        // Draw particles with parallax effect
+        // Draw particles with improved fluid motion
         particles.forEach((particle, index) => {
-          const parallaxOffset = scrollRef.current * particle.parallaxFactor;
-          const baseAlpha = particle.alpha * (1 - scrollProgress * 0.5);
-          p.fill(200, 200, 200, baseAlpha);
-
-          particle.x += particle.vx;
-          particle.y = (particle.y + particle.vy + parallaxOffset) % p.height;
+          const parallaxOffset = scrollRef.current * particle.parallaxFactor * 0.1;
+          const baseAlpha = particle.alpha * (1 - scrollProgress * 0.3);
+          
+          // Add subtle sine wave motion
+          const time = p.frameCount * 0.01;
+          const waveOffset = p.sin(time + particle.x * 0.01) * 2;
+          
+          particle.x += particle.vx + p.sin(time) * 0.2;
+          particle.y = (particle.y + particle.vy + parallaxOffset + waveOffset) % p.height;
 
           if (particle.x < 0) particle.x = p.width;
           if (particle.x > p.width) particle.x = 0;
 
+          // Create a subtle glow effect
+          p.fill(220, 230, 210, baseAlpha * 0.5);
           p.ellipse(
             particle.x,
             particle.y,
-            particle.size * (1 + scrollProgress),
-            particle.size * (1 + scrollProgress)
+            particle.size * 2,
+            particle.size * 2
+          );
+          
+          p.fill(200, 220, 190, baseAlpha);
+          p.ellipse(
+            particle.x,
+            particle.y,
+            particle.size,
+            particle.size
           );
 
           if (p.random(1) < 0.001) {
@@ -97,18 +105,21 @@ const P5Background = () => {
           }
         });
 
-        // Add subtle wave effect
-        const waveAmplitude = 20 * (1 - scrollProgress);
-        const waveFrequency = 0.02;
-        p.stroke(200, 200, 200, 20);
+        // Add subtle flowing curves
+        p.stroke(200, 220, 190, 15);
         p.noFill();
-        p.beginShape();
-        for (let x = 0; x < p.width; x += 20) {
-          const y = p.height / 2 + 
-            p.sin(x * waveFrequency + p.frameCount * 0.02) * waveAmplitude;
-          p.vertex(x, y + scrollRef.current * 0.2);
+        for (let i = 0; i < 3; i++) {
+          p.beginShape();
+          for (let x = 0; x < p.width; x += 30) {
+            const frequency = 0.015;
+            const amplitude = 15 * (1 - scrollProgress * 0.5);
+            const y = p.height / 2 + 
+              p.sin(x * frequency + p.frameCount * 0.02 + i) * amplitude +
+              p.cos(x * frequency * 0.5 + p.frameCount * 0.01) * amplitude;
+            p.curveVertex(x, y + scrollRef.current * 0.1);
+          }
+          p.endShape();
         }
-        p.endShape();
       };
 
       p.windowResized = () => {
