@@ -1,5 +1,6 @@
 import { Brain, BookOpenText, Target, Mic } from "lucide-react";
 import { motion } from "framer-motion";
+import { Card } from "@/components/ui/card";
 
 interface BenefitCardProps {
   title: string;
@@ -14,17 +15,20 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center text-center space-y-6"
     >
-      <div className="w-14 h-14 rounded-xl bg-zinc-900 text-white flex items-center justify-center">
-        <Icon className="w-7 h-7" />
-      </div>
-      <h3 className="text-xl font-semibold tracking-tight text-zinc-900">{title}</h3>
-      <ul className="text-zinc-600 text-base space-y-4">
-        {benefits.map((benefit, index) => (
-          <li key={index} className="leading-relaxed">{benefit}</li>
-        ))}
-      </ul>
+      <Card className="h-full p-8 bg-white border border-zinc-100 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex flex-col items-center text-center space-y-6">
+          <div className="w-14 h-14 rounded-xl bg-zinc-900 text-white flex items-center justify-center">
+            <Icon className="w-7 h-7" />
+          </div>
+          <h3 className="text-xl font-semibold tracking-tight text-zinc-900">{title}</h3>
+          <ul className="text-zinc-600 text-base space-y-4">
+            {benefits.map((benefit, index) => (
+              <li key={index} className="leading-relaxed">{benefit}</li>
+            ))}
+          </ul>
+        </div>
+      </Card>
     </motion.div>
   );
 };
@@ -84,7 +88,7 @@ const BenefitsSection = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {benefits.map((benefit, index) => (
                 <BenefitCard key={index} {...benefit} />
               ))}
