@@ -1,35 +1,51 @@
-import { MessageSquareQuote } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TestimonialCardProps {
   quote: string;
   author: string;
-  title: string;
+  title?: string;
+  image?: string;
 }
 
-const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
+const TestimonialCard = ({ quote, author, title, image }: TestimonialCardProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="relative p-8 rounded-2xl bg-white/80 backdrop-blur-sm border border-zinc-100"
-      style={{
-        boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02)',
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="w-full max-w-2xl mx-auto px-6 py-12"
     >
-      <p className="text-lg font-medium leading-relaxed tracking-tight text-zinc-900 mb-6">
-        "{quote}"
-      </p>
-      <div className="flex flex-col gap-1">
-        <span className="text-base font-semibold text-zinc-900">{author}</span>
-        <span className="text-sm text-zinc-600">{title}</span>
-      </div>
-      <div className="absolute bottom-6 right-6">
-        <MessageSquareQuote 
-          size={32} 
-          className="text-zinc-200" 
-        />
+      <div 
+        className="relative rounded-3xl bg-zinc-900/80 backdrop-blur-xl border border-zinc-800/50 p-8 md:p-12"
+        style={{
+          boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
+        }}
+      >
+        <div className="flex flex-col gap-8">
+          <p className="text-2xl md:text-3xl font-medium leading-relaxed tracking-tight text-white/90">
+            "{quote}"
+          </p>
+          
+          <div className="flex items-center gap-4">
+            {image && (
+              <img 
+                src={image} 
+                alt={author}
+                className="w-12 h-12 rounded-full object-cover border-2 border-zinc-700/50"
+              />
+            )}
+            <div className="flex flex-col">
+              <span className="text-lg font-semibold bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
+                {author}
+              </span>
+              {title && (
+                <span className="text-sm text-zinc-400">
+                  {title}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </motion.div>
   );

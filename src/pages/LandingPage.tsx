@@ -4,6 +4,7 @@ import { Mic, Brain, LineChart, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/landing/TestimonialCard";
 import BenefitsSection from "@/components/landing/BenefitsSection";
+import TestimonialsCarousel from "@/components/landing/TestimonialsCarousel";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -132,29 +133,13 @@ const LandingPage = () => {
       </section>
 
       <motion.section 
-        className="py-20 lg:py-28"
+        className="py-20 lg:py-28 bg-gradient-to-b from-zinc-900 to-zinc-950"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-8 md:gap-12">
-            <TestimonialCard
-              quote="It's like having a golf coach who remembers everything you've ever discussed."
-              author="Mark S."
-              title="12 Handicap"
-            />
-            <TestimonialCard
-              quote="Found swing changes I made 3 months ago that I'd completely forgotten about. Game-changer."
-              author="Sarah T."
-              title="Scratch Golfer"
-            />
-            <TestimonialCard
-              quote="Love how it captures my thoughts right after a round. The AI finds patterns I never would have noticed myself."
-              author="Jordan M."
-              title="Club Champion"
-            />
-          </div>
+        <div className="max-w-7xl mx-auto">
+          <TestimonialsCarousel />
         </div>
       </motion.section>
 
