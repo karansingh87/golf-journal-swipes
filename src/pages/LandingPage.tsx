@@ -27,21 +27,23 @@ const LandingPage = () => {
               <div className="absolute inset-0 bg-zinc-900 rounded-full flex items-center justify-center text-white">
                 <Mic size={40} />
               </div>
+
               <div className="absolute inset-0 w-full h-full">
-                <svg className="w-full h-full" viewBox="0 0 100 100">
+                <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
                   <circle
-                    className="stroke-[#ACE580] stroke-[4] fill-none"
+                    className="stroke-[#ACE580] stroke-[3]"
                     cx="50"
                     cy="50"
                     r="46"
+                    fill="none"
                     style={{
-                      transformOrigin: 'center',
-                      animation: 'spin 4s linear infinite',
-                      strokeDasharray: '302',
+                      strokeDasharray: '20,10',
+                      animation: 'dash 15s linear infinite',
                     }}
                   />
                 </svg>
               </div>
+
             </motion.div>
             
             <h1 className="text-[2.25rem] sm:text-6xl font-extrabold tracking-tight text-zinc-900 leading-tight">
@@ -185,3 +187,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
