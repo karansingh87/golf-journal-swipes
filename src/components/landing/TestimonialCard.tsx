@@ -13,16 +13,16 @@ const TestimonialCard = ({ quote, author, title, image }: TestimonialCardProps) 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-full max-w-2xl mx-auto px-6 py-12"
+      className="w-full max-w-2xl mx-auto px-4 py-8"
     >
       <div 
-        className="relative rounded-3xl bg-zinc-900 border border-zinc-800/50 p-8 md:p-12"
+        className="relative rounded-3xl bg-zinc-900 border border-zinc-800/50 p-6 md:p-8"
         style={{
           boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
         }}
       >
-        <div className="flex flex-col gap-8">
-          <p className="text-2xl md:text-3xl font-medium leading-relaxed tracking-tight text-white/90">
+        <div className="flex flex-col gap-6">
+          <p className="text-xl md:text-2xl font-medium leading-relaxed tracking-tight text-white/90">
             "{quote}"
           </p>
           
@@ -31,7 +31,7 @@ const TestimonialCard = ({ quote, author, title, image }: TestimonialCardProps) 
               <img 
                 src={image} 
                 alt={author}
-                className="w-12 h-12 rounded-full object-cover border-2 border-zinc-700/50"
+                className="w-10 h-10 rounded-full object-cover border-2 border-zinc-700/50"
               />
             )}
             <div className="flex flex-col">
