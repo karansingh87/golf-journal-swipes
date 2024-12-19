@@ -1,3 +1,4 @@
+import { MessageSquareQuote } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface TestimonialCardProps {
@@ -14,16 +15,23 @@ const TestimonialCard = ({ quote, author, title }: TestimonialCardProps) => {
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
-      className="relative h-full p-8 rounded-[32px] bg-zinc-900/95 backdrop-blur-sm border border-zinc-800"
+      className="relative max-w-[400px] p-8 rounded-[24px] bg-white/80 backdrop-blur-sm border border-zinc-200/50"
+      style={{
+        boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.03), 0 2px 8px -1px rgba(0, 0, 0, 0.02)',
+      }}
     >
-      <div className="flex flex-col justify-between h-full gap-8">
-        <p className="text-xl font-medium leading-relaxed text-white/90">
-          "{quote}"
-        </p>
-        <div className="flex flex-col gap-1">
-          <span className="text-lg font-semibold text-white">{author}</span>
-          <span className="text-sm text-white/60">{title}</span>
-        </div>
+      <p className="text-lg font-medium leading-relaxed tracking-[0.2px] text-zinc-800 mb-6">
+        "{quote}"
+      </p>
+      <div className="flex flex-col gap-0.5">
+        <span className="text-base font-semibold text-zinc-900">{author}</span>
+        <span className="text-sm text-zinc-500">{title}</span>
+      </div>
+      <div className="absolute bottom-6 right-6">
+        <MessageSquareQuote 
+          size={32} 
+          className="text-[#ACE580]" 
+        />
       </div>
     </motion.div>
   );
