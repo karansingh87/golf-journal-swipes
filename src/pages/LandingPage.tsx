@@ -4,6 +4,7 @@ import { Mic, Brain, LineChart, Share2 } from "lucide-react";
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/landing/TestimonialCard";
 import BenefitsSection from "@/components/landing/BenefitsSection";
+import HowToUseSection from "@/components/landing/HowToUseSection";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -75,6 +76,8 @@ const LandingPage = () => {
         </div>
       </motion.section>
 
+      <HowToUseSection />
+
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
@@ -131,12 +134,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <motion.section 
-        className="py-20 lg:py-28"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-      >
+      <motion.section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-8 md:gap-12">
             <TestimonialCard
