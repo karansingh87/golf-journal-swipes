@@ -15,10 +15,10 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       viewport={{ once: true }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.3 }}
-      className="bg-white/80 backdrop-blur-sm border border-zinc-200/50 rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all"
+      className="bg-white/60 backdrop-blur-sm border border-zinc-100 rounded-[24px] p-8 shadow-lg hover:shadow-xl transition-all"
     >
       <div className="flex flex-col items-center text-center space-y-6">
-        <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center shadow-lg">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#F2FCE2] to-[#ACE580]/20 text-zinc-800 flex items-center justify-center shadow-lg">
           <Icon className="w-7 h-7" />
         </div>
         <h3 className="text-2xl font-bold text-zinc-900">{title}</h3>
