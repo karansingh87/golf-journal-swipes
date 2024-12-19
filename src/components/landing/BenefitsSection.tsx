@@ -14,13 +14,13 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center text-center space-y-5"
+      className="flex flex-col items-center text-center space-y-6"
     >
       <div className="w-14 h-14 rounded-xl bg-zinc-900 text-white flex items-center justify-center">
         <Icon className="w-7 h-7" />
       </div>
       <h3 className="text-xl font-semibold tracking-tight text-zinc-900">{title}</h3>
-      <ul className="text-zinc-600 text-base space-y-3">
+      <ul className="text-zinc-600 text-base space-y-4">
         {benefits.map((benefit, index) => (
           <li key={index} className="leading-relaxed">{benefit}</li>
         ))}
@@ -74,17 +74,17 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section className="py-24">
+    <section className="py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-b from-zinc-50/80 to-transparent rounded-3xl mx-4 sm:mx-8 lg:mx-16 py-20">
+        <div className="bg-gradient-to-b from-zinc-50/80 to-transparent rounded-3xl mx-4 sm:mx-8 lg:mx-16 py-24">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-center mb-16">
+            <div className="flex justify-center mb-20">
               <div className="bg-white px-5 py-2 rounded-full shadow-sm border border-zinc-100">
                 <h2 className="text-sm font-semibold text-zinc-900">Features</h2>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
               {benefits.map((benefit, index) => (
                 <BenefitCard key={index} {...benefit} />
               ))}
