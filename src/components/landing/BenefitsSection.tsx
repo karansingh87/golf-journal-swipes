@@ -13,14 +13,15 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3 }}
       className="flex flex-col items-center text-center space-y-4"
     >
-      <div className="w-12 h-12 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
-        <Icon className="w-6 h-6" />
+      <div className="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center shadow-lg">
+        <Icon className="w-7 h-7" />
       </div>
-      <h3 className="text-xl font-semibold text-zinc-900">{title}</h3>
-      <ul className="text-zinc-600 text-base space-y-2">
+      <h3 className="text-2xl font-bold text-zinc-900">{title}</h3>
+      <ul className="text-zinc-600 text-lg space-y-3">
         {benefits.map((benefit, index) => (
           <li key={index}>{benefit}</li>
         ))}
@@ -76,10 +77,10 @@ const BenefitsSection = () => {
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
+        <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-3xl mx-4 sm:mx-8 lg:mx-16 py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-center mb-16">
-              <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
+              <div className="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full shadow-md">
                 <h2 className="text-sm font-medium text-zinc-900">Features</h2>
               </div>
             </div>
