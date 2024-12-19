@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -26,21 +26,6 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        golf: {
-          green: "hsl(240 5.9% 10%)", // zinc-950
-          muted: "hsl(240 3.7% 15.9%)", // zinc-900
-          subtle: "hsl(240 3.7% 15.9% / 0.1)",
-          white: "#FFFFFF",
-          gray: {
-            light: "hsl(240 5.2% 33.9%)", // zinc-700
-            card: "hsl(240 3.8% 46.1%)", // zinc-500
-            text: {
-              primary: "hsl(240 5.9% 10%)",
-              secondary: "hsl(240 3.8% 46.1%)",
-              hint: "hsl(240 5.2% 33.9%)",
-            },
-          },
-        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -82,21 +67,10 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "spin": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-        "pulse-ring": {
-          "0%": { transform: "scale(1)", opacity: "0.8" },
-          "50%": { transform: "scale(1.1)", opacity: "0.4" },
-          "100%": { transform: "scale(1)", opacity: "0.8" },
-        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "spin-slow": "spin 4s linear infinite",
-        "pulse-ring": "pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },
