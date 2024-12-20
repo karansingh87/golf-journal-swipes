@@ -3,18 +3,20 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 interface ControlButtonProps {
-  icon: LucideIcon;
+  icon?: LucideIcon;
+  text?: string;
   onClick: () => void;
   isLarge?: boolean;
   isActive?: boolean;
   isPaused?: boolean;
   variant?: "primary" | "secondary" | "dark";
-  size?: "small" | "default" | "large";
+  size?: "small" | "medium" | "default" | "large";
   className?: string;
 }
 
 const ControlButton = ({ 
   icon: Icon, 
+  text,
   onClick, 
   isLarge = false,
   isActive = false,
@@ -25,14 +27,16 @@ const ControlButton = ({
 }: ControlButtonProps) => {
   const sizeClasses = {
     small: 'w-10 h-10',
-    default: 'w-12 h-12',
-    large: 'w-20 h-20'
+    medium: 'w-12 h-12',
+    default: 'w-14 h-14',
+    large: 'w-24 h-24'
   };
 
   const iconSizes = {
     small: 'w-4 h-4',
-    default: 'w-5 h-5',
-    large: 'w-8 h-8'
+    medium: 'w-5 h-5',
+    default: 'w-6 h-6',
+    large: 'w-10 h-10'
   };
   
   const buttonSize = isLarge ? sizeClasses.large : sizeClasses[size];
@@ -58,7 +62,8 @@ const ControlButton = ({
       animate={isActive ? { scale: [1, 1.05, 1] } : {}}
       transition={{ duration: 0.2 }}
     >
-      <Icon className={cn("relative z-20", iconSize)} />
+      {Icon && <Icon className={cn("relative z-20", iconSize)} />}
+      {text && <span className="relative z-20 text-sm font-medium">{text}</span>}
       {isActive && !isPaused && variant === "primary" && (
         <div className="absolute inset-0 bg-zinc-950/20 rounded-full animate-pulse" />
       )}

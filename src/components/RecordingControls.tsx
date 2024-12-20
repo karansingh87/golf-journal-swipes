@@ -1,4 +1,4 @@
-import { Pause, Mic, History, Check } from "lucide-react";
+import { Pause, Mic, History } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ControlButton from "./recorder/ControlButton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,7 +29,7 @@ const RecordingControls = ({
           icon={History}
           onClick={() => navigate('/notes')}
           variant="secondary"
-          size="small"
+          size="medium"
         />
 
         <ControlButton
@@ -49,11 +49,11 @@ const RecordingControls = ({
               exit={{ opacity: 0, scale: 0.9 }}
             >
               <ControlButton
-                icon={Check}
+                text="End"
                 onClick={onStop}
                 variant="secondary"
-                size="small"
-                className="text-white hover:text-white/90"
+                size="medium"
+                className="text-white hover:text-white/90 min-w-[48px]"
               />
             </motion.div>
           )}
