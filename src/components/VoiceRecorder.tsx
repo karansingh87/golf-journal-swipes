@@ -109,7 +109,7 @@ const VoiceRecorder = ({
 
       <div className="flex-1 flex flex-col items-center justify-center gap-8 min-h-0 px-4 mb-8">
         <RecordingTimer recordingTime={recordingTime} />
-        <KeyboardToggle onSwitchToText={onSwitchToText} />
+        <KeyboardToggle onSwitchToText={onSwitchToText} isRecording={isRecording} />
       </div>
 
       <RecordingControls
