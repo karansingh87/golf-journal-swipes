@@ -32,14 +32,36 @@ const RecordingControls = ({
           size="medium"
         />
 
-        <ControlButton
-          icon={isRecording && !isPaused ? Pause : Mic}
-          onClick={isRecording ? (isPaused ? onResume : onPause) : onStart}
-          isLarge
-          isActive={isRecording}
-          isPaused={isPaused}
-          variant="dark"
-        />
+        <div className="relative">
+          {isRecording && !isPaused && (
+            <div className="absolute inset-0 w-full h-full">
+              <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                <circle
+                  className="stroke-[#ACE580]"
+                  cx="50"
+                  cy="50"
+                  r="46"
+                  fill="none"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  style={{
+                    strokeDasharray: '289.02652413026095',
+                    strokeDashoffset: '28.902652413026095',
+                    filter: 'drop-shadow(0 0 2px #ACE580)',
+                  }}
+                />
+              </svg>
+            </div>
+          )}
+          <ControlButton
+            icon={isRecording && !isPaused ? Pause : Mic}
+            onClick={isRecording ? (isPaused ? onResume : onPause) : onStart}
+            isLarge
+            isActive={isRecording}
+            isPaused={isPaused}
+            variant="dark"
+          />
+        </div>
 
         <AnimatePresence>
           {isRecording && (
