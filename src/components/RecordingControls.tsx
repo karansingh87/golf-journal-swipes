@@ -24,24 +24,13 @@ const RecordingControls = ({
 
   return (
     <div className="fixed bottom-0 inset-x-0 pb-8 pt-4 bg-gradient-to-t from-background to-transparent">
-      <div className="relative flex items-center justify-center max-w-md mx-auto px-12">
-        <AnimatePresence>
-          {!isRecording && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              className="absolute left-0"
-            >
-              <ControlButton
-                icon={Notebook}
-                onClick={() => navigate('/notes')}
-                variant="secondary"
-                size="medium"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="flex items-center justify-between max-w-md mx-auto px-12">
+        <ControlButton
+          icon={Notebook}
+          onClick={() => navigate('/notes')}
+          variant="secondary"
+          size="medium"
+        />
 
         <div className="relative">
           {isRecording && !isPaused && (
@@ -80,7 +69,6 @@ const RecordingControls = ({
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="absolute right-0"
             >
               <ControlButton
                 text="End"
