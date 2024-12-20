@@ -89,7 +89,7 @@ const VoiceRecorder = ({
       />
 
       {sessionType && (
-        <div className="w-full mb-16">
+        <div className="w-full mb-24">
           <QuestionPrompt 
             prompts={prompts}
             isPaused={isPaused}
@@ -97,7 +97,7 @@ const VoiceRecorder = ({
         </div>
       )}
 
-      <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0 px-4">
+      <div className="flex-1 flex flex-col items-center justify-center gap-8 min-h-0 px-4 mb-8">
         <RecordingTimer recordingTime={recordingTime} />
         <KeyboardToggle onSwitchToText={onSwitchToText} />
       </div>
