@@ -15,7 +15,7 @@ interface QuestionPromptProps {
 
 const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const PROMPT_DURATION = 15000; // 15 seconds
+  const PROMPT_DURATION = 7000; // 7 seconds
 
   useEffect(() => {
     if (isPaused || prompts.length === 0) return;
