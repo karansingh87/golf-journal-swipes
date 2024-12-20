@@ -34,7 +34,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           className="w-full max-w-2xl mx-auto"
         >
           <div 
-            className="relative rounded-3xl bg-zinc-900 border border-zinc-800/50 p-6 md:p-8"
+            className="relative rounded-3xl bg-zinc-900/80 backdrop-blur-md border border-zinc-800/50 p-6 md:p-8"
             style={{
               boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
             }}
