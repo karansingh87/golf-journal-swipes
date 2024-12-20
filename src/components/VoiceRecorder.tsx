@@ -88,20 +88,16 @@ const VoiceRecorder = ({
         isTranscribing={isTranscribing}
       />
 
-      <div className="flex-1 flex flex-col items-center justify-between py-12 px-4 w-full">
-        {sessionType && (
-          <div className="w-full mb-12">
-            <QuestionPrompt 
-              prompts={prompts}
-              isPaused={isPaused}
-            />
-          </div>
-        )}
+      {sessionType && (
+        <QuestionPrompt 
+          prompts={prompts}
+          isPaused={isPaused}
+        />
+      )}
 
-        <div className="flex flex-col items-center gap-12">
-          <RecordingTimer recordingTime={recordingTime} />
-          <KeyboardToggle onSwitchToText={onSwitchToText} />
-        </div>
+      <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0 px-4">
+        <RecordingTimer recordingTime={recordingTime} />
+        <KeyboardToggle onSwitchToText={onSwitchToText} />
       </div>
 
       <RecordingControls
