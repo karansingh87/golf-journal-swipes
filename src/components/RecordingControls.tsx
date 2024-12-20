@@ -34,20 +34,19 @@ const RecordingControls = ({
 
         <div className="relative">
           {isRecording && !isPaused && (
-            <div className="absolute inset-0 w-full h-full">
+            <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
               <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
                 <circle
-                  className="stroke-[#ACE580]"
                   cx="50"
                   cy="50"
                   r="46"
                   fill="none"
+                  stroke="#ACE580"
                   strokeWidth="2"
                   strokeLinecap="round"
+                  strokeDasharray="289.02652413026095"
+                  strokeDashoffset="216.76989309769572"
                   style={{
-                    strokeDasharray: '302',
-                    strokeDashoffset: '302',
-                    animation: 'dash 4s linear infinite',
                     filter: 'drop-shadow(0 0 2px #ACE580)',
                   }}
                 />

@@ -50,9 +50,13 @@
 
 @keyframes dash {
   0% {
-    stroke-dashoffset: 302;
+    stroke-dashoffset: 289.02652413026095;
   }
   100% {
     stroke-dashoffset: 0;
   }
+}
+
+.animate-spin-slow {
+  animation: spin 4s linear infinite;
 }
