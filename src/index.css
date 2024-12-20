@@ -52,11 +52,14 @@
   0% {
     stroke-dashoffset: 289.02652413026095;
   }
+  50% {
+    stroke-dashoffset: 144.51326206513048;
+  }
   100% {
     stroke-dashoffset: 0;
   }
 }
 
 .animate-spin-slow {
-  animation: spin 4s linear infinite;
+  animation: spin 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
