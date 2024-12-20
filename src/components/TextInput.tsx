@@ -6,8 +6,8 @@ import {
   Drawer,
   DrawerContent,
   DrawerHeader,
-  DrawerTitle,
 } from "@/components/ui/drawer";
+import { format } from "date-fns";
 import SessionTypeModal from "./SessionTypeModal";
 
 interface TextInputProps {
@@ -41,8 +41,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   const handleSubmit = async () => {
     if (!sessionType) return;
     setIsSaving(true);
-    setIsOpen(false); // Hide drawer immediately
-    // Small delay to allow drawer to close smoothly before showing processing modal
+    setIsOpen(false);
     await new Promise(resolve => setTimeout(resolve, 150));
     await onSubmit(text, sessionType);
     setIsSaving(false);
@@ -69,37 +68,48 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
   return (
     <>
       <Drawer open={isOpen} onOpenChange={setIsOpen} onClose={handleDismiss}>
-        <DrawerContent className="h-[80vh] bg-[#F5F5F5] focus:outline-none">
+        <DrawerContent className="h-[80vh] bg-[#FAFAF9] focus:outline-none">
           <div className="mx-auto w-full max-w-3xl h-full flex flex-col">
-            <DrawerHeader className="border-b border-golf-gray-card px-6 py-4">
+            <DrawerHeader className="border-b border-zinc-200 px-6 py-4">
               <div className="flex items-center justify-between">
                 <Button
                   variant="ghost"
                   onClick={handleDismiss}
                   disabled={isProcessing || isSaving}
-                  className="text-golf-gray-text-primary hover:text-golf-gray-text-primary/80 hover:bg-golf-gray-card"
+                  className="text-zinc-600 hover:text-zinc-800 hover:bg-transparent"
                 >
                   Cancel
                 </Button>
-                <DrawerTitle className="absolute left-1/2 -translate-x-1/2 text-golf-gray-text-primary">
-                  Add Note
-                </DrawerTitle>
+                <span className="absolute left-1/2 -translate-x-1/2 text-xl font-semibold text-zinc-800">
+                  {format(new Date(), 'MMM d, yyyy')}
+                </span>
                 <Button
                   onClick={handleSubmit}
                   disabled={isProcessing || isSaving || !text.trim()}
-                  className="bg-golf-green hover:bg-golf-muted text-golf-white disabled:opacity-50"
+                  className="bg-zinc-800 hover:bg-zinc-900 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                 >
                   Save
                 </Button>
               </div>
             </DrawerHeader>
 
-            <div className="flex-1 p-6 space-y-6 overflow-hidden">
+            <div className="flex-1 px-6 overflow-hidden">
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="What's on your mind about your game?"
-                className="min-h-[200px] h-full max-h-[calc(80vh-8rem)] bg-transparent border-0 text-golf-gray-text-primary placeholder:text-golf-gray-text-hint focus-visible:ring-0 resize-none text-lg leading-relaxed"
+                className="min-h-[200px] h-full max-h-[calc(80vh-8rem)] bg-transparent text-zinc-800 placeholder:text-gray-400 border-0 focus-visible:ring-0 resize-none text-lg leading-[2] px-0"
+                style={{
+                  backgroundImage: `linear-gradient(
+                    transparent,
+                    transparent calc(2em - 1px),
+                    rgba(0, 0, 0, 0.04) calc(2em - 1px),
+                    rgba(0, 0, 0, 0.04) 2em,
+                    transparent 2em
+                  )`,
+                  backgroundSize: '100% 2em',
+                  backgroundAttachment: 'local'
+                }}
                 disabled={isProcessing || isSaving}
               />
             </div>
@@ -110,8 +120,8 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
       {(isProcessing || isSaving) && (
         <div className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-[2px] animate-in fade-in duration-200 z-[9999]">
           <div className="flex flex-col items-center space-y-4">
-            <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
-            <p className="text-golf-green/80 text-sm font-medium">
+            <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
+            <p className="text-zinc-600 text-sm font-medium">
               Processing your note...
             </p>
           </div>
