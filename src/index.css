@@ -50,9 +50,9 @@
 
 @keyframes dash {
   from {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: 302;
   }
   to {
-    stroke-dashoffset: -302;
+    stroke-dashoffset: 0;
   }
 }

@@ -45,8 +45,9 @@ const RecordingControls = ({
                   strokeWidth="2"
                   strokeLinecap="round"
                   style={{
-                    strokeDasharray: '289.02652413026095',
-                    strokeDashoffset: '28.902652413026095',
+                    strokeDasharray: '302',
+                    strokeDashoffset: '302',
+                    animation: 'dash 4s linear infinite',
                     filter: 'drop-shadow(0 0 2px #ACE580)',
                   }}
                 />
