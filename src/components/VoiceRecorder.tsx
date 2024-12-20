@@ -7,24 +7,29 @@ import QuestionPrompt from "./QuestionPrompt";
 import { useEffect } from "react";
 
 const COURSE_PROMPTS = [
-  "How'd it go out there - what's the full story?",
-  "Talk me through your day - best shots and key moments?",
-  "What parts of today's round are still on your mind?",
-  "How'd your game feel - what was working?",
-  "Walk me through what you discovered today.",
-  "Tell me about your scoring today - what made the difference?",
-  "What decisions or shots are you still thinking about?",
-  "How'd your game show up today - strengths and challenges?",
-  "What separated this round from others?",
-  "What's worth remembering from today's round?"
+  "Walk me through your round.",
+  "What moments are staying with you?",
+  "How did your game feel?",
+  "What did you discover?",
+  "Tell me about your scoring.",
+  "Which shots are you thinking about?",
+  "What decisions stand out?",
+  "Share your strengths and challenges.",
+  "What made this round different?",
+  "What's worth remembering?"
 ];
 
 const PRACTICE_PROMPTS = [
-  "What aspect are you working on?",
-  "How's your form feeling?",
-  "What's working well today?",
-  "What adjustments are you making?",
-  "Rate your progress (1-10)"
+  "What clicked during practice?",
+  "Walk me through what was working.",
+  "Tell me about the good and challenging moments.",
+  "What discoveries did you make?",
+  "What moments stand out?",
+  "What feels different?",
+  "Tell me your practice story.",
+  "What did you figure out?",
+  "Share your highs and lows.",
+  "What did you learn?"
 ];
 
 interface VoiceRecorderProps {
