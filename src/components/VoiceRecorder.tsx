@@ -89,10 +89,12 @@ const VoiceRecorder = ({
       />
 
       {sessionType && (
-        <QuestionPrompt 
-          prompts={prompts}
-          isPaused={isPaused}
-        />
+        <div className="w-full mb-16">
+          <QuestionPrompt 
+            prompts={prompts}
+            isPaused={isPaused}
+          />
+        </div>
       )}
 
       <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-0 px-4">
