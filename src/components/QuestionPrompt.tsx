@@ -46,7 +46,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
       >
         <CarouselContent>
           {prompts.map((prompt, index) => (
-            <CarouselItem key={index}>
+            <CarouselItem key={index} className="px-4">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={index}
@@ -55,10 +55,10 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="rounded-2xl bg-white px-6 py-4 shadow-card-light">
+                  <div className="rounded-2xl bg-white px-6 py-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1),_0_2px_4px_-1px_rgba(0,0,0,0.06)]">
                     <div className="mb-1">
                       <span className="text-xs text-emerald-600/70">
-                        Thought Starter {index + 1}/{prompts.length}
+                        Thought Starter
                       </span>
                     </div>
                     <p className="text-lg font-normal text-gray-600">
