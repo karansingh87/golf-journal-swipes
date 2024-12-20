@@ -25,16 +25,33 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
   return (
     <div className="absolute top-[20%] left-0 right-0 px-6">
       <AnimatePresence mode="wait">
-        <motion.p
+        <motion.div
           key={currentIndex}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
-          className="text-lg md:text-xl text-center text-golf-gray-text-primary font-medium"
+          className="w-full max-w-2xl mx-auto"
         >
-          {prompts[currentIndex]}
-        </motion.p>
+          <div 
+            className="relative rounded-3xl bg-zinc-900 border border-zinc-800/50 p-6 md:p-8"
+            style={{
+              boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
+            }}
+          >
+            <p className="text-xl md:text-2xl font-medium leading-relaxed tracking-tight text-white/90">
+              {prompts[currentIndex]}
+            </p>
+            
+            <div className="mt-4 flex items-center gap-4">
+              <div className="flex flex-col">
+                <span className="text-sm bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
+                  Thought Starter {currentIndex + 1}/{prompts.length}
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </AnimatePresence>
     </div>
   );
