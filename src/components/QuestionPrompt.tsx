@@ -34,12 +34,12 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           className="w-full max-w-2xl mx-auto"
         >
           <div 
-            className="relative rounded-3xl bg-zinc-900 border border-zinc-800/50 p-6 md:p-8"
+            className="relative rounded-2xl bg-zinc-900/80 backdrop-blur-md border border-zinc-800/50 p-4 md:p-6"
             style={{
               boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
             }}
           >
-            <div className="mb-4 flex items-center gap-4">
+            <div className="mb-2 flex items-center gap-4">
               <div className="flex flex-col">
                 <span className="text-sm bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
                   Thought Starter
@@ -47,7 +47,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
               </div>
             </div>
             
-            <p className="text-xl md:text-2xl font-medium leading-relaxed tracking-tight text-white/90">
+            <p className="text-lg md:text-xl font-medium leading-relaxed tracking-tight text-white/90">
               {prompts[currentIndex]}
             </p>
           </div>
