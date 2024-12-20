@@ -11,7 +11,7 @@ const COURSE_PROMPTS = [
   "How's your confidence level right now?",
   "What's your target and strategy?",
   "How's the wind affecting your shot?",
-  "What's your score on this hole?",
+  "What's your score on this hole?"
 ];
 
 const PRACTICE_PROMPTS = [
