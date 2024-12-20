@@ -34,17 +34,17 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           className="w-full max-w-2xl mx-auto"
         >
           <div 
-            className="relative rounded-2xl bg-zinc-900/40 p-3"
+            className="relative rounded-2xl bg-zinc-900 p-3"
           >
             <div className="mb-1 flex items-center gap-4">
               <div className="flex flex-col">
-                <span className="text-xs font-bold bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent opacity-60">
+                <span className="text-xs font-bold bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
                   Thought Starter
                 </span>
               </div>
             </div>
             
-            <p className="text-lg font-normal leading-relaxed tracking-tight text-white/60">
+            <p className="text-lg font-normal leading-relaxed tracking-tight text-white/90">
               {prompts[currentIndex]}
             </p>
           </div>
