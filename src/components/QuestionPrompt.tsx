@@ -42,7 +42,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
             <div className="mb-4 flex items-center gap-4">
               <div className="flex flex-col">
                 <span className="text-sm bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
-                  Thought Starter {currentIndex + 1}/{prompts.length}
+                  Thought Starter
                 </span>
               </div>
             </div>
