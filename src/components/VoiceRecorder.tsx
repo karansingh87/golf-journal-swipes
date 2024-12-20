@@ -7,11 +7,16 @@ import QuestionPrompt from "./QuestionPrompt";
 import { useEffect } from "react";
 
 const COURSE_PROMPTS = [
-  "What club did you use for this shot?",
-  "How's your confidence level right now?",
-  "What's your target and strategy?",
-  "How's the wind affecting your shot?",
-  "What's your score on this hole?"
+  "How'd it go out there - what's the full story?",
+  "Talk me through your day - best shots and key moments?",
+  "What parts of today's round are still on your mind?",
+  "How'd your game feel - what was working?",
+  "Walk me through what you discovered today.",
+  "Tell me about your scoring today - what made the difference?",
+  "What decisions or shots are you still thinking about?",
+  "How'd your game show up today - strengths and challenges?",
+  "What separated this round from others?",
+  "What's worth remembering from today's round?"
 ];
 
 const PRACTICE_PROMPTS = [
@@ -19,7 +24,7 @@ const PRACTICE_PROMPTS = [
   "How's your form feeling?",
   "What's working well today?",
   "What adjustments are you making?",
-  "Rate your progress (1-10)",
+  "Rate your progress (1-10)"
 ];
 
 interface VoiceRecorderProps {
