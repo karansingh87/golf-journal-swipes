@@ -39,17 +39,17 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
               boxShadow: '0 4px 24px -1px rgba(0, 0, 0, 0.1), 0 2px 8px -1px rgba(0, 0, 0, 0.06)',
             }}
           >
-            <p className="text-xl md:text-2xl font-medium leading-relaxed tracking-tight text-white/90">
-              {prompts[currentIndex]}
-            </p>
-            
-            <div className="mt-4 flex items-center gap-4">
+            <div className="mb-4 flex items-center gap-4">
               <div className="flex flex-col">
                 <span className="text-sm bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
                   Thought Starter {currentIndex + 1}/{prompts.length}
                 </span>
               </div>
             </div>
+            
+            <p className="text-xl md:text-2xl font-medium leading-relaxed tracking-tight text-white/90">
+              {prompts[currentIndex]}
+            </p>
           </div>
         </motion.div>
       </AnimatePresence>
