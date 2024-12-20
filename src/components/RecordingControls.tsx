@@ -46,7 +46,6 @@ const RecordingControls = ({
                   strokeLinecap="round"
                   strokeDasharray="289.02652413026095"
                   strokeDashoffset="216.76989309769572"
-                  className="transition-all duration-700 ease-in-out"
                   style={{
                     filter: 'drop-shadow(0 0 2px #ACE580)',
                   }}
