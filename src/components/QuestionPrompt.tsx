@@ -34,7 +34,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           className="w-full max-w-md mx-auto"
         >
           <div 
-            className="rounded-full bg-gray-100 px-6 py-4"
+            className="rounded-2xl bg-gray-100 px-6 py-4"
           >
             <div className="mb-1">
               <span className="text-xs text-emerald-600/70">
