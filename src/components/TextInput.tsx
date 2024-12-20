@@ -97,7 +97,7 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
               <Textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="What's on your mind about your game?"
+                placeholder="today's golf reflections..."
                 className="min-h-[200px] h-full max-h-[calc(80vh-8rem)] bg-transparent text-zinc-800 placeholder:text-gray-400 border-0 focus-visible:ring-0 resize-none text-lg leading-[2] px-0"
                 style={{
                   backgroundImage: `linear-gradient(
