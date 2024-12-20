@@ -38,13 +38,13 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           >
             <div className="mb-1 flex items-center gap-4">
               <div className="flex flex-col">
-                <span className="text-xs font-bold text-white/90">
+                <span className="text-xs font-bold bg-gradient-to-r from-[#98EC65] to-[#5BED9E] bg-clip-text text-transparent">
                   Thought Starter
                 </span>
               </div>
             </div>
             
-            <p className="text-lg font-medium leading-relaxed tracking-tight text-white/90">
+            <p className="text-lg font-normal leading-relaxed tracking-tight text-white/90">
               {prompts[currentIndex]}
             </p>
           </div>
