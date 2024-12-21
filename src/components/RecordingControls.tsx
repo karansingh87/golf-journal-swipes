@@ -28,7 +28,7 @@ const RecordingControls = ({
         <ControlButton
           icon={Notebook}
           onClick={() => navigate('/notes')}
-          variant="secondary"
+          variant="dark"
           size="medium"
         />
 
@@ -73,7 +73,7 @@ const RecordingControls = ({
               <ControlButton
                 text="End"
                 onClick={onStop}
-                variant="secondary"
+                variant="dark"
                 size="medium"
                 className="text-white hover:text-white/90 min-w-[48px]"
               />
