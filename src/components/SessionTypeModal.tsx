@@ -10,7 +10,7 @@ interface SessionTypeModalProps {
 const SessionTypeModal = ({ isOpen, onSelect, onClose }: SessionTypeModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-md p-4 bg-white rounded-[16px] shadow-lg animate-scale-in">
+      <DialogContent className="w-full max-w-sm p-4 bg-white rounded-[16px] shadow-lg animate-scale-in">
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-semibold text-center text-zinc-950">
             Select Session Type
@@ -33,7 +33,7 @@ const SessionTypeModal = ({ isOpen, onSelect, onClose }: SessionTypeModalProps) 
                     Course Play
                   </h3>
                   <p className="text-xs text-zinc-500">
-                    Record thoughts during a round
+                    Journal your round
                   </p>
                 </div>
               </div>
