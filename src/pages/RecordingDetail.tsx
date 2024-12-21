@@ -1,97 +1,44 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
-import RecordingCard from "@/components/RecordingCard";
-
-interface Recording {
-  id: string;
-  audio_url: string;
-  transcription: string;
-  analysis: string;
-  duration: number;
-  created_at: string;
-  session_type: "course" | "practice";
-}
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AnalysisTab from "@/components/recording-detail/AnalysisTab";
+import InsightsTab from "@/components/recording-detail/InsightsTab";
+import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
 
 const RecordingDetail = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const [recording, setRecording] = useState<Recording | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editedTranscription, setEditedTranscription] = useState("");
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
-  useEffect(() => {
-    const fetchRecording = async () => {
-      if (!id) return;
-      try {
-        const { data, error } = await supabase
-          .from("recordings")
-          .select("*")
-          .eq("id", id)
-          .single();
-
-        if (error) throw error;
-        setRecording(data);
-      } catch (error) {
-        console.error("Error fetching recording:", error);
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Failed to load recording",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchRecording();
-  }, [id, toast]);
-
-  const handleEdit = (recording: Recording) => {
-    setEditingId(recording.id);
-    setEditedTranscription(recording.transcription);
-  };
-
-  const handleSave = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from("recordings")
-        .update({ transcription: editedTranscription })
-        .eq("id", id);
+  const { data: recording, isLoading } = useQuery({
+    queryKey: ['recording', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('recordings')
+        .select('*')
+        .eq('id', id)
+        .single();
 
       if (error) throw error;
+      return data;
+    },
+  });
 
-      setRecording(prev => 
-        prev ? { ...prev, transcription: editedTranscription } : null
-      );
-      setEditingId(null);
-      
-      toast({
-        title: "Success",
-        description: "Transcription updated successfully",
-      });
-    } catch (error) {
-      console.error("Error updating transcription:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update transcription",
-      });
-    }
-  };
-
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     try {
       const { error } = await supabase
-        .from("recordings")
+        .from('recordings')
         .delete()
-        .eq("id", id);
+        .eq('id', id);
 
       if (error) throw error;
 
@@ -99,7 +46,7 @@ const RecordingDetail = () => {
         title: "Success",
         description: "Recording deleted successfully",
       });
-      navigate('/notes');
+      navigate('/history');
     } catch (error) {
       console.error("Error deleting recording:", error);
       toast({
@@ -110,42 +57,90 @@ const RecordingDetail = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!recording) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-lg text-muted-foreground">Recording not found</p>
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/history')}
+          className="mt-4"
+        >
+          Go back to history
+        </Button>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-4xl mx-auto py-6 space-y-4">
-        <div className="space-y-4 px-4 sm:px-6 md:px-8">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate('/notes')}
-              className="h-8 w-8"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <h1 className="text-2xl font-semibold text-foreground">Recording Details</h1>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-3xl mx-auto p-4">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/history')}
+          className="mb-6"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to History
+        </Button>
+
+        <div className={cn(
+          "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",
+          "transition-all duration-300",
+          isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
+        )}>
+          <div className="p-6 border-b border-border/50">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <div className="text-lg font-medium">
+                  {format(new Date(recording.created_at), "MMMM d, yyyy")}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {format(new Date(recording.created_at), "h:mm a")}
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDelete}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              </div>
+            </div>
           </div>
-          {isLoading ? (
-            <div className="flex justify-center py-8">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : recording ? (
-            <RecordingCard
-              recording={recording}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              isEditing={editingId === recording.id}
-              editedTranscription={editedTranscription}
-              onEditChange={setEditedTranscription}
-              onSave={handleSave}
-              onCancelEdit={() => setEditingId(null)}
-              defaultExpanded={true}
-            />
-          ) : (
-            <div className="text-center py-12 text-muted-foreground">
-              Recording not found
-            </div>
-          )}
+
+          <Tabs defaultValue="analysis" className="w-full">
+            <TabsList className="w-full grid grid-cols-3">
+              <TabsTrigger value="analysis">
+                Analysis
+              </TabsTrigger>
+              <TabsTrigger value="insights">
+                Insights
+              </TabsTrigger>
+              <TabsTrigger value="transcription">
+                Transcript
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="analysis" className="mt-0">
+              <AnalysisTab analysis={recording.analysis} />
+            </TabsContent>
+            <TabsContent value="insights" className="mt-0">
+              <InsightsTab insights={recording.insights} />
+            </TabsContent>
+            <TabsContent value="transcription" className="mt-0">
+              <TranscriptionTab transcription={recording.transcription} />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
