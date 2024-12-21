@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu } from "lucide-react";
+import { Menu, Mic, Notebook } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,17 +64,32 @@ const NavigationBar = () => {
               align="end"
               className="w-48 bg-white rounded-md shadow-md animate-in fade-in-80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0"
             >
+              <DropdownMenuItem 
+                className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                onClick={() => navigate('/record')}
+              >
+                <Mic className="h-4 w-4" />
+                Record
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                onClick={() => navigate('/notes')}
+              >
+                <Notebook className="h-4 w-4" />
+                Notes
+              </DropdownMenuItem>
               {profile?.is_admin && (
                 <>
+                  <DropdownMenuSeparator className="bg-gray-200" />
                   <DropdownMenuItem 
                     className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
                     onClick={() => navigate('/admin')}
                   >
                     Admin Panel
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-gray-200" />
                 </>
               )}
+              <DropdownMenuSeparator className="bg-gray-200" />
               <DropdownMenuItem 
                 className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
                 onClick={handleLogout}
