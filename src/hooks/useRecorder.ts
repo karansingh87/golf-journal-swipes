@@ -22,6 +22,22 @@ export const useRecorder = () => {
   
   const { toast } = useToast();
 
+  // Cleanup function to stop all media tracks
+  const cleanup = () => {
+    if (state.mediaStream) {
+      state.mediaStream.getTracks().forEach(track => {
+        track.stop();
+      });
+    }
+    setState(prev => ({
+      ...prev,
+      mediaStream: null,
+      mediaRecorder: null,
+      isRecording: false,
+      isPaused: false,
+    }));
+  };
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (state.isRecording && !state.isPaused) {
@@ -32,7 +48,10 @@ export const useRecorder = () => {
         }));
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      cleanup(); // Ensure cleanup when component unmounts
+    };
   }, [state.isRecording, state.isPaused]);
 
   const startRecording = async () => {
@@ -84,26 +103,17 @@ export const useRecorder = () => {
   const stopRecording = () => {
     if (state.mediaRecorder) {
       state.mediaRecorder.stop();
-      state.mediaStream?.getTracks().forEach(track => track.stop());
-      setState(prev => ({
-        ...prev,
-        isRecording: false,
-        isPaused: false,
-        mediaRecorder: null,
-        mediaStream: null
-      }));
+      cleanup(); // Clean up media stream when stopping
     }
   };
 
   const resetRecording = () => {
-    setState({
-      isRecording: false,
-      isPaused: false,
-      mediaRecorder: null,
-      mediaStream: null,
+    cleanup();
+    setState(prev => ({
+      ...prev,
       audioChunks: [],
       recordingTime: 0,
-    });
+    }));
   };
 
   return {

@@ -59,13 +59,19 @@ const VoiceRecorder = ({
     pauseRecording,
     resumeRecording,
     stopRecording,
+    resetRecording,
   } = useRecorder();
 
   useEffect(() => {
     if (sessionType && autoStartRecording && !isRecording) {
       startRecording();
     }
-  }, [sessionType, autoStartRecording, startRecording, isRecording]);
+    
+    // Cleanup when component unmounts
+    return () => {
+      resetRecording();
+    };
+  }, [sessionType, autoStartRecording, startRecording, isRecording, resetRecording]);
 
   const handleStartRecording = () => {
     if (!sessionType) {
