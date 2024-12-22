@@ -89,7 +89,8 @@ export const useGolfRecording = () => {
         description: "Your golf note has been saved and analyzed.",
       });
 
-      navigate(`/history?recordingId=${data.id}`);
+      // Navigate to the specific recording page instead of the general notes page
+      navigate(`/recording/${data.id}`);
     } catch (error) {
       console.error("Error saving recording:", error);
       throw error;
