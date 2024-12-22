@@ -1,10 +1,10 @@
 import { useRecorder } from "../hooks/useRecorder";
 import RecordingTimer from "./recorder/RecordingTimer";
 import RecordingControls from "./RecordingControls";
-import TranscriptionDisplay from "./TranscriptionDisplay";
 import KeyboardToggle from "./recorder/KeyboardToggle";
 import QuestionPrompt from "./QuestionPrompt";
 import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
 
 const COURSE_PROMPTS = [
   "Walk me through your round.",
@@ -44,7 +44,6 @@ interface VoiceRecorderProps {
 
 const VoiceRecorder = ({
   isTranscribing,
-  transcription,
   onRecordingComplete,
   onSwitchToText,
   onRecordingStart,
@@ -91,13 +90,21 @@ const VoiceRecorder = ({
 
   const prompts = sessionType === 'course' ? COURSE_PROMPTS : PRACTICE_PROMPTS;
 
+  if (isTranscribing) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-[2px] z-50">
+        <div className="flex flex-col items-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+          <p className="text-golf-green/80 text-sm font-medium">
+            Processing your recording...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex flex-col items-center justify-between h-[100dvh] overflow-hidden">
-      <TranscriptionDisplay 
-        transcription={transcription}
-        isTranscribing={isTranscribing}
-      />
-
       {sessionType && (
         <div className="w-full mb-24">
           <QuestionPrompt 
