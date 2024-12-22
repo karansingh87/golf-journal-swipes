@@ -1,101 +1,14 @@
 import { useState } from "react";
-import { useSession } from "@supabase/auth-helpers-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../integrations/supabase/client";
 import { transcribeAudio } from "../utils/transcription";
+import { useGolfStorage } from "./useGolfStorage";
 
 export const useGolfRecording = () => {
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [isProcessingText, setIsProcessingText] = useState(false);
   const [transcription, setTranscription] = useState("");
-  const session = useSession();
   const { toast } = useToast();
-  const navigate = useNavigate();
-
-  const analyzeTranscription = async (transcriptionText: string) => {
-    try {
-      console.log('Analyzing transcription:', { length: transcriptionText.length });
-      const { data, error } = await supabase.functions.invoke('analyze-golf', {
-        body: { transcription: transcriptionText },
-      });
-
-      if (error) {
-        console.error('Error analyzing transcription:', error);
-        throw error;
-      }
-      
-      console.log('Analysis response:', {
-        hasAnalysis: !!data.analysis,
-        hasInsights: !!data.insights,
-        analysisLength: data.analysis?.length,
-        insightsLength: data.insights?.length
-      });
-      
-      return data;
-    } catch (error) {
-      console.error("Error analyzing transcription:", error);
-      throw error;
-    }
-  };
-
-  const saveRecording = async (
-    audioUrl: string | null, 
-    transcriptionText: string,
-    sessionType: 'course' | 'practice'
-  ) => {
-    if (!session?.user?.id) {
-      console.error("No user session found");
-      return;
-    }
-
-    try {
-      console.log('Starting analysis for recording...');
-      const { analysis, insights } = await analyzeTranscription(transcriptionText);
-      console.log('Analysis completed:', { 
-        hasAnalysis: !!analysis,
-        hasInsights: !!insights,
-        analysisLength: analysis?.length,
-        insightsLength: insights?.length
-      });
-      
-      const { data, error: insertError } = await supabase
-        .from('recordings')
-        .insert({
-          user_id: session.user.id,
-          audio_url: audioUrl,
-          transcription: transcriptionText,
-          duration: audioUrl ? 0 : 0,
-          analysis,
-          insights,
-          session_type: sessionType
-        })
-        .select()
-        .single();
-
-      if (insertError) {
-        console.error('Error saving recording:', insertError);
-        throw insertError;
-      }
-      
-      console.log('Recording saved successfully:', {
-        id: data.id,
-        hasAnalysis: !!data.analysis,
-        hasInsights: !!data.insights
-      });
-      
-      toast({
-        title: "Success!",
-        description: "Your golf note has been saved and analyzed.",
-      });
-
-      // Navigate to the specific recording page instead of the general notes page
-      navigate(`/recording/${data.id}`);
-    } catch (error) {
-      console.error("Error saving recording:", error);
-      throw error;
-    }
-  };
+  const { saveRecording } = useGolfStorage();
 
   const handleAudioRecording = async (
     audioBlob: Blob, 
