@@ -1,101 +1,91 @@
 import AnalysisCard from "./AnalysisCard";
 
 interface AnalysisSection {
-  title: string;
-  content?: string | string[];
+  type: string;
+  content: string | string[];
 }
 
 interface AnalysisSectionsProps {
-  session_analysis: {
-    overview: AnalysisSection;
-    breakthroughs: {
-      title: string;
-      key_discoveries: AnalysisSection;
-      working_elements: AnalysisSection;
-    };
-    growth_opportunities: {
-      title: string;
-      primary_focus: AnalysisSection;
-      technical_deep_dive: AnalysisSection;
-    };
-    mental_game: AnalysisSection;
-    focus_areas: {
-      title: string;
-      next_session: AnalysisSection;
-      long_term: AnalysisSection;
-    };
-    closing_note: AnalysisSection;
-  };
+  sections: AnalysisSection[];
   sectionRefs: React.MutableRefObject<(HTMLDivElement | null)[]>;
 }
 
-const AnalysisSections = ({ session_analysis, sectionRefs }: AnalysisSectionsProps) => {
+const getTitleFromType = (type: string): string => {
+  const titles: Record<string, string> = {
+    overview: "Overview",
+    key_discoveries: "Key Discoveries",
+    working_elements: "Working Elements",
+    primary_focus: "Primary Focus",
+    technical_deep_dive: "Technical Deep-Dive",
+    mental_game: "Mental Game Insights",
+    next_session: "Next Session Opportunity",
+    long_term: "Long-Term Potential",
+    closing_note: "Closing Note"
+  };
+  return titles[type] || type;
+};
+
+const AnalysisSections = ({ sections, sectionRefs }: AnalysisSectionsProps) => {
   return (
     <div className="space-y-6 py-6">
       {/* Overview Section */}
       <div ref={el => sectionRefs.current[0] = el} id="overview">
         <AnalysisCard
-          title={session_analysis.overview.title}
-          content={session_analysis.overview.content}
+          title={getTitleFromType(sections[0].type)}
+          content={sections[0].content}
           isOverview={true}
         />
       </div>
 
-      {/* Breakthroughs Section */}
-      <div ref={el => sectionRefs.current[1] = el} id="breakthroughs">
-        <div className="grid gap-4 md:grid-cols-2">
-          <AnalysisCard
-            title={session_analysis.breakthroughs.key_discoveries.title}
-            content={session_analysis.breakthroughs.key_discoveries.content}
-          />
-          <AnalysisCard
-            title={session_analysis.breakthroughs.working_elements.title}
-            content={session_analysis.breakthroughs.working_elements.content}
-          />
-        </div>
-      </div>
-
-      {/* Growth Opportunities Section */}
-      <div ref={el => sectionRefs.current[2] = el} id="opportunities">
-        <div className="grid gap-4 md:grid-cols-2">
-          <AnalysisCard
-            title={session_analysis.growth_opportunities.primary_focus.title}
-            content={session_analysis.growth_opportunities.primary_focus.content}
-          />
-          <AnalysisCard
-            title={session_analysis.growth_opportunities.technical_deep_dive.title}
-            content={session_analysis.growth_opportunities.technical_deep_dive.content}
-          />
-        </div>
-      </div>
-
-      {/* Mental Game Section */}
-      <div ref={el => sectionRefs.current[3] = el} id="mental">
+      {/* Key Discoveries & Working Elements */}
+      <div ref={el => sectionRefs.current[1] = el} id="discoveries" className="grid gap-4 md:grid-cols-2">
         <AnalysisCard
-          title={session_analysis.mental_game.title}
-          content={session_analysis.mental_game.content}
+          title={getTitleFromType(sections[1].type)}
+          content={sections[1].content}
+        />
+        <AnalysisCard
+          title={getTitleFromType(sections[2].type)}
+          content={sections[2].content}
         />
       </div>
 
-      {/* Focus Areas Section */}
-      <div ref={el => sectionRefs.current[4] = el} id="focus">
-        <div className="grid gap-4 md:grid-cols-2">
-          <AnalysisCard
-            title={session_analysis.focus_areas.next_session.title}
-            content={session_analysis.focus_areas.next_session.content}
-          />
-          <AnalysisCard
-            title={session_analysis.focus_areas.long_term.title}
-            content={session_analysis.focus_areas.long_term.content}
-          />
-        </div>
+      {/* Primary Focus & Technical Deep-Dive */}
+      <div ref={el => sectionRefs.current[3] = el} id="focus" className="grid gap-4 md:grid-cols-2">
+        <AnalysisCard
+          title={getTitleFromType(sections[3].type)}
+          content={sections[3].content}
+        />
+        <AnalysisCard
+          title={getTitleFromType(sections[4].type)}
+          content={sections[4].content}
+        />
       </div>
 
-      {/* Closing Note Section */}
-      <div ref={el => sectionRefs.current[5] = el} id="closing">
+      {/* Mental Game */}
+      <div ref={el => sectionRefs.current[5] = el} id="mental">
         <AnalysisCard
-          title={session_analysis.closing_note.title}
-          content={session_analysis.closing_note.content}
+          title={getTitleFromType(sections[5].type)}
+          content={sections[5].content}
+        />
+      </div>
+
+      {/* Next Session & Long Term */}
+      <div ref={el => sectionRefs.current[6] = el} id="next" className="grid gap-4 md:grid-cols-2">
+        <AnalysisCard
+          title={getTitleFromType(sections[6].type)}
+          content={sections[6].content}
+        />
+        <AnalysisCard
+          title={getTitleFromType(sections[7].type)}
+          content={sections[7].content}
+        />
+      </div>
+
+      {/* Closing Note */}
+      <div ref={el => sectionRefs.current[8] = el} id="closing">
+        <AnalysisCard
+          title={getTitleFromType(sections[8].type)}
+          content={sections[8].content}
         />
       </div>
     </div>

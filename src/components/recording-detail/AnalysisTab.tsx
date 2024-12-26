@@ -9,39 +9,23 @@ interface AnalysisTabProps {
 }
 
 interface AnalysisSection {
-  title: string;
-  content?: string | string[];
+  type: string;
+  content: string | string[];
 }
 
 interface AnalysisData {
-  session_analysis: {
-    overview: AnalysisSection;
-    breakthroughs: {
-      title: string;
-      key_discoveries: AnalysisSection;
-      working_elements: AnalysisSection;
-    };
-    growth_opportunities: {
-      title: string;
-      primary_focus: AnalysisSection;
-      technical_deep_dive: AnalysisSection;
-    };
-    mental_game: AnalysisSection;
-    focus_areas: {
-      title: string;
-      next_session: AnalysisSection;
-      long_term: AnalysisSection;
-    };
-    closing_note: AnalysisSection;
-  };
+  sections: AnalysisSection[];
 }
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
-  { id: 'breakthroughs', label: 'Breakthroughs & Patterns' },
-  { id: 'opportunities', label: 'Growth Opportunities' },
-  { id: 'mental', label: 'Mental Game Insights' },
-  { id: 'focus', label: 'Potential Focus Areas' },
+  { id: 'discoveries', label: 'Key Discoveries' },
+  { id: 'working', label: 'Working Elements' },
+  { id: 'focus', label: 'Primary Focus' },
+  { id: 'technical', label: 'Technical Deep-Dive' },
+  { id: 'mental', label: 'Mental Game' },
+  { id: 'next', label: 'Next Session' },
+  { id: 'longterm', label: 'Long-Term' },
   { id: 'closing', label: 'Closing Note' }
 ] as const;
 
@@ -119,7 +103,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         className="flex-1 px-6"
       >
         <AnalysisSections 
-          session_analysis={parsedAnalysis.session_analysis}
+          sections={parsedAnalysis.sections}
           sectionRefs={sectionRefs}
         />
       </ScrollArea>
