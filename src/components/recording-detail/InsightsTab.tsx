@@ -35,42 +35,87 @@ const InsightsTab = ({ insights }: InsightsTabProps) => {
     );
   }
 
-  // Debug check for empty object
-  if (!parsedInsights || Object.keys(parsedInsights).length === 0) {
-    console.log('Parsed insights is empty object'); // Debug log
+  const { session_insights, action_insights } = parsedInsights;
+
+  if (!session_insights) {
+    console.log('No session insights available'); // Debug log
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
-        <p className="text-muted-foreground">No insights data available for this session.</p>
+        <p className="text-muted-foreground">No session insights available.</p>
       </div>
     );
   }
+
+  // Map the data to match our component props
+  const sessionSummaryData = {
+    energyLevel: session_insights.session_summary?.energy_level || 'medium',
+    quality: session_insights.session_summary?.overall_quality || 'medium',
+    context: session_insights.session_summary?.context
+  };
+
+  const mentalGameData = {
+    focus: session_insights.mental_insights?.[0]?.clarity || 'medium',
+    confidence: session_insights.session_summary?.confidence_level || 'medium',
+    notes: session_insights.mental_insights?.map(insight => insight.insight) || []
+  };
+
+  const technicalData = {
+    swingNotes: session_insights.technical_insights
+      ?.filter(insight => insight.category === 'swing')
+      .map(insight => insight.insight) || [],
+    clubSpecific: session_insights.technical_insights
+      ?.filter(insight => insight.club_type !== 'not specified')
+      .reduce((acc: any[], insight) => {
+        const existingClub = acc.find(item => item.club === insight.club_type);
+        if (existingClub) {
+          existingClub.notes.push(insight.insight);
+        } else {
+          acc.push({
+            club: insight.club_type,
+            notes: [insight.insight]
+          });
+        }
+        return acc;
+      }, []) || []
+  };
+
+  const shotQualityData = session_insights.shot_quality?.map(shot => ({
+    club: shot.club_type,
+    quality: parseInt(shot.quality_rating === 'high' ? '90' : shot.quality_rating === 'medium' ? '60' : '30')
+  })) || [];
+
+  const equipmentData = session_insights.equipment_insights?.map(item => ({
+    club: item.club_type,
+    adjustment: item.adjustment_needed,
+    priority: item.impact?.toLowerCase().includes('significant') ? 'high' : 
+             item.impact?.toLowerCase().includes('minor') ? 'low' : 'medium'
+  })) || [];
+
+  const actionItemsData = action_insights?.immediate_fixes?.map(item => ({
+    text: `${item.issue}: ${item.solution}`,
+    completed: item.effectiveness === 'completed'
+  })) || [];
 
   return (
     <ScrollArea className="h-[calc(100vh-300px)] px-6">
       <div className="grid gap-6 pb-8">
         <div className="grid gap-6 md:grid-cols-2">
-          {parsedInsights.sessionSummary && (
-            <SessionSummary data={parsedInsights.sessionSummary} />
-          )}
-          {parsedInsights.mentalGame && (
-            <MentalGameInsights data={parsedInsights.mentalGame} />
-          )}
+          <SessionSummary data={sessionSummaryData} />
+          <MentalGameInsights data={mentalGameData} />
         </div>
 
-        {parsedInsights.technical && (
-          <TechnicalInsights data={parsedInsights.technical} />
-        )}
+        <TechnicalInsights data={technicalData} />
 
-        {parsedInsights.shotQuality?.length > 0 && (
-          <ShotQualityChart data={parsedInsights.shotQuality} />
+        {shotQualityData.length > 0 && (
+          <ShotQualityChart data={shotQualityData} />
         )}
 
         <div className="grid gap-6 md:grid-cols-2">
-          {parsedInsights.equipment?.length > 0 && (
-            <EquipmentInsights notes={parsedInsights.equipment} />
+          {equipmentData.length > 0 && (
+            <EquipmentInsights notes={equipmentData} />
           )}
-          {parsedInsights.actionItems?.length > 0 && (
-            <ActionItems items={parsedInsights.actionItems} />
+          {actionItemsData.length > 0 && (
+            <ActionItems items={actionItemsData} />
           )}
         </div>
       </div>
