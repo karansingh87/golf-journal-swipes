@@ -15,9 +15,9 @@ const NavigationTabs = ({ sections, currentSection, onSectionClick }: Navigation
             key={section.id}
             onClick={() => onSectionClick(index)}
             className={cn(
-              "px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-colors",
+              "px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all duration-300",
               currentSection === index
-                ? "bg-golf-green text-white"
+                ? "bg-golf-green text-white scale-105"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent"
             )}
           >
