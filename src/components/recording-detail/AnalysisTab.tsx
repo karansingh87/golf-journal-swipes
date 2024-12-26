@@ -91,7 +91,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   try {
     // Remove markdown code block markers if present
     const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
-    parsedAnalysis = JSON.parse(cleanAnalysis).session_analysis;
+    parsedAnalysis = JSON.parse(cleanAnalysis);
   } catch (error) {
     console.error('Error parsing analysis:', error);
     return (
@@ -101,61 +101,63 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
+  const { session_analysis } = parsedAnalysis;
+
   return (
     <ScrollArea className="h-[calc(100vh-300px)]">
       <div className="space-y-6 p-6">
         {/* Overview Section */}
         <ContentCard
-          title={parsedAnalysis.overview.title}
-          content={parsedAnalysis.overview.content}
+          title={session_analysis.overview.title}
+          content={session_analysis.overview.content}
         />
 
         {/* Breakthroughs Section */}
         <div className="grid gap-4 md:grid-cols-2">
           <ContentCard
-            title={parsedAnalysis.breakthroughs.key_discoveries.title}
-            content={parsedAnalysis.breakthroughs.key_discoveries.content}
+            title={session_analysis.breakthroughs.key_discoveries.title}
+            content={session_analysis.breakthroughs.key_discoveries.content}
           />
           <ContentCard
-            title={parsedAnalysis.breakthroughs.working_elements.title}
-            content={parsedAnalysis.breakthroughs.working_elements.content}
+            title={session_analysis.breakthroughs.working_elements.title}
+            content={session_analysis.breakthroughs.working_elements.content}
           />
         </div>
 
         {/* Growth Opportunities Section */}
         <div className="grid gap-4 md:grid-cols-2">
           <ContentCard
-            title={parsedAnalysis.growth_opportunities.primary_focus.title}
-            content={parsedAnalysis.growth_opportunities.primary_focus.content}
+            title={session_analysis.growth_opportunities.primary_focus.title}
+            content={session_analysis.growth_opportunities.primary_focus.content}
           />
           <ContentCard
-            title={parsedAnalysis.growth_opportunities.technical_deep_dive.title}
-            content={parsedAnalysis.growth_opportunities.technical_deep_dive.content}
+            title={session_analysis.growth_opportunities.technical_deep_dive.title}
+            content={session_analysis.growth_opportunities.technical_deep_dive.content}
           />
         </div>
 
         {/* Mental Game Section */}
         <ContentCard
-          title={parsedAnalysis.mental_game.title}
-          content={parsedAnalysis.mental_game.content}
+          title={session_analysis.mental_game.title}
+          content={session_analysis.mental_game.content}
         />
 
         {/* Focus Areas Section */}
         <div className="grid gap-4 md:grid-cols-2">
           <ContentCard
-            title={parsedAnalysis.focus_areas.next_session.title}
-            content={parsedAnalysis.focus_areas.next_session.content}
+            title={session_analysis.focus_areas.next_session.title}
+            content={session_analysis.focus_areas.next_session.content}
           />
           <ContentCard
-            title={parsedAnalysis.focus_areas.long_term.title}
-            content={parsedAnalysis.focus_areas.long_term.content}
+            title={session_analysis.focus_areas.long_term.title}
+            content={session_analysis.focus_areas.long_term.content}
           />
         </div>
 
         {/* Closing Note Section */}
         <ContentCard
-          title={parsedAnalysis.closing_note.title}
-          content={parsedAnalysis.closing_note.content}
+          title={session_analysis.closing_note.title}
+          content={session_analysis.closing_note.content}
         />
       </div>
     </ScrollArea>
