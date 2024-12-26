@@ -19,20 +19,21 @@ interface AnalysisData {
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
-  { id: 'discoveries', label: 'Key Discoveries' },
-  { id: 'working', label: 'Working Elements' },
-  { id: 'focus', label: 'Primary Focus' },
-  { id: 'technical', label: 'Technical Deep-Dive' },
-  { id: 'mental', label: 'Mental Game' },
-  { id: 'next', label: 'Next Session' },
-  { id: 'longterm', label: 'Long-Term' },
-  { id: 'closing', label: 'Closing Note' }
+  { id: 'key_discoveries', label: 'Key Discoveries' },
+  { id: 'working_elements', label: 'Working Elements' },
+  { id: 'primary_focus', label: 'Primary Focus' },
+  { id: 'technical_deep_dive', label: 'Technical Deep-Dive' },
+  { id: 'mental_game', label: 'Mental Game' },
+  { id: 'next_session', label: 'Next Session' },
+  { id: 'long_term', label: 'Long-Term' },
+  { id: 'closing_note', label: 'Closing Note' }
 ] as const;
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   const [currentSection, setCurrentSection] = useState(0);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   if (!analysis) {
     return (
@@ -57,14 +58,17 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!scrollAreaRef.current) return;
+      if (!scrollAreaRef.current || isScrolling) return;
 
       const scrollPosition = scrollAreaRef.current.scrollTop;
       let newSection = 0;
 
       sectionRefs.current.forEach((ref, index) => {
         if (!ref) return;
-        if (ref.offsetTop - 100 <= scrollPosition) {
+        const { offsetTop, offsetHeight } = ref;
+        const sectionMiddle = offsetTop + offsetHeight / 2;
+        
+        if (scrollPosition >= offsetTop - 100) {
           newSection = index;
         }
       });
@@ -77,16 +81,23 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
       scrollArea.addEventListener('scroll', handleScroll);
       return () => scrollArea.removeEventListener('scroll', handleScroll);
     }
-  }, []);
+  }, [isScrolling]);
 
   const scrollToSection = (index: number) => {
     const ref = sectionRefs.current[index];
     if (ref && scrollAreaRef.current) {
+      setIsScrolling(true);
+      setCurrentSection(index);
+      
       scrollAreaRef.current.scrollTo({
         top: ref.offsetTop - 80,
         behavior: 'smooth'
       });
-      setCurrentSection(index);
+
+      // Reset isScrolling after animation completes
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 1000);
     }
   };
 
