@@ -38,11 +38,11 @@ interface AnalysisData {
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
-  { id: 'breakthroughs', label: 'Breakthroughs' },
-  { id: 'opportunities', label: 'Growth' },
-  { id: 'mental', label: 'Mental Game' },
-  { id: 'focus', label: 'Focus Areas' },
-  { id: 'closing', label: 'Closing' }
+  { id: 'breakthroughs', label: 'Breakthroughs & Patterns' },
+  { id: 'opportunities', label: 'Growth Opportunities' },
+  { id: 'mental', label: 'Mental Game Insights' },
+  { id: 'focus', label: 'Potential Focus Areas' },
+  { id: 'closing', label: 'Closing Note' }
 ] as const;
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
