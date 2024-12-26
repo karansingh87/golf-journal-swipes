@@ -1,18 +1,9 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { format } from "date-fns";
+import PromptEditor from "./admin/PromptEditor";
+import PromptHistoryTable from "./admin/PromptHistoryTable";
 
 const AdminPromptPanel = () => {
   const [prompt, setPrompt] = useState("");
@@ -145,62 +136,27 @@ const AdminPromptPanel = () => {
         </TabsList>
         
         <TabsContent value="analysis">
-          <Textarea
+          <PromptEditor
             value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            className="min-h-[300px] mb-4 font-mono text-sm"
-            placeholder="Enter the GPT analysis prompt configuration..."
+            onChange={setPrompt}
+            onSave={() => handleSave('analysis')}
+            isLoading={isLoading}
+            type="analysis"
           />
-          <Button 
-            onClick={() => handleSave('analysis')}
-            disabled={isLoading}
-          >
-            {isLoading ? "Saving..." : "Save Analysis Prompt"}
-          </Button>
         </TabsContent>
         
         <TabsContent value="insights">
-          <Textarea
+          <PromptEditor
             value={insightsPrompt}
-            onChange={(e) => setInsightsPrompt(e.target.value)}
-            className="min-h-[300px] mb-4 font-mono text-sm"
-            placeholder="Enter the GPT insights prompt configuration..."
+            onChange={setInsightsPrompt}
+            onSave={() => handleSave('insights')}
+            isLoading={isLoading}
+            type="insights"
           />
-          <Button 
-            onClick={() => handleSave('insights')}
-            disabled={isLoading}
-          >
-            {isLoading ? "Saving..." : "Save Insights Prompt"}
-          </Button>
         </TabsContent>
 
         <TabsContent value="history">
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Previous Value</TableHead>
-                  <TableHead>Changed At</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {promptHistory.map((history: any) => (
-                  <TableRow key={history.id}>
-                    <TableCell className="font-medium capitalize">
-                      {history.prompt_type}
-                    </TableCell>
-                    <TableCell className="font-mono text-sm max-w-[500px] truncate">
-                      {history.old_value}
-                    </TableCell>
-                    <TableCell>
-                      {format(new Date(history.changed_at), 'MMM d, yyyy HH:mm')}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <PromptHistoryTable history={promptHistory} />
         </TabsContent>
       </Tabs>
     </div>
