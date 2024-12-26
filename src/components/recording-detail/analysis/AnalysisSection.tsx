@@ -1,98 +1,84 @@
-import { Brain, Target, Info, Square, SquareCheck } from "lucide-react";
-import AnalysisCard from "./AnalysisCard";
+import React from 'react';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import AnalysisSection from './AnalysisSection';
+import { Brain, Target, Info, Square, Lightbulb, Flag } from 'lucide-react';
 
-interface SectionData {
-  title: string;
-  content: string | {
-    title: string;
-    content: string[];
-  }[];
+interface AnalysisTabProps {
+  analysis: string | null;
 }
 
-interface AnalysisSectionProps {
-  data: {
-    overview: { title: string; content: string };
-    breakthroughs: {
-      title: string;
-      key_discoveries: { title: string; content: string[] };
-      working_elements: { title: string; content: string[] };
-    };
-    growth_opportunities: {
-      title: string;
-      primary_focus: { title: string; content: string[] };
-      technical_deep_dive: { title: string; content: string[] };
-    };
-    mental_game: { title: string; content: string[] };
-    focus_areas: {
-      title: string;
-      next_session: { title: string; content: string[] };
-      long_term: { title: string; content: string[] };
-    };
-    closing_note: { title: string; content: string };
-  };
-}
+const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
+  if (!analysis) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+        <p className="text-muted-foreground">No analysis available for this session.</p>
+      </div>
+    );
+  }
 
-const AnalysisSection = ({ data }: AnalysisSectionProps) => {
+  let parsedAnalysis;
+  try {
+    // Remove markdown code block markers if present
+    const cleanJson = analysis.replace(/```json\n|\n```/g, '');
+    parsedAnalysis = JSON.parse(cleanJson);
+  } catch (error) {
+    console.error('Error parsing analysis:', error);
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+        <p className="text-muted-foreground">Unable to load analysis. Invalid data format.</p>
+      </div>
+    );
+  }
+
+  const { session_analysis: data } = parsedAnalysis;
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+        <p className="text-muted-foreground">No session analysis available.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6 pb-8">
-      <AnalysisCard
-        title={data.overview.title}
-        content={data.overview.content}
-        icon={Info}
-      />
+    <ScrollArea className="h-[calc(100vh-300px)]">
+      <div className="px-6 pb-8 space-y-6">
+        <AnalysisSection title="Overview" data={data.overview} icon={Info} />
+        
+        <div className="grid gap-6 md:grid-cols-2">
+          <AnalysisSection 
+            title="Breakthroughs" 
+            data={data.breakthroughs} 
+            icon={Lightbulb}
+          />
+          <AnalysisSection 
+            title="Growth Opportunities" 
+            data={data.growth_opportunities} 
+            icon={Target}
+          />
+        </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <AnalysisCard
-          title={data.breakthroughs.key_discoveries.title}
-          content={data.breakthroughs.key_discoveries.content}
-          icon={SquareCheck}
+        <AnalysisSection 
+          title="Mental Game" 
+          data={data.mental_game} 
+          icon={Brain}
         />
-        <AnalysisCard
-          title={data.breakthroughs.working_elements.title}
-          content={data.breakthroughs.working_elements.content}
-          icon={Square}
-        />
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <AnalysisSection 
+            title="Focus Areas" 
+            data={data.focus_areas} 
+            icon={Flag}
+          />
+          <AnalysisSection 
+            title="Closing Note" 
+            data={data.closing_note} 
+            icon={Square}
+          />
+        </div>
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <AnalysisCard
-          title={data.growth_opportunities.primary_focus.title}
-          content={data.growth_opportunities.primary_focus.content}
-          icon={Target}
-        />
-        <AnalysisCard
-          title={data.growth_opportunities.technical_deep_dive.title}
-          content={data.growth_opportunities.technical_deep_dive.content}
-          icon={Target}
-        />
-      </div>
-
-      <AnalysisCard
-        title={data.mental_game.title}
-        content={data.mental_game.content}
-        icon={Brain}
-      />
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <AnalysisCard
-          title={data.focus_areas.next_session.title}
-          content={data.focus_areas.next_session.content}
-          icon={Square}
-        />
-        <AnalysisCard
-          title={data.focus_areas.long_term.title}
-          content={data.focus_areas.long_term.content}
-          icon={Square}
-        />
-      </div>
-
-      <AnalysisCard
-        title={data.closing_note.title}
-        content={data.closing_note.content}
-        icon={Info}
-      />
-    </div>
+    </ScrollArea>
   );
 };
 
-export default AnalysisSection;
+export default AnalysisTab;

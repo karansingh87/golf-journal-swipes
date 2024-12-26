@@ -1,7 +1,8 @@
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import ReactMarkdown from "react-markdown";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface AnalysisCardProps {
   title: string;
@@ -12,37 +13,38 @@ interface AnalysisCardProps {
 
 const AnalysisCard = ({ title, content, icon: Icon, className }: AnalysisCardProps) => (
   <Card className={cn(
-    "h-full transition-all duration-200 hover:shadow-lg",
-    "border border-zinc-200/50 backdrop-blur-sm",
-    "hover:border-zinc-300/50",
-    "dark:border-zinc-800/50 dark:hover:border-zinc-700/50",
+    "h-full transition-all duration-200",
     "bg-white dark:bg-zinc-900",
+    "border border-zinc-200/50 hover:border-zinc-300/50",
+    "shadow-sm hover:shadow-md",
     className
   )}>
     <CardHeader className="flex flex-row items-center gap-2 space-y-0 pb-2">
-      <Icon className="h-5 w-5 text-muted-foreground" />
-      <CardTitle className="text-lg font-semibold text-golf.gray.text.primary dark:text-white">
+      <Icon className="h-5 w-5 text-golf-gray-text-secondary" />
+      <CardTitle className="text-xl font-semibold text-golf-gray-text-primary">
         {title}
       </CardTitle>
     </CardHeader>
     <CardContent>
       {typeof content === 'string' ? (
         <ReactMarkdown
-          className="prose prose-zinc prose-sm max-w-none text-golf.gray.text.secondary dark:text-zinc-300"
+          className="prose prose-zinc prose-sm max-w-none text-golf-gray-text-secondary"
           components={{
-            p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+            p: ({ children }) => <p className="mb-2 last:mb-0 text-golf-gray-text-secondary">{children}</p>,
+            strong: ({ children }) => <strong className="font-semibold text-golf-gray-text-primary">{children}</strong>,
           }}
         >
           {content}
         </ReactMarkdown>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {content?.map((item, index) => (
             <li key={index}>
               <ReactMarkdown
-                className="prose prose-zinc prose-sm max-w-none text-golf.gray.text.secondary dark:text-zinc-300"
+                className="prose prose-zinc prose-sm max-w-none text-golf-gray-text-secondary"
                 components={{
-                  p: ({ children }) => <p className="mb-0">{children}</p>,
+                  p: ({ children }) => <p className="mb-0 text-golf-gray-text-secondary">{children}</p>,
+                  strong: ({ children }) => <strong className="font-semibold text-golf-gray-text-primary">{children}</strong>,
                 }}
               >
                 {item}
