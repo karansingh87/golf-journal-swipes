@@ -18,11 +18,11 @@ interface AnalysisData {
 }
 
 const SECTIONS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'wins', label: 'Wins' },
-  { id: 'growth_areas', label: 'Growth Areas' },
-  { id: 'connecting_dots', label: 'Connecting Dots' },
-  { id: 'closing_note', label: 'Closing Note' }
+  { id: 'session_story', label: 'Session Story' },
+  { id: 'breakthroughs', label: 'Breakthroughs' },
+  { id: 'opportunities', label: 'Opportunities' },
+  { id: 'patterns_and_potential', label: 'Patterns & Potential' },
+  { id: 'key_takeaway', label: 'Key Takeaway' }
 ] as const;
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {

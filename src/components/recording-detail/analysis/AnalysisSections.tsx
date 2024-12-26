@@ -12,11 +12,11 @@ interface AnalysisSectionsProps {
 
 const getTitleFromType = (type: string): string => {
   const titles: Record<string, string> = {
-    overview: "Overview",
-    wins: "Wins",
-    growth_areas: "Growth Areas",
-    connecting_dots: "Connecting Dots",
-    closing_note: "Closing Note",
+    session_story: "Session Story",
+    breakthroughs: "Breakthroughs",
+    opportunities: "Opportunities",
+    patterns_and_potential: "Patterns & Potential",
+    key_takeaway: "Key Takeaway",
     quick_note: "Quick Note"
   };
   return titles[type] || type;
@@ -34,7 +34,7 @@ const AnalysisSections = ({ sections, sectionRefs }: AnalysisSectionsProps) => {
           <AnalysisCard
             title={getTitleFromType(section.type)}
             content={section.content}
-            isOverview={section.type === 'overview'}
+            isOverview={section.type === 'session_story'}
           />
         </div>
       ))}
