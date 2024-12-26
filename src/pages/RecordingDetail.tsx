@@ -101,7 +101,7 @@ const RecordingDetail = () => {
         <Button
           variant="ghost"
           onClick={() => navigate('/history')}
-          className="mb-4" // Reduced from mb-6
+          className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to History
@@ -113,9 +113,9 @@ const RecordingDetail = () => {
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
           <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
-            <div className="p-3"> {/* Reduced from p-6 */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2"> {/* Added flex and gap for better alignment */}
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <div>
                   <div className="text-lg font-medium">
                     {format(new Date(recording.created_at), "MMMM d, yyyy")}
                   </div>
@@ -123,21 +123,29 @@ const RecordingDetail = () => {
                     {format(new Date(recording.created_at), "h:mm a")}
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleDelete}
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleDelete}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
               </div>
             </div>
 
             <Tabs defaultValue="analysis" className="w-full">
               <TabsList className="w-full grid grid-cols-3">
-                <TabsTrigger value="analysis">Analysis</TabsTrigger>
-                <TabsTrigger value="insights">Insights</TabsTrigger>
-                <TabsTrigger value="transcription">Transcript</TabsTrigger>
+                <TabsTrigger value="analysis">
+                  Analysis
+                </TabsTrigger>
+                <TabsTrigger value="insights">
+                  Insights
+                </TabsTrigger>
+                <TabsTrigger value="transcription">
+                  Transcript
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="analysis" className="mt-0 animate-in fade-in-50 duration-500">
