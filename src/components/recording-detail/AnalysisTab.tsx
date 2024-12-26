@@ -60,45 +60,61 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     const handleScroll = () => {
       if (!scrollAreaRef.current || isScrolling) return;
 
-      const scrollPosition = scrollAreaRef.current.scrollTop;
-      let newSection = 0;
+      const scrollArea = scrollAreaRef.current;
+      const scrollPosition = scrollArea.scrollTop;
+      const viewportHeight = scrollArea.clientHeight;
+      
+      // Find the section that takes up most of the viewport
+      let maxVisibleSection = 0;
+      let maxVisibleHeight = 0;
 
       sectionRefs.current.forEach((ref, index) => {
         if (!ref) return;
-        const { offsetTop, offsetHeight } = ref;
-        const sectionMiddle = offsetTop + offsetHeight / 2;
-        
-        if (scrollPosition >= offsetTop - 100) {
-          newSection = index;
+
+        const rect = ref.getBoundingClientRect();
+        const visibleTop = Math.max(rect.top, 0);
+        const visibleBottom = Math.min(rect.bottom, viewportHeight);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+        if (visibleHeight > maxVisibleHeight) {
+          maxVisibleHeight = visibleHeight;
+          maxVisibleSection = index;
         }
       });
 
-      setCurrentSection(newSection);
+      if (!isScrolling) {
+        setCurrentSection(maxVisibleSection);
+      }
     };
 
     const scrollArea = scrollAreaRef.current;
     if (scrollArea) {
       scrollArea.addEventListener('scroll', handleScroll);
+      // Initial check for visible sections
+      handleScroll();
       return () => scrollArea.removeEventListener('scroll', handleScroll);
     }
   }, [isScrolling]);
 
   const scrollToSection = (index: number) => {
     const ref = sectionRefs.current[index];
-    if (ref && scrollAreaRef.current) {
-      setIsScrolling(true);
-      setCurrentSection(index);
-      
-      scrollAreaRef.current.scrollTo({
-        top: ref.offsetTop - 80,
-        behavior: 'smooth'
-      });
+    if (!ref || !scrollAreaRef.current) return;
 
-      // Reset isScrolling after animation completes
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, 1000);
-    }
+    setIsScrolling(true);
+    setCurrentSection(index);
+
+    const scrollArea = scrollAreaRef.current;
+    const targetPosition = ref.offsetTop - 80; // Adjust offset for header
+
+    scrollArea.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
+
+    // Reset isScrolling after animation completes
+    setTimeout(() => {
+      setIsScrolling(false);
+    }, 1000);
   };
 
   return (
