@@ -60,6 +60,41 @@ export type Database = {
         }
         Relationships: []
       }
+      prompt_history: {
+        Row: {
+          changed_at: string | null
+          changed_by: string | null
+          id: string
+          old_value: string
+          prompt_config_id: string
+          prompt_type: string
+        }
+        Insert: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: string
+          old_value: string
+          prompt_config_id: string
+          prompt_type: string
+        }
+        Update: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: string
+          old_value?: string
+          prompt_config_id?: string
+          prompt_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_history_prompt_config_id_fkey"
+            columns: ["prompt_config_id"]
+            isOneToOne: false
+            referencedRelation: "prompt_config"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       recordings: {
         Row: {
           analysis: string | null

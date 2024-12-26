@@ -4,10 +4,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { format } from "date-fns";
 
 const AdminPromptPanel = () => {
   const [prompt, setPrompt] = useState("");
   const [insightsPrompt, setInsightsPrompt] = useState("");
+  const [promptHistory, setPromptHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -39,7 +49,31 @@ const AdminPromptPanel = () => {
       }
     };
 
+    const fetchPromptHistory = async () => {
+      console.log('Fetching prompt history...');
+      const { data, error } = await supabase
+        .from('prompt_history')
+        .select('*')
+        .order('changed_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching prompt history:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load the prompt history.",
+        });
+        return;
+      }
+
+      if (data) {
+        console.log('Prompt history fetched successfully:', data.length, 'entries');
+        setPromptHistory(data);
+      }
+    };
+
     fetchPrompts();
+    fetchPromptHistory();
   }, []);
 
   const handleSave = async (type: 'analysis' | 'insights') => {
@@ -72,6 +106,16 @@ const AdminPromptPanel = () => {
         throw error;
       }
 
+      // Refresh prompt history after saving
+      const { data: newHistory, error: historyError } = await supabase
+        .from('prompt_history')
+        .select('*')
+        .order('changed_at', { ascending: false });
+
+      if (!historyError && newHistory) {
+        setPromptHistory(newHistory);
+      }
+
       console.log(`${type} prompt updated successfully`);
       toast({
         title: "Success",
@@ -97,6 +141,7 @@ const AdminPromptPanel = () => {
         <TabsList className="mb-4">
           <TabsTrigger value="analysis">Analysis Prompt</TabsTrigger>
           <TabsTrigger value="insights">Insights Prompt</TabsTrigger>
+          <TabsTrigger value="history">Change History</TabsTrigger>
         </TabsList>
         
         <TabsContent value="analysis">
@@ -127,6 +172,35 @@ const AdminPromptPanel = () => {
           >
             {isLoading ? "Saving..." : "Save Insights Prompt"}
           </Button>
+        </TabsContent>
+
+        <TabsContent value="history">
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Previous Value</TableHead>
+                  <TableHead>Changed At</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {promptHistory.map((history: any) => (
+                  <TableRow key={history.id}>
+                    <TableCell className="font-medium capitalize">
+                      {history.prompt_type}
+                    </TableCell>
+                    <TableCell className="font-mono text-sm max-w-[500px] truncate">
+                      {history.old_value}
+                    </TableCell>
+                    <TableCell>
+                      {format(new Date(history.changed_at), 'MMM d, yyyy HH:mm')}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
