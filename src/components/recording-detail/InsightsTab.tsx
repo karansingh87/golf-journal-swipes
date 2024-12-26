@@ -11,7 +11,10 @@ interface InsightsTabProps {
 }
 
 const InsightsTab = ({ insights }: InsightsTabProps) => {
+  console.log('Raw insights:', insights); // Debug log
+
   if (!insights) {
+    console.log('No insights data available'); // Debug log
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
         <p className="text-muted-foreground">No insights available for this session.</p>
@@ -22,11 +25,22 @@ const InsightsTab = ({ insights }: InsightsTabProps) => {
   let parsedInsights;
   try {
     parsedInsights = JSON.parse(insights);
+    console.log('Parsed insights:', parsedInsights); // Debug log
   } catch (error) {
     console.error('Error parsing insights:', error);
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
-        <p className="text-muted-foreground">Unable to load insights.</p>
+        <p className="text-muted-foreground">Unable to load insights. Invalid data format.</p>
+      </div>
+    );
+  }
+
+  // Debug check for empty object
+  if (!parsedInsights || Object.keys(parsedInsights).length === 0) {
+    console.log('Parsed insights is empty object'); // Debug log
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+        <p className="text-muted-foreground">No insights data available for this session.</p>
       </div>
     );
   }
