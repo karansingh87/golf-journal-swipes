@@ -2,6 +2,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ReactMarkdown from "react-markdown";
 import { cn } from "@/lib/utils";
+import { Brain, Target, Info, Square, SquareCheck } from "lucide-react";
 
 interface AnalysisTabProps {
   analysis: string | null;
@@ -57,19 +58,22 @@ interface AnalysisContent {
   };
 }
 
-const ContentCard = ({ title, content, className }: { 
+const ContentCard = ({ title, content, icon: Icon, className }: { 
   title: string; 
   content: string | string[];
+  icon: React.ElementType;
   className?: string;
 }) => (
   <Card className={cn(
-    "border border-zinc-200/50 backdrop-blur-sm transition-all duration-200",
-    "hover:border-zinc-300/50 hover:shadow-md",
+    "h-full transition-all duration-200 hover:shadow-lg",
+    "border border-zinc-200/50 backdrop-blur-sm",
+    "hover:border-zinc-300/50",
     "dark:border-zinc-800/50 dark:hover:border-zinc-700/50",
     className
   )}>
-    <CardHeader className="pb-2">
-      <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{title}</CardTitle>
+    <CardHeader className="flex flex-row items-center gap-2 space-y-0 pb-2">
+      <Icon className="h-5 w-5 text-muted-foreground" />
+      <CardTitle className="text-lg font-semibold">{title}</CardTitle>
     </CardHeader>
     <CardContent>
       {typeof content === 'string' ? (
@@ -133,6 +137,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={data.overview.title}
           content={data.overview.content}
+          icon={Info}
           className="bg-white/80 dark:bg-zinc-900/80"
         />
 
@@ -141,11 +146,13 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={data.breakthroughs.key_discoveries.title}
             content={data.breakthroughs.key_discoveries.content}
+            icon={SquareCheck}
             className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
           <ContentCard
             title={data.breakthroughs.working_elements.title}
             content={data.breakthroughs.working_elements.content}
+            icon={Square}
             className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
         </div>
@@ -155,11 +162,13 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={data.growth_opportunities.primary_focus.title}
             content={data.growth_opportunities.primary_focus.content}
+            icon={Target}
             className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
           <ContentCard
             title={data.growth_opportunities.technical_deep_dive.title}
             content={data.growth_opportunities.technical_deep_dive.content}
+            icon={Target}
             className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
         </div>
@@ -168,6 +177,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={data.mental_game.title}
           content={data.mental_game.content}
+          icon={Brain}
           className="bg-zinc-50/80 dark:bg-zinc-900/80"
         />
 
@@ -176,11 +186,13 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={data.focus_areas.next_session.title}
             content={data.focus_areas.next_session.content}
+            icon={Square}
             className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
           <ContentCard
             title={data.focus_areas.long_term.title}
             content={data.focus_areas.long_term.content}
+            icon={Square}
             className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
         </div>
@@ -189,6 +201,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={data.closing_note.title}
           content={data.closing_note.content}
+          icon={Info}
           className="bg-white/80 dark:bg-zinc-900/80"
         />
       </div>
