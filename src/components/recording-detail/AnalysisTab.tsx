@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnalysisCard from "./analysis/AnalysisCard";
@@ -28,6 +29,9 @@ const getTitleFromType = (type: string): string => {
 };
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
+  const [activeTab, setActiveTab] = useState<string>("");
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   if (!analysis) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
@@ -62,16 +66,55 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
+  useEffect(() => {
+    if (parsedAnalysis.sections.length > 0 && !activeTab) {
+      setActiveTab(parsedAnalysis.sections[0].type);
+    }
+
+    // Set up intersection observers for each content section
+    const observers = contentRefs.current.map((ref, index) => {
+      if (!ref) return null;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+              const nextIndex = index + 1;
+              if (nextIndex < parsedAnalysis.sections.length) {
+                setActiveTab(parsedAnalysis.sections[nextIndex].type);
+              }
+            }
+          });
+        },
+        {
+          threshold: 0.5,
+          rootMargin: "-20% 0px -70% 0px"
+        }
+      );
+
+      observer.observe(ref);
+      return observer;
+    });
+
+    return () => {
+      observers.forEach(observer => observer?.disconnect());
+    };
+  }, [parsedAnalysis.sections]);
+
   return (
     <div className="h-[calc(100vh-300px)]">
-      <Tabs defaultValue={parsedAnalysis.sections[0].type} className="w-full">
+      <Tabs 
+        value={activeTab} 
+        onValueChange={setActiveTab}
+        className="w-full"
+      >
         <ScrollArea className="pb-2 mb-2">
           <TabsList className="w-full inline-flex h-12 items-center justify-start px-4 overflow-x-auto">
             {parsedAnalysis.sections.map((section) => (
               <TabsTrigger
                 key={section.type}
                 value={section.type}
-                className="flex-shrink-0"
+                className="flex-shrink-0 min-w-[120px]"
               >
                 {getTitleFromType(section.type)}
               </TabsTrigger>
@@ -79,8 +122,13 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           </TabsList>
         </ScrollArea>
 
-        {parsedAnalysis.sections.map((section) => (
-          <TabsContent key={section.type} value={section.type} className="px-6 mt-4">
+        {parsedAnalysis.sections.map((section, index) => (
+          <TabsContent 
+            key={section.type} 
+            value={section.type} 
+            className="px-6 mt-4"
+            ref={el => contentRefs.current[index] = el}
+          >
             <AnalysisCard
               title={getTitleFromType(section.type)}
               content={section.content}
