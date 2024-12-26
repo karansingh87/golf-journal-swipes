@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnalysisTab from "@/components/recording-detail/AnalysisTab";
 import InsightsTab from "@/components/recording-detail/InsightsTab";
 import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
+import { useSession } from "@supabase/auth-helpers-react";
 
 const RecordingDetail = () => {
   const { id } = useParams();
@@ -18,19 +19,33 @@ const RecordingDetail = () => {
   const { toast } = useToast();
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const session = useSession();
+
+  // Redirect if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
 
   const { data: recording, isLoading } = useQuery({
     queryKey: ['recording', id],
     queryFn: async () => {
+      console.log('Fetching recording with ID:', id);
       const { data, error } = await supabase
         .from('recordings')
         .select('*')
         .eq('id', id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching recording:', error);
+        throw error;
+      }
+      
+      console.log('Fetched recording:', data);
       return data;
     },
+    enabled: !!session && !!id,
   });
 
   const handleDelete = async () => {
