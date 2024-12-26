@@ -72,19 +72,28 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
       if (!scrollAreaRef.current) return;
 
       const scrollArea = scrollAreaRef.current;
+      const scrollTop = scrollArea.scrollTop;
       const viewportHeight = scrollArea.clientHeight;
-      
+
+      // Find which section is most visible in the viewport
+      let maxVisibleSection = 0;
+      let maxVisibleHeight = 0;
+
       sectionRefs.current.forEach((ref, index) => {
         if (!ref) return;
 
         const rect = ref.getBoundingClientRect();
         const sectionTop = rect.top;
-        const threshold = viewportHeight * 0.3; // Section is considered active when it's in the top 30% of viewport
+        const sectionBottom = rect.bottom;
+        const visibleHeight = Math.min(sectionBottom, viewportHeight) - Math.max(sectionTop, 0);
 
-        if (sectionTop <= threshold) {
-          setCurrentSection(index);
+        if (visibleHeight > maxVisibleHeight) {
+          maxVisibleHeight = visibleHeight;
+          maxVisibleSection = index;
         }
       });
+
+      setCurrentSection(maxVisibleSection);
     };
 
     const scrollArea = scrollAreaRef.current;
@@ -99,7 +108,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     if (!ref || !scrollAreaRef.current) return;
 
     const scrollArea = scrollAreaRef.current;
-    const targetPosition = ref.offsetTop - 80;
+    const targetPosition = ref.offsetTop;
 
     scrollArea.scrollTo({
       top: targetPosition,
@@ -117,6 +126,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
             <div 
               key={section.type}
               ref={el => sectionRefs.current[index] = el}
+              className="min-h-[calc(100vh-400px)]"
             >
               <AnalysisCard
                 title={getTitleFromType(section.type)}
