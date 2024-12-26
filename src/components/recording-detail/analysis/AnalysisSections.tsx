@@ -30,7 +30,7 @@ const AnalysisSections = ({ sections, sectionRefs }: AnalysisSectionsProps) => {
           key={section.type}
           ref={el => sectionRefs.current[index] = el}
           id={section.type}
-          className="scroll-mt-20"
+          className="scroll-mt-24"
         >
           <AnalysisCard
             title={getTitleFromType(section.type)}

@@ -29,7 +29,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   const [currentSection, setCurrentSection] = useState(0);
   const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const [isScrolling, setIsScrolling] = useState(false);
 
   if (!analysis) {
     return (
@@ -66,61 +65,65 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   }
 
   const scrollToSection = (index: number) => {
-    const ref = sectionRefs.current[index];
-    if (!ref || !scrollAreaRef.current) return;
+    const section = sectionRefs.current[index];
+    if (!section) return;
 
-    setIsScrolling(true);
-    setCurrentSection(index);
-
+    // Get the section's position relative to the viewport
+    const sectionRect = section.getBoundingClientRect();
     const scrollArea = scrollAreaRef.current;
-    const targetPosition = ref.offsetTop - 80;
+    if (!scrollArea) return;
 
+    // Calculate the scroll position needed to center the section
+    const scrollPosition = scrollArea.scrollTop + sectionRect.top - 100; // 100px offset for header
+
+    // Scroll to the section
     scrollArea.scrollTo({
-      top: targetPosition,
+      top: scrollPosition,
       behavior: 'smooth'
     });
 
-    setTimeout(() => {
-      setIsScrolling(false);
-    }, 1000);
+    setCurrentSection(index);
   };
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!scrollAreaRef.current || isScrolling) return;
+      if (!scrollAreaRef.current) return;
 
       const scrollArea = scrollAreaRef.current;
-      const scrollPosition = scrollArea.scrollTop;
-      const viewportHeight = scrollArea.clientHeight;
+      const sections = sectionRefs.current;
 
-      let currentActiveSection = 0;
-      let minDistance = Infinity;
+      // Find which section is most visible in the viewport
+      let mostVisibleSection = 0;
+      let maxVisibility = 0;
 
-      sectionRefs.current.forEach((ref, index) => {
-        if (!ref) return;
+      sections.forEach((section, index) => {
+        if (!section) return;
 
-        const rect = ref.getBoundingClientRect();
-        const refTop = rect.top;
-        const distance = Math.abs(refTop - 100); // 100px offset for header
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          currentActiveSection = index;
+        const rect = section.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        // Calculate how much of the section is visible
+        const visibleTop = Math.max(0, rect.top);
+        const visibleBottom = Math.min(viewportHeight, rect.bottom);
+        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+        
+        if (visibleHeight > maxVisibility) {
+          maxVisibility = visibleHeight;
+          mostVisibleSection = index;
         }
       });
 
-      if (!isScrolling) {
-        setCurrentSection(currentActiveSection);
-      }
+      setCurrentSection(mostVisibleSection);
     };
 
     const scrollArea = scrollAreaRef.current;
     if (scrollArea) {
       scrollArea.addEventListener('scroll', handleScroll);
-      handleScroll(); // Initial check
+      // Initial check
+      handleScroll();
       return () => scrollArea.removeEventListener('scroll', handleScroll);
     }
-  }, [isScrolling]);
+  }, []);
 
   return (
     <div className="relative flex flex-col h-[calc(100vh-300px)]">
