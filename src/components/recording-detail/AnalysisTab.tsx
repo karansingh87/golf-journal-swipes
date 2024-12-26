@@ -19,13 +19,9 @@ interface AnalysisData {
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
-  { id: 'key_discoveries', label: 'Key Discoveries' },
-  { id: 'working_elements', label: 'Working Elements' },
-  { id: 'primary_focus', label: 'Primary Focus' },
-  { id: 'technical_deep_dive', label: 'Technical Deep-Dive' },
-  { id: 'mental_game', label: 'Mental Game' },
-  { id: 'next_session', label: 'Next Session' },
-  { id: 'long_term', label: 'Long-Term' },
+  { id: 'wins', label: 'Wins' },
+  { id: 'growth_areas', label: 'Growth Areas' },
+  { id: 'connecting_dots', label: 'Connecting Dots' },
   { id: 'closing_note', label: 'Closing Note' }
 ] as const;
 
@@ -47,6 +43,21 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   try {
     const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
     parsedAnalysis = JSON.parse(cleanAnalysis);
+    console.log('Parsed analysis:', parsedAnalysis);
+
+    // Handle insufficient data case
+    if (parsedAnalysis.sections.length === 1 && parsedAnalysis.sections[0].type === 'quick_note') {
+      return (
+        <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+          <div className="max-w-md text-center space-y-4">
+            <h3 className="text-xl font-semibold text-golf-gray-text-primary">Need More Details</h3>
+            <div className="text-golf-gray-text-secondary whitespace-pre-line">
+              {parsedAnalysis.sections[0].content}
+            </div>
+          </div>
+        </div>
+      );
+    }
   } catch (error) {
     console.error('Error parsing analysis:', error);
     return (
@@ -90,7 +101,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     const scrollArea = scrollAreaRef.current;
     if (scrollArea) {
       scrollArea.addEventListener('scroll', handleScroll);
-      // Initial check for visible sections
       handleScroll();
       return () => scrollArea.removeEventListener('scroll', handleScroll);
     }
@@ -104,14 +114,13 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     setCurrentSection(index);
 
     const scrollArea = scrollAreaRef.current;
-    const targetPosition = ref.offsetTop - 80; // Adjust offset for header
+    const targetPosition = ref.offsetTop - 80;
 
     scrollArea.scrollTo({
       top: targetPosition,
       behavior: 'smooth'
     });
 
-    // Reset isScrolling after animation completes
     setTimeout(() => {
       setIsScrolling(false);
     }, 1000);
