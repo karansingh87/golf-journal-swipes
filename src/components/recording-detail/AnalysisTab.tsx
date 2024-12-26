@@ -62,14 +62,19 @@ const ContentCard = ({ title, content, className }: {
   content: string | string[];
   className?: string;
 }) => (
-  <Card className={cn("border border-border/50 backdrop-blur-sm", className)}>
+  <Card className={cn(
+    "border border-zinc-200/50 backdrop-blur-sm transition-all duration-200",
+    "hover:border-zinc-300/50 hover:shadow-md",
+    "dark:border-zinc-800/50 dark:hover:border-zinc-700/50",
+    className
+  )}>
     <CardHeader className="pb-2">
-      <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+      <CardTitle className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{title}</CardTitle>
     </CardHeader>
     <CardContent>
       {typeof content === 'string' ? (
         <ReactMarkdown
-          className="prose prose-sm max-w-none text-muted-foreground"
+          className="prose prose-zinc prose-sm max-w-none text-zinc-600 dark:text-zinc-300"
           components={{
             p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
           }}
@@ -81,7 +86,7 @@ const ContentCard = ({ title, content, className }: {
           {content?.map((item, index) => (
             <li key={index}>
               <ReactMarkdown
-                className="prose prose-sm max-w-none text-muted-foreground"
+                className="prose prose-zinc prose-sm max-w-none text-zinc-600 dark:text-zinc-300"
                 components={{
                   p: ({ children }) => <p className="mb-0">{children}</p>,
                 }}
@@ -100,7 +105,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   if (!analysis) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
-        <p className="text-muted-foreground">No analysis available for this session.</p>
+        <p className="text-zinc-500 dark:text-zinc-400">No analysis available for this session.</p>
       </div>
     );
   }
@@ -114,7 +119,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     console.error('Error parsing analysis:', error);
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
-        <p className="text-muted-foreground">Unable to load analysis. Invalid data format.</p>
+        <p className="text-zinc-500 dark:text-zinc-400">Unable to load analysis. Invalid data format.</p>
       </div>
     );
   }
@@ -128,7 +133,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={data.overview.title}
           content={data.overview.content}
-          className="bg-[#F8F9FC] dark:bg-slate-900"
+          className="bg-white/80 dark:bg-zinc-900/80"
         />
 
         {/* Breakthroughs Section */}
@@ -136,12 +141,12 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={data.breakthroughs.key_discoveries.title}
             content={data.breakthroughs.key_discoveries.content}
-            className="bg-[#F2FCE2] text-[#2B5F1E] dark:bg-[#1E3A14] dark:text-[#A7E777]"
+            className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
           <ContentCard
             title={data.breakthroughs.working_elements.title}
             content={data.breakthroughs.working_elements.content}
-            className="bg-[#E5F6FF] text-[#0A558C] dark:bg-[#0A3A5C] dark:text-[#7CC7FF]"
+            className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
         </div>
 
@@ -150,12 +155,12 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={data.growth_opportunities.primary_focus.title}
             content={data.growth_opportunities.primary_focus.content}
-            className="bg-[#FEF7CD] text-[#915930] dark:bg-[#4D3019] dark:text-[#FFD584]"
+            className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
           <ContentCard
             title={data.growth_opportunities.technical_deep_dive.title}
             content={data.growth_opportunities.technical_deep_dive.content}
-            className="bg-[#F8E5FF] text-[#6941C6] dark:bg-[#3B2473] dark:text-[#C4A7FF]"
+            className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
         </div>
 
@@ -163,7 +168,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={data.mental_game.title}
           content={data.mental_game.content}
-          className="bg-[#FFF4ED] text-[#C4320A] dark:bg-[#6B1C05] dark:text-[#FFB599]"
+          className="bg-zinc-50/80 dark:bg-zinc-900/80"
         />
 
         {/* Focus Areas Section */}
@@ -171,12 +176,12 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={data.focus_areas.next_session.title}
             content={data.focus_areas.next_session.content}
-            className="bg-[#EEF4FF] text-[#3538CD] dark:bg-[#1E1F73] dark:text-[#A5A7FF]"
+            className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
           <ContentCard
             title={data.focus_areas.long_term.title}
             content={data.focus_areas.long_term.content}
-            className="bg-[#F0F9FF] text-[#026AA2] dark:bg-[#013B5C] dark:text-[#7CD3FF]"
+            className="bg-zinc-50/80 dark:bg-zinc-900/80"
           />
         </div>
 
@@ -184,7 +189,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={data.closing_note.title}
           content={data.closing_note.content}
-          className="bg-[#F8F9FC] dark:bg-slate-900"
+          className="bg-white/80 dark:bg-zinc-900/80"
         />
       </div>
     </ScrollArea>
