@@ -35,28 +35,40 @@ interface AnalysisData {
   };
 }
 
-const ContentCard = ({ title, content, className }: { 
+const ContentCard = ({ title, content, className, isOverview = false }: { 
   title: string; 
   content?: string | string[];
   className?: string;
+  isOverview?: boolean;
 }) => (
   <Card className={cn(
-    "border border-[#E5E7EB] bg-white rounded-2xl", 
-    "transition-all duration-200 hover:shadow-card-light",
+    "border rounded-2xl transition-all duration-200 hover:shadow-card-light", 
+    isOverview ? "border-golf-green bg-golf-green" : "border-[#E5E7EB] bg-white",
     className
   )}>
     <CardHeader className="pb-2">
-      <CardTitle className="text-xl font-semibold text-golf-gray-text-primary">{title}</CardTitle>
+      <CardTitle className={cn(
+        "text-xl font-semibold",
+        isOverview ? "text-white" : "text-golf-gray-text-primary"
+      )}>
+        {title}
+      </CardTitle>
     </CardHeader>
     <CardContent>
       {typeof content === 'string' ? (
         <ReactMarkdown
-          className="prose max-w-none text-golf-gray-text-secondary"
+          className={cn(
+            "prose max-w-none",
+            isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
+          )}
           components={{
             p: ({ children }) => <p className="text-sm mb-2 last:mb-0">{children}</p>,
             li: ({ children }) => (
               <li className="flex items-start gap-2 mb-2">
-                <span className="mt-1.5 h-1 w-1 rounded-full bg-golf-gray-text-secondary flex-shrink-0" />
+                <span className={cn(
+                  "mt-1.5 h-1 w-1 rounded-full flex-shrink-0",
+                  isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
+                )} />
                 <span className="text-sm">{children}</span>
               </li>
             ),
@@ -69,9 +81,15 @@ const ContentCard = ({ title, content, className }: {
         <ul className="list-none pl-0 space-y-2">
           {content?.map((item, index) => (
             <li key={index} className="flex items-start gap-2">
-              <span className="mt-1.5 h-1 w-1 rounded-full bg-golf-gray-text-secondary flex-shrink-0" />
+              <span className={cn(
+                "mt-1.5 h-1 w-1 rounded-full flex-shrink-0",
+                isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
+              )} />
               <ReactMarkdown
-                className="prose max-w-none text-golf-gray-text-secondary"
+                className={cn(
+                  "prose max-w-none",
+                  isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
+                )}
                 components={{
                   p: ({ children }) => <p className="text-sm mb-0">{children}</p>,
                 }}
@@ -97,7 +115,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
 
   let parsedAnalysis: AnalysisData;
   try {
-    // Remove markdown code block markers if present
     const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
     parsedAnalysis = JSON.parse(cleanAnalysis);
   } catch (error) {
@@ -118,6 +135,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={session_analysis.overview.title}
           content={session_analysis.overview.content}
+          isOverview={true}
         />
 
         {/* Breakthroughs Section */}
