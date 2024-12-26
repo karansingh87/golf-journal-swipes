@@ -112,50 +112,53 @@ const RecordingDetail = () => {
           "transition-all duration-300",
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
-          <div className="p-6 border-b border-border/50">
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <div className="text-lg font-medium">
-                  {format(new Date(recording.created_at), "MMMM d, yyyy")}
+          <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <div className="text-lg font-medium">
+                    {format(new Date(recording.created_at), "MMMM d, yyyy")}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {format(new Date(recording.created_at), "h:mm a")}
+                  </div>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {format(new Date(recording.created_at), "h:mm a")}
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleDelete}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
                 </div>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleDelete}
-                >
-                  <Trash2 className="h-4 w-4 text-destructive" />
-                </Button>
               </div>
             </div>
+
+            <Tabs defaultValue="analysis" className="w-full">
+              <TabsList className="w-full grid grid-cols-3">
+                <TabsTrigger value="analysis">
+                  Analysis
+                </TabsTrigger>
+                <TabsTrigger value="insights">
+                  Insights
+                </TabsTrigger>
+                <TabsTrigger value="transcription">
+                  Transcript
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
 
-          <Tabs defaultValue="analysis" className="w-full">
-            <TabsList className="w-full grid grid-cols-3">
-              <TabsTrigger value="analysis">
-                Analysis
-              </TabsTrigger>
-              <TabsTrigger value="insights">
-                Insights
-              </TabsTrigger>
-              <TabsTrigger value="transcription">
-                Transcript
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="analysis" className="mt-0">
-              <AnalysisTab analysis={recording.analysis} />
-            </TabsContent>
-            <TabsContent value="insights" className="mt-0">
-              <InsightsTab insights={recording.insights} />
-            </TabsContent>
-            <TabsContent value="transcription" className="mt-0">
-              <TranscriptionTab transcription={recording.transcription} />
-            </TabsContent>
-          </Tabs>
+          <TabsContent value="analysis" className="mt-0 animate-in fade-in-50 duration-500">
+            <AnalysisTab analysis={recording.analysis} />
+          </TabsContent>
+          <TabsContent value="insights" className="mt-0 animate-in fade-in-50 duration-500">
+            <InsightsTab insights={recording.insights} />
+          </TabsContent>
+          <TabsContent value="transcription" className="mt-0 animate-in fade-in-50 duration-500">
+            <TranscriptionTab transcription={recording.transcription} />
+          </TabsContent>
         </div>
       </div>
     </div>
