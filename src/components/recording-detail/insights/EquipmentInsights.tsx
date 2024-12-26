@@ -1,5 +1,6 @@
 import { Wrench } from 'lucide-react';
 import InsightCard from './InsightCard';
+import QualityBadge from './QualityBadge';
 
 interface EquipmentNote {
   club: string;
