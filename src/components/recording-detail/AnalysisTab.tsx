@@ -40,14 +40,18 @@ const ContentCard = ({ title, content, className }: {
   content?: string | string[];
   className?: string;
 }) => (
-  <Card className={cn("border border-border/50 backdrop-blur-sm", className)}>
+  <Card className={cn(
+    "border border-golf-gray-light bg-white", 
+    "transition-all duration-200 hover:shadow-card-light",
+    className
+  )}>
     <CardHeader className="pb-2">
-      <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+      <CardTitle className="text-lg font-semibold text-golf-gray-text-primary">{title}</CardTitle>
     </CardHeader>
     <CardContent>
       {typeof content === 'string' ? (
         <ReactMarkdown
-          className="prose prose-sm max-w-none text-muted-foreground"
+          className="prose prose-sm max-w-none text-golf-gray-text-primary"
           components={{
             p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
           }}
@@ -59,7 +63,7 @@ const ContentCard = ({ title, content, className }: {
           {content?.map((item, index) => (
             <li key={index}>
               <ReactMarkdown
-                className="prose prose-sm max-w-none text-muted-foreground"
+                className="prose prose-sm max-w-none text-golf-gray-text-primary"
                 components={{
                   p: ({ children }) => <p className="mb-0">{children}</p>,
                 }}
@@ -78,19 +82,21 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   if (!analysis) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
-        <p className="text-muted-foreground">No analysis available for this session.</p>
+        <p className="text-golf-gray-text-secondary">No analysis available for this session.</p>
       </div>
     );
   }
 
   let parsedAnalysis: AnalysisData;
   try {
-    parsedAnalysis = JSON.parse(analysis).session_analysis;
+    // Remove markdown code block markers if present
+    const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
+    parsedAnalysis = JSON.parse(cleanAnalysis).session_analysis;
   } catch (error) {
     console.error('Error parsing analysis:', error);
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
-        <p className="text-muted-foreground">Unable to load analysis. Invalid data format.</p>
+        <p className="text-golf-gray-text-secondary">Unable to load analysis. Invalid data format.</p>
       </div>
     );
   }
@@ -102,7 +108,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={parsedAnalysis.overview.title}
           content={parsedAnalysis.overview.content}
-          className="bg-[#F8F9FC] dark:bg-slate-900"
         />
 
         {/* Breakthroughs Section */}
@@ -110,12 +115,10 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={parsedAnalysis.breakthroughs.key_discoveries.title}
             content={parsedAnalysis.breakthroughs.key_discoveries.content}
-            className="bg-[#F2FCE2] text-[#2B5F1E]"
           />
           <ContentCard
             title={parsedAnalysis.breakthroughs.working_elements.title}
             content={parsedAnalysis.breakthroughs.working_elements.content}
-            className="bg-[#E5F6FF] text-[#0A558C]"
           />
         </div>
 
@@ -124,12 +127,10 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={parsedAnalysis.growth_opportunities.primary_focus.title}
             content={parsedAnalysis.growth_opportunities.primary_focus.content}
-            className="bg-[#FEF7CD] text-[#915930]"
           />
           <ContentCard
             title={parsedAnalysis.growth_opportunities.technical_deep_dive.title}
             content={parsedAnalysis.growth_opportunities.technical_deep_dive.content}
-            className="bg-[#F8E5FF] text-[#6941C6]"
           />
         </div>
 
@@ -137,7 +138,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={parsedAnalysis.mental_game.title}
           content={parsedAnalysis.mental_game.content}
-          className="bg-[#FFF4ED] text-[#C4320A]"
         />
 
         {/* Focus Areas Section */}
@@ -145,12 +145,10 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           <ContentCard
             title={parsedAnalysis.focus_areas.next_session.title}
             content={parsedAnalysis.focus_areas.next_session.content}
-            className="bg-[#EEF4FF] text-[#3538CD]"
           />
           <ContentCard
             title={parsedAnalysis.focus_areas.long_term.title}
             content={parsedAnalysis.focus_areas.long_term.content}
-            className="bg-[#F0F9FF] text-[#026AA2]"
           />
         </div>
 
@@ -158,7 +156,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         <ContentCard
           title={parsedAnalysis.closing_note.title}
           content={parsedAnalysis.closing_note.content}
-          className="bg-[#F8F9FC] dark:bg-slate-900"
         />
       </div>
     </ScrollArea>
