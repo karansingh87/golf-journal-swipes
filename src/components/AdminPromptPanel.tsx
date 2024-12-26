@@ -125,39 +125,47 @@ const AdminPromptPanel = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+    <div className="bg-white p-4 sm:p-6 rounded-lg border border-gray-200 shadow-sm overflow-hidden">
       <h2 className="text-lg font-semibold mb-4">Admin Panel - GPT Prompt Configuration</h2>
       
       <Tabs defaultValue="analysis" className="w-full">
-        <TabsList className="mb-4">
-          <TabsTrigger value="analysis">Analysis Prompt</TabsTrigger>
-          <TabsTrigger value="insights">Insights Prompt</TabsTrigger>
-          <TabsTrigger value="history">Change History</TabsTrigger>
+        <TabsList className="mb-4 w-full flex h-auto flex-wrap gap-2 bg-transparent border-b border-border/50">
+          <TabsTrigger value="analysis" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+            Analysis Prompt
+          </TabsTrigger>
+          <TabsTrigger value="insights" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+            Insights Prompt
+          </TabsTrigger>
+          <TabsTrigger value="history" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+            Change History
+          </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="analysis">
-          <PromptEditor
-            value={prompt}
-            onChange={setPrompt}
-            onSave={() => handleSave('analysis')}
-            isLoading={isLoading}
-            type="analysis"
-          />
-        </TabsContent>
-        
-        <TabsContent value="insights">
-          <PromptEditor
-            value={insightsPrompt}
-            onChange={setInsightsPrompt}
-            onSave={() => handleSave('insights')}
-            isLoading={isLoading}
-            type="insights"
-          />
-        </TabsContent>
+        <div className="overflow-x-auto">
+          <TabsContent value="analysis">
+            <PromptEditor
+              value={prompt}
+              onChange={setPrompt}
+              onSave={() => handleSave('analysis')}
+              isLoading={isLoading}
+              type="analysis"
+            />
+          </TabsContent>
+          
+          <TabsContent value="insights">
+            <PromptEditor
+              value={insightsPrompt}
+              onChange={setInsightsPrompt}
+              onSave={() => handleSave('insights')}
+              isLoading={isLoading}
+              type="insights"
+            />
+          </TabsContent>
 
-        <TabsContent value="history">
-          <PromptHistoryTable history={promptHistory} />
-        </TabsContent>
+          <TabsContent value="history">
+            <PromptHistoryTable history={promptHistory} />
+          </TabsContent>
+        </div>
       </Tabs>
     </div>
   );

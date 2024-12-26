@@ -45,17 +45,17 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <Button
             variant="outline"
             onClick={() => navigate('/')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 w-fit"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Recorder
           </Button>
-          <h1 className="text-2xl font-semibold text-gray-900">Admin Panel</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Admin Panel</h1>
         </div>
         
         <AdminPromptPanel />

@@ -34,26 +34,26 @@ const PromptHistoryTable = ({ history }: PromptHistoryTableProps) => {
   };
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Type</TableHead>
-            <TableHead>Previous Value</TableHead>
-            <TableHead>Changed At</TableHead>
+            <TableHead className="whitespace-nowrap">Type</TableHead>
+            <TableHead className="whitespace-nowrap">Previous Value</TableHead>
+            <TableHead className="whitespace-nowrap">Changed At</TableHead>
             <TableHead className="w-[100px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {history.map((item) => (
             <TableRow key={item.id}>
-              <TableCell className="font-medium capitalize">
+              <TableCell className="font-medium capitalize whitespace-nowrap">
                 {item.prompt_type}
               </TableCell>
-              <TableCell className="font-mono text-sm max-w-[500px] truncate">
+              <TableCell className="font-mono text-sm max-w-[300px] sm:max-w-[500px] truncate">
                 {item.old_value}
               </TableCell>
-              <TableCell>
+              <TableCell className="whitespace-nowrap">
                 {format(new Date(item.changed_at), 'MMM d, yyyy HH:mm')}
               </TableCell>
               <TableCell>
