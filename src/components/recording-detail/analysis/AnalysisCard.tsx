@@ -39,14 +39,14 @@ const AnalysisCard = ({ title, content, className, isOverview = false, index = 0
               isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
             )}
             components={{
-              p: ({ children }) => <p className="text-sm mb-2 last:mb-0">{children}</p>,
+              p: ({ children }) => <p className="text-base mb-2 last:mb-0">{children}</p>,
               li: ({ children }) => (
                 <li className="flex items-start gap-2 mb-2">
                   <span className={cn(
-                    "mt-1.5 h-1 w-1 rounded-full flex-shrink-0",
+                    "mt-2 h-1 w-1 rounded-full flex-shrink-0",
                     isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
                   )} />
-                  <span className="text-sm">{children}</span>
+                  <span className="text-base">{children}</span>
                 </li>
               ),
               ul: ({ children }) => <ul className="list-none pl-0 space-y-2">{children}</ul>,
@@ -59,7 +59,7 @@ const AnalysisCard = ({ title, content, className, isOverview = false, index = 0
             {content?.map((item, index) => (
               <li key={index} className="flex items-start gap-2">
                 <span className={cn(
-                  "mt-1.5 h-1 w-1 rounded-full flex-shrink-0",
+                  "mt-2 h-1 w-1 rounded-full flex-shrink-0",
                   isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
                 )} />
                 <ReactMarkdown
@@ -68,7 +68,7 @@ const AnalysisCard = ({ title, content, className, isOverview = false, index = 0
                     isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
                   )}
                   components={{
-                    p: ({ children }) => <p className="text-sm mb-0">{children}</p>,
+                    p: ({ children }) => <p className="text-base mb-0">{children}</p>,
                   }}
                 >
                   {item}
