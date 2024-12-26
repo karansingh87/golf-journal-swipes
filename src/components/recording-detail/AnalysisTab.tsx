@@ -41,31 +41,39 @@ const ContentCard = ({ title, content, className }: {
   className?: string;
 }) => (
   <Card className={cn(
-    "border border-golf-gray-light bg-white", 
+    "border border-[#E5E7EB] bg-white rounded-2xl", 
     "transition-all duration-200 hover:shadow-card-light",
     className
   )}>
     <CardHeader className="pb-2">
-      <CardTitle className="text-lg font-semibold text-golf-gray-text-primary">{title}</CardTitle>
+      <CardTitle className="text-2xl font-semibold text-golf-gray-text-primary">{title}</CardTitle>
     </CardHeader>
     <CardContent>
       {typeof content === 'string' ? (
         <ReactMarkdown
-          className="prose prose-sm max-w-none text-golf-gray-text-primary"
+          className="prose prose-lg max-w-none text-golf-gray-text-secondary"
           components={{
-            p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+            p: ({ children }) => <p className="text-base mb-2 last:mb-0">{children}</p>,
+            li: ({ children }) => (
+              <li className="flex items-start gap-2 mb-2">
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-golf-gray-text-secondary flex-shrink-0" />
+                <span className="text-base">{children}</span>
+              </li>
+            ),
+            ul: ({ children }) => <ul className="list-none pl-0 space-y-2">{children}</ul>,
           }}
         >
           {content}
         </ReactMarkdown>
       ) : (
-        <ul className="space-y-2">
+        <ul className="list-none pl-0 space-y-2">
           {content?.map((item, index) => (
-            <li key={index}>
+            <li key={index} className="flex items-start gap-2">
+              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-golf-gray-text-secondary flex-shrink-0" />
               <ReactMarkdown
-                className="prose prose-sm max-w-none text-golf-gray-text-primary"
+                className="prose prose-lg max-w-none text-golf-gray-text-secondary"
                 components={{
-                  p: ({ children }) => <p className="mb-0">{children}</p>,
+                  p: ({ children }) => <p className="text-base mb-0">{children}</p>,
                 }}
               >
                 {item}
