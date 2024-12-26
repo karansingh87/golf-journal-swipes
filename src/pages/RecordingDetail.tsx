@@ -113,7 +113,7 @@ const RecordingDetail = () => {
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
           <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
-            <div className="p-6">
+            <div className="px-6 pt-6 pb-3">
               <div className="flex items-center justify-between mb-2">
                 <div>
                   <div className="text-lg font-medium">
@@ -148,13 +148,13 @@ const RecordingDetail = () => {
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="analysis" className="mt-0 animate-in fade-in-50 duration-500">
+              <TabsContent value="analysis" className="mt-0">
                 <AnalysisTab analysis={recording.analysis} />
               </TabsContent>
-              <TabsContent value="insights" className="mt-0 animate-in fade-in-50 duration-500">
+              <TabsContent value="insights" className="mt-0">
                 <InsightsTab insights={recording.insights} />
               </TabsContent>
-              <TabsContent value="transcription" className="mt-0 animate-in fade-in-50 duration-500">
+              <TabsContent value="transcription" className="mt-0">
                 <TranscriptionTab transcription={recording.transcription} />
               </TabsContent>
             </Tabs>
