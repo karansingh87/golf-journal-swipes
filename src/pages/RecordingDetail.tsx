@@ -147,18 +147,18 @@ const RecordingDetail = () => {
                   Transcript
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="analysis" className="mt-0 animate-in fade-in-50 duration-500">
+                <AnalysisTab analysis={recording.analysis} />
+              </TabsContent>
+              <TabsContent value="insights" className="mt-0 animate-in fade-in-50 duration-500">
+                <InsightsTab insights={recording.insights} />
+              </TabsContent>
+              <TabsContent value="transcription" className="mt-0 animate-in fade-in-50 duration-500">
+                <TranscriptionTab transcription={recording.transcription} />
+              </TabsContent>
             </Tabs>
           </div>
-
-          <TabsContent value="analysis" className="mt-0 animate-in fade-in-50 duration-500">
-            <AnalysisTab analysis={recording.analysis} />
-          </TabsContent>
-          <TabsContent value="insights" className="mt-0 animate-in fade-in-50 duration-500">
-            <InsightsTab insights={recording.insights} />
-          </TabsContent>
-          <TabsContent value="transcription" className="mt-0 animate-in fade-in-50 duration-500">
-            <TranscriptionTab transcription={recording.transcription} />
-          </TabsContent>
         </div>
       </div>
     </div>
