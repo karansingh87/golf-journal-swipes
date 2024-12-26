@@ -1,6 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AnalysisCard from "./analysis/AnalysisCard";
+import NavigationDots from "./analysis/NavigationDots";
 
 interface AnalysisTabProps {
   analysis: string | null;
@@ -28,6 +29,10 @@ const getTitleFromType = (type: string): string => {
 };
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
+  const [currentSection, setCurrentSection] = useState(0);
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
   if (!analysis) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
@@ -40,9 +45,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   try {
     const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
     parsedAnalysis = JSON.parse(cleanAnalysis);
-    console.log('Parsed analysis:', parsedAnalysis);
 
-    // Handle insufficient data case
     if (parsedAnalysis.sections.length === 1 && parsedAnalysis.sections[0].type === 'quick_note') {
       return (
         <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
@@ -64,12 +67,57 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!scrollAreaRef.current) return;
+
+      const scrollArea = scrollAreaRef.current;
+      const viewportHeight = scrollArea.clientHeight;
+      
+      sectionRefs.current.forEach((ref, index) => {
+        if (!ref) return;
+
+        const rect = ref.getBoundingClientRect();
+        const sectionTop = rect.top;
+        const threshold = viewportHeight * 0.3; // Section is considered active when it's in the top 30% of viewport
+
+        if (sectionTop <= threshold) {
+          setCurrentSection(index);
+        }
+      });
+    };
+
+    const scrollArea = scrollAreaRef.current;
+    if (scrollArea) {
+      scrollArea.addEventListener('scroll', handleScroll);
+      return () => scrollArea.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  const scrollToSection = (index: number) => {
+    const ref = sectionRefs.current[index];
+    if (!ref || !scrollAreaRef.current) return;
+
+    const scrollArea = scrollAreaRef.current;
+    const targetPosition = ref.offsetTop - 80;
+
+    scrollArea.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
+
+    setCurrentSection(index);
+  };
+
   return (
     <div className="relative flex flex-col h-[calc(100vh-300px)]">
-      <ScrollArea className="flex-1 px-6">
+      <ScrollArea ref={scrollAreaRef} className="flex-1 px-6">
         <div className="space-y-6 py-6">
           {parsedAnalysis.sections.map((section, index) => (
-            <div key={section.type}>
+            <div 
+              key={section.type}
+              ref={el => sectionRefs.current[index] = el}
+            >
               <AnalysisCard
                 title={getTitleFromType(section.type)}
                 content={section.content}
@@ -80,6 +128,12 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           ))}
         </div>
       </ScrollArea>
+      
+      <NavigationDots
+        totalSections={parsedAnalysis.sections.length}
+        currentSection={currentSection}
+        onDotClick={scrollToSection}
+      />
     </div>
   );
 };
