@@ -1,8 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState, useRef, useEffect } from "react";
-import NavigationTabs from "./analysis/NavigationTabs";
-import AnalysisSections from "./analysis/AnalysisSections";
-import ProgressIndicator from "./analysis/ProgressIndicator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AnalysisCard from "./analysis/AnalysisCard";
 
 interface AnalysisTabProps {
   analysis: string | null;
@@ -17,19 +15,19 @@ interface AnalysisData {
   sections: AnalysisSection[];
 }
 
-const SECTIONS = [
-  { id: 'session_story', label: 'Session Story' },
-  { id: 'breakthroughs', label: 'Breakthroughs' },
-  { id: 'opportunities', label: 'Opportunities' },
-  { id: 'patterns_and_potential', label: 'Patterns & Potential' },
-  { id: 'key_takeaway', label: 'Key Takeaway' }
-] as const;
+const getTitleFromType = (type: string): string => {
+  const titles: Record<string, string> = {
+    session_story: "Session Story",
+    breakthroughs: "Breakthroughs",
+    opportunities: "Opportunities",
+    patterns_and_potential: "Patterns & Potential",
+    key_takeaway: "Key Takeaway",
+    quick_note: "Quick Note"
+  };
+  return titles[type] || type;
+};
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
-  const [currentSection, setCurrentSection] = useState(0);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-
   if (!analysis) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
@@ -64,86 +62,33 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
-  const scrollToSection = (index: number) => {
-    const section = sectionRefs.current[index];
-    if (!section) return;
-
-    // Get the section's position relative to the viewport
-    const sectionRect = section.getBoundingClientRect();
-    const scrollArea = scrollAreaRef.current;
-    if (!scrollArea) return;
-
-    // Calculate the scroll position needed to center the section
-    const scrollPosition = scrollArea.scrollTop + sectionRect.top - 100; // 100px offset for header
-
-    // Scroll to the section
-    scrollArea.scrollTo({
-      top: scrollPosition,
-      behavior: 'smooth'
-    });
-
-    setCurrentSection(index);
-  };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!scrollAreaRef.current) return;
-
-      const scrollArea = scrollAreaRef.current;
-      const sections = sectionRefs.current;
-
-      // Find which section is most visible in the viewport
-      let mostVisibleSection = 0;
-      let maxVisibility = 0;
-
-      sections.forEach((section, index) => {
-        if (!section) return;
-
-        const rect = section.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        
-        // Calculate how much of the section is visible
-        const visibleTop = Math.max(0, rect.top);
-        const visibleBottom = Math.min(viewportHeight, rect.bottom);
-        const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-        
-        if (visibleHeight > maxVisibility) {
-          maxVisibility = visibleHeight;
-          mostVisibleSection = index;
-        }
-      });
-
-      setCurrentSection(mostVisibleSection);
-    };
-
-    const scrollArea = scrollAreaRef.current;
-    if (scrollArea) {
-      scrollArea.addEventListener('scroll', handleScroll);
-      // Initial check
-      handleScroll();
-      return () => scrollArea.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
   return (
-    <div className="relative flex flex-col h-[calc(100vh-300px)]">
-      <NavigationTabs 
-        sections={SECTIONS}
-        currentSection={currentSection}
-        onSectionClick={scrollToSection}
-      />
+    <div className="h-[calc(100vh-300px)]">
+      <Tabs defaultValue={parsedAnalysis.sections[0].type} className="w-full">
+        <ScrollArea className="pb-2 mb-2">
+          <TabsList className="w-full inline-flex h-12 items-center justify-start px-4 overflow-x-auto">
+            {parsedAnalysis.sections.map((section) => (
+              <TabsTrigger
+                key={section.type}
+                value={section.type}
+                className="flex-shrink-0"
+              >
+                {getTitleFromType(section.type)}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </ScrollArea>
 
-      <ScrollArea 
-        ref={scrollAreaRef} 
-        className="flex-1 px-6"
-      >
-        <AnalysisSections 
-          sections={parsedAnalysis.sections}
-          sectionRefs={sectionRefs}
-        />
-      </ScrollArea>
-
-      <ProgressIndicator currentSection={currentSection} />
+        {parsedAnalysis.sections.map((section) => (
+          <TabsContent key={section.type} value={section.type} className="px-6 mt-4">
+            <AnalysisCard
+              title={getTitleFromType(section.type)}
+              content={section.content}
+              isOverview={section.type === 'session_story'}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };
