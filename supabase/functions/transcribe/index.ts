@@ -23,14 +23,16 @@ serve(async (req) => {
       throw new Error('OpenAI API key is not configured');
     }
 
-    console.log('Received audio file, sending to OpenAI...');
+    console.log('Received request for transcription');
     const formData = await req.formData();
     const audioFile = formData.get('file');
     
     if (!audioFile) {
+      console.error('No audio file provided in request');
       throw new Error('No audio file provided');
     }
 
+    console.log('Sending audio to OpenAI Whisper API...');
     const openAIResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       method: 'POST',
       headers: {
@@ -49,13 +51,19 @@ serve(async (req) => {
     console.log('Transcription successful');
 
     return new Response(JSON.stringify(result), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { 
+        ...corsHeaders, 
+        'Content-Type': 'application/json' 
+      },
     });
   } catch (error) {
     console.error('Error in transcribe function:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { 
+        ...corsHeaders, 
+        'Content-Type': 'application/json' 
+      },
     });
   }
 });
