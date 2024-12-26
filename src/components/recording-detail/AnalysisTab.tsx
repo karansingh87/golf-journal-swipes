@@ -1,5 +1,4 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { TabsContent } from "@/components/ui/tabs";
 import { useState, useRef, useEffect } from "react";
 import NavigationTabs from "./analysis/NavigationTabs";
 import AnalysisSections from "./analysis/AnalysisSections";
@@ -40,7 +39,7 @@ interface AnalysisData {
 const SECTIONS = [
   { id: 'overview', label: 'Overview' },
   { id: 'breakthroughs', label: 'Breakthroughs' },
-  { id: 'opportunities', label: 'Opportunities' },
+  { id: 'opportunities', label: 'Growth' },
   { id: 'mental', label: 'Mental Game' },
   { id: 'focus', label: 'Focus Areas' },
   { id: 'closing', label: 'Closing' }
