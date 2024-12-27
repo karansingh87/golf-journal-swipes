@@ -15,7 +15,7 @@ serve(async (req) => {
 
   try {
     const { user_id } = await req.json()
-    console.log('Generating trends for user:', user_id)
+    console.log('Starting trends generation for user:', user_id)
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -35,10 +35,12 @@ serve(async (req) => {
       throw recordingsError
     }
 
+    console.log(`Found ${recordings?.length || 0} recordings`)
+
     if (!recordings || recordings.length < 3) {
       console.log('Not enough recordings found')
       return new Response(
-        JSON.stringify({ error: 'Not enough recordings' }),
+        JSON.stringify({ error: 'Not enough recordings. Minimum 3 recordings required.' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       )
     }
@@ -53,6 +55,8 @@ serve(async (req) => {
       console.error('Error fetching prompt:', promptError)
       throw promptError
     }
+
+    console.log('Successfully fetched prompt configuration')
 
     // Prepare analyses for the AI
     const analyses = recordings.map(r => r.analysis).filter(Boolean)
@@ -87,8 +91,10 @@ serve(async (req) => {
     }
 
     const analysisData = await openAIResponse.json()
+    console.log('Successfully received OpenAI response')
+
     const trends = JSON.parse(analysisData.choices[0].message.content)
-    console.log('Trends generated successfully')
+    console.log('Successfully parsed trends data')
 
     // Save the trends
     const { error: trendsError } = await supabase
@@ -105,7 +111,7 @@ serve(async (req) => {
       throw trendsError
     }
 
-    console.log('Trends saved successfully')
+    console.log('Successfully saved trends to database')
 
     return new Response(
       JSON.stringify({ success: true }),
