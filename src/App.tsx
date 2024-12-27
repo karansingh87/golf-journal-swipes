@@ -9,8 +9,7 @@ import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
-import Notes from "./pages/Notes";
-import Trends from "./pages/Trends";
+import SwipeableViews from "./components/navigation/SwipeableViews";
 import Admin from "./pages/Admin";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect, useState } from "react";
@@ -104,12 +103,12 @@ const App = () => (
             } />
             <Route path="/notes" element={
               <ProtectedRoute>
-                <Notes />
+                <SwipeableViews />
               </ProtectedRoute>
             } />
             <Route path="/trends" element={
               <ProtectedRoute>
-                <Trends />
+                <SwipeableViews />
               </ProtectedRoute>
             } />
             <Route path="/recording/:id" element={
@@ -122,7 +121,6 @@ const App = () => (
                 <Admin />
               </ProtectedRoute>
             } />
-            {/* Redirect /history to /notes */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
           </Routes>
         </BrowserRouter>
