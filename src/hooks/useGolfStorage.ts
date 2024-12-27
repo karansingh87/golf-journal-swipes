@@ -22,12 +22,10 @@ export const useGolfStorage = () => {
 
     try {
       console.log('Starting analysis for recording...');
-      const { analysis, insights } = await analyzeTranscription(transcriptionText);
+      const { analysis } = await analyzeTranscription(transcriptionText);
       console.log('Analysis completed:', { 
         hasAnalysis: !!analysis,
-        hasInsights: !!insights,
-        analysisLength: analysis?.length,
-        insightsLength: insights?.length
+        analysisLength: analysis?.length
       });
       
       const { data, error: insertError } = await supabase
@@ -38,7 +36,6 @@ export const useGolfStorage = () => {
           transcription: transcriptionText,
           duration: audioUrl ? 0 : 0,
           analysis,
-          insights,
           session_type: sessionType
         })
         .select()
@@ -51,8 +48,7 @@ export const useGolfStorage = () => {
       
       console.log('Recording saved successfully:', {
         id: data.id,
-        hasAnalysis: !!data.analysis,
-        hasInsights: !!data.insights
+        hasAnalysis: !!data.analysis
       });
       
       toast({
