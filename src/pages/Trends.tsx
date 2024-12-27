@@ -54,7 +54,7 @@ const Trends = () => {
       }
 
       if (data) {
-        // Type guard to ensure patterns is an array
+        // Type guard to ensure patterns is an array and transform it
         const patterns = Array.isArray(data.patterns) 
           ? data.patterns.map((pattern: any): TrendPattern => ({
               type: pattern.type || 'power_moves',
@@ -67,20 +67,14 @@ const Trends = () => {
             }))
           : [];
 
-        // Type guard to ensure analysis_metadata is an object
-        const metadata = typeof data.analysis_metadata === 'object' && data.analysis_metadata !== null
-          ? {
-              sessions_analyzed: Number(data.analysis_metadata.sessions_analyzed) || 0,
-              date_range: String(data.analysis_metadata.date_range) || '',
-              total_insights_found: Number(data.analysis_metadata.total_insights_found) || 0,
-              confidence_level: Number(data.analysis_metadata.confidence_level) || 0
-            }
-          : {
-              sessions_analyzed: 0,
-              date_range: '',
-              total_insights_found: 0,
-              confidence_level: 0
-            };
+        // Type guard and transform analysis_metadata
+        const rawMetadata = data.analysis_metadata as Record<string, any>;
+        const metadata: TrendAnalysisMetadata = {
+          sessions_analyzed: Number(rawMetadata?.sessions_analyzed) || 0,
+          date_range: String(rawMetadata?.date_range || ''),
+          total_insights_found: Number(rawMetadata?.total_insights_found) || 0,
+          confidence_level: Number(rawMetadata?.confidence_level) || 0
+        };
 
         const transformedTrend: Trend = {
           patterns,
