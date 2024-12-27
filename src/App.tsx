@@ -10,6 +10,7 @@ import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Notes from "./pages/Notes";
+import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect, useState } from "react";
@@ -104,6 +105,11 @@ const App = () => (
             <Route path="/notes" element={
               <ProtectedRoute>
                 <Notes />
+              </ProtectedRoute>
+            } />
+            <Route path="/trends" element={
+              <ProtectedRoute>
+                <Trends />
               </ProtectedRoute>
             } />
             <Route path="/recording/:id" element={

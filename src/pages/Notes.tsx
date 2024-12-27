@@ -4,6 +4,7 @@ import SearchBar from "@/components/history/SearchBar";
 import FilterPills, { FilterType } from "@/components/history/FilterPills";
 import RecordingHistory from "@/components/RecordingHistory";
 import FloatingRecordButton from "@/components/history/FloatingRecordButton";
+import SegmentedNav from "@/components/navigation/SegmentedNav";
 
 const Notes = () => {
   const session = useSession();
@@ -17,6 +18,7 @@ const Notes = () => {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-foreground">Notes</h1>
           </div>
+          <SegmentedNav />
           <FilterPills selectedFilter={selectedFilter} onFilterChange={setSelectedFilter} />
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
