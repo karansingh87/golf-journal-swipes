@@ -128,14 +128,55 @@ export type Database = {
         }
         Relationships: []
       }
+      trends: {
+        Row: {
+          analysis_metadata: Json
+          analyzed_recordings: string[]
+          created_at: string | null
+          id: string
+          last_analysis_at: string | null
+          patterns: Json
+          user_id: string
+        }
+        Insert: {
+          analysis_metadata: Json
+          analyzed_recordings: string[]
+          created_at?: string | null
+          id?: string
+          last_analysis_at?: string | null
+          patterns: Json
+          user_id: string
+        }
+        Update: {
+          analysis_metadata?: Json
+          analyzed_recordings?: string[]
+          created_at?: string | null
+          id?: string
+          last_analysis_at?: string | null
+          patterns?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      should_generate_trends: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      achievement_type:
+        | "power_moves"
+        | "mental_edge"
+        | "breakthroughs"
+        | "smart_plays"
+        | "progress_zone"
       session_type: "course" | "practice"
     }
     CompositeTypes: {
