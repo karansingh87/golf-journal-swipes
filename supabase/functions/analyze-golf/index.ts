@@ -24,40 +24,37 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    console.log('Fetching prompt configurations...');
+    console.log('Fetching prompt configuration...');
     const { data: promptConfig, error: promptError } = await supabase
       .from('prompt_config')
-      .select('prompt, insights_prompt')
+      .select('prompt')
       .single();
 
     if (promptError) {
-      console.error('Error fetching prompts:', promptError);
-      throw new Error(`Error fetching prompts: ${promptError.message}`);
+      console.error('Error fetching prompt:', promptError);
+      throw new Error(`Error fetching prompt: ${promptError.message}`);
     }
 
-    console.log('Prompt configurations retrieved successfully');
+    console.log('Prompt configuration retrieved successfully');
     console.log('Analysis prompt:', promptConfig.prompt.substring(0, 50) + '...');
-    console.log('Insights prompt:', promptConfig.insights_prompt.substring(0, 50) + '...');
 
     const { transcription } = await req.json();
     console.log('Received transcription length:', transcription.length);
     
-    // Run both analyses in parallel
-    console.log('Starting parallel OpenAI calls...');
-    const [analysisResponse, insightsResponse] = await Promise.all([
-      fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4',
-          temperature: 0.5,
-          messages: [
-            {
-              role: 'system',
-              content: `${promptConfig.prompt}\n\nPlease format your response using markdown with the following structure:
+    console.log('Starting OpenAI call...');
+    const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4',
+        temperature: 0.5,
+        messages: [
+          {
+            role: 'system',
+            content: `${promptConfig.prompt}\n\nPlease format your response using markdown with the following structure:
 # Overall Analysis
 
 [Brief overview of the session]
@@ -81,59 +78,31 @@ serve(async (req) => {
 
 ## Next Steps
 [Actionable next steps]`
-            },
-            {
-              role: 'user',
-              content: transcription
-            }
-          ],
-        }),
+          },
+          {
+            role: 'user',
+            content: transcription
+          }
+        ],
       }),
-      fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4',
-          temperature: 0.5,
-          messages: [
-            {
-              role: 'system',
-              content: promptConfig.insights_prompt
-            },
-            {
-              role: 'user',
-              content: transcription
-            }
-          ],
-        }),
-      })
-    ]);
+    });
 
-    console.log('OpenAI calls completed, processing responses...');
-
-    const [analysisData, insightsData] = await Promise.all([
-      analysisResponse.json(),
-      insightsResponse.json()
-    ]);
+    console.log('OpenAI call completed, processing response...');
+    const analysisData = await analysisResponse.json();
 
     console.log('Analysis response status:', analysisResponse.status);
-    console.log('Insights response status:', insightsResponse.status);
 
-    if (!analysisData.choices?.[0]?.message?.content || !insightsData.choices?.[0]?.message?.content) {
+    if (!analysisData.choices?.[0]?.message?.content) {
       console.error('Invalid response format from OpenAI');
       console.error('Analysis data:', JSON.stringify(analysisData));
-      console.error('Insights data:', JSON.stringify(insightsData));
       throw new Error('Invalid response format from OpenAI');
     }
 
-    console.log('Successfully processed both responses');
+    console.log('Successfully processed response');
     
     return new Response(JSON.stringify({ 
       analysis: analysisData.choices[0].message.content,
-      insights: insightsData.choices[0].message.content
+      insights: null
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

@@ -7,36 +7,33 @@ import PromptHistoryTable from "./admin/PromptHistoryTable";
 
 const AdminPromptPanel = () => {
   const [prompt, setPrompt] = useState("");
-  const [insightsPrompt, setInsightsPrompt] = useState("");
   const [promptHistory, setPromptHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      console.log('Fetching prompt configurations...');
+      console.log('Fetching prompt configuration...');
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt, insights_prompt')
+        .select('prompt')
         .single();
 
       if (error) {
-        console.error('Error fetching prompts:', error);
+        console.error('Error fetching prompt:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load the prompt configurations.",
+          description: "Failed to load the prompt configuration.",
         });
         return;
       }
 
       if (data) {
-        console.log('Prompts fetched successfully:', {
+        console.log('Prompt fetched successfully:', {
           analysisPromptLength: data.prompt?.length,
-          insightsPromptLength: data.insights_prompt?.length
         });
         setPrompt(data.prompt);
-        setInsightsPrompt(data.insights_prompt);
       }
     };
 
@@ -67,16 +64,10 @@ const AdminPromptPanel = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async (type: 'analysis' | 'insights') => {
-    console.log(`Saving ${type} prompt...`);
+  const handleSave = async () => {
+    console.log('Saving analysis prompt...');
     setIsLoading(true);
     try {
-      const updateData = type === 'analysis' 
-        ? { prompt }
-        : { insights_prompt: insightsPrompt };
-
-      console.log('Update data:', updateData);
-
       const { data: configData, error: configError } = await supabase
         .from('prompt_config')
         .select('id')
@@ -89,7 +80,7 @@ const AdminPromptPanel = () => {
 
       const { error } = await supabase
         .from('prompt_config')
-        .update(updateData)
+        .update({ prompt })
         .eq('id', configData.id);
 
       if (error) {
@@ -107,17 +98,17 @@ const AdminPromptPanel = () => {
         setPromptHistory(newHistory);
       }
 
-      console.log(`${type} prompt updated successfully`);
+      console.log('Analysis prompt updated successfully');
       toast({
         title: "Success",
-        description: `${type === 'analysis' ? 'Analysis' : 'Insights'} prompt configuration has been updated.`,
+        description: "Analysis prompt configuration has been updated.",
       });
     } catch (error) {
       console.error('Error updating prompt:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: `Failed to update the ${type === 'analysis' ? 'analysis' : 'insights'} prompt configuration.`,
+        description: "Failed to update the analysis prompt configuration.",
       });
     } finally {
       setIsLoading(false);
@@ -133,9 +124,6 @@ const AdminPromptPanel = () => {
           <TabsTrigger value="analysis" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
             Analysis Prompt
           </TabsTrigger>
-          <TabsTrigger value="insights" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
-            Insights Prompt
-          </TabsTrigger>
           <TabsTrigger value="history" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
             Change History
           </TabsTrigger>
@@ -146,19 +134,9 @@ const AdminPromptPanel = () => {
             <PromptEditor
               value={prompt}
               onChange={setPrompt}
-              onSave={() => handleSave('analysis')}
+              onSave={handleSave}
               isLoading={isLoading}
               type="analysis"
-            />
-          </TabsContent>
-          
-          <TabsContent value="insights">
-            <PromptEditor
-              value={insightsPrompt}
-              onChange={setInsightsPrompt}
-              onSave={() => handleSave('insights')}
-              isLoading={isLoading}
-              type="insights"
             />
           </TabsContent>
 

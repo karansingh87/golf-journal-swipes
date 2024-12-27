@@ -9,7 +9,6 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnalysisTab from "@/components/recording-detail/AnalysisTab";
-import InsightsTab from "@/components/recording-detail/InsightsTab";
 import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
 import { useSession } from "@supabase/auth-helpers-react";
 
@@ -136,12 +135,9 @@ const RecordingDetail = () => {
             </div>
 
             <Tabs defaultValue="analysis" className="w-full">
-              <TabsList className="w-full grid grid-cols-3">
+              <TabsList className="w-full grid grid-cols-2">
                 <TabsTrigger value="analysis">
                   Analysis
-                </TabsTrigger>
-                <TabsTrigger value="insights">
-                  Insights
                 </TabsTrigger>
                 <TabsTrigger value="transcription">
                   Transcript
@@ -150,9 +146,6 @@ const RecordingDetail = () => {
 
               <TabsContent value="analysis" className="mt-0">
                 <AnalysisTab analysis={recording.analysis} />
-              </TabsContent>
-              <TabsContent value="insights" className="mt-0">
-                <InsightsTab insights={recording.insights} />
               </TabsContent>
               <TabsContent value="transcription" className="mt-0">
                 <TranscriptionTab transcription={recording.transcription} />
