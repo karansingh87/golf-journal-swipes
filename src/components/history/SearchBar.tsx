@@ -16,9 +16,10 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search notes..."
         className={cn(
-          "pl-9 bg-background/50 backdrop-blur-sm border border-zinc-200/30 rounded-full h-12",
+          "pl-9 bg-background/50 backdrop-blur-sm border-zinc-300/70 rounded-full h-12",
           "transition-all duration-200 focus-visible:ring-offset-0 focus-visible:ring-golf-green/20",
-          "placeholder:text-muted-foreground/60"
+          "placeholder:text-muted-foreground/60",
+          "hover:border-zinc-400/70"
         )}
       />
     </div>
