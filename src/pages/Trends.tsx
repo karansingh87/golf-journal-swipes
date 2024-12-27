@@ -3,6 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import AnalysisCard from "@/components/recording-detail/analysis/AnalysisCard";
 import { Database } from "@/integrations/supabase/types";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { useSession } from "@supabase/auth-helpers-react";
 
 interface TrendPattern {
   type: 'power_moves' | 'mental_edge' | 'breakthroughs' | 'smart_plays' | 'progress_zone';
@@ -32,64 +35,97 @@ type DbTrend = Database['public']['Tables']['trends']['Row'];
 const Trends = () => {
   const [trends, setTrends] = useState<Trend | null>(null);
   const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
+  const { toast } = useToast();
+  const session = useSession();
+
+  const fetchTrends = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('trends')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching trends:', error);
+        return;
+      }
+
+      if (data) {
+        // Validate and transform the patterns array
+        const patterns = Array.isArray(data.patterns) 
+          ? data.patterns.map((pattern: any): TrendPattern => ({
+              type: pattern.type,
+              title: pattern.title,
+              description: pattern.description,
+              supporting_evidence: pattern.supporting_evidence,
+              confidence_score: pattern.confidence_score,
+              timespan: pattern.timespan,
+              build_on_this: pattern.build_on_this
+            }))
+          : [];
+
+        // Validate and transform the analysis metadata
+        const metadata = typeof data.analysis_metadata === 'object' ? {
+          sessions_analyzed: Number(data.analysis_metadata.sessions_analyzed) || 0,
+          date_range: String(data.analysis_metadata.date_range) || '',
+          total_insights_found: Number(data.analysis_metadata.total_insights_found) || 0,
+          confidence_level: Number(data.analysis_metadata.confidence_level) || 0
+        } : {
+          sessions_analyzed: 0,
+          date_range: '',
+          total_insights_found: 0,
+          confidence_level: 0
+        };
+
+        const transformedTrend: Trend = {
+          patterns,
+          analysis_metadata: metadata,
+          created_at: data.created_at || new Date().toISOString()
+        };
+        
+        setTrends(transformedTrend);
+      }
+    } catch (error) {
+      console.error('Error in fetchTrends:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateTrends = async () => {
+    if (!session?.user?.id) return;
+    
+    setGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-trends', {
+        body: { user_id: session.user.id }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Trends generation started. Please wait a moment and refresh.",
+      });
+
+      // Fetch the new trends after a short delay
+      setTimeout(fetchTrends, 3000);
+    } catch (error) {
+      console.error('Error generating trends:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to generate trends. Please try again.",
+      });
+    } finally {
+      setGenerating(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchTrends = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('trends')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-
-        if (error) {
-          console.error('Error fetching trends:', error);
-          return;
-        }
-
-        if (data) {
-          // Validate and transform the patterns array
-          const patterns = Array.isArray(data.patterns) 
-            ? data.patterns.map((pattern: any): TrendPattern => ({
-                type: pattern.type,
-                title: pattern.title,
-                description: pattern.description,
-                supporting_evidence: pattern.supporting_evidence,
-                confidence_score: pattern.confidence_score,
-                timespan: pattern.timespan,
-                build_on_this: pattern.build_on_this
-              }))
-            : [];
-
-          // Validate and transform the analysis metadata
-          const metadata = typeof data.analysis_metadata === 'object' ? {
-            sessions_analyzed: Number(data.analysis_metadata.sessions_analyzed) || 0,
-            date_range: String(data.analysis_metadata.date_range) || '',
-            total_insights_found: Number(data.analysis_metadata.total_insights_found) || 0,
-            confidence_level: Number(data.analysis_metadata.confidence_level) || 0
-          } : {
-            sessions_analyzed: 0,
-            date_range: '',
-            total_insights_found: 0,
-            confidence_level: 0
-          };
-
-          const transformedTrend: Trend = {
-            patterns,
-            analysis_metadata: metadata,
-            created_at: data.created_at || new Date().toISOString()
-          };
-          
-          setTrends(transformedTrend);
-        }
-      } catch (error) {
-        console.error('Error in fetchTrends:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchTrends();
   }, []);
 
@@ -99,6 +135,13 @@ const Trends = () => {
         <div className="space-y-6 px-4 sm:px-6 md:px-8">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
+            <Button 
+              onClick={generateTrends} 
+              disabled={generating}
+              variant="outline"
+            >
+              {generating ? "Generating..." : "Generate Trends"}
+            </Button>
           </div>
           <SegmentedNav />
           
