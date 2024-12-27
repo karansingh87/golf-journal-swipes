@@ -97,7 +97,7 @@ const RecordingDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto p-4">
+      <div className="max-w-3xl mx-auto px-4 py-4">
         <Button
           variant="ghost"
           onClick={() => navigate('/history')}
@@ -107,58 +107,52 @@ const RecordingDetail = () => {
           Back to History
         </Button>
 
-        <div className={cn(
-          "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",
-          "transition-all duration-300",
-          isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
-        )}>
-          <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
-            <div className="px-6 pt-6 pb-3">
-              <div className="flex items-center justify-between mb-2">
-                <div>
-                  <div className="text-lg font-medium">
-                    {format(new Date(recording.created_at), "MMMM d, yyyy")}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {format(new Date(recording.created_at), "h:mm a")}
-                  </div>
+        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm">
+          <div className="px-6 pt-6 pb-3">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <div className="text-lg font-medium">
+                  {format(new Date(recording.created_at), "MMMM d, yyyy")}
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={handleDelete}
-                  >
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                <div className="text-sm text-muted-foreground">
+                  {format(new Date(recording.created_at), "h:mm a")}
                 </div>
               </div>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDelete}
+                >
+                  <Trash2 className="h-4 w-4 text-destructive" />
+                </Button>
+              </div>
             </div>
-
-            <Tabs defaultValue="analysis" className="w-full">
-              <TabsList className="w-full grid grid-cols-3">
-                <TabsTrigger value="analysis">
-                  Analysis
-                </TabsTrigger>
-                <TabsTrigger value="insights">
-                  Insights
-                </TabsTrigger>
-                <TabsTrigger value="transcription">
-                  Transcript
-                </TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="analysis" className="mt-0">
-                <AnalysisTab analysis={recording.analysis} />
-              </TabsContent>
-              <TabsContent value="insights" className="mt-0">
-                <InsightsTab insights={recording.insights} />
-              </TabsContent>
-              <TabsContent value="transcription" className="mt-0">
-                <TranscriptionTab transcription={recording.transcription} />
-              </TabsContent>
-            </Tabs>
           </div>
+
+          <Tabs defaultValue="analysis" className="w-full">
+            <TabsList className="w-full grid grid-cols-3">
+              <TabsTrigger value="analysis">
+                Analysis
+              </TabsTrigger>
+              <TabsTrigger value="insights">
+                Insights
+              </TabsTrigger>
+              <TabsTrigger value="transcription">
+                Transcript
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="analysis" className="mt-0">
+              <AnalysisTab analysis={recording.analysis} />
+            </TabsContent>
+            <TabsContent value="insights" className="mt-0">
+              <InsightsTab insights={recording.insights} />
+            </TabsContent>
+            <TabsContent value="transcription" className="mt-0">
+              <TranscriptionTab transcription={recording.transcription} />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
