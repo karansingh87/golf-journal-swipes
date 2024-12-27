@@ -45,24 +45,15 @@ serve(async (req) => {
       )
     }
 
-    // Get the prompt from prompt_config
-    const { data: promptData, error: promptError } = await supabase
-      .from('prompt_config')
-      .select('prompt')
-      .single()
-
-    if (promptError) {
-      console.error('Error fetching prompt:', promptError)
-      throw promptError
-    }
-
-    console.log('Successfully fetched prompt configuration')
-
     // Prepare analyses for the AI
-    const analyses = recordings.map(r => r.analysis).filter(Boolean)
+    const analyses = recordings
+      .map(r => r.analysis)
+      .filter(Boolean)
+      .map((analysis, index) => `Recording ${index + 1}:\n${analysis}`)
+
     console.log('Analyses prepared:', analyses.length)
 
-    // Get analysis from OpenAI
+    // Get analysis from OpenAI with a more structured prompt
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -74,7 +65,28 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: promptData.prompt,
+            content: `You are an AI that analyzes golf performance trends. Analyze multiple golf session recordings and identify patterns and trends.
+            
+            Your response must be a valid JSON object with this exact structure:
+            {
+              "patterns": [
+                {
+                  "type": "power_moves" | "mental_edge" | "breakthroughs" | "smart_plays" | "progress_zone",
+                  "title": string,
+                  "description": string,
+                  "supporting_evidence": string,
+                  "confidence_score": number (0-100),
+                  "timespan": string,
+                  "build_on_this": string
+                }
+              ],
+              "analysis_metadata": {
+                "sessions_analyzed": number,
+                "date_range": string,
+                "total_insights_found": number,
+                "confidence_level": number (0-100)
+              }
+            }`
           },
           {
             role: 'user',
