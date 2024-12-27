@@ -1,10 +1,10 @@
+import { useState, useEffect } from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import Notes from "@/pages/Notes";
 import Trends from "@/pages/Trends";
 import type { CarouselApi } from "@/components/ui/carousel";
