@@ -7,11 +7,12 @@ import RecordingCard from "./RecordingCard";
 interface Recording {
   id: string;
   created_at: string;
-  audio_url: string;
+  audio_url: string | null;
   transcription: string | null;
   analysis: string | null;
   insights: string | null;
-  session_type: string;
+  duration: number;
+  session_type: "course" | "practice";
 }
 
 interface RecordingHistoryProps {
@@ -104,6 +105,12 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
               recording={recording}
               isEditing={editingId === recording.id}
               onDelete={() => handleDelete(recording.id)}
+              onEdit={() => {}}
+              editedTranscription=""
+              onEditChange={() => {}}
+              onSave={async () => {}}
+              onCancelEdit={() => {}}
+              defaultExpanded={false}
             />
           ))}
         </div>

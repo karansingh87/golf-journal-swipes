@@ -19,7 +19,7 @@ const Notes = () => {
           <SegmentedNav />
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
-        <RecordingHistory searchQuery={searchQuery} filter="all" />
+        <RecordingHistory searchQuery={searchQuery} />
       </div>
       <FloatingRecordButton />
     </div>
