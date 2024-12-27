@@ -54,31 +54,33 @@ const Trends = () => {
       }
 
       if (data) {
-        // Validate and transform the patterns array
+        // Type guard to ensure patterns is an array
         const patterns = Array.isArray(data.patterns) 
           ? data.patterns.map((pattern: any): TrendPattern => ({
-              type: pattern.type,
-              title: pattern.title,
-              description: pattern.description,
-              supporting_evidence: pattern.supporting_evidence,
-              confidence_score: pattern.confidence_score,
-              timespan: pattern.timespan,
-              build_on_this: pattern.build_on_this
+              type: pattern.type || 'power_moves',
+              title: pattern.title || '',
+              description: pattern.description || '',
+              supporting_evidence: pattern.supporting_evidence || '',
+              confidence_score: Number(pattern.confidence_score) || 0,
+              timespan: pattern.timespan || '',
+              build_on_this: pattern.build_on_this || ''
             }))
           : [];
 
-        // Validate and transform the analysis metadata
-        const metadata = typeof data.analysis_metadata === 'object' ? {
-          sessions_analyzed: Number(data.analysis_metadata.sessions_analyzed) || 0,
-          date_range: String(data.analysis_metadata.date_range) || '',
-          total_insights_found: Number(data.analysis_metadata.total_insights_found) || 0,
-          confidence_level: Number(data.analysis_metadata.confidence_level) || 0
-        } : {
-          sessions_analyzed: 0,
-          date_range: '',
-          total_insights_found: 0,
-          confidence_level: 0
-        };
+        // Type guard to ensure analysis_metadata is an object
+        const metadata = typeof data.analysis_metadata === 'object' && data.analysis_metadata !== null
+          ? {
+              sessions_analyzed: Number(data.analysis_metadata.sessions_analyzed) || 0,
+              date_range: String(data.analysis_metadata.date_range) || '',
+              total_insights_found: Number(data.analysis_metadata.total_insights_found) || 0,
+              confidence_level: Number(data.analysis_metadata.confidence_level) || 0
+            }
+          : {
+              sessions_analyzed: 0,
+              date_range: '',
+              total_insights_found: 0,
+              confidence_level: 0
+            };
 
         const transformedTrend: Trend = {
           patterns,
@@ -173,6 +175,7 @@ const Trends = () => {
               <div className="text-sm text-muted-foreground mt-4">
                 <p>Analysis based on {trends.analysis_metadata.sessions_analyzed} sessions</p>
                 <p>Date range: {trends.analysis_metadata.date_range}</p>
+                <p>Total insights found: {trends.analysis_metadata.total_insights_found}</p>
                 <p>Confidence level: {trends.analysis_metadata.confidence_level}%</p>
               </div>
             </div>
