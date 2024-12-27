@@ -93,17 +93,48 @@ serve(async (req) => {
     const analysisData = await openAIResponse.json()
     console.log('Successfully received OpenAI response')
 
-    const trends = JSON.parse(analysisData.choices[0].message.content)
-    console.log('Successfully parsed trends data')
+    let trends
+    try {
+      trends = JSON.parse(analysisData.choices[0].message.content)
+      console.log('Successfully parsed trends data:', trends)
+    } catch (error) {
+      console.error('Error parsing OpenAI response:', error)
+      throw new Error('Invalid response format from OpenAI')
+    }
 
-    // Save the trends
+    // Validate the trends object has the required properties
+    if (!trends?.patterns || !Array.isArray(trends.patterns) || !trends?.analysis_metadata) {
+      console.error('Invalid trends format:', trends)
+      throw new Error('Invalid trends format received from OpenAI')
+    }
+
+    // Ensure patterns is never null and has at least one item
+    const validatedPatterns = trends.patterns.length > 0 ? trends.patterns : [{
+      type: 'power_moves',
+      title: 'Initial Analysis',
+      description: 'Not enough data for detailed analysis',
+      supporting_evidence: 'Based on available recordings',
+      confidence_score: 0,
+      timespan: 'N/A',
+      build_on_this: 'Continue recording more sessions'
+    }]
+
+    // Ensure analysis_metadata has all required fields
+    const validatedMetadata = {
+      sessions_analyzed: trends.analysis_metadata.sessions_analyzed || recordings.length,
+      date_range: trends.analysis_metadata.date_range || 'Recent sessions',
+      total_insights_found: trends.analysis_metadata.total_insights_found || validatedPatterns.length,
+      confidence_level: trends.analysis_metadata.confidence_level || 0
+    }
+
+    // Save the trends with validated data
     const { error: trendsError } = await supabase
       .from('trends')
       .insert({
         user_id,
         analyzed_recordings: recordings.map(r => r.id),
-        patterns: trends.patterns,
-        analysis_metadata: trends.analysis_metadata,
+        patterns: validatedPatterns,
+        analysis_metadata: validatedMetadata,
       })
 
     if (trendsError) {
