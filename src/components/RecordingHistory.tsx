@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
@@ -26,6 +26,10 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
   const session = useSession();
   const { toast } = useToast();
 
+  useEffect(() => {
+    fetchRecordings();
+  }, [session]);
+
   const fetchRecordings = async () => {
     if (!session) return;
 
@@ -33,11 +37,12 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
       const { data, error } = await supabase
         .from('recordings')
         .select('*')
-        .eq('session_type', session.user?.id);
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      setRecordings(data);
+      setRecordings(data || []);
     } catch (error) {
       console.error("Error fetching recordings:", error);
       toast({
