@@ -22,6 +22,17 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
+    // Get the trends prompt first
+    const { data: promptConfig, error: promptError } = await supabase
+      .from('prompt_config')
+      .select('trends_prompt')
+      .single()
+
+    if (promptError || !promptConfig?.trends_prompt) {
+      console.error('Error fetching trends prompt:', promptError)
+      throw new Error('Failed to fetch trends prompt configuration')
+    }
+
     // Get the last 3 recordings with analysis
     const { data: recordings, error: recordingsError } = await supabase
       .from('recordings')
@@ -53,7 +64,7 @@ serve(async (req) => {
 
     console.log('Analyses prepared:', analyses.length)
 
-    // Get analysis from OpenAI with a more structured prompt
+    // Get analysis from OpenAI with the trends prompt
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -65,28 +76,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: `You are an AI that analyzes golf performance trends. Analyze multiple golf session recordings and identify patterns and trends.
-            
-            Your response must be a valid JSON object with this exact structure:
-            {
-              "patterns": [
-                {
-                  "type": "power_moves" | "mental_edge" | "breakthroughs" | "smart_plays" | "progress_zone",
-                  "title": string,
-                  "description": string,
-                  "supporting_evidence": string,
-                  "confidence_score": number (0-100),
-                  "timespan": string,
-                  "build_on_this": string
-                }
-              ],
-              "analysis_metadata": {
-                "sessions_analyzed": number,
-                "date_range": string,
-                "total_insights_found": number,
-                "confidence_level": number (0-100)
-              }
-            }`
+            content: promptConfig.trends_prompt
           },
           {
             role: 'user',

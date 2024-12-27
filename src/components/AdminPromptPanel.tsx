@@ -6,34 +6,37 @@ import PromptEditor from "./admin/PromptEditor";
 import PromptHistoryTable from "./admin/PromptHistoryTable";
 
 const AdminPromptPanel = () => {
-  const [prompt, setPrompt] = useState("");
+  const [analysisPrompt, setAnalysisPrompt] = useState("");
+  const [trendsPrompt, setTrendsPrompt] = useState("");
   const [promptHistory, setPromptHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      console.log('Fetching prompt configuration...');
+      console.log('Fetching prompt configurations...');
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt')
+        .select('prompt, trends_prompt')
         .single();
 
       if (error) {
-        console.error('Error fetching prompt:', error);
+        console.error('Error fetching prompts:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load the prompt configuration.",
+          description: "Failed to load the prompt configurations.",
         });
         return;
       }
 
       if (data) {
-        console.log('Prompt fetched successfully:', {
+        console.log('Prompts fetched successfully:', {
           analysisPromptLength: data.prompt?.length,
+          trendsPromptLength: data.trends_prompt?.length,
         });
-        setPrompt(data.prompt);
+        setAnalysisPrompt(data.prompt);
+        setTrendsPrompt(data.trends_prompt || '');
       }
     };
 
@@ -64,8 +67,8 @@ const AdminPromptPanel = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async () => {
-    console.log('Saving analysis prompt...');
+  const handleSave = async (type: 'analysis' | 'trends') => {
+    console.log(`Saving ${type} prompt...`);
     setIsLoading(true);
     try {
       const { data: configData, error: configError } = await supabase
@@ -78,9 +81,13 @@ const AdminPromptPanel = () => {
         throw configError;
       }
 
+      const updateData = type === 'analysis' 
+        ? { prompt: analysisPrompt }
+        : { trends_prompt: trendsPrompt };
+
       const { error } = await supabase
         .from('prompt_config')
-        .update({ prompt })
+        .update(updateData)
         .eq('id', configData.id);
 
       if (error) {
@@ -98,17 +105,17 @@ const AdminPromptPanel = () => {
         setPromptHistory(newHistory);
       }
 
-      console.log('Analysis prompt updated successfully');
+      console.log(`${type} prompt updated successfully`);
       toast({
         title: "Success",
-        description: "Analysis prompt configuration has been updated.",
+        description: `${type.charAt(0).toUpperCase() + type.slice(1)} prompt configuration has been updated.`,
       });
     } catch (error) {
       console.error('Error updating prompt:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to update the analysis prompt configuration.",
+        description: `Failed to update the ${type} prompt configuration.`,
       });
     } finally {
       setIsLoading(false);
@@ -124,6 +131,9 @@ const AdminPromptPanel = () => {
           <TabsTrigger value="analysis" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
             Analysis Prompt
           </TabsTrigger>
+          <TabsTrigger value="trends" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+            Trends Prompt
+          </TabsTrigger>
           <TabsTrigger value="history" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
             Change History
           </TabsTrigger>
@@ -132,11 +142,21 @@ const AdminPromptPanel = () => {
         <div className="overflow-x-auto">
           <TabsContent value="analysis">
             <PromptEditor
-              value={prompt}
-              onChange={setPrompt}
-              onSave={handleSave}
+              value={analysisPrompt}
+              onChange={setAnalysisPrompt}
+              onSave={() => handleSave('analysis')}
               isLoading={isLoading}
               type="analysis"
+            />
+          </TabsContent>
+
+          <TabsContent value="trends">
+            <PromptEditor
+              value={trendsPrompt}
+              onChange={setTrendsPrompt}
+              onSave={() => handleSave('trends')}
+              isLoading={isLoading}
+              type="trends"
             />
           </TabsContent>
 
