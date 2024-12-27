@@ -9,7 +9,7 @@ interface FilterPillsProps {
 
 const FilterPills = ({ selectedFilter, onFilterChange }: FilterPillsProps) => {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+    <div className="flex gap-2 overflow-x-auto scrollbar-none">
       {(["all", "course", "practice"] as FilterType[]).map((filter) => (
         <button
           key={filter}
