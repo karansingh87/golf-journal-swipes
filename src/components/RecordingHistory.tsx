@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
 import RecordingCard from "./RecordingCard";
-import { FilterType } from "./history/FilterPills";
 
 interface Recording {
   id: string;
@@ -19,10 +18,9 @@ interface Recording {
 
 interface RecordingHistoryProps {
   searchQuery: string;
-  filter: FilterType;
 }
 
-const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
+const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
   const [recordings, setRecordings] = useState<Recording[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -121,9 +119,7 @@ const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
         recording.analysis?.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
-    const matchesFilter = filter === "all" ? true : recording.session_type === filter;
-
-    return matchesSearch && matchesFilter;
+    return matchesSearch;
   });
 
   if (isLoading) {
@@ -140,9 +136,7 @@ const RecordingHistory = ({ searchQuery, filter }: RecordingHistoryProps) => {
     <div className="w-full space-y-4 px-4 py-6 sm:px-6 md:px-8">
       {filteredRecordings.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
-          {searchQuery || filter !== "all"
-            ? "No notes match your search"
-            : "No notes yet"}
+          {searchQuery ? "No notes match your search" : "No notes yet"}
         </div>
       ) : (
         <div className="grid gap-2 sm:gap-3">
