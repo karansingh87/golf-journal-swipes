@@ -41,7 +41,7 @@ const Trends = () => {
           .select('*')
           .order('created_at', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
 
         if (error) {
           console.error('Error fetching trends:', error);
@@ -49,11 +49,38 @@ const Trends = () => {
         }
 
         if (data) {
+          // Validate and transform the patterns array
+          const patterns = Array.isArray(data.patterns) 
+            ? data.patterns.map((pattern: any): TrendPattern => ({
+                type: pattern.type,
+                title: pattern.title,
+                description: pattern.description,
+                supporting_evidence: pattern.supporting_evidence,
+                confidence_score: pattern.confidence_score,
+                timespan: pattern.timespan,
+                build_on_this: pattern.build_on_this
+              }))
+            : [];
+
+          // Validate and transform the analysis metadata
+          const metadata = typeof data.analysis_metadata === 'object' ? {
+            sessions_analyzed: Number(data.analysis_metadata.sessions_analyzed) || 0,
+            date_range: String(data.analysis_metadata.date_range) || '',
+            total_insights_found: Number(data.analysis_metadata.total_insights_found) || 0,
+            confidence_level: Number(data.analysis_metadata.confidence_level) || 0
+          } : {
+            sessions_analyzed: 0,
+            date_range: '',
+            total_insights_found: 0,
+            confidence_level: 0
+          };
+
           const transformedTrend: Trend = {
-            patterns: data.patterns as TrendPattern[],
-            analysis_metadata: data.analysis_metadata as TrendAnalysisMetadata,
+            patterns,
+            analysis_metadata: metadata,
             created_at: data.created_at || new Date().toISOString()
           };
+          
           setTrends(transformedTrend);
         }
       } catch (error) {
