@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import AnalysisCard from "@/components/recording-detail/analysis/AnalysisCard";
+import { Database } from "@/integrations/supabase/types";
 
 interface TrendPattern {
   type: 'power_moves' | 'mental_edge' | 'breakthroughs' | 'smart_plays' | 'progress_zone';
@@ -26,6 +27,8 @@ interface Trend {
   created_at: string;
 }
 
+type DbTrend = Database['public']['Tables']['trends']['Row'];
+
 const Trends = () => {
   const [trends, setTrends] = useState<Trend | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,7 +48,14 @@ const Trends = () => {
           return;
         }
 
-        setTrends(data);
+        if (data) {
+          const transformedTrend: Trend = {
+            patterns: data.patterns as TrendPattern[],
+            analysis_metadata: data.analysis_metadata as TrendAnalysisMetadata,
+            created_at: data.created_at || new Date().toISOString()
+          };
+          setTrends(transformedTrend);
+        }
       } catch (error) {
         console.error('Error in fetchTrends:', error);
       } finally {
