@@ -148,10 +148,17 @@ const Trends = () => {
               </div>
             </div>
           ) : !trends ? (
-            <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
               <div className="text-center text-muted-foreground">
                 No trends available yet. Add at least 3 recordings to see your progress!
               </div>
+              <Button 
+                onClick={generateTrends} 
+                disabled={generating}
+                variant="default"
+              >
+                {generating ? "Generating..." : "Generate Trends"}
+              </Button>
             </div>
           ) : (
             <div className="space-y-6">
