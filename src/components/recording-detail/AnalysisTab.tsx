@@ -30,7 +30,7 @@ const getTitleFromType = (type: string): string => {
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   if (!analysis) {
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-380px)]">
+      <div className="flex items-center justify-center min-h-[300px]">
         <p className="text-golf-gray-text-secondary">No analysis available for this session.</p>
       </div>
     );
@@ -45,7 +45,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     // Handle insufficient data case
     if (parsedAnalysis.sections.length === 1 && parsedAnalysis.sections[0].type === 'quick_note') {
       return (
-        <div className="flex items-center justify-center h-[calc(100vh-380px)]">
+        <div className="flex items-center justify-center min-h-[300px]">
           <div className="max-w-md text-center space-y-4">
             <h3 className="text-xl font-semibold text-golf-gray-text-primary">Need More Details</h3>
             <div className="text-golf-gray-text-secondary whitespace-pre-line">
@@ -58,14 +58,14 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   } catch (error) {
     console.error('Error parsing analysis:', error);
     return (
-      <div className="flex items-center justify-center h-[calc(100vh-380px)]">
+      <div className="flex items-center justify-center min-h-[300px]">
         <p className="text-golf-gray-text-secondary">Unable to load analysis. Invalid data format.</p>
       </div>
     );
   }
 
   return (
-    <div className="relative flex flex-col h-[calc(100vh-380px)]">
+    <div className="relative flex flex-col">
       <ScrollArea className="flex-1 px-6 pt-6">
         <div className="space-y-6 pb-32">
           {parsedAnalysis.sections.map((section, index) => (
