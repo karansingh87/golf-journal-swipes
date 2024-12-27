@@ -9,7 +9,8 @@ import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
-import SwipeableViews from "./components/navigation/SwipeableViews";
+import Notes from "./pages/Notes";
+import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect, useState } from "react";
@@ -42,23 +43,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
           return;
         }
 
-        // Only attempt to refresh if we have a current session
-        if (currentSession) {
-          const { error: refreshError } = await supabase.auth.refreshSession();
-          if (refreshError) {
-            console.error('Session refresh error:', refreshError);
-            if (refreshError.message.includes('refresh_token_not_found')) {
-              await supabase.auth.signOut();
-              navigate('/login', { replace: true });
-              toast({
-                variant: "destructive",
-                title: "Session Expired",
-                description: "Please sign in again to continue.",
-              });
-              return;
-            }
-            throw refreshError;
-          }
+        // Attempt to refresh the session
+        const { error: refreshError } = await supabase.auth.refreshSession();
+        if (refreshError) {
+          console.error('Session refresh error:', refreshError);
+          throw refreshError;
         }
 
       } catch (error) {
@@ -115,12 +104,12 @@ const App = () => (
             } />
             <Route path="/notes" element={
               <ProtectedRoute>
-                <SwipeableViews />
+                <Notes />
               </ProtectedRoute>
             } />
             <Route path="/trends" element={
               <ProtectedRoute>
-                <SwipeableViews />
+                <Trends />
               </ProtectedRoute>
             } />
             <Route path="/recording/:id" element={
@@ -133,6 +122,7 @@ const App = () => (
                 <Admin />
               </ProtectedRoute>
             } />
+            {/* Redirect /history to /notes */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
           </Routes>
         </BrowserRouter>
