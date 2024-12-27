@@ -6,7 +6,7 @@ interface PromptEditorProps {
   onChange: (value: string) => void;
   onSave: () => void;
   isLoading: boolean;
-  type: 'analysis' | 'insights';
+  type: 'analysis' | 'trends';
 }
 
 const PromptEditor = ({ value, onChange, onSave, isLoading, type }: PromptEditorProps) => {
