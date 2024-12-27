@@ -37,7 +37,7 @@ const SegmentedNav = () => {
           onClick={() => navigate(segment.path)}
           className={cn(
             "flex items-center gap-2 px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200",
-            "min-w-[120px] justify-center relative",
+            "flex-1 justify-center relative",
             "hover:bg-zinc-950 hover:text-white",
             currentPath === segment.path
               ? "bg-zinc-950 text-white shadow-[0_2px_12px_-2px_rgba(0,0,0,0.2)]"
