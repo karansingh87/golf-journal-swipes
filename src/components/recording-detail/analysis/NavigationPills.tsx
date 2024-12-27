@@ -40,7 +40,7 @@ const NavigationPills = ({ sections, activeSection, onSectionClick }: Navigation
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative bg-background/80 backdrop-blur-sm border-b border-border/50">
       {showLeftScroll && (
         <button 
           onClick={() => handleNavScroll('left')}

@@ -36,7 +36,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   const scrollToSection = (sectionType: string) => {
     const element = sectionRefs.current[sectionType];
     if (element) {
-      const headerOffset = 180; // Adjust this value based on your header height
+      const headerOffset = 180;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
