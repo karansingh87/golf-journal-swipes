@@ -20,7 +20,7 @@ const AnalysisCard = ({ title, content, className, isOverview = false, index = 0
   >
     <Card className={cn(
       "border rounded-2xl transition-all duration-200 hover:shadow-card-light transform hover:-translate-y-1", 
-      isOverview ? "border-golf-green bg-golf-green" : "border-[#E5E7EB] bg-white",
+      isOverview ? "border-zinc-800 bg-zinc-800" : "border-[#E5E7EB] bg-white",
       className
     )}>
       <CardHeader className="pb-2">
