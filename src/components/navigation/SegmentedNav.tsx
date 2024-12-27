@@ -39,10 +39,11 @@ const SegmentedNav = () => {
             "flex items-center gap-2 px-6 py-2.5 rounded-md text-sm font-medium transition-all duration-200",
             "flex-1 justify-center relative",
             "hover:bg-zinc-900/5",
+            "focus:outline-none focus-visible:outline-none active:outline-none",
+            "touch-none select-none",
             currentPath === segment.path
               ? "bg-zinc-950 text-white"
               : "text-zinc-600 bg-transparent",
-            // Add subtle border between segments
             index === 0 ? "border-r border-zinc-200" : ""
           )}
         >
