@@ -40,7 +40,7 @@ const NavigationPills = ({ sections, activeSection, onSectionClick }: Navigation
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative bg-background/80 backdrop-blur-sm">
       {showLeftScroll && (
         <button 
           onClick={() => handleNavScroll('left')}
@@ -52,7 +52,7 @@ const NavigationPills = ({ sections, activeSection, onSectionClick }: Navigation
       
       <div 
         ref={navRef}
-        className="flex gap-3 px-6 py-3 overflow-x-auto scrollbar-hide"
+        className="flex gap-3 px-6 py-4 overflow-x-auto scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {sections.map(({ type, title }) => (
