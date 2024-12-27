@@ -1,3 +1,5 @@
+import SegmentedNav from "@/components/navigation/SegmentedNav";
+
 const Trends = () => {
   return (
     <div className="min-h-[100dvh] bg-background">
@@ -6,9 +8,11 @@ const Trends = () => {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
           </div>
-          {/* Trends content will go here */}
-          <div className="text-center text-muted-foreground py-12">
-            Trends and insights coming soon...
+          <SegmentedNav />
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="text-center text-muted-foreground">
+              Trends and insights coming soon...
+            </div>
           </div>
         </div>
       </div>
