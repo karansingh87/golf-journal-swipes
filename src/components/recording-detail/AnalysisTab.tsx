@@ -67,7 +67,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   return (
     <div className="relative flex flex-col h-[calc(100vh-300px)]">
       <ScrollArea className="flex-1 px-6">
-        <div className="space-y-6 py-6">
+        <div className="space-y-6 py-6 pb-24">
           {parsedAnalysis.sections.map((section, index) => (
             <div key={section.type}>
               <AnalysisCard
