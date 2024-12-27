@@ -113,7 +113,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
 
   return (
     <div className="relative flex flex-col">
-      <div className="sticky top-[48px] z-40 bg-background/80 backdrop-blur-sm">
+      <div className="sticky top-[48px] z-40 bg-background/80 backdrop-blur-sm pt-4">
         <NavigationPills
           sections={sections}
           activeSection={activeSection}
