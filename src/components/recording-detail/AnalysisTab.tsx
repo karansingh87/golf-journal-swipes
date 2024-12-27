@@ -1,7 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import AnalysisCard from "./analysis/AnalysisCard";
-import NavigationDots from "./analysis/NavigationDots";
 
 interface AnalysisTabProps {
   analysis: string | null;
@@ -29,10 +28,6 @@ const getTitleFromType = (type: string): string => {
 };
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
-  const [currentSection, setCurrentSection] = useState(0);
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-
   if (!analysis) {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
@@ -45,7 +40,9 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   try {
     const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
     parsedAnalysis = JSON.parse(cleanAnalysis);
+    console.log('Parsed analysis:', parsedAnalysis);
 
+    // Handle insufficient data case
     if (parsedAnalysis.sections.length === 1 && parsedAnalysis.sections[0].type === 'quick_note') {
       return (
         <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
@@ -67,67 +64,12 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!scrollAreaRef.current) return;
-
-      const scrollArea = scrollAreaRef.current;
-      const scrollTop = scrollArea.scrollTop;
-      const viewportHeight = scrollArea.clientHeight;
-
-      // Find which section is most visible in the viewport
-      let maxVisibleSection = 0;
-      let maxVisibleHeight = 0;
-
-      sectionRefs.current.forEach((ref, index) => {
-        if (!ref) return;
-
-        const rect = ref.getBoundingClientRect();
-        const sectionTop = rect.top;
-        const sectionBottom = rect.bottom;
-        const visibleHeight = Math.min(sectionBottom, viewportHeight) - Math.max(sectionTop, 0);
-
-        if (visibleHeight > maxVisibleHeight) {
-          maxVisibleHeight = visibleHeight;
-          maxVisibleSection = index;
-        }
-      });
-
-      setCurrentSection(maxVisibleSection);
-    };
-
-    const scrollArea = scrollAreaRef.current;
-    if (scrollArea) {
-      scrollArea.addEventListener('scroll', handleScroll);
-      return () => scrollArea.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
-  const scrollToSection = (index: number) => {
-    const ref = sectionRefs.current[index];
-    if (!ref || !scrollAreaRef.current) return;
-
-    const scrollArea = scrollAreaRef.current;
-    const targetPosition = ref.offsetTop;
-
-    scrollArea.scrollTo({
-      top: targetPosition,
-      behavior: 'smooth'
-    });
-
-    setCurrentSection(index);
-  };
-
   return (
     <div className="relative flex flex-col h-[calc(100vh-300px)]">
-      <ScrollArea ref={scrollAreaRef} className="flex-1 px-6">
+      <ScrollArea className="flex-1 px-6">
         <div className="space-y-6 py-6">
           {parsedAnalysis.sections.map((section, index) => (
-            <div 
-              key={section.type}
-              ref={el => sectionRefs.current[index] = el}
-              className="min-h-[calc(100vh-400px)]"
-            >
+            <div key={section.type}>
               <AnalysisCard
                 title={getTitleFromType(section.type)}
                 content={section.content}
@@ -138,12 +80,6 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
           ))}
         </div>
       </ScrollArea>
-      
-      <NavigationDots
-        totalSections={parsedAnalysis.sections.length}
-        currentSection={currentSection}
-        onDotClick={scrollToSection}
-      />
     </div>
   );
 };
