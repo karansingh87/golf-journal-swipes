@@ -61,12 +61,11 @@ const NavigationPills = ({ sections, activeSection, onSectionClick }: Navigation
             onClick={() => onSectionClick(type)}
             className={cn(
               "px-4 py-2 text-sm rounded-full whitespace-nowrap transition-all duration-200",
-              "border hover:bg-accent/80",
               "min-w-[120px] h-10 flex items-center justify-center",
               "shadow-[0_2px_8px_-2px_rgba(0,0,0,0.1)]",
-              activeSection === type
-                ? "bg-primary text-primary-foreground border-primary shadow-[0_2px_12px_-2px_rgba(0,0,0,0.2)]"
-                : "border-border/50 text-muted-foreground hover:text-foreground"
+              "bg-zinc-950 text-white",
+              "hover:bg-zinc-800 hover:shadow-[0_2px_12px_-2px_rgba(0,0,0,0.2)]",
+              activeSection === type && "font-medium"
             )}
           >
             {title}
