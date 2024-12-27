@@ -31,16 +31,18 @@ const SegmentedNav = () => {
 
   return (
     <div className="flex p-1 bg-zinc-100 rounded-lg border border-zinc-200">
-      <style jsx global>{`
-        .segment-button {
-          -webkit-tap-highlight-color: transparent;
-          -webkit-touch-callout: none;
-          -webkit-appearance: none;
-          appearance: none;
-          transform: translateZ(0);
-          user-select: none;
-        }
-      `}</style>
+      <style>
+        {`
+          .segment-button {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-appearance: none;
+            appearance: none;
+            transform: translateZ(0);
+            user-select: none;
+          }
+        `}
+      </style>
       {segments.map((segment, index) => (
         <button
           key={segment.value}
