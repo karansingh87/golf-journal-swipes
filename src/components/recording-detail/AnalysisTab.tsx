@@ -36,7 +36,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   const scrollToSection = (sectionType: string) => {
     const element = sectionRefs.current[sectionType];
     if (element) {
-      const headerOffset = 180; // Adjust this value based on your header height
+      const headerOffset = 180;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -113,7 +113,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
 
   return (
     <div className="relative flex flex-col">
-      <div className="sticky top-[48px] z-40 bg-background/80 backdrop-blur-sm border-b border-border/50">
+      <div className="sticky top-[48px] z-40 bg-background/80 backdrop-blur-sm">
         <NavigationPills
           sections={sections}
           activeSection={activeSection}
