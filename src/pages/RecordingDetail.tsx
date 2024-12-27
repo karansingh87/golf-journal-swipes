@@ -74,7 +74,7 @@ const RecordingDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen pt-16">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -82,7 +82,7 @@ const RecordingDetail = () => {
 
   if (!recording) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
         <p className="text-lg text-muted-foreground">Recording not found</p>
         <Button
           variant="ghost"
@@ -96,7 +96,7 @@ const RecordingDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
         <Button
           variant="ghost"
@@ -112,7 +112,7 @@ const RecordingDetail = () => {
           "transition-all duration-300",
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
-          <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
+          <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
             <div className="px-6 pt-6 pb-3">
               <div className="flex items-center justify-between mb-2">
                 <div>
