@@ -44,17 +44,17 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
   const getGradientBackground = (type: string) => {
     switch (type) {
       case "hidden_strength":
-        return "bg-gradient-to-br from-amber-50 to-orange-100";
+        return "bg-gradient-to-br from-orange-200 to-amber-400";
       case "mental_signature":
-        return "bg-gradient-to-br from-purple-50 to-indigo-100";
+        return "bg-gradient-to-br from-purple-200 to-violet-400";
       case "strategic_instinct":
-        return "bg-gradient-to-br from-emerald-50 to-teal-100";
+        return "bg-gradient-to-br from-emerald-200 to-teal-400";
       case "growth_indicator":
-        return "bg-gradient-to-br from-sky-50 to-blue-100";
+        return "bg-gradient-to-br from-sky-200 to-blue-400";
       case "game_changing":
-        return "bg-gradient-to-br from-rose-50 to-pink-100";
+        return "bg-gradient-to-br from-rose-200 to-pink-400";
       default:
-        return "bg-gradient-to-br from-gray-50 to-slate-100";
+        return "bg-gradient-to-br from-gray-200 to-slate-400";
     }
   };
 
