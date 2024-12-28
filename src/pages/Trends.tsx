@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@supabase/auth-helpers-react";
+import { useNavigate } from "react-router-dom";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import PatternCard from "@/components/trends/PatternCard";
@@ -14,6 +16,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTrends } from "@/hooks/useTrends";
 
 const Trends = () => {
+  const session = useSession();
+  const navigate = useNavigate();
+  
+  // Redirect if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
+
   const {
     isLoading,
     trendsData,
@@ -22,12 +33,12 @@ const Trends = () => {
     fetchLatestTrends,
     fetchRecordingsCount,
     generateTrends
-  } = useTrends();
+  } = useTrends(session.user.id);
 
   useEffect(() => {
     fetchLatestTrends();
     fetchRecordingsCount();
-  }, []);
+  }, [fetchLatestTrends, fetchRecordingsCount]);
 
   return (
     <div className="min-h-[100dvh] bg-background">
