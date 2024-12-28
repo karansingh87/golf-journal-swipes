@@ -10,7 +10,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-[#f8faf9]">
+    <div className="min-h-screen bg-gradient-to-b from-white via-[#e1faf5] to-[#d3f5ef]">
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ const LandingPage = () => {
       
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-b from-[#F2FCE2]/80 to-transparent rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-center mb-16">
                 <div className="bg-white px-4 py-1.5 rounded-full shadow-card-light">
@@ -132,13 +132,13 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <div className="bg-gradient-to-b from-white to-[#f8faf9]">
+      <div className="bg-white/40 backdrop-blur-sm">
         <TestimonialsCarousel />
       </div>
 
       <BenefitsSection />
 
-      <section className="py-24 lg:py-32">
+      <section className="py-24 lg:py-32 bg-white/30 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
