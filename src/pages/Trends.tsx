@@ -7,10 +7,11 @@ import { Loader2, AlertCircle } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import PatternCard from "@/components/trends/PatternCard";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [trendsData, setTrendsData] = useState<string | null>(null);
+  const [trendsData, setTrendsData] = useState<any | null>(null);
   const [recordingsCount, setRecordingsCount] = useState<number>(0);
   const [milestone, setMilestone] = useState<string | null>(null);
   const { toast } = useToast();
@@ -46,8 +47,18 @@ const Trends = () => {
       .single();
     
     if (trends?.trends_output) {
-      setTrendsData(trends.trends_output);
-      setMilestone(trends.milestone_type);
+      try {
+        const parsedTrends = JSON.parse(trends.trends_output);
+        setTrendsData(parsedTrends);
+        setMilestone(trends.milestone_type);
+      } catch (error) {
+        console.error('Error parsing trends data:', error);
+        toast({
+          title: "Error",
+          description: "Failed to parse trends data.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -127,10 +138,10 @@ const Trends = () => {
           )}
           
           {trendsData ? (
-            <div className="mt-6 p-4 bg-white rounded-lg shadow">
-              <pre className="whitespace-pre-wrap text-sm text-gray-700">
-                {trendsData}
-              </pre>
+            <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
+              {trendsData.patterns?.map((pattern: any, index: number) => (
+                <PatternCard key={index} pattern={pattern} />
+              ))}
             </div>
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
