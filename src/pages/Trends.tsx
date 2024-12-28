@@ -4,16 +4,27 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2 } from "lucide-react";
+import { useSession } from "@supabase/auth-helpers-react";
+import { useNavigate } from "react-router-dom";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [trendsData, setTrendsData] = useState<string | null>(null);
   const { toast } = useToast();
+  const session = useSession();
+  const navigate = useNavigate();
+
+  // Redirect if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
 
   const fetchTrends = async () => {
     const { data: trends } = await supabase
       .from('trends')
       .select('trends_output')
+      .eq('user_id', session.user.id)
       .order('created_at', { ascending: false })
       .limit(1)
       .single();
@@ -26,7 +37,9 @@ const Trends = () => {
   const generateTrends = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.functions.invoke('generate-trends');
+      const { error } = await supabase.functions.invoke('generate-trends', {
+        body: { user_id: session.user.id }
+      });
       
       if (error) throw error;
 
