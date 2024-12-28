@@ -44,17 +44,17 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
   const getGradientBackground = (type: string) => {
     switch (type) {
       case "hidden_strength":
-        return "bg-gradient-to-br from-orange-200 to-amber-400";
+        return "bg-gradient-to-br from-[#E5F9FF] via-[#C3F4FF] to-[#98DEFF]";
       case "mental_signature":
-        return "bg-gradient-to-br from-purple-200 to-violet-400";
+        return "bg-gradient-to-br from-[#FFF3E5] via-[#FFE4CC] to-[#FFD1A8]";
       case "strategic_instinct":
-        return "bg-gradient-to-br from-emerald-200 to-teal-400";
+        return "bg-gradient-to-br from-[#F5FFE5] via-[#E4FFCC] to-[#CEFFA8]";
       case "growth_indicator":
-        return "bg-gradient-to-br from-sky-200 to-blue-400";
+        return "bg-gradient-to-br from-[#FFE5F9] via-[#FFC3E8] to-[#FFA3D8]";
       case "game_changing":
-        return "bg-gradient-to-br from-rose-200 to-pink-400";
+        return "bg-gradient-to-br from-[#E5E5FF] via-[#D1D1FF] to-[#B3B3FF]";
       default:
-        return "bg-gradient-to-br from-gray-200 to-slate-400";
+        return "bg-gradient-to-br from-gray-100 to-gray-200";
     }
   };
 
@@ -91,7 +91,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
         <Card 
           className={cn(
             "absolute inset-0 w-full h-full backface-hidden",
-            "overflow-hidden border-0 rounded-3xl transition-all duration-500",
+            "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg",
             getGradientBackground(pattern.type)
           )}
           style={{ 
@@ -107,19 +107,19 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             {/* Content */}
             <div className="relative z-10 space-y-8">
               {/* Category Label */}
-              <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
+              <div className="flex items-center gap-2 text-sm tracking-wide text-black/70 uppercase">
                 <Icon className="h-4 w-4" />
                 <span className="font-medium">{getTypeLabel(pattern.type)}</span>
               </div>
 
               {/* Main Insight */}
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-black/80">
                 {pattern.primary_insight}
               </h2>
             </div>
 
             {/* Flip indicator */}
-            <div className="relative z-10 flex items-center justify-center gap-2 text-sm text-muted-foreground/70">
+            <div className="relative z-10 flex items-center justify-center gap-2 text-sm text-black/50">
               <RotateCw className="h-4 w-4" />
               <span>Tap for details</span>
             </div>
@@ -130,7 +130,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
         <Card 
           className={cn(
             "absolute inset-0 w-full h-full backface-hidden",
-            "overflow-hidden border-0 rounded-3xl transition-all duration-500",
+            "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg",
             getGradientBackground(pattern.type),
             "bg-opacity-90"
           )}
@@ -147,14 +147,14 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             {/* Content */}
             <div className="relative z-10 space-y-8">
               {/* Category Label */}
-              <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
+              <div className="flex items-center gap-2 text-sm tracking-wide text-black/70 uppercase">
                 <Icon className="h-4 w-4" />
                 <span className="font-medium">{getTypeLabel(pattern.type)}</span>
               </div>
 
               {/* Details */}
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg text-black/70 leading-relaxed">
                   {pattern.details}
                 </p>
               </div>
