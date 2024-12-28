@@ -2,35 +2,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import AnalysisCard from "@/components/recording-detail/analysis/AnalysisCard";
-import { Database } from "@/integrations/supabase/types";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
-
-interface TrendPattern {
-  type: 'power_moves' | 'mental_edge' | 'breakthroughs' | 'smart_plays' | 'progress_zone';
-  title: string;
-  description: string;
-  supporting_evidence: string;
-  confidence_score: number;
-  timespan: string;
-  build_on_this: string;
-}
-
-interface TrendAnalysisMetadata {
-  sessions_analyzed: number;
-  date_range: string;
-  total_insights_found: number;
-  confidence_level: number;
-}
-
-interface Trend {
-  patterns: TrendPattern[];
-  analysis_metadata: TrendAnalysisMetadata;
-  created_at: string;
-}
-
-type DbTrend = Database['public']['Tables']['trends']['Row'];
+import { Trend } from "@/types/trends";
 
 const Trends = () => {
   const [trends, setTrends] = useState<Trend | null>(null);
@@ -54,35 +29,11 @@ const Trends = () => {
       }
 
       if (data) {
-        // Type guard to ensure patterns is an array and transform it
-        const patterns = Array.isArray(data.patterns) 
-          ? data.patterns.map((pattern: any): TrendPattern => ({
-              type: pattern.type || 'power_moves',
-              title: pattern.title || '',
-              description: pattern.description || '',
-              supporting_evidence: pattern.supporting_evidence || '',
-              confidence_score: Number(pattern.confidence_score) || 0,
-              timespan: pattern.timespan || '',
-              build_on_this: pattern.build_on_this || ''
-            }))
-          : [];
-
-        // Type guard and transform analysis_metadata
-        const rawMetadata = data.analysis_metadata as Record<string, any>;
-        const metadata: TrendAnalysisMetadata = {
-          sessions_analyzed: Number(rawMetadata?.sessions_analyzed) || 0,
-          date_range: String(rawMetadata?.date_range || ''),
-          total_insights_found: Number(rawMetadata?.total_insights_found) || 0,
-          confidence_level: Number(rawMetadata?.confidence_level) || 0
-        };
-
-        const transformedTrend: Trend = {
-          patterns,
-          analysis_metadata: metadata,
+        setTrends({
+          patterns: data.patterns,
+          analysis_metadata: data.analysis_metadata,
           created_at: data.created_at || new Date().toISOString()
-        };
-        
-        setTrends(transformedTrend);
+        });
       }
     } catch (error) {
       console.error('Error in fetchTrends:', error);
@@ -107,7 +58,6 @@ const Trends = () => {
         description: "Trends generation started. Please wait a moment and refresh.",
       });
 
-      // Fetch the new trends after a short delay
       setTimeout(fetchTrends, 3000);
     } catch (error) {
       console.error('Error generating trends:', error);
@@ -167,17 +117,16 @@ const Trends = () => {
                   <AnalysisCard
                     key={pattern.title}
                     title={pattern.title}
-                    content={`${pattern.description}\n\n**Evidence:** ${pattern.supporting_evidence}\n\n**Timespan:** ${pattern.timespan}\n\n**Build on this:** ${pattern.build_on_this}`}
+                    content={`${pattern.insight}\n\n**Evidence:** ${pattern.pattern_evidence}\n\n**Timespan:** ${pattern.observation_window}\n\n**Deeper Meaning:** ${pattern.deeper_meaning}`}
                     index={index}
                   />
                 ))}
               </div>
               
               <div className="text-sm text-muted-foreground mt-4">
-                <p>Analysis based on {trends.analysis_metadata.sessions_analyzed} sessions</p>
-                <p>Date range: {trends.analysis_metadata.date_range}</p>
-                <p>Total insights found: {trends.analysis_metadata.total_insights_found}</p>
-                <p>Confidence level: {trends.analysis_metadata.confidence_level}%</p>
+                <p>Analysis based on {trends.analysis_metadata.sessions_reviewed} sessions</p>
+                <p>Time period: {trends.analysis_metadata.time_period}</p>
+                <p>Pattern confidence: {trends.analysis_metadata.pattern_confidence}%</p>
               </div>
             </div>
           )}
