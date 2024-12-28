@@ -64,6 +64,27 @@ serve(async (req) => {
 
     console.log('Analyses prepared:', analyses.length)
 
+    // Add explicit JSON structure to the system prompt
+    const systemPrompt = `${promptConfig.trends_prompt}\n\nYou must return a JSON object with this exact structure:
+{
+  "patterns": [
+    {
+      "type": "hidden_strength" | "mental_signature" | "game_changing" | "strategic_instinct" | "growth_indicator",
+      "title": "string",
+      "insight": "string",
+      "pattern_evidence": "string",
+      "strength_rating": number,
+      "observation_window": "string",
+      "deeper_meaning": "string"
+    }
+  ],
+  "analysis_metadata": {
+    "sessions_reviewed": number,
+    "time_period": "string",
+    "pattern_confidence": number
+  }
+}`
+
     // Get analysis from OpenAI
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -76,7 +97,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: promptConfig.trends_prompt
+            content: systemPrompt
           },
           {
             role: 'user',
@@ -101,13 +122,24 @@ serve(async (req) => {
       console.log('Successfully parsed trends data:', trends)
     } catch (error) {
       console.error('Error parsing OpenAI response:', error)
+      console.error('Raw response:', analysisData.choices[0].message.content)
       throw new Error('Invalid response format from OpenAI')
     }
 
-    // Validate the trends object has the required properties
+    // Validate the trends object has the required properties and types
     if (!trends?.patterns || !Array.isArray(trends.patterns) || !trends?.analysis_metadata) {
       console.error('Invalid trends format:', trends)
       throw new Error('Invalid trends format received from OpenAI')
+    }
+
+    // Additional validation for required fields and types
+    for (const pattern of trends.patterns) {
+      if (!pattern.type || !pattern.title || !pattern.insight || 
+          !pattern.pattern_evidence || !pattern.strength_rating || 
+          !pattern.observation_window || !pattern.deeper_meaning) {
+        console.error('Invalid pattern format:', pattern)
+        throw new Error('Invalid pattern format in OpenAI response')
+      }
     }
 
     // Save the trends
