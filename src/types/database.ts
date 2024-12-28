@@ -6,6 +6,8 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+export type SessionType = "course" | "practice"
+
 export interface Tables {
   profiles: {
     Row: {
@@ -60,5 +62,3 @@ export interface Tables {
     }
   }
 }
-
-export type SessionType = "course" | "practice"

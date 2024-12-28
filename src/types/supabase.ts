@@ -1,4 +1,5 @@
 import { Tables } from './database'
+import { SessionType } from './database'
 
 export type TablesInsert<T extends keyof Tables> = Tables[T] extends { Insert: any }
   ? Tables[T]['Insert']

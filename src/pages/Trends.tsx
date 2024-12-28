@@ -7,6 +7,22 @@ import { TrendOutput } from "@/types/trends";
 import TrendsHeader from "@/components/trends/TrendsHeader";
 import TrendsContent from "@/components/trends/TrendsContent";
 import { Button } from "@/components/ui/button";
+import { Json } from "@/types/database";
+
+// Type guard to validate TrendOutput structure
+function isTrendOutput(json: Json): json is TrendOutput {
+  if (typeof json !== 'object' || !json) return false;
+  
+  const candidate = json as any;
+  return (
+    Array.isArray(candidate.patterns) &&
+    typeof candidate.metadata === 'object' &&
+    candidate.metadata !== null &&
+    typeof candidate.metadata.sessions_analyzed === 'number' &&
+    typeof candidate.metadata.date_range === 'string' &&
+    typeof candidate.metadata.analysis_confidence === 'number'
+  );
+}
 
 const Trends = () => {
   const [trends, setTrends] = useState<TrendOutput | null>(null);
@@ -30,7 +46,17 @@ const Trends = () => {
       }
 
       if (data?.trends_output) {
-        setTrends(data.trends_output as TrendOutput);
+        // Validate the data structure before setting it
+        if (isTrendOutput(data.trends_output)) {
+          setTrends(data.trends_output);
+        } else {
+          console.error('Invalid trends output format:', data.trends_output);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Invalid trends data format",
+          });
+        }
       }
     } catch (error) {
       console.error('Error in fetchTrends:', error);
@@ -73,9 +99,9 @@ const Trends = () => {
   }, []);
 
   const formatContent = (pattern: any) => {
-    if (!pattern.supporting_details) {
+    if (!pattern?.supporting_details) {
       console.warn('Pattern is missing supporting details:', pattern);
-      return pattern.primary_insight;
+      return pattern.primary_insight || 'No insight available';
     }
     return `${pattern.primary_insight}\n\n**Evidence:** ${pattern.supporting_details.evidence}\n\n**Context:** ${pattern.supporting_details.context}\n\n**Significance:** ${pattern.supporting_details.significance}`;
   };
