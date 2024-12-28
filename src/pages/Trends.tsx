@@ -42,22 +42,25 @@ const Trends = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto py-6 space-y-6">
-        <div className="space-y-6 px-4 sm:px-6 md:px-8">
+      <div className="max-w-7xl mx-auto py-6 space-y-4">
+        <div className="space-y-4 px-4 sm:px-6 md:px-8">
           {/* Header section */}
-          <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
-            <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
+          <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
+          
+          <SegmentedNav />
+
+          {/* Generate Trends Button - Repositioned and Compact */}
+          <div className="flex justify-end -mt-2">
             <Button 
               onClick={generateTrends} 
               disabled={isLoading || recordingsCount < 3}
-              className="min-w-[150px]"
+              size="sm"
+              className="text-xs h-7 px-3"
             >
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isLoading && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
               Generate Trends
             </Button>
           </div>
-          
-          <SegmentedNav />
           
           {recordingsCount < 3 && (
             <Alert variant="destructive">
