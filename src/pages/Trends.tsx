@@ -29,22 +29,28 @@ const Trends = () => {
       }
 
       if (data) {
-        // First try to use the new trends_output column
+        console.log('Fetched trends data:', data);
+        
+        // Try to use the new trends_output column first
         if (data.trends_output) {
           const output = data.trends_output as TrendOutput;
-          setTrends({
-            patterns: output.patterns,
-            analysis_metadata: output.metadata,
-            created_at: data.created_at || new Date().toISOString(),
-            trends_output: output
-          });
-        } 
-        // Fallback to legacy columns if trends_output is not available
-        else if (data.patterns && data.analysis_metadata) {
+          if (isValidTrendOutput(output)) {
+            setTrends({
+              patterns: output.patterns,
+              analysis_metadata: output.metadata,
+              created_at: data.created_at || new Date().toISOString(),
+              trends_output: output
+            });
+            return;
+          }
+        }
+        
+        // Fallback to legacy columns if trends_output is not available or invalid
+        if (data.patterns && data.analysis_metadata) {
           const patterns = data.patterns as TrendPattern[];
           const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
           
-          if (Array.isArray(patterns) && analysis_metadata) {
+          if (isValidTrendData(patterns, analysis_metadata)) {
             setTrends({
               patterns,
               analysis_metadata,
@@ -58,6 +64,50 @@ const Trends = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Type guard for TrendOutput
+  const isValidTrendOutput = (output: any): output is TrendOutput => {
+    return (
+      output &&
+      Array.isArray(output.patterns) &&
+      output.patterns.every(isValidTrendPattern) &&
+      isValidTrendMetadata(output.metadata)
+    );
+  };
+
+  // Type guard for TrendPattern
+  const isValidTrendPattern = (pattern: any): pattern is TrendPattern => {
+    return (
+      pattern &&
+      typeof pattern.primary_insight === 'string' &&
+      pattern.supporting_details &&
+      typeof pattern.supporting_details.evidence === 'string' &&
+      typeof pattern.supporting_details.context === 'string' &&
+      typeof pattern.supporting_details.significance === 'string'
+    );
+  };
+
+  // Type guard for TrendAnalysisMetadata
+  const isValidTrendMetadata = (metadata: any): metadata is TrendAnalysisMetadata => {
+    return (
+      metadata &&
+      typeof metadata.sessions_analyzed === 'number' &&
+      typeof metadata.date_range === 'string' &&
+      typeof metadata.analysis_confidence === 'number'
+    );
+  };
+
+  // Type guard for legacy data
+  const isValidTrendData = (
+    patterns: any,
+    metadata: any
+  ): patterns is TrendPattern[] && metadata is TrendAnalysisMetadata => {
+    return (
+      Array.isArray(patterns) &&
+      patterns.every(isValidTrendPattern) &&
+      isValidTrendMetadata(metadata)
+    );
   };
 
   const generateTrends = async () => {
@@ -94,6 +144,10 @@ const Trends = () => {
   }, []);
 
   const formatContent = (pattern: TrendPattern) => {
+    if (!pattern.supporting_details) {
+      console.warn('Pattern is missing supporting details:', pattern);
+      return pattern.primary_insight;
+    }
     return `${pattern.primary_insight}\n\n**Evidence:** ${pattern.supporting_details.evidence}\n\n**Context:** ${pattern.supporting_details.context}\n\n**Significance:** ${pattern.supporting_details.significance}`;
   };
 
