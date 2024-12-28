@@ -154,7 +154,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
 
               {/* Details */}
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   {pattern.details}
                 </p>
               </div>
