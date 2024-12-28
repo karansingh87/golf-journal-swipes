@@ -3,7 +3,7 @@ import { corsHeaders } from './openai.ts';
 import { trendsSchema } from './schema.ts';
 import { analyzeGolfTrends } from './openai.ts';
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -48,8 +48,12 @@ serve(async (req) => {
       }))
       .filter(r => r.analysis !== null);
 
+    console.log('Prepared recordings data for analysis:', recordingsData.length, 'recordings');
+
     // Get analysis from OpenAI with structured output
     const trendsOutput = await analyzeGolfTrends(recordingsData, trendsSchema);
+
+    console.log('Successfully generated trends analysis');
 
     // Update trends table
     const { error: updateError } = await supabaseClient
@@ -65,7 +69,7 @@ serve(async (req) => {
       throw updateError;
     }
 
-    console.log('Successfully generated trends for user:', user_id);
+    console.log('Successfully saved trends for user:', user_id);
 
     return new Response(
       JSON.stringify({ success: true }),
