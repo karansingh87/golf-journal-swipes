@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [trendsData, setTrendsData] = useState<string | null>(null);
+  const [recordingsCount, setRecordingsCount] = useState<number>(0);
+  const [milestone, setMilestone] = useState<string | null>(null);
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
@@ -20,10 +23,23 @@ const Trends = () => {
     return null;
   }
 
+  useEffect(() => {
+    const fetchRecordingsCount = async () => {
+      const { count } = await supabase
+        .from('recordings')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', session.user.id);
+      
+      setRecordingsCount(count || 0);
+    };
+
+    fetchRecordingsCount();
+  }, [session.user.id]);
+
   const fetchTrends = async () => {
     const { data: trends } = await supabase
       .from('trends')
-      .select('trends_output')
+      .select('trends_output, milestone_type')
       .eq('user_id', session.user.id)
       .order('created_at', { ascending: false })
       .limit(1)
@@ -31,10 +47,20 @@ const Trends = () => {
     
     if (trends?.trends_output) {
       setTrendsData(trends.trends_output);
+      setMilestone(trends.milestone_type);
     }
   };
 
   const generateTrends = async () => {
+    if (recordingsCount < 3) {
+      toast({
+        title: "Not enough recordings",
+        description: "You need at least 3 recordings to generate trends.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
@@ -66,13 +92,13 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-4xl mx-auto py-6 space-y-6">
         <div className="space-y-6 px-4 sm:px-6 md:px-8">
-          {/* Make the header more prominent */}
+          {/* Header section */}
           <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
             <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
             <Button 
               onClick={generateTrends} 
-              disabled={isLoading}
-              className="min-w-[150px]" // Ensure minimum width
+              disabled={isLoading || recordingsCount < 3}
+              className="min-w-[150px]"
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Generate Trends
@@ -80,6 +106,25 @@ const Trends = () => {
           </div>
           
           <SegmentedNav />
+          
+          {recordingsCount < 3 && (
+            <Alert variant="warning">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                You need at least 3 recordings to generate trends. You currently have {recordingsCount} recording{recordingsCount !== 1 ? 's' : ''}.
+              </AlertDescription>
+            </Alert>
+          )}
+          
+          {milestone && (
+            <Alert>
+              <AlertDescription>
+                🎉 {milestone === 'return' 
+                  ? "Welcome back! Here's an analysis of your recent progress." 
+                  : `Congratulations on reaching your ${milestone} recording milestone!`}
+              </AlertDescription>
+            </Alert>
+          )}
           
           {trendsData ? (
             <div className="mt-6 p-4 bg-white rounded-lg shadow">
@@ -90,7 +135,9 @@ const Trends = () => {
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
               <div className="text-center text-muted-foreground">
-                No trends data available. Click "Generate Trends" to create new trends.
+                {recordingsCount >= 3 
+                  ? "No trends data available. Click \"Generate Trends\" to create new trends."
+                  : "Record more sessions to unlock trends analysis."}
               </div>
             </div>
           )}

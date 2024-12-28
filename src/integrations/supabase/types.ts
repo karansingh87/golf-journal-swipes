@@ -137,6 +137,7 @@ export type Database = {
           created_at: string | null
           id: string
           last_analysis_at: string | null
+          milestone_type: string | null
           trends_output: string | null
           user_id: string
         }
@@ -145,6 +146,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           last_analysis_at?: string | null
+          milestone_type?: string | null
           trends_output?: string | null
           user_id: string
         }
@@ -153,6 +155,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           last_analysis_at?: string | null
+          milestone_type?: string | null
           trends_output?: string | null
           user_id?: string
         }
