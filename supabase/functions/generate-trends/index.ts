@@ -9,89 +9,92 @@ const corsHeaders = {
 
 // Define the schema for trends analysis
 const trendsSchema = {
-  type: "object",
-  properties: {
-    overview: {
-      type: "object",
-      properties: {
-        summary: { type: "string" },
-        period_analyzed: { type: "string" },
-        total_sessions: { type: "integer" }
-      },
-      required: ["summary", "period_analyzed", "total_sessions"],
-      additionalProperties: false
-    },
-    key_improvements: {
-      type: "array",
-      items: {
+  strict: true,
+  schema: {
+    type: "object",
+    properties: {
+      overview: {
         type: "object",
         properties: {
-          area: { type: "string" },
-          description: { type: "string" },
-          evidence: { type: "string" }
+          summary: { type: "string" },
+          period_analyzed: { type: "string" },
+          total_sessions: { type: "integer" }
         },
-        required: ["area", "description", "evidence"],
+        required: ["summary", "period_analyzed", "total_sessions"],
         additionalProperties: false
-      }
-    },
-    technical_analysis: {
-      type: "object",
-      properties: {
-        swing_patterns: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              pattern: { type: "string" },
-              frequency: { type: "string" },
-              impact: { type: "string" }
-            },
-            required: ["pattern", "frequency", "impact"],
-            additionalProperties: false
-          }
-        },
-        club_trends: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              club: { type: "string" },
-              observations: { type: "array", items: { type: "string" } }
-            },
-            required: ["club", "observations"],
-            additionalProperties: false
-          }
+      },
+      key_improvements: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            area: { type: "string" },
+            description: { type: "string" },
+            evidence: { type: "string" }
+          },
+          required: ["area", "description", "evidence"],
+          additionalProperties: false
         }
       },
-      required: ["swing_patterns", "club_trends"],
-      additionalProperties: false
-    },
-    mental_game: {
-      type: "object",
-      properties: {
-        overall_trend: { type: "string" },
-        strengths: { type: "array", items: { type: "string" } },
-        areas_for_improvement: { type: "array", items: { type: "string" } }
-      },
-      required: ["overall_trend", "strengths", "areas_for_improvement"],
-      additionalProperties: false
-    },
-    recommendations: {
-      type: "array",
-      items: {
+      technical_analysis: {
         type: "object",
         properties: {
-          focus_area: { type: "string" },
-          action_items: { type: "array", items: { type: "string" } },
-          priority: { type: "string", enum: ["high", "medium", "low"] }
+          swing_patterns: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                pattern: { type: "string" },
+                frequency: { type: "string" },
+                impact: { type: "string" }
+              },
+              required: ["pattern", "frequency", "impact"],
+              additionalProperties: false
+            }
+          },
+          club_trends: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                club: { type: "string" },
+                observations: { type: "array", items: { type: "string" } }
+              },
+              required: ["club", "observations"],
+              additionalProperties: false
+            }
+          }
         },
-        required: ["focus_area", "action_items", "priority"],
+        required: ["swing_patterns", "club_trends"],
         additionalProperties: false
+      },
+      mental_game: {
+        type: "object",
+        properties: {
+          overall_trend: { type: "string" },
+          strengths: { type: "array", items: { type: "string" } },
+          areas_for_improvement: { type: "array", items: { type: "string" } }
+        },
+        required: ["overall_trend", "strengths", "areas_for_improvement"],
+        additionalProperties: false
+      },
+      recommendations: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            focus_area: { type: "string" },
+            action_items: { type: "array", items: { type: "string" } },
+            priority: { type: "string", enum: ["high", "medium", "low"] }
+          },
+          required: ["focus_area", "action_items", "priority"],
+          additionalProperties: false
+        }
       }
-    }
-  },
-  required: ["overview", "key_improvements", "technical_analysis", "mental_game", "recommendations"],
-  additionalProperties: false
+    },
+    required: ["overview", "key_improvements", "technical_analysis", "mental_game", "recommendations"],
+    additionalProperties: false
+  }
 }
 
 serve(async (req) => {
@@ -115,20 +118,6 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Get the trends prompt
-    const { data: promptData, error: promptError } = await supabaseClient
-      .from('prompt_config')
-      .select('trends_prompt')
-      .single()
-
-    if (promptError) {
-      throw promptError
-    }
-
-    if (!promptData.trends_prompt) {
-      throw new Error('No trends prompt configured')
-    }
-
     // Get user's recordings - limit to last 10 and only fetch necessary fields
     const { data: recordings, error: recordingsError } = await supabaseClient
       .from('recordings')
@@ -149,7 +138,7 @@ serve(async (req) => {
     const recordingsData = recordings.map(r => ({
       analysis: r.analysis ? JSON.parse(r.analysis) : null,
       date: r.created_at
-    })).filter(r => r.analysis !== null);
+    })).filter(r => r.analysis !== null)
 
     console.log('Sending request to OpenAI with data length:', JSON.stringify(recordingsData).length)
 
@@ -165,7 +154,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: promptData.trends_prompt,
+            content: Deno.env.get('TRENDS_PROMPT') || 'Analyze the golf session recordings and provide structured insights.',
           },
           {
             role: 'user',
@@ -174,7 +163,7 @@ serve(async (req) => {
         ],
         response_format: {
           type: "json_schema",
-          schema: trendsSchema
+          json_schema: trendsSchema
         }
       }),
     })
