@@ -5,7 +5,7 @@ import AnalysisCard from "@/components/recording-detail/analysis/AnalysisCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
-import { Trend, TrendPattern, TrendAnalysisMetadata } from "@/types/trends";
+import { Trend, TrendPattern, TrendAnalysisMetadata, TrendOutput } from "@/types/trends";
 
 const Trends = () => {
   const [trends, setTrends] = useState<Trend | null>(null);
@@ -29,41 +29,28 @@ const Trends = () => {
       }
 
       if (data) {
-        // Type assertion with validation
-        const patterns = data.patterns as unknown as TrendPattern[];
-        const analysis_metadata = data.analysis_metadata as unknown as TrendAnalysisMetadata;
-        
-        // Validate the data structure
-        if (
-          Array.isArray(patterns) && 
-          patterns.every(pattern => 
-            'type' in pattern && 
-            'primary_insight' in pattern && 
-            'supporting_details' in pattern &&
-            'confidence_score' in pattern &&
-            'timespan' in pattern &&
-            typeof pattern.supporting_details === 'object' &&
-            'evidence' in pattern.supporting_details &&
-            'context' in pattern.supporting_details &&
-            'significance' in pattern.supporting_details
-          ) &&
-          analysis_metadata &&
-          'sessions_analyzed' in analysis_metadata &&
-          'date_range' in analysis_metadata &&
-          'analysis_confidence' in analysis_metadata
-        ) {
+        // First try to use the new trends_output column
+        if (data.trends_output) {
+          const output = data.trends_output as TrendOutput;
           setTrends({
-            patterns,
-            analysis_metadata,
-            created_at: data.created_at || new Date().toISOString()
+            patterns: output.patterns,
+            analysis_metadata: output.metadata,
+            created_at: data.created_at || new Date().toISOString(),
+            trends_output: output
           });
-        } else {
-          console.error('Invalid trends data structure:', data);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Invalid trends data structure received.",
-          });
+        } 
+        // Fallback to legacy columns if trends_output is not available
+        else if (data.patterns && data.analysis_metadata) {
+          const patterns = data.patterns as TrendPattern[];
+          const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
+          
+          if (Array.isArray(patterns) && analysis_metadata) {
+            setTrends({
+              patterns,
+              analysis_metadata,
+              created_at: data.created_at || new Date().toISOString()
+            });
+          }
         }
       }
     } catch (error) {

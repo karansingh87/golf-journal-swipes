@@ -8,7 +8,6 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -22,7 +21,6 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Get the trends prompt first
     const { data: promptConfig, error: promptError } = await supabase
       .from('prompt_config')
       .select('trends_prompt')
@@ -33,7 +31,6 @@ serve(async (req) => {
       throw new Error('Failed to fetch trends prompt configuration')
     }
 
-    // Get the last 3 recordings with analysis
     const { data: recordings, error: recordingsError } = await supabase
       .from('recordings')
       .select('id, analysis, created_at')
@@ -56,7 +53,6 @@ serve(async (req) => {
       )
     }
 
-    // Prepare analyses for the AI
     const analyses = recordings
       .map(r => r.analysis)
       .filter(Boolean)
@@ -64,30 +60,10 @@ serve(async (req) => {
 
     console.log('Analyses prepared:', analyses.length)
 
-    // Add explicit JSON structure to the system prompt
-    const systemPrompt = `${promptConfig.trends_prompt}\n\nYou must return a JSON object with this exact structure:
-{
-  "patterns": [
-    {
-      "type": "hidden_strength" | "mental_signature" | "game_changing" | "strategic_instinct" | "growth_indicator",
-      "title": "string",
-      "insight": "string",
-      "pattern_evidence": "string",
-      "strength_rating": number,
-      "observation_window": "string",
-      "deeper_meaning": "string"
-    }
-  ],
-  "analysis_metadata": {
-    "sessions_reviewed": number,
-    "time_period": "string",
-    "pattern_confidence": number
-  }
-}`
+    const systemPrompt = promptConfig.trends_prompt
 
     console.log('Sending request to OpenAI...')
 
-    // Get analysis from OpenAI
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -119,41 +95,26 @@ serve(async (req) => {
     const analysisData = await openAIResponse.json()
     console.log('Successfully received OpenAI response')
 
-    let trends
+    let trendsOutput
     try {
       console.log('Raw OpenAI response:', analysisData.choices[0].message.content)
-      trends = JSON.parse(analysisData.choices[0].message.content)
-      console.log('Successfully parsed trends data:', trends)
+      trendsOutput = JSON.parse(analysisData.choices[0].message.content)
+      console.log('Successfully parsed trends data:', trendsOutput)
     } catch (error) {
       console.error('Error parsing OpenAI response:', error)
       console.error('Raw response:', analysisData.choices[0].message.content)
       throw new Error('Invalid response format from OpenAI')
     }
 
-    // Validate the trends object has the required properties and types
-    if (!trends?.patterns || !Array.isArray(trends.patterns) || !trends?.analysis_metadata) {
-      console.error('Invalid trends format:', trends)
-      throw new Error('Invalid trends format received from OpenAI')
-    }
-
-    // Additional validation for required fields and types
-    for (const pattern of trends.patterns) {
-      if (!pattern.type || !pattern.title || !pattern.insight || 
-          !pattern.pattern_evidence || !pattern.strength_rating || 
-          !pattern.observation_window || !pattern.deeper_meaning) {
-        console.error('Invalid pattern format:', pattern)
-        throw new Error('Invalid pattern format in OpenAI response')
-      }
-    }
-
-    // Save the trends
+    // Store the raw GPT output and extract patterns and metadata
     const { error: trendsError } = await supabase
       .from('trends')
       .insert({
         user_id,
         analyzed_recordings: recordings.map(r => r.id),
-        patterns: trends.patterns,
-        analysis_metadata: trends.analysis_metadata,
+        patterns: trendsOutput.patterns,
+        analysis_metadata: trendsOutput.metadata,
+        trends_output: trendsOutput // Store the raw output
       })
 
     if (trendsError) {

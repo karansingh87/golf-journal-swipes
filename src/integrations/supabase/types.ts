@@ -139,6 +139,7 @@ export type Database = {
           id: string
           last_analysis_at: string | null
           patterns: Json
+          trends_output: Json | null
           user_id: string
         }
         Insert: {
@@ -148,6 +149,7 @@ export type Database = {
           id?: string
           last_analysis_at?: string | null
           patterns: Json
+          trends_output?: Json | null
           user_id: string
         }
         Update: {
@@ -157,6 +159,7 @@ export type Database = {
           id?: string
           last_analysis_at?: string | null
           patterns?: Json
+          trends_output?: Json | null
           user_id?: string
         }
         Relationships: []

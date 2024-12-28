@@ -20,8 +20,14 @@ export interface TrendAnalysisMetadata {
   analysis_confidence: number;
 }
 
+export interface TrendOutput {
+  patterns: TrendPattern[];
+  metadata: TrendAnalysisMetadata;
+}
+
 export interface Trend {
   patterns: TrendPattern[];
   analysis_metadata: TrendAnalysisMetadata;
   created_at: string;
+  trends_output?: TrendOutput;
 }
