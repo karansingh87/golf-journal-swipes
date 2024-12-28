@@ -29,9 +29,8 @@ const Trends = () => {
       }
 
       if (data) {
-        // First cast to unknown, then to our expected types
-        const patterns = (data.patterns as unknown) as TrendPattern[];
-        const analysis_metadata = (data.analysis_metadata as unknown) as TrendAnalysisMetadata;
+        const patterns = data.patterns as TrendPattern[];
+        const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
         
         setTrends({
           patterns,
@@ -123,6 +122,7 @@ const Trends = () => {
                     title={pattern.title}
                     content={`${pattern.insight}\n\n**Evidence:** ${pattern.pattern_evidence}\n\n**Timespan:** ${pattern.observation_window}\n\n**Deeper Meaning:** ${pattern.deeper_meaning}`}
                     index={index}
+                    strengthRating={pattern.strength_rating}
                   />
                 ))}
               </div>
