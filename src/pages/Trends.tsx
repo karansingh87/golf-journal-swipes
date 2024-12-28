@@ -8,6 +8,14 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import PatternCard from "@/components/trends/PatternCard";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +66,7 @@ const Trends = () => {
         console.error('Error parsing trends data:', error);
         toast({
           title: "Error",
-          description: "Failed to parse trends data.",
+          description: `Error parsing trends data: ${error}`,
           variant: "destructive",
         });
       }
@@ -104,7 +112,7 @@ const Trends = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-4xl mx-auto py-6 space-y-6">
+      <div className="max-w-7xl mx-auto py-6 space-y-6">
         <div className="space-y-6 px-4 sm:px-6 md:px-8">
           {/* Header section */}
           <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
@@ -141,11 +149,19 @@ const Trends = () => {
           )}
           
           {trendsData ? (
-            <div className="grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
-              {trendsData.patterns?.map((pattern: any, index: number) => (
-                <PatternCard key={index} pattern={pattern} />
-              ))}
-            </div>
+            <Carousel className="w-full">
+              <CarouselContent>
+                <AnimatePresence mode="wait">
+                  {trendsData.patterns?.map((pattern: any, index: number) => (
+                    <CarouselItem key={index}>
+                      <PatternCard pattern={pattern} />
+                    </CarouselItem>
+                  ))}
+                </AnimatePresence>
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex -left-4" />
+              <CarouselNext className="hidden md:flex -right-4" />
+            </Carousel>
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
               <div className="text-center text-muted-foreground">
