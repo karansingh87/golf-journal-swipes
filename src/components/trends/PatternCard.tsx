@@ -74,11 +74,11 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="w-full max-w-4xl mx-auto px-4 py-8"
+      className="w-full max-w-4xl mx-auto px-4 py-8 min-h-[calc(100vh-8rem)]"
     >
       <Card className={cn(
         "relative overflow-hidden border-0 rounded-3xl transition-all duration-500",
-        "min-h-[60vh] flex flex-col justify-center p-8 md:p-12",
+        "h-[calc(100vh-8rem)] flex flex-col justify-center p-8 md:p-12",
         getGradientBackground(pattern.type)
       )}>
         {/* Premium texture overlay */}

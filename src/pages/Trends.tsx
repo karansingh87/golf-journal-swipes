@@ -12,8 +12,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselPagination,
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -59,7 +58,7 @@ const Trends = () => {
         // Clean the response by removing markdown code block markers
         const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
         const parsedTrends = JSON.parse(cleanTrendsOutput);
-        console.log('Parsed trends:', parsedTrends); // Debug log
+        console.log('Parsed trends:', parsedTrends);
         setTrendsData(parsedTrends);
         setMilestone(trends.milestone_type);
       } catch (error) {
@@ -149,7 +148,14 @@ const Trends = () => {
           )}
           
           {trendsData ? (
-            <Carousel className="w-full">
+            <Carousel
+              className="w-full"
+              opts={{
+                align: "center",
+                containScroll: false,
+                dragFree: false,
+              }}
+            >
               <CarouselContent>
                 <AnimatePresence mode="wait">
                   {trendsData.patterns?.map((pattern: any, index: number) => (
@@ -159,8 +165,7 @@ const Trends = () => {
                   ))}
                 </AnimatePresence>
               </CarouselContent>
-              <CarouselPrevious className="hidden md:flex -left-4" />
-              <CarouselNext className="hidden md:flex -right-4" />
+              <CarouselPagination count={trendsData.patterns?.length || 0} />
             </Carousel>
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
