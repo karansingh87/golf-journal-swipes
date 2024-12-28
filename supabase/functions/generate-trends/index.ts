@@ -33,6 +33,7 @@ Deno.serve(async (req) => {
       .limit(10);
 
     if (recordingsError) {
+      console.error('Error fetching recordings:', recordingsError);
       throw recordingsError;
     }
 
@@ -66,6 +67,7 @@ Deno.serve(async (req) => {
       });
 
     if (updateError) {
+      console.error('Error updating trends:', updateError);
       throw updateError;
     }
 

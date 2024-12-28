@@ -13,7 +13,7 @@ export async function analyzeGolfTrends(recordingsData: any[], schema: any) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4-1106-preview',
       messages: [
         {
           role: 'system',
@@ -26,7 +26,7 @@ export async function analyzeGolfTrends(recordingsData: any[], schema: any) {
       ],
       response_format: { 
         type: "json_schema",
-        json_schema: schema
+        schema: schema.schema
       }
     }),
   });

@@ -1,4 +1,4 @@
-export const schema = {
+export const trendsSchema = {
   name: "golf_trends_analysis",
   description: "Analysis of golf practice patterns and insights",
   strict: true,
