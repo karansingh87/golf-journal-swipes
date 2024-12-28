@@ -6,7 +6,7 @@ import { useSession } from "@supabase/auth-helpers-react";
 import TrendsHeader from "@/components/trends/TrendsHeader";
 
 const Trends = () => {
-  const [trendsData, setTrendsData] = useState<any>(null);
+  const [trendsData, setTrendsData] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
@@ -91,7 +91,7 @@ const Trends = () => {
           ) : (
             <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200">
               <pre className="whitespace-pre-wrap overflow-x-auto">
-                {JSON.stringify(trendsData, null, 2)}
+                {trendsData}
               </pre>
             </div>
           )}
