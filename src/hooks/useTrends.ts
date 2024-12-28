@@ -21,7 +21,15 @@ export const useTrends = (userId: string) => {
         .single();
 
       if (error) {
-        console.error('Error fetching trends:', error);
+        if (error.code === '503') {
+          toast({
+            title: "Server Temporarily Unavailable",
+            description: "We're experiencing some technical difficulties. Please try again in a few minutes.",
+            variant: "destructive",
+          });
+        } else {
+          console.error('Error fetching trends:', error);
+        }
         return;
       }
 
@@ -29,14 +37,13 @@ export const useTrends = (userId: string) => {
         try {
           const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
           const parsedTrends = JSON.parse(cleanTrendsOutput);
-          console.log('Parsed trends:', parsedTrends);
           setTrendsData(parsedTrends);
           setMilestone(trends.milestone_type);
         } catch (error) {
           console.error('Error parsing trends data:', error);
           toast({
             title: "Error",
-            description: `Error parsing trends data: ${error}`,
+            description: "There was a problem processing your trends data. Please try again.",
             variant: "destructive",
           });
         }
@@ -44,8 +51,8 @@ export const useTrends = (userId: string) => {
     } catch (error) {
       console.error('Error in fetchLatestTrends:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch trends data",
+        title: "Connection Error",
+        description: "Unable to reach the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
     } finally {
@@ -54,12 +61,32 @@ export const useTrends = (userId: string) => {
   };
 
   const fetchRecordingsCount = async () => {
-    const { count } = await supabase
-      .from('recordings')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId);
-    
-    setRecordingsCount(count || 0);
+    try {
+      const { count, error } = await supabase
+        .from('recordings')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId);
+      
+      if (error) {
+        if (error.code === '503') {
+          toast({
+            title: "Server Temporarily Unavailable",
+            description: "We're experiencing some technical difficulties. Please try again in a few minutes.",
+            variant: "destructive",
+          });
+        }
+        return;
+      }
+      
+      setRecordingsCount(count || 0);
+    } catch (error) {
+      console.error('Error fetching recordings count:', error);
+      toast({
+        title: "Connection Error",
+        description: "Unable to reach the server. Please check your internet connection and try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const generateTrends = async () => {
@@ -78,7 +105,18 @@ export const useTrends = (userId: string) => {
         body: { user_id: userId }
       });
       
-      if (error) throw error;
+      if (error) {
+        if (error.code === '503') {
+          toast({
+            title: "Server Temporarily Unavailable",
+            description: "We're experiencing some technical difficulties. Please try again in a few minutes.",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+        return;
+      }
 
       toast({
         title: "Success",
@@ -92,8 +130,8 @@ export const useTrends = (userId: string) => {
     } catch (error) {
       console.error('Error generating trends:', error);
       toast({
-        title: "Error",
-        description: "Failed to generate trends. Please try again.",
+        title: "Connection Error",
+        description: "Unable to reach the server. Please check your internet connection and try again.",
         variant: "destructive",
       });
     } finally {
