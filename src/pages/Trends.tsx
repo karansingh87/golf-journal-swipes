@@ -5,7 +5,7 @@ import AnalysisCard from "@/components/recording-detail/analysis/AnalysisCard";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
-import { Trend } from "@/types/trends";
+import { Trend, TrendPattern, TrendAnalysisMetadata } from "@/types/trends";
 
 const Trends = () => {
   const [trends, setTrends] = useState<Trend | null>(null);
@@ -29,9 +29,13 @@ const Trends = () => {
       }
 
       if (data) {
+        // Type cast the JSON data to our expected types
+        const patterns = data.patterns as TrendPattern[];
+        const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
+        
         setTrends({
-          patterns: data.patterns,
-          analysis_metadata: data.analysis_metadata,
+          patterns,
+          analysis_metadata,
           created_at: data.created_at || new Date().toISOString()
         });
       }
