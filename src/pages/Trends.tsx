@@ -32,6 +32,50 @@ const Trends = () => {
   }
 
   useEffect(() => {
+    const fetchLatestTrends = async () => {
+      try {
+        setIsLoading(true);
+        const { data: trends, error } = await supabase
+          .from('trends')
+          .select('trends_output, milestone_type')
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+
+        if (error) {
+          console.error('Error fetching trends:', error);
+          return;
+        }
+
+        if (trends?.trends_output) {
+          try {
+            const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
+            const parsedTrends = JSON.parse(cleanTrendsOutput);
+            console.log('Parsed trends:', parsedTrends);
+            setTrendsData(parsedTrends);
+            setMilestone(trends.milestone_type);
+          } catch (error) {
+            console.error('Error parsing trends data:', error);
+            toast({
+              title: "Error",
+              description: `Error parsing trends data: ${error}`,
+              variant: "destructive",
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error in fetchLatestTrends:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch trends data",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     const fetchRecordingsCount = async () => {
       const { count } = await supabase
         .from('recordings')
@@ -41,36 +85,9 @@ const Trends = () => {
       setRecordingsCount(count || 0);
     };
 
+    fetchLatestTrends();
     fetchRecordingsCount();
-  }, [session.user.id]);
-
-  const fetchTrends = async () => {
-    const { data: trends } = await supabase
-      .from('trends')
-      .select('trends_output, milestone_type')
-      .eq('user_id', session.user.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    
-    if (trends?.trends_output) {
-      try {
-        // Clean the response by removing markdown code block markers
-        const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
-        const parsedTrends = JSON.parse(cleanTrendsOutput);
-        console.log('Parsed trends:', parsedTrends);
-        setTrendsData(parsedTrends);
-        setMilestone(trends.milestone_type);
-      } catch (error) {
-        console.error('Error parsing trends data:', error);
-        toast({
-          title: "Error",
-          description: `Error parsing trends data: ${error}`,
-          variant: "destructive",
-        });
-      }
-    }
-  };
+  }, [session.user.id, toast]);
 
   const generateTrends = async () => {
     if (recordingsCount < 3) {
@@ -96,7 +113,9 @@ const Trends = () => {
       });
 
       // Fetch the latest trends after a short delay
-      setTimeout(fetchTrends, 3000);
+      setTimeout(() => {
+        fetchLatestTrends();
+      }, 3000);
     } catch (error) {
       console.error('Error generating trends:', error);
       toast({
