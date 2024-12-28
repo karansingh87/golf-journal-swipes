@@ -44,17 +44,17 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
   const getGradientBackground = (type: string) => {
     switch (type) {
       case "hidden_strength":
-        return "bg-gradient-to-br from-orange-200 to-amber-400";
+        return "bg-gradient-to-br from-[#E0F7FF] via-[#C7EEFF] to-[#B0E5FF]";
       case "mental_signature":
-        return "bg-gradient-to-br from-purple-200 to-violet-400";
+        return "bg-gradient-to-br from-[#FFE8D9] via-[#FFD6BC] to-[#FFC4A0]";
       case "strategic_instinct":
-        return "bg-gradient-to-br from-emerald-200 to-teal-400";
+        return "bg-gradient-to-br from-[#E6FFE7] via-[#CCFFD0] to-[#B3FFB9]";
       case "growth_indicator":
-        return "bg-gradient-to-br from-sky-200 to-blue-400";
+        return "bg-gradient-to-br from-[#F5E6FF] via-[#EBD0FF] to-[#E0B9FF]";
       case "game_changing":
-        return "bg-gradient-to-br from-rose-200 to-pink-400";
+        return "bg-gradient-to-br from-[#FFF5E6] via-[#FFE8CC] to-[#FFDBB3]";
       default:
-        return "bg-gradient-to-br from-gray-200 to-slate-400";
+        return "bg-gradient-to-br from-gray-50 to-gray-100";
     }
   };
 
@@ -91,7 +91,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
         <Card 
           className={cn(
             "absolute inset-0 w-full h-full backface-hidden",
-            "overflow-hidden border-0 rounded-3xl transition-all duration-500",
+            "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg",
             getGradientBackground(pattern.type)
           )}
           style={{ 
@@ -130,9 +130,8 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
         <Card 
           className={cn(
             "absolute inset-0 w-full h-full backface-hidden",
-            "overflow-hidden border-0 rounded-3xl transition-all duration-500",
-            getGradientBackground(pattern.type),
-            "bg-opacity-90"
+            "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg",
+            getGradientBackground(pattern.type)
           )}
           style={{ 
             transformStyle: "preserve-3d",
