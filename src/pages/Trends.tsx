@@ -1,31 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
-import { TrendOutput } from "@/types/trends";
 import TrendsHeader from "@/components/trends/TrendsHeader";
-import TrendsContent from "@/components/trends/TrendsContent";
-import { Button } from "@/components/ui/button";
-import { Json } from "@/types/database";
-
-// Type guard to validate TrendOutput structure
-function isTrendOutput(json: Json): json is TrendOutput {
-  if (typeof json !== 'object' || !json) return false;
-  
-  const candidate = json as any;
-  return (
-    Array.isArray(candidate.patterns) &&
-    typeof candidate.metadata === 'object' &&
-    candidate.metadata !== null &&
-    typeof candidate.metadata.sessions_analyzed === 'number' &&
-    typeof candidate.metadata.date_range === 'string' &&
-    typeof candidate.metadata.analysis_confidence === 'number'
-  );
-}
 
 const Trends = () => {
-  const [trends, setTrends] = useState<TrendOutput | null>(null);
+  const [trendsData, setTrendsData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
@@ -46,17 +27,7 @@ const Trends = () => {
       }
 
       if (data?.trends_output) {
-        // Validate the data structure before setting it
-        if (isTrendOutput(data.trends_output)) {
-          setTrends(data.trends_output);
-        } else {
-          console.error('Invalid trends output format:', data.trends_output);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Invalid trends data format",
-          });
-        }
+        setTrendsData(data.trends_output);
       }
     } catch (error) {
       console.error('Error in fetchTrends:', error);
@@ -94,17 +65,9 @@ const Trends = () => {
     }
   };
 
-  useEffect(() => {
+  useState(() => {
     fetchTrends();
   }, []);
-
-  const formatContent = (pattern: any) => {
-    if (!pattern?.supporting_details) {
-      console.warn('Pattern is missing supporting details:', pattern);
-      return pattern.primary_insight || 'No insight available';
-    }
-    return `${pattern.primary_insight}\n\n**Evidence:** ${pattern.supporting_details.evidence}\n\n**Context:** ${pattern.supporting_details.context}\n\n**Significance:** ${pattern.supporting_details.significance}`;
-  };
 
   return (
     <div className="min-h-[100dvh] bg-background">
@@ -119,21 +82,18 @@ const Trends = () => {
                 Loading trends...
               </div>
             </div>
-          ) : !trends ? (
+          ) : !trendsData ? (
             <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
               <div className="text-center text-muted-foreground">
                 No trends available yet. Add at least 3 recordings to see your progress!
               </div>
-              <Button 
-                onClick={generateTrends} 
-                disabled={generating}
-                variant="default"
-              >
-                {generating ? "Generating..." : "Generate Trends"}
-              </Button>
             </div>
           ) : (
-            <TrendsContent trends={trends} formatContent={formatContent} />
+            <div className="p-4 bg-zinc-50 rounded-lg border border-zinc-200">
+              <pre className="whitespace-pre-wrap overflow-x-auto">
+                {JSON.stringify(trendsData, null, 2)}
+              </pre>
+            </div>
           )}
         </div>
       </div>
