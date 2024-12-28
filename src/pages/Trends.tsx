@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
-import AnalysisCard from "@/components/recording-detail/analysis/AnalysisCard";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
-import { Trend, TrendPattern, TrendAnalysisMetadata, TrendOutput } from "@/types/trends";
+import { TrendOutput } from "@/types/trends";
+import TrendsHeader from "@/components/trends/TrendsHeader";
+import TrendsContent from "@/components/trends/TrendsContent";
+import { Button } from "@/components/ui/button";
 
 const Trends = () => {
-  const [trends, setTrends] = useState<Trend | null>(null);
+  const [trends, setTrends] = useState<TrendOutput | null>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const { toast } = useToast();
@@ -28,86 +29,14 @@ const Trends = () => {
         return;
       }
 
-      if (data) {
-        console.log('Fetched trends data:', data);
-        
-        // Try to use the new trends_output column first
-        if (data.trends_output) {
-          const output = data.trends_output as TrendOutput;
-          if (isValidTrendOutput(output)) {
-            setTrends({
-              patterns: output.patterns,
-              analysis_metadata: output.metadata,
-              created_at: data.created_at || new Date().toISOString(),
-              trends_output: output
-            });
-            return;
-          }
-        }
-        
-        // Fallback to legacy columns if trends_output is not available or invalid
-        if (data.patterns && data.analysis_metadata) {
-          const patterns = data.patterns as TrendPattern[];
-          const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
-          
-          if (isValidTrendData(patterns, analysis_metadata)) {
-            setTrends({
-              patterns,
-              analysis_metadata,
-              created_at: data.created_at || new Date().toISOString()
-            });
-          }
-        }
+      if (data?.trends_output) {
+        setTrends(data.trends_output as TrendOutput);
       }
     } catch (error) {
       console.error('Error in fetchTrends:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  // Type guard for TrendOutput
-  const isValidTrendOutput = (output: any): output is TrendOutput => {
-    return (
-      output &&
-      Array.isArray(output.patterns) &&
-      output.patterns.every(isValidTrendPattern) &&
-      isValidTrendMetadata(output.metadata)
-    );
-  };
-
-  // Type guard for TrendPattern
-  const isValidTrendPattern = (pattern: any): pattern is TrendPattern => {
-    return (
-      pattern &&
-      typeof pattern.primary_insight === 'string' &&
-      pattern.supporting_details &&
-      typeof pattern.supporting_details.evidence === 'string' &&
-      typeof pattern.supporting_details.context === 'string' &&
-      typeof pattern.supporting_details.significance === 'string'
-    );
-  };
-
-  // Type guard for TrendAnalysisMetadata
-  const isValidTrendMetadata = (metadata: any): metadata is TrendAnalysisMetadata => {
-    return (
-      metadata &&
-      typeof metadata.sessions_analyzed === 'number' &&
-      typeof metadata.date_range === 'string' &&
-      typeof metadata.analysis_confidence === 'number'
-    );
-  };
-
-  // Type guard for legacy data
-  const isValidTrendData = (
-    patterns: any,
-    metadata: any
-  ): patterns is TrendPattern[] && metadata is TrendAnalysisMetadata => {
-    return (
-      Array.isArray(patterns) &&
-      patterns.every(isValidTrendPattern) &&
-      isValidTrendMetadata(metadata)
-    );
   };
 
   const generateTrends = async () => {
@@ -143,7 +72,7 @@ const Trends = () => {
     fetchTrends();
   }, []);
 
-  const formatContent = (pattern: TrendPattern) => {
+  const formatContent = (pattern: any) => {
     if (!pattern.supporting_details) {
       console.warn('Pattern is missing supporting details:', pattern);
       return pattern.primary_insight;
@@ -155,16 +84,7 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-4xl mx-auto py-6 space-y-6">
         <div className="space-y-6 px-4 sm:px-6 md:px-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
-            <Button 
-              onClick={generateTrends} 
-              disabled={generating}
-              variant="outline"
-            >
-              {generating ? "Generating..." : "Generate Trends"}
-            </Button>
-          </div>
+          <TrendsHeader onGenerateTrends={generateTrends} generating={generating} />
           <SegmentedNav />
           
           {loading ? (
@@ -187,25 +107,7 @@ const Trends = () => {
               </Button>
             </div>
           ) : (
-            <div className="space-y-6">
-              <div className="grid gap-6">
-                {trends.patterns.map((pattern, index) => (
-                  <AnalysisCard
-                    key={pattern.primary_insight}
-                    title={pattern.primary_insight}
-                    content={formatContent(pattern)}
-                    index={index}
-                    strengthRating={pattern.confidence_score}
-                  />
-                ))}
-              </div>
-              
-              <div className="text-sm text-muted-foreground mt-4">
-                <p>Analysis based on {trends.analysis_metadata.sessions_analyzed} sessions</p>
-                <p>Time period: {trends.analysis_metadata.date_range}</p>
-                <p>Pattern confidence: {trends.analysis_metadata.analysis_confidence}%</p>
-              </div>
-            </div>
+            <TrendsContent trends={trends} formatContent={formatContent} />
           )}
         </div>
       </div>

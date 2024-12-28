@@ -133,32 +133,26 @@ export type Database = {
       }
       trends: {
         Row: {
-          analysis_metadata: Json
           analyzed_recordings: string[]
           created_at: string | null
           id: string
           last_analysis_at: string | null
-          patterns: Json
           trends_output: Json | null
           user_id: string
         }
         Insert: {
-          analysis_metadata: Json
           analyzed_recordings: string[]
           created_at?: string | null
           id?: string
           last_analysis_at?: string | null
-          patterns: Json
           trends_output?: Json | null
           user_id: string
         }
         Update: {
-          analysis_metadata?: Json
           analyzed_recordings?: string[]
           created_at?: string | null
           id?: string
           last_analysis_at?: string | null
-          patterns?: Json
           trends_output?: Json | null
           user_id?: string
         }
