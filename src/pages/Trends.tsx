@@ -29,14 +29,40 @@ const Trends = () => {
       }
 
       if (data) {
-        const patterns = data.patterns as TrendPattern[];
-        const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
+        // Type assertion with validation
+        const patterns = data.patterns as unknown as TrendPattern[];
+        const analysis_metadata = data.analysis_metadata as unknown as TrendAnalysisMetadata;
         
-        setTrends({
-          patterns,
-          analysis_metadata,
-          created_at: data.created_at || new Date().toISOString()
-        });
+        // Validate the data structure
+        if (
+          Array.isArray(patterns) && 
+          patterns.every(pattern => 
+            'type' in pattern && 
+            'title' in pattern && 
+            'insight' in pattern && 
+            'pattern_evidence' in pattern &&
+            'strength_rating' in pattern &&
+            'observation_window' in pattern &&
+            'deeper_meaning' in pattern
+          ) &&
+          analysis_metadata &&
+          'sessions_reviewed' in analysis_metadata &&
+          'time_period' in analysis_metadata &&
+          'pattern_confidence' in analysis_metadata
+        ) {
+          setTrends({
+            patterns,
+            analysis_metadata,
+            created_at: data.created_at || new Date().toISOString()
+          });
+        } else {
+          console.error('Invalid trends data structure:', data);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Invalid trends data structure received.",
+          });
+        }
       }
     } catch (error) {
       console.error('Error in fetchTrends:', error);
