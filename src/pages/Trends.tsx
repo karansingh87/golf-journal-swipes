@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2, AlertCircle } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
-import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import PatternCard from "@/components/trends/PatternCard";
 import {
@@ -13,54 +15,118 @@ import {
   CarouselPagination,
 } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTrends } from "@/hooks/useTrends";
 
 const Trends = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [trendsData, setTrendsData] = useState<any | null>(null);
+  const [recordingsCount, setRecordingsCount] = useState<number>(0);
+  const [milestone, setMilestone] = useState<string | null>(null);
+  const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
-  
+
   // Redirect if not authenticated
   if (!session) {
     navigate('/login');
     return null;
   }
 
-  const {
-    isLoading,
-    trendsData,
-    recordingsCount,
-    milestone,
-    fetchLatestTrends,
-    fetchRecordingsCount,
-    generateTrends
-  } = useTrends(session.user.id);
-
   useEffect(() => {
-    fetchLatestTrends();
+    const fetchRecordingsCount = async () => {
+      const { count } = await supabase
+        .from('recordings')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', session.user.id);
+      
+      setRecordingsCount(count || 0);
+    };
+
     fetchRecordingsCount();
-  }, []);
+  }, [session.user.id]);
+
+  const fetchTrends = async () => {
+    const { data: trends } = await supabase
+      .from('trends')
+      .select('trends_output, milestone_type')
+      .eq('user_id', session.user.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+    
+    if (trends?.trends_output) {
+      try {
+        // Clean the response by removing markdown code block markers
+        const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
+        const parsedTrends = JSON.parse(cleanTrendsOutput);
+        console.log('Parsed trends:', parsedTrends);
+        setTrendsData(parsedTrends);
+        setMilestone(trends.milestone_type);
+      } catch (error) {
+        console.error('Error parsing trends data:', error);
+        toast({
+          title: "Error",
+          description: `Error parsing trends data: ${error}`,
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
+  const generateTrends = async () => {
+    if (recordingsCount < 3) {
+      toast({
+        title: "Not enough recordings",
+        description: "You need at least 3 recordings to generate trends.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const { error } = await supabase.functions.invoke('generate-trends', {
+        body: { user_id: session.user.id }
+      });
+      
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Trends generation started. Please wait a moment and refresh.",
+      });
+
+      // Fetch the latest trends after a short delay
+      setTimeout(fetchTrends, 3000);
+    } catch (error) {
+      console.error('Error generating trends:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate trends. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto py-6 space-y-4">
-        <div className="space-y-4 px-4 sm:px-6 md:px-8">
+      <div className="max-w-7xl mx-auto py-6 space-y-6">
+        <div className="space-y-6 px-4 sm:px-6 md:px-8">
           {/* Header section */}
-          <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
-          
-          <SegmentedNav />
-
-          {/* Generate Trends Button - Repositioned and Compact */}
-          <div className="flex justify-end -mt-2">
+          <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
+            <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
             <Button 
               onClick={generateTrends} 
               disabled={isLoading || recordingsCount < 3}
-              size="sm"
-              className="text-xs h-7 px-3"
+              className="min-w-[150px]"
             >
-              {isLoading && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Generate Trends
             </Button>
           </div>
+          
+          <SegmentedNav />
           
           {recordingsCount < 3 && (
             <Alert variant="destructive">
