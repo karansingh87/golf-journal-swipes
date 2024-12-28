@@ -38,7 +38,7 @@ const Trends = () => {
   useEffect(() => {
     fetchLatestTrends();
     fetchRecordingsCount();
-  }, [fetchLatestTrends, fetchRecordingsCount]);
+  }, []);
 
   return (
     <div className="min-h-[100dvh] bg-background">
@@ -90,18 +90,16 @@ const Trends = () => {
                 dragFree: false,
               }}
             >
-              <div className="flex flex-col gap-4">
-                <CarouselContent>
-                  <AnimatePresence mode="wait">
-                    {trendsData.patterns?.map((pattern: any, index: number) => (
-                      <CarouselItem key={index}>
-                        <PatternCard pattern={pattern} />
-                      </CarouselItem>
-                    ))}
-                  </AnimatePresence>
-                </CarouselContent>
-                <CarouselPagination count={trendsData.patterns?.length || 0} />
-              </div>
+              <CarouselContent>
+                <AnimatePresence mode="wait">
+                  {trendsData.patterns?.map((pattern: any, index: number) => (
+                    <CarouselItem key={index}>
+                      <PatternCard pattern={pattern} />
+                    </CarouselItem>
+                  ))}
+                </AnimatePresence>
+              </CarouselContent>
+              <CarouselPagination count={trendsData.patterns?.length || 0} />
             </Carousel>
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
