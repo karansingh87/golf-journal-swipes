@@ -108,7 +108,7 @@ const Trends = () => {
           <SegmentedNav />
           
           {recordingsCount < 3 && (
-            <Alert variant="warning">
+            <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 You need at least 3 recordings to generate trends. You currently have {recordingsCount} recording{recordingsCount !== 1 ? 's' : ''}.
