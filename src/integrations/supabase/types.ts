@@ -41,18 +41,21 @@ export type Database = {
           created_at: string | null
           id: string
           prompt: string
+          trends_prompt: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string
           prompt: string
+          trends_prompt?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string
           prompt?: string
+          trends_prompt?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -128,14 +131,52 @@ export type Database = {
         }
         Relationships: []
       }
+      trends: {
+        Row: {
+          analyzed_recordings: string[]
+          created_at: string | null
+          id: string
+          last_analysis_at: string | null
+          trends_output: string | null
+          user_id: string
+        }
+        Insert: {
+          analyzed_recordings: string[]
+          created_at?: string | null
+          id?: string
+          last_analysis_at?: string | null
+          trends_output?: string | null
+          user_id: string
+        }
+        Update: {
+          analyzed_recordings?: string[]
+          created_at?: string | null
+          id?: string
+          last_analysis_at?: string | null
+          trends_output?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      should_generate_trends: {
+        Args: {
+          user_uuid: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      achievement_type:
+        | "power_moves"
+        | "mental_edge"
+        | "breakthroughs"
+        | "smart_plays"
+        | "progress_zone"
       session_type: "course" | "practice"
     }
     CompositeTypes: {
