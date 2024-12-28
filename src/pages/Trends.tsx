@@ -82,25 +82,27 @@ const Trends = () => {
           )}
           
           {trendsData ? (
-            <Carousel
-              className="w-full"
-              opts={{
-                align: "center",
-                containScroll: false,
-                dragFree: false,
-              }}
-            >
-              <CarouselContent>
-                <AnimatePresence mode="wait">
-                  {trendsData.patterns?.map((pattern: any, index: number) => (
-                    <CarouselItem key={index}>
-                      <PatternCard pattern={pattern} />
-                    </CarouselItem>
-                  ))}
-                </AnimatePresence>
-              </CarouselContent>
+            <div className="flex flex-col gap-4">
+              <Carousel
+                className="w-full"
+                opts={{
+                  align: "center",
+                  containScroll: false,
+                  dragFree: false,
+                }}
+              >
+                <CarouselContent>
+                  <AnimatePresence mode="wait">
+                    {trendsData.patterns?.map((pattern: any, index: number) => (
+                      <CarouselItem key={index}>
+                        <PatternCard pattern={pattern} />
+                      </CarouselItem>
+                    ))}
+                  </AnimatePresence>
+                </CarouselContent>
+              </Carousel>
               <CarouselPagination count={trendsData.patterns?.length || 0} />
-            </Carousel>
+            </div>
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
               <div className="text-center text-muted-foreground">
