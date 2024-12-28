@@ -105,7 +105,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
             
             {/* Content */}
-            <div className="relative z-10 flex flex-col justify-center h-full space-y-8">
+            <div className="relative z-10 space-y-8">
               {/* Category Label */}
               <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
                 <Icon className="h-4 w-4" />
@@ -145,7 +145,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-10" />
             
             {/* Content */}
-            <div className="relative z-10 flex flex-col justify-center h-full space-y-8">
+            <div className="relative z-10 space-y-8">
               {/* Category Label */}
               <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
                 <Icon className="h-4 w-4" />
@@ -154,7 +154,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
 
               {/* Details */}
               <div className="space-y-6">
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                   {pattern.details}
                 </p>
               </div>
