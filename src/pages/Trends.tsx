@@ -38,17 +38,19 @@ const Trends = () => {
           Array.isArray(patterns) && 
           patterns.every(pattern => 
             'type' in pattern && 
-            'title' in pattern && 
-            'insight' in pattern && 
-            'pattern_evidence' in pattern &&
-            'strength_rating' in pattern &&
-            'observation_window' in pattern &&
-            'deeper_meaning' in pattern
+            'primary_insight' in pattern && 
+            'supporting_details' in pattern &&
+            'confidence_score' in pattern &&
+            'timespan' in pattern &&
+            typeof pattern.supporting_details === 'object' &&
+            'evidence' in pattern.supporting_details &&
+            'context' in pattern.supporting_details &&
+            'significance' in pattern.supporting_details
           ) &&
           analysis_metadata &&
-          'sessions_reviewed' in analysis_metadata &&
-          'time_period' in analysis_metadata &&
-          'pattern_confidence' in analysis_metadata
+          'sessions_analyzed' in analysis_metadata &&
+          'date_range' in analysis_metadata &&
+          'analysis_confidence' in analysis_metadata
         ) {
           setTrends({
             patterns,
@@ -104,6 +106,10 @@ const Trends = () => {
     fetchTrends();
   }, []);
 
+  const formatContent = (pattern: TrendPattern) => {
+    return `${pattern.primary_insight}\n\n**Evidence:** ${pattern.supporting_details.evidence}\n\n**Context:** ${pattern.supporting_details.context}\n\n**Significance:** ${pattern.supporting_details.significance}`;
+  };
+
   return (
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-4xl mx-auto py-6 space-y-6">
@@ -144,19 +150,19 @@ const Trends = () => {
               <div className="grid gap-6">
                 {trends.patterns.map((pattern, index) => (
                   <AnalysisCard
-                    key={pattern.title}
-                    title={pattern.title}
-                    content={`${pattern.insight}\n\n**Evidence:** ${pattern.pattern_evidence}\n\n**Timespan:** ${pattern.observation_window}\n\n**Deeper Meaning:** ${pattern.deeper_meaning}`}
+                    key={pattern.primary_insight}
+                    title={pattern.primary_insight}
+                    content={formatContent(pattern)}
                     index={index}
-                    strengthRating={pattern.strength_rating}
+                    strengthRating={pattern.confidence_score}
                   />
                 ))}
               </div>
               
               <div className="text-sm text-muted-foreground mt-4">
-                <p>Analysis based on {trends.analysis_metadata.sessions_reviewed} sessions</p>
-                <p>Time period: {trends.analysis_metadata.time_period}</p>
-                <p>Pattern confidence: {trends.analysis_metadata.pattern_confidence}%</p>
+                <p>Analysis based on {trends.analysis_metadata.sessions_analyzed} sessions</p>
+                <p>Time period: {trends.analysis_metadata.date_range}</p>
+                <p>Pattern confidence: {trends.analysis_metadata.analysis_confidence}%</p>
               </div>
             </div>
           )}
