@@ -76,12 +76,12 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="w-full max-w-[min(117vw,117vh)] mx-auto px-4"
+      className="w-full max-w-[90vw] h-[117vh] mx-auto px-4"
       style={{ perspective: "1000px" }}
     >
       <div
         className={cn(
-          "relative aspect-square w-full cursor-pointer",
+          "relative h-full w-full cursor-pointer",
           "transform-gpu transition-all duration-700",
           isFlipped ? "rotate-y-180" : ""
         )}
