@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import { Button } from "@/components/ui/button";
-import { useSession } from "@supabase/auth-helpers-react";
-import { useNavigate } from "react-router-dom";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import PatternCard from "@/components/trends/PatternCard";
@@ -16,15 +14,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTrends } from "@/hooks/useTrends";
 
 const Trends = () => {
-  const session = useSession();
-  const navigate = useNavigate();
-  
-  // Redirect if not authenticated
-  if (!session) {
-    navigate('/login');
-    return null;
-  }
-
   const {
     isLoading,
     trendsData,
@@ -33,7 +22,7 @@ const Trends = () => {
     fetchLatestTrends,
     fetchRecordingsCount,
     generateTrends
-  } = useTrends(session.user.id);
+  } = useTrends();
 
   useEffect(() => {
     fetchLatestTrends();
@@ -82,15 +71,15 @@ const Trends = () => {
           )}
           
           {trendsData ? (
-            <div className="flex flex-col gap-4">
-              <Carousel
-                className="w-full"
-                opts={{
-                  align: "center",
-                  containScroll: false,
-                  dragFree: false,
-                }}
-              >
+            <Carousel
+              className="w-full"
+              opts={{
+                align: "center",
+                containScroll: false,
+                dragFree: false,
+              }}
+            >
+              <div className="flex flex-col gap-4">
                 <CarouselContent>
                   <AnimatePresence mode="wait">
                     {trendsData.patterns?.map((pattern: any, index: number) => (
@@ -100,9 +89,9 @@ const Trends = () => {
                     ))}
                   </AnimatePresence>
                 </CarouselContent>
-              </Carousel>
-              <CarouselPagination count={trendsData.patterns?.length || 0} />
-            </div>
+                <CarouselPagination count={trendsData.patterns?.length || 0} />
+              </div>
+            </Carousel>
           ) : (
             <div className="flex items-center justify-center min-h-[50vh]">
               <div className="text-center text-muted-foreground">
