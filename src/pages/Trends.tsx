@@ -48,7 +48,10 @@ const Trends = () => {
     
     if (trends?.trends_output) {
       try {
-        const parsedTrends = JSON.parse(trends.trends_output);
+        // Clean the response by removing markdown code block markers
+        const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
+        const parsedTrends = JSON.parse(cleanTrendsOutput);
+        console.log('Parsed trends:', parsedTrends); // Debug log
         setTrendsData(parsedTrends);
         setMilestone(trends.milestone_type);
       } catch (error) {
