@@ -64,7 +64,7 @@ serve(async (req) => {
 
     console.log('Analyses prepared:', analyses.length)
 
-    // Get analysis from OpenAI with the trends prompt
+    // Get analysis from OpenAI
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -72,7 +72,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
           {
             role: 'system',
