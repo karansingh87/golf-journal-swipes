@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import "https://deno.land/x/xhr@0.1.0/mod.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
 
 const corsHeaders = {
@@ -13,7 +14,6 @@ serve(async (req) => {
   }
 
   try {
-    // Get the user ID from the request
     const { user_id } = await req.json()
     
     if (!user_id) {
@@ -42,10 +42,10 @@ serve(async (req) => {
       throw new Error('No trends prompt configured')
     }
 
-    // Get user's recordings
+    // Get user's recordings - limit to last 10 and only fetch necessary fields
     const { data: recordings, error: recordingsError } = await supabaseClient
       .from('recordings')
-      .select('transcription, analysis, created_at')
+      .select('analysis, created_at')
       .eq('user_id', user_id)
       .order('created_at', { ascending: false })
       .limit(10)
@@ -58,12 +58,13 @@ serve(async (req) => {
       throw new Error('No recordings found for analysis')
     }
 
-    // Prepare data for OpenAI
+    // Prepare data for OpenAI - only send essential information
     const recordingsData = recordings.map(r => ({
-      transcription: r.transcription,
-      analysis: r.analysis,
+      analysis: r.analysis ? JSON.parse(r.analysis) : null,
       date: r.created_at
-    }))
+    })).filter(r => r.analysis !== null);
+
+    console.log('Sending request to OpenAI with data length:', JSON.stringify(recordingsData).length)
 
     // Get analysis from OpenAI
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -73,7 +74,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
