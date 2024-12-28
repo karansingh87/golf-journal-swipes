@@ -76,12 +76,12 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="w-full max-w-4xl mx-auto px-4 min-h-[calc(100vh-8rem)]"
+      className="w-full max-w-4xl mx-auto px-4 min-h-[calc(100vh-12rem)]"
       style={{ perspective: "1000px" }}
     >
       <div
         className={cn(
-          "relative w-full h-[calc(100vh-8rem)] cursor-pointer",
+          "relative w-full h-[calc(100vh-12rem)] cursor-pointer",
           "transform-gpu transition-all duration-700",
           isFlipped ? "rotate-y-180" : ""
         )}
@@ -100,27 +100,27 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"
           }}
         >
-          <div className="relative h-full flex flex-col justify-between p-8 md:p-12">
+          <div className="relative h-full flex flex-col justify-between p-6 md:p-8">
             {/* Premium texture overlay */}
             <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
             
             {/* Content */}
-            <div className="relative z-10 space-y-8">
+            <div className="relative z-10 space-y-6">
               {/* Category Label */}
-              <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
+              <div className="flex items-center gap-2 text-xs tracking-wide text-muted-foreground/80 uppercase">
                 <Icon className="h-4 w-4" />
                 <span className="font-medium">{getTypeLabel(pattern.type)}</span>
               </div>
 
               {/* Main Insight */}
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-foreground">
+              <h2 className="text-2xl md:text-3xl font-bold leading-tight tracking-tight text-foreground">
                 {pattern.primary_insight}
               </h2>
             </div>
 
             {/* Flip indicator */}
-            <div className="relative z-10 flex items-center justify-center gap-2 text-sm text-muted-foreground/70">
-              <RotateCw className="h-4 w-4" />
+            <div className="relative z-10 flex items-center justify-center gap-2 text-xs text-muted-foreground/70">
+              <RotateCw className="h-3 w-3" />
               <span>Tap for details</span>
             </div>
           </div>
@@ -140,21 +140,21 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             transform: isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)"
           }}
         >
-          <div className="relative h-full flex flex-col p-8 md:p-12">
+          <div className="relative h-full flex flex-col p-6 md:p-8">
             {/* Premium texture overlay */}
             <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-10" />
             
             {/* Content */}
-            <div className="relative z-10 space-y-8">
+            <div className="relative z-10 space-y-6">
               {/* Category Label */}
-              <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
+              <div className="flex items-center gap-2 text-xs tracking-wide text-muted-foreground/80 uppercase">
                 <Icon className="h-4 w-4" />
                 <span className="font-medium">{getTypeLabel(pattern.type)}</span>
               </div>
 
               {/* Details */}
-              <div className="space-y-6">
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+              <div className="space-y-4">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   {pattern.details}
                 </p>
               </div>
@@ -164,7 +164,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="absolute bottom-6 right-6 rounded-full hover:bg-white/20"
+              className="absolute bottom-4 right-4 rounded-full hover:bg-white/20"
               onClick={(e) => {
                 e.stopPropagation();
                 handleShare();
