@@ -72,7 +72,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4o',
         messages: [
           {
             role: 'system',
@@ -110,33 +110,14 @@ serve(async (req) => {
       throw new Error('Invalid trends format received from OpenAI')
     }
 
-    // Ensure patterns is never null and has at least one item
-    const validatedPatterns = trends.patterns.length > 0 ? trends.patterns : [{
-      type: 'power_moves',
-      title: 'Initial Analysis',
-      description: 'Not enough data for detailed analysis',
-      supporting_evidence: 'Based on available recordings',
-      confidence_score: 0,
-      timespan: 'N/A',
-      build_on_this: 'Continue recording more sessions'
-    }]
-
-    // Ensure analysis_metadata has all required fields
-    const validatedMetadata = {
-      sessions_analyzed: trends.analysis_metadata.sessions_analyzed || recordings.length,
-      date_range: trends.analysis_metadata.date_range || 'Recent sessions',
-      total_insights_found: trends.analysis_metadata.total_insights_found || validatedPatterns.length,
-      confidence_level: trends.analysis_metadata.confidence_level || 0
-    }
-
-    // Save the trends with validated data
+    // Save the trends
     const { error: trendsError } = await supabase
       .from('trends')
       .insert({
         user_id,
         analyzed_recordings: recordings.map(r => r.id),
-        patterns: validatedPatterns,
-        analysis_metadata: validatedMetadata,
+        patterns: trends.patterns,
+        analysis_metadata: trends.analysis_metadata,
       })
 
     if (trendsError) {

@@ -29,9 +29,9 @@ const Trends = () => {
       }
 
       if (data) {
-        // Type cast the JSON data to our expected types
-        const patterns = data.patterns as TrendPattern[];
-        const analysis_metadata = data.analysis_metadata as TrendAnalysisMetadata;
+        // First cast to unknown, then to our expected types
+        const patterns = (data.patterns as unknown) as TrendPattern[];
+        const analysis_metadata = (data.analysis_metadata as unknown) as TrendAnalysisMetadata;
         
         setTrends({
           patterns,
