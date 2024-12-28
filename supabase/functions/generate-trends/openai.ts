@@ -26,7 +26,7 @@ export async function analyzeGolfTrends(recordingsData: any[], schema: any) {
       ],
       response_format: { 
         type: "json_schema",
-        schema: schema
+        json_schema: schema
       }
     }),
   });
