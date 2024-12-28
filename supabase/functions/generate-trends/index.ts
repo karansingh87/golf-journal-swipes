@@ -85,6 +85,8 @@ serve(async (req) => {
   }
 }`
 
+    console.log('Sending request to OpenAI...')
+
     // Get analysis from OpenAI
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -93,7 +95,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -104,6 +106,7 @@ serve(async (req) => {
             content: analyses.join('\n\n---\n\n'),
           },
         ],
+        temperature: 0.7,
       }),
     })
 
@@ -118,6 +121,7 @@ serve(async (req) => {
 
     let trends
     try {
+      console.log('Raw OpenAI response:', analysisData.choices[0].message.content)
       trends = JSON.parse(analysisData.choices[0].message.content)
       console.log('Successfully parsed trends data:', trends)
     } catch (error) {
