@@ -7,87 +7,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Define the schema for our trends analysis
-const trendsSchema = {
-  type: "object",
-  properties: {
-    overview: {
-      type: "string",
-      description: "A high-level summary of the player's progress and trends"
-    },
-    key_improvements: {
-      type: "array",
-      items: {
-        type: "string"
-      },
-      description: "List of notable improvements in the player's game"
-    },
-    technical_analysis: {
-      type: "object",
-      properties: {
-        swing_patterns: {
-          type: "array",
-          items: {
-            type: "string"
-          },
-          description: "Identified patterns in swing technique"
-        },
-        club_specific_trends: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              club: {
-                type: "string",
-                description: "The type of club"
-              },
-              observations: {
-                type: "array",
-                items: {
-                  type: "string"
-                },
-                description: "Observations specific to this club"
-              }
-            },
-            required: ["club", "observations"],
-            additionalProperties: false
-          }
-        }
-      },
-      required: ["swing_patterns", "club_specific_trends"],
-      additionalProperties: false
-    },
-    mental_game: {
-      type: "object",
-      properties: {
-        strengths: {
-          type: "array",
-          items: {
-            type: "string"
-          }
-        },
-        areas_for_improvement: {
-          type: "array",
-          items: {
-            type: "string"
-          }
-        }
-      },
-      required: ["strengths", "areas_for_improvement"],
-      additionalProperties: false
-    },
-    recommendations: {
-      type: "array",
-      items: {
-        type: "string"
-      },
-      description: "Actionable recommendations for improvement"
-    }
-  },
-  required: ["overview", "key_improvements", "technical_analysis", "mental_game", "recommendations"],
-  additionalProperties: false
-}
-
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -139,17 +58,15 @@ serve(async (req) => {
       throw new Error('No recordings found for analysis')
     }
 
-    // Prepare data for OpenAI
-    const recordingsData = recordings
-      .map(r => ({
-        analysis: r.analysis ? JSON.parse(r.analysis) : null,
-        date: r.created_at
-      }))
-      .filter(r => r.analysis !== null)
+    // Prepare data for OpenAI - only send essential information
+    const recordingsData = recordings.map(r => ({
+      analysis: r.analysis ? JSON.parse(r.analysis) : null,
+      date: r.created_at
+    })).filter(r => r.analysis !== null);
 
     console.log('Sending request to OpenAI with data length:', JSON.stringify(recordingsData).length)
 
-    // Get analysis from OpenAI with structured output
+    // Get analysis from OpenAI
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -168,10 +85,6 @@ serve(async (req) => {
             content: JSON.stringify(recordingsData),
           },
         ],
-        response_format: { 
-          type: "json_schema", 
-          schema: trendsSchema 
-        }
       }),
     })
 
