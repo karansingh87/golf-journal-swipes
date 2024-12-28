@@ -41,36 +41,38 @@ const Trends = () => {
       setRecordingsCount(count || 0);
     };
 
-    fetchRecordingsCount();
-  }, [session.user.id]);
-
-  const fetchTrends = async () => {
-    const { data: trends } = await supabase
-      .from('trends')
-      .select('trends_output, milestone_type')
-      .eq('user_id', session.user.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    
-    if (trends?.trends_output) {
+    const fetchExistingTrends = async () => {
       try {
-        // Clean the response by removing markdown code block markers
-        const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
-        const parsedTrends = JSON.parse(cleanTrendsOutput);
-        console.log('Parsed trends:', parsedTrends);
-        setTrendsData(parsedTrends);
-        setMilestone(trends.milestone_type);
+        const { data: trends, error } = await supabase
+          .from('trends')
+          .select('trends_output, milestone_type')
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (trends?.trends_output) {
+          try {
+            // Clean the response by removing markdown code block markers
+            const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
+            const parsedTrends = JSON.parse(cleanTrendsOutput);
+            console.log('Parsed existing trends:', parsedTrends);
+            setTrendsData(parsedTrends);
+            setMilestone(trends.milestone_type);
+          } catch (error) {
+            console.error('Error parsing existing trends data:', error);
+          }
+        }
       } catch (error) {
-        console.error('Error parsing trends data:', error);
-        toast({
-          title: "Error",
-          description: `Error parsing trends data: ${error}`,
-          variant: "destructive",
-        });
+        console.error('Error fetching existing trends:', error);
       }
-    }
-  };
+    };
+
+    fetchRecordingsCount();
+    fetchExistingTrends();
+  }, [session.user.id]);
 
   const generateTrends = async () => {
     if (recordingsCount < 3) {
@@ -96,7 +98,28 @@ const Trends = () => {
       });
 
       // Fetch the latest trends after a short delay
-      setTimeout(fetchTrends, 3000);
+      setTimeout(async () => {
+        const { data: trends, error: fetchError } = await supabase
+          .from('trends')
+          .select('trends_output, milestone_type')
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (fetchError) throw fetchError;
+
+        if (trends?.trends_output) {
+          try {
+            const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
+            const parsedTrends = JSON.parse(cleanTrendsOutput);
+            setTrendsData(parsedTrends);
+            setMilestone(trends.milestone_type);
+          } catch (error) {
+            console.error('Error parsing trends data:', error);
+          }
+        }
+      }, 3000);
     } catch (error) {
       console.error('Error generating trends:', error);
       toast({
