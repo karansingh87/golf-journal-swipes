@@ -41,8 +41,9 @@ const Trends = () => {
       setRecordingsCount(count || 0);
     };
 
-    const fetchExistingTrends = async () => {
+    const fetchLatestTrends = async () => {
       try {
+        // Get the most recently created trends record
         const { data: trends, error } = await supabase
           .from('trends')
           .select('trends_output, milestone_type')
@@ -55,23 +56,22 @@ const Trends = () => {
 
         if (trends?.trends_output) {
           try {
-            // Clean the response by removing markdown code block markers
             const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
             const parsedTrends = JSON.parse(cleanTrendsOutput);
-            console.log('Parsed existing trends:', parsedTrends);
+            console.log('Parsed latest trends:', parsedTrends);
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
           } catch (error) {
-            console.error('Error parsing existing trends data:', error);
+            console.error('Error parsing trends data:', error);
           }
         }
       } catch (error) {
-        console.error('Error fetching existing trends:', error);
+        console.error('Error fetching latest trends:', error);
       }
     };
 
     fetchRecordingsCount();
-    fetchExistingTrends();
+    fetchLatestTrends();
   }, [session.user.id]);
 
   const generateTrends = async () => {
