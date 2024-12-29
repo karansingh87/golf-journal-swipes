@@ -14,7 +14,7 @@ import {
   CarouselItem,
   CarouselPagination,
 } from "@/components/ui/carousel";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +43,7 @@ const Trends = () => {
 
     const fetchLatestTrends = async () => {
       try {
+        // Get the most recently created trends record
         const { data: trends, error } = await supabase
           .from('trends')
           .select('trends_output, milestone_type')
@@ -96,6 +97,7 @@ const Trends = () => {
         description: "Trends generation started. Please wait a moment and refresh.",
       });
 
+      // Fetch the latest trends after a short delay
       setTimeout(async () => {
         const { data: trends, error: fetchError } = await supabase
           .from('trends')
@@ -178,17 +180,13 @@ const Trends = () => {
               }}
             >
               <CarouselContent>
-                {trendsData.patterns?.map((pattern: any, index: number) => (
-                  <CarouselItem key={index}>
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
+                <AnimatePresence mode="wait">
+                  {trendsData.patterns?.map((pattern: any, index: number) => (
+                    <CarouselItem key={index}>
                       <PatternCard pattern={pattern} />
-                    </motion.div>
-                  </CarouselItem>
-                ))}
+                    </CarouselItem>
+                  ))}
+                </AnimatePresence>
               </CarouselContent>
               <CarouselPagination count={trendsData.patterns?.length || 0} />
             </Carousel>
