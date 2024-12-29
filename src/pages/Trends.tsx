@@ -124,7 +124,7 @@ const Trends = () => {
           </div>
         </div>
         
-        <div className="px-4 sm:px-6 lg:px-8 pt-32">
+        <div className="px-4 sm:px-6 lg:px-8 pt-24">
           <TrendsRefreshBar
             lastUpdateTime={lastUpdateTime}
             onRefresh={generateTrends}
