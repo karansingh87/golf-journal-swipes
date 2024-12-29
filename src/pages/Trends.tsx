@@ -1,26 +1,18 @@
 import { useState, useEffect } from "react";
-import SegmentedNav from "@/components/navigation/SegmentedNav";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { Loader2, AlertCircle } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import PatternCard from "@/components/trends/PatternCard";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPagination,
-} from "@/components/ui/carousel";
-import { motion, AnimatePresence } from "framer-motion";
+import SegmentedNav from "@/components/navigation/SegmentedNav";
+import TrendsRefreshBar from "@/components/trends/TrendsRefreshBar";
+import TrendsContent from "@/components/trends/TrendsContent";
+import { useToast } from "@/hooks/use-toast";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [trendsData, setTrendsData] = useState<any | null>(null);
   const [recordingsCount, setRecordingsCount] = useState<number>(0);
   const [milestone, setMilestone] = useState<string | null>(null);
+  const [lastUpdateTime, setLastUpdateTime] = useState<Date | null>(null);
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
@@ -43,10 +35,9 @@ const Trends = () => {
 
     const fetchLatestTrends = async () => {
       try {
-        // Get the most recently created trends record
         const { data: trends, error } = await supabase
           .from('trends')
-          .select('trends_output, milestone_type')
+          .select('trends_output, milestone_type, last_analysis_at')
           .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
@@ -58,9 +49,9 @@ const Trends = () => {
           try {
             const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
             const parsedTrends = JSON.parse(cleanTrendsOutput);
-            console.log('Parsed latest trends:', parsedTrends);
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
+            setLastUpdateTime(new Date(trends.last_analysis_at));
           } catch (error) {
             console.error('Error parsing trends data:', error);
           }
@@ -75,15 +66,6 @@ const Trends = () => {
   }, [session.user.id]);
 
   const generateTrends = async () => {
-    if (recordingsCount < 3) {
-      toast({
-        title: "Not enough recordings",
-        description: "You need at least 3 recordings to generate trends.",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
@@ -94,14 +76,14 @@ const Trends = () => {
 
       toast({
         title: "Success",
-        description: "Trends generation started. Please wait a moment and refresh.",
+        description: "Trends generation started. Please wait a moment.",
       });
 
       // Fetch the latest trends after a short delay
       setTimeout(async () => {
         const { data: trends, error: fetchError } = await supabase
           .from('trends')
-          .select('trends_output, milestone_type')
+          .select('trends_output, milestone_type, last_analysis_at')
           .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
@@ -115,6 +97,7 @@ const Trends = () => {
             const parsedTrends = JSON.parse(cleanTrendsOutput);
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
+            setLastUpdateTime(new Date(trends.last_analysis_at));
           } catch (error) {
             console.error('Error parsing trends data:', error);
           }
@@ -134,71 +117,29 @@ const Trends = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto py-6 space-y-6">
-        <div className="space-y-6 px-4 sm:px-6 md:px-8">
-          {/* Header section */}
-          <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow">
-            <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
-            <Button 
-              onClick={generateTrends} 
-              disabled={isLoading || recordingsCount < 3}
-              className="min-w-[150px]"
-            >
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Generate Trends
-            </Button>
-          </div>
-          
-          <SegmentedNav />
-          
-          {recordingsCount < 3 && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                You need at least 3 recordings to generate trends. You currently have {recordingsCount} recording{recordingsCount !== 1 ? 's' : ''}.
-              </AlertDescription>
-            </Alert>
-          )}
-          
-          {milestone && (
-            <Alert>
-              <AlertDescription>
-                🎉 {milestone === 'return' 
-                  ? "Welcome back! Here's an analysis of your recent progress." 
-                  : `Congratulations on reaching your ${milestone} recording milestone!`}
-              </AlertDescription>
-            </Alert>
-          )}
-          
-          {trendsData ? (
-            <Carousel
-              className="w-full"
-              opts={{
-                align: "center",
-                containScroll: false,
-                dragFree: false,
-              }}
-            >
-              <CarouselContent>
-                <AnimatePresence mode="wait">
-                  {trendsData.patterns?.map((pattern: any, index: number) => (
-                    <CarouselItem key={index}>
-                      <PatternCard pattern={pattern} />
-                    </CarouselItem>
-                  ))}
-                </AnimatePresence>
-              </CarouselContent>
-              <CarouselPagination count={trendsData.patterns?.length || 0} />
-            </Carousel>
-          ) : (
-            <div className="flex items-center justify-center min-h-[50vh]">
-              <div className="text-center text-muted-foreground">
-                {recordingsCount >= 3 
-                  ? "No trends data available. Click \"Generate Trends\" to create new trends."
-                  : "Record more sessions to unlock trends analysis."}
-              </div>
+      <div className="max-w-7xl mx-auto pt-16">
+        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-semibold text-foreground">Trends</h1>
             </div>
-          )}
+            <SegmentedNav />
+          </div>
+        </div>
+        
+        <div className="px-4 sm:px-6 lg:px-8 pt-32 space-y-6">
+          <TrendsRefreshBar
+            lastUpdateTime={lastUpdateTime}
+            onRefresh={generateTrends}
+            isLoading={isLoading}
+            recordingsCount={recordingsCount}
+          />
+          
+          <TrendsContent
+            trendsData={trendsData}
+            recordingsCount={recordingsCount}
+            milestone={milestone}
+          />
         </div>
       </div>
     </div>
