@@ -1,11 +1,13 @@
-import { Card } from "@/components/ui/card";
-import { Brain, Share2, Star, Target, TrendingUp, AlertOctagon, RotateCw } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import * as htmlToImage from 'html-to-image';
 import { useToast } from "@/hooks/use-toast";
+import CardHeader from "./card/CardHeader";
+import CardContent from "./card/CardContent";
+import CardBackground from "./card/CardBackground";
+import ShareTemplate from "./card/ShareTemplate";
 
 interface Pattern {
   type: "hidden_strength" | "mental_signature" | "game_changing" | "strategic_instinct" | "growth_indicator";
@@ -22,46 +24,6 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const shareTemplateRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-
-  const getIcon = () => {
-    switch (pattern.type) {
-      case "hidden_strength":
-        return Star;
-      case "mental_signature":
-        return Brain;
-      case "strategic_instinct":
-        return Target;
-      case "growth_indicator":
-        return TrendingUp;
-      case "game_changing":
-        return AlertOctagon;
-      default:
-        return Star;
-    }
-  };
-
-  const getTypeLabel = (type: string) => {
-    return type.split('_').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
-  };
-
-  const getGradientBackground = (type: string) => {
-    switch (type) {
-      case "hidden_strength":
-        return "bg-gradient-to-br from-[#E5F9FF] via-[#C3F4FF] to-[#98DEFF]";
-      case "mental_signature":
-        return "bg-gradient-to-br from-[#FFF3E5] via-[#FFE4CC] to-[#FFD1A8]";
-      case "strategic_instinct":
-        return "bg-gradient-to-br from-[#F5FFE5] via-[#E4FFCC] to-[#CEFFA8]";
-      case "growth_indicator":
-        return "bg-gradient-to-br from-[#FFE5F9] via-[#FFC3E8] to-[#FFA3D8]";
-      case "game_changing":
-        return "bg-gradient-to-br from-[#E5E5FF] via-[#D1D1FF] to-[#B3B3FF]";
-      default:
-        return "bg-gradient-to-br from-gray-100 to-gray-200";
-    }
-  };
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -86,7 +48,6 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
           height: 1920,
         });
 
-        // Create a blob from the data URL
         const blob = await (await fetch(dataUrl)).blob();
         const file = new File([blob], 'insight.png', { type: 'image/png' });
 
@@ -119,8 +80,6 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
     }
   };
 
-  const Icon = getIcon();
-
   return (
     <>
       <motion.div
@@ -142,8 +101,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
           <Card 
             className={cn(
               "absolute inset-0 w-full h-full backface-hidden",
-              "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg",
-              getGradientBackground(pattern.type)
+              "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg"
             )}
             style={{ 
               transformStyle: "preserve-3d",
@@ -152,38 +110,12 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             }}
           >
             <div className="relative h-full flex flex-col justify-between p-8">
-              {/* Premium texture overlay */}
-              <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
-              
-              {/* Share button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-6 right-6 opacity-70 hover:opacity-100 z-20"
-                onClick={handleShare}
-              >
-                <Share2 className="h-5 w-5 text-black/70" />
-              </Button>
-              
-              {/* Content */}
-              <div className="relative z-10 space-y-8">
-                {/* Category Label */}
-                <div className="flex items-center gap-2 text-sm tracking-wide text-black/70 uppercase">
-                  <Icon className="h-4 w-4" />
-                  <span className="font-medium">{getTypeLabel(pattern.type)}</span>
-                </div>
-
-                {/* Main Insight */}
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-black/80">
-                  {pattern.primary_insight}
-                </h2>
-              </div>
-
-              {/* Flip indicator */}
-              <div className="relative z-10 flex items-center justify-center gap-2 text-sm text-black/50">
-                <RotateCw className="h-4 w-4" />
-                <span>Tap for details</span>
-              </div>
+              <CardBackground type={pattern.type} />
+              <CardHeader type={pattern.type} onShare={handleShare} />
+              <CardContent 
+                isFlipped={false}
+                primary_insight={pattern.primary_insight}
+              />
             </div>
           </Card>
 
@@ -191,9 +123,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
           <Card 
             className={cn(
               "absolute inset-0 w-full h-full backface-hidden",
-              "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg",
-              getGradientBackground(pattern.type),
-              "bg-opacity-90"
+              "overflow-hidden border-0 rounded-3xl transition-all duration-500 shadow-lg"
             )}
             style={{ 
               transformStyle: "preserve-3d",
@@ -202,34 +132,13 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             }}
           >
             <div className="relative h-full flex flex-col p-8">
-              {/* Premium texture overlay */}
-              <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-10" />
-              
-              {/* Share button */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-6 right-6 opacity-70 hover:opacity-100 z-20"
-                onClick={handleShare}
-              >
-                <Share2 className="h-5 w-5 text-black/70" />
-              </Button>
-              
-              {/* Content */}
-              <div className="relative z-10 space-y-8">
-                {/* Category Label */}
-                <div className="flex items-center gap-2 text-sm tracking-wide text-black/70 uppercase">
-                  <Icon className="h-4 w-4" />
-                  <span className="font-medium">{getTypeLabel(pattern.type)}</span>
-                </div>
-
-                {/* Details */}
-                <div className="space-y-6">
-                  <p className="text-base md:text-lg text-black/70 leading-relaxed">
-                    {pattern.details}
-                  </p>
-                </div>
-              </div>
+              <CardBackground type={pattern.type} />
+              <CardHeader type={pattern.type} onShare={handleShare} />
+              <CardContent 
+                isFlipped={true}
+                primary_insight={pattern.primary_insight}
+                details={pattern.details}
+              />
             </div>
           </Card>
         </div>
@@ -237,28 +146,12 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
 
       {/* Hidden share template */}
       <div className="hidden">
-        <div
-          ref={shareTemplateRef}
-          className={cn(
-            "w-[1080px] h-[1920px] p-16 flex flex-col justify-between",
-            getGradientBackground(pattern.type)
-          )}
-        >
-          <div className="space-y-8">
-            <div className="flex items-center gap-2 text-lg tracking-wide text-black/70 uppercase">
-              <Icon className="h-6 w-6" />
-              <span className="font-medium">{getTypeLabel(pattern.type)}</span>
-            </div>
-            <h2 className="text-6xl font-bold leading-tight tracking-tight text-black/80">
-              {pattern.primary_insight}
-            </h2>
-            <p className="text-2xl text-black/70 leading-relaxed">
-              {pattern.details}
-            </p>
-          </div>
-          <div className="text-center text-black/50 text-xl font-medium">
-            GolfLog
-          </div>
+        <div ref={shareTemplateRef}>
+          <ShareTemplate
+            type={pattern.type}
+            primary_insight={pattern.primary_insight}
+            details={pattern.details}
+          />
         </div>
       </div>
     </>
