@@ -44,17 +44,17 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
   const getGradientBackground = (type: string) => {
     switch (type) {
       case "hidden_strength":
-        return "bg-gradient-to-br from-orange-200 to-amber-400";
+        return "bg-gradient-to-br from-amber-50 to-orange-100";
       case "mental_signature":
-        return "bg-gradient-to-br from-purple-200 to-violet-400";
+        return "bg-gradient-to-br from-purple-50 to-indigo-100";
       case "strategic_instinct":
-        return "bg-gradient-to-br from-emerald-200 to-teal-400";
+        return "bg-gradient-to-br from-emerald-50 to-teal-100";
       case "growth_indicator":
-        return "bg-gradient-to-br from-sky-200 to-blue-400";
+        return "bg-gradient-to-br from-sky-50 to-blue-100";
       case "game_changing":
-        return "bg-gradient-to-br from-rose-200 to-pink-400";
+        return "bg-gradient-to-br from-rose-50 to-pink-100";
       default:
-        return "bg-gradient-to-br from-gray-200 to-slate-400";
+        return "bg-gradient-to-br from-gray-50 to-slate-100";
     }
   };
 
@@ -105,7 +105,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
             
             {/* Content */}
-            <div className="relative z-10 space-y-8">
+            <div className="relative z-10 flex flex-col justify-center h-full space-y-8">
               {/* Category Label */}
               <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
                 <Icon className="h-4 w-4" />
@@ -145,7 +145,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-10" />
             
             {/* Content */}
-            <div className="relative z-10 space-y-8">
+            <div className="relative z-10 flex flex-col justify-center h-full space-y-8">
               {/* Category Label */}
               <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
                 <Icon className="h-4 w-4" />
@@ -154,7 +154,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
 
               {/* Details */}
               <div className="space-y-6">
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   {pattern.details}
                 </p>
               </div>
