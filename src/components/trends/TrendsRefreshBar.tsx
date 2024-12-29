@@ -26,7 +26,7 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
   };
 
   return (
-    <div className="flex items-center justify-end gap-2 text-sm text-muted-foreground py-2 pr-0">
+    <div className="w-full max-w-[90vw] mx-auto px-4 flex items-center justify-end gap-2 text-sm text-muted-foreground py-2">
       {lastUpdateTime && (
         <span>
           Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
