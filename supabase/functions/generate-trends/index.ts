@@ -22,9 +22,12 @@ serve(async (req) => {
 
     console.log('Generating trends for user:', user_id)
 
+    // Ensure proper URL formatting by removing any trailing colons
+    const supabaseUrl = (Deno.env.get('SUPABASE_URL') ?? '').replace(/:\/?$/, '')
+    
     // Initialize Supabase client
     const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
+      supabaseUrl,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
@@ -74,7 +77,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
           {
             role: 'system',
