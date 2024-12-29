@@ -52,7 +52,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         } = supabase.auth.onAuthStateChange(async (event, session) => {
           console.log('Auth state changed:', event);
           
-          if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+          if (event === 'SIGNED_OUT') {
             navigate('/login', { replace: true });
           } else if (event === 'TOKEN_REFRESHED') {
             console.log('Session refreshed successfully');
