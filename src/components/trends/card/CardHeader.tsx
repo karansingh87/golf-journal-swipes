@@ -1,4 +1,5 @@
 import { Brain, Share2, Star, Target, TrendingUp, AlertOctagon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CardHeaderProps {
   type: string;

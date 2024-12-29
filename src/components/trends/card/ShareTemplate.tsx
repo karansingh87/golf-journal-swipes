@@ -1,3 +1,7 @@
+import { cn } from "@/lib/utils";
+import { getIcon, getTypeLabel } from "./CardHeader";
+import { getGradientBackground } from "./CardBackground";
+
 interface ShareTemplateProps {
   type: string;
   primary_insight: string;

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import * as htmlToImage from 'html-to-image';
 import { useToast } from "@/hooks/use-toast";
-import CardHeader from "./card/CardHeader";
+import CardHeader, { getTypeLabel } from "./card/CardHeader";
 import CardContent from "./card/CardContent";
 import CardBackground from "./card/CardBackground";
 import ShareTemplate from "./card/ShareTemplate";
