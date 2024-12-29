@@ -11,15 +11,19 @@ const Notes = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-4xl mx-auto py-6 space-y-6">
-        <div className="space-y-6 px-4 sm:px-6 md:px-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-semibold text-foreground">Notes</h1>
+      <div className="max-w-7xl mx-auto pt-16">
+        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <SegmentedNav />
           </div>
-          <SegmentedNav />
-          <SearchBar value={searchQuery} onChange={setSearchQuery} />
         </div>
-        <RecordingHistory searchQuery={searchQuery} />
+        
+        <div className="px-4 sm:px-6 lg:px-8 pt-32">
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          <div className="mt-6">
+            <RecordingHistory searchQuery={searchQuery} />
+          </div>
+        </div>
       </div>
       <FloatingRecordButton />
     </div>

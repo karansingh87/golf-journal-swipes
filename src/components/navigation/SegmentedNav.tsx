@@ -30,7 +30,7 @@ const SegmentedNav = () => {
   const currentPath = location.pathname;
 
   return (
-    <div className="flex p-1 bg-zinc-100 rounded-lg border border-zinc-200">
+    <div className="flex p-1 bg-zinc-100 rounded-lg border border-zinc-200 w-full max-w-xs mx-auto">
       <style>
         {`
           .segment-button {

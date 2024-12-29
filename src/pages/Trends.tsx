@@ -124,7 +124,7 @@ const Trends = () => {
           </div>
         </div>
         
-        <div className="px-4 sm:px-6 lg:px-8 pt-32 space-y-6">
+        <div className="px-4 sm:px-6 lg:px-8 pt-32">
           <TrendsRefreshBar
             lastUpdateTime={lastUpdateTime}
             onRefresh={generateTrends}
@@ -132,11 +132,13 @@ const Trends = () => {
             recordingsCount={recordingsCount}
           />
           
-          <TrendsContent
-            trendsData={trendsData}
-            recordingsCount={recordingsCount}
-            milestone={milestone}
-          />
+          <div className="mt-6">
+            <TrendsContent
+              trendsData={trendsData}
+              recordingsCount={recordingsCount}
+              milestone={milestone}
+            />
+          </div>
         </div>
       </div>
     </div>
