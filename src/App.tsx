@@ -29,26 +29,40 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const validateSession = async () => {
       try {
         setIsValidating(true);
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
         
-        if (error) {
-          console.error('Session validation error:', error);
-          throw error;
+        // First check if we have a current session
+        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Session validation error:', sessionError);
+          throw sessionError;
         }
 
         if (!currentSession) {
           console.log('No valid session found, redirecting to login');
+          // Clear any existing auth state
           await supabase.auth.signOut();
           navigate('/login', { replace: true });
           return;
         }
 
-        // Attempt to refresh the session
-        const { error: refreshError } = await supabase.auth.refreshSession();
-        if (refreshError) {
-          console.error('Session refresh error:', refreshError);
-          throw refreshError;
-        }
+        // Set up auth state change listener
+        const {
+          data: { subscription },
+        } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log('Auth state changed:', event);
+          
+          if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
+            navigate('/login', { replace: true });
+          } else if (event === 'TOKEN_REFRESHED') {
+            console.log('Session refreshed successfully');
+          }
+        });
+
+        // Cleanup subscription on unmount
+        return () => {
+          subscription.unsubscribe();
+        };
 
       } catch (error) {
         console.error('Auth error:', error);
