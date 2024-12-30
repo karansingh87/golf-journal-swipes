@@ -47,9 +47,9 @@ const NavigationBar = () => {
         <div className="flex justify-between items-center">
           <div 
             onClick={() => navigate('/record')}
-            className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center"
+            className="text-xl font-bold tracking-tighter cursor-pointer hover:text-white transition-colors flex items-center"
           >
-            <span>golf<span>log</span></span>
+            <span className="text-[#ACE580]">golf<span className="text-white/90">log</span></span>
           </div>
           
           <DropdownMenu>
