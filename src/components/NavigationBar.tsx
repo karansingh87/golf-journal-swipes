@@ -70,43 +70,44 @@ const NavigationBar = () => {
                   <Menu className="h-5 w-5 text-white" />
                 </button>
               </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end"
-              className="w-48 bg-white/95 backdrop-blur-sm border-zinc-200 rounded-lg mt-2 shadow-sm"
-            >
-              <DropdownMenuItem 
-                className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
-                onClick={() => navigate('/record')}
+              <DropdownMenuContent 
+                align="end"
+                className="w-48 bg-white/95 backdrop-blur-sm border-zinc-200 rounded-lg mt-2 shadow-sm"
               >
-                Record
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
-                onClick={() => navigate('/notes')}
-              >
-                Notes
-              </DropdownMenuItem>
-              {profile?.is_admin && (
-                <>
-                  <DropdownMenuSeparator className="bg-zinc-200" />
-                  <DropdownMenuItem 
-                    className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
-                    onClick={() => navigate('/admin')}
-                  >
-                    Admin Panel
-                  </DropdownMenuItem>
-                </>
-              )}
-              <DropdownMenuSeparator className="bg-zinc-200" />
-              <DropdownMenuItem 
-                className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
-                onClick={handleLogout}
-              >
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+                <DropdownMenuItem 
+                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                  onClick={() => navigate('/record')}
+                >
+                  Record
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                  onClick={() => navigate('/notes')}
+                >
+                  Notes
+                </DropdownMenuItem>
+                {profile?.is_admin && (
+                  <>
+                    <DropdownMenuSeparator className="bg-zinc-200" />
+                    <DropdownMenuItem 
+                      className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                      onClick={() => navigate('/admin')}
+                    >
+                      Admin Panel
+                    </DropdownMenuItem>
+                  </>
+                )}
+                <DropdownMenuSeparator className="bg-zinc-200" />
+                <DropdownMenuItem 
+                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
       </div>
     </div>
   );
