@@ -101,22 +101,26 @@ const LandingPage = () => {
                 {
                   number: "1",
                   title: "Record Your Thoughts",
-                  description: "Just tap record and talk about your game - at the range or after your round. No typing needed."
+                  description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
+                  image: "photo-1488590528505-98d2b5aba04b"
                 },
                 {
                   number: "2",
                   title: "Get Smart Insights",
-                  description: "AI analyzes your thoughts and organizes them into actionable insights about your game."
+                  description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
+                  image: "photo-1486312338219-ce68d2c6f44d"
                 },
                 {
                   number: "3",
                   title: "Track Your Progress",
-                  description: "Review your journey, spot patterns, and build on what works for your game."
+                  description: "Review your journey, spot patterns, and build on what works for your game.",
+                  image: "photo-1487058792275-0ad4aaf24ca7"
                 },
                 {
                   number: "4",
                   title: "Share and Learn",
-                  description: "Share insights with your coach or keep them private - it's up to you."
+                  description: "Share insights with your coach or keep them private - it's up to you.",
+                  image: "photo-1581091226825-a6a2a5aee158"
                 }
               ].map((step, index) => (
                 <motion.div
@@ -125,16 +129,29 @@ const LandingPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="relative bg-zinc-800/50 rounded-3xl p-8 border border-zinc-700/50"
+                  className="relative bg-zinc-800/50 rounded-3xl p-8 border border-zinc-700/50 overflow-hidden"
                 >
-                  <div className="absolute -top-4 left-8 bg-zinc-800 px-3 py-1 rounded-full border border-zinc-700">
-                    <span className="text-white font-medium">{step.number}</span>
+                  {/* Background Image with Overlay */}
+                  <div className="absolute inset-0 z-0">
+                    <img
+                      src={`https://images.unsplash.com/${step.image}`}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-zinc-900/80 backdrop-blur-sm" />
                   </div>
-                  <div className="space-y-3 pt-2">
-                    <h3 className="text-xl font-semibold text-white">{step.title}</h3>
-                    <p className="text-zinc-400 text-base leading-relaxed">
-                      {step.description}
-                    </p>
+                  
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="absolute -top-4 left-8 bg-zinc-800 px-3 py-1 rounded-full border border-zinc-700">
+                      <span className="text-white font-medium">{step.number}</span>
+                    </div>
+                    <div className="space-y-3 pt-2">
+                      <h3 className="text-xl font-semibold text-white">{step.title}</h3>
+                      <p className="text-zinc-400 text-base leading-relaxed">
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
                 </motion.div>
               ))}
