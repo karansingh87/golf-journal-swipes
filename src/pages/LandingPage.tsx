@@ -79,57 +79,57 @@ const LandingPage = () => {
         </div>
       </motion.section>
       
-      <section className="py-16">
+      <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-zinc-800/50 rounded-2xl mx-4 sm:mx-8 lg:mx-16 py-16">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-center mb-16">
-                <div className="bg-zinc-900 px-4 py-1.5 rounded-full shadow-lg border border-zinc-800">
-                  <h2 className="text-sm font-medium text-white">How it works</h2>
-                </div>
-              </div>
+          <div className="flex flex-col items-center space-y-6">
+            <div className="bg-zinc-800/80 px-4 py-1.5 rounded-full">
+              <h2 className="text-sm font-medium text-white">How it works</h2>
+            </div>
+            
+            <div className="text-center space-y-4 max-w-3xl">
+              <h3 className="text-3xl sm:text-4xl font-medium text-white">
+                Getting started is <span className="font-serif italic">simple</span>.
+              </h3>
+              <p className="text-lg text-zinc-400">
+                A simple, three step process to improving your golf game.
+              </p>
+            </div>
 
-              <div className="space-y-20">
-                {[
-                  {
-                    title: "Record Your Thoughts",
-                    description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
-                    Icon: Mic
-                  },
-                  {
-                    title: "Get Smart Insights",
-                    description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
-                    Icon: Brain
-                  },
-                  {
-                    title: "Track Your Progress",
-                    description: "Review your journey, spot patterns, and build on what works for your game.",
-                    Icon: LineChart
-                  },
-                  {
-                    title: "Share Your Journey",
-                    description: "Keep your coach or golf buddies in the loop with shareable insights.",
-                    Icon: Share2
-                  }
-                ].map((step, index) => (
-                  <motion.div
-                    key={step.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
-                    className="flex flex-col items-center text-center space-y-4"
-                  >
-                    <div className="w-12 h-12 rounded-lg bg-[#ACE580] text-zinc-900 flex items-center justify-center">
-                      <step.Icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-white">{step.title}</h3>
-                    <p className="text-zinc-400 text-base max-w-md leading-relaxed">
-                      {step.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
+            <div className="grid gap-16 mt-16">
+              {[
+                {
+                  title: "Record Your Thoughts",
+                  description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
+                  Icon: Mic
+                },
+                {
+                  title: "Get Smart Insights",
+                  description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
+                  Icon: Brain
+                },
+                {
+                  title: "Track Your Progress",
+                  description: "Review your journey, spot patterns, and build on what works for your game.",
+                  Icon: LineChart
+                }
+              ].map((step, index) => (
+                <motion.div
+                  key={step.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  className="flex flex-col items-center text-center space-y-4"
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[#ACE580] text-zinc-900 flex items-center justify-center">
+                    <step.Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">{step.title}</h3>
+                  <p className="text-zinc-400 text-base max-w-md leading-relaxed">
+                    {step.description}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
