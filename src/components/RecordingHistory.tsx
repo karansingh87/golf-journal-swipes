@@ -97,7 +97,7 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
   }
 
   return (
-    <div className="w-full space-y-4 px-4 py-6 sm:px-6 md:px-8">
+    <div className="w-full space-y-4 px-4 pt-2 sm:px-6 md:px-8">
       {filteredRecordings.length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">
           {searchQuery ? "No notes match your search" : "No notes yet"}
