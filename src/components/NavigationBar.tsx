@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu } from "lucide-react";
+import { Menu, Mic } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,10 +50,7 @@ const NavigationBar = () => {
             className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center gap-2"
           >
             <div className="w-7 h-7 rounded-full bg-[#ACE580] flex items-center justify-center shadow-[0_0_15px_rgba(172,229,128,0.3)]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-900">
-                <circle cx="12" cy="8" r="7" />
-                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
-              </svg>
+              <Mic className="w-4 h-4 text-zinc-900" strokeWidth={2.5} />
             </div>
             golflog
           </div>
