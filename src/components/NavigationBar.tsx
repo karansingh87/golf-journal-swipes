@@ -54,7 +54,14 @@ const NavigationBar = () => {
           onClick={() => navigate(isLandingPage ? '/login' : '/record')}
           className="text-xl font-bold tracking-[-0.03em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
         >
-          <span className="text-[#9eff6b] drop-shadow-[0_1px_1px_rgba(0,0,0,0.12)]">
+          <span 
+            className="flex items-center"
+            style={{
+              color: '#ACE580',
+              WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
+              textStroke: '0.5px rgba(0, 0, 0, 0.08)',
+            }}
+          >
             golf<span className="text-zinc-800/90">log</span>
           </span>
         </div>
