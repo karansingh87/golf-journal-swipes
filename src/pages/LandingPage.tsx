@@ -56,10 +56,9 @@ const LandingPage = () => {
             
             <div className="space-y-4">
               <h1 className="text-[2rem] sm:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-                Turn Golf Thoughts
+                Turn <span className="italic font-serif">golf thoughts</span>
                 <br />
-                <span className="italic font-serif">into</span>
-                <span className=""> Insights</span>
+                into <span className="italic font-serif">insights</span>
               </h1>
               <p className="text-xl sm:text-2xl text-zinc-400 mt-6 max-w-2xl mx-auto font-normal">
                 From range breakthroughs to on-course discoveries, every insight counts. Just talk, and let AI reveal the patterns in your game.
