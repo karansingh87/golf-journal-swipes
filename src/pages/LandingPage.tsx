@@ -6,12 +6,14 @@ import TestimonialCard from "@/components/landing/TestimonialCard";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import TestimonialsCarousel from "@/components/landing/TestimonialsCarousel";
 import HowItWorksSection from "@/components/landing/HowItWorksSection";
+import BackgroundGlow from "@/components/landing/BackgroundGlow";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-zinc-900">
+      <BackgroundGlow />
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
