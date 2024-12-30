@@ -47,7 +47,7 @@ const NavigationBar = () => {
         <div className="flex justify-between items-center">
           <div 
             onClick={() => navigate('/record')}
-            className="text-xl font-bold tracking-tighter cursor-pointer hover:text-white transition-colors flex items-center"
+            className="text-xl font-bold tracking-[-0.03em] cursor-pointer hover:text-white transition-colors flex items-center"
           >
             <span className="text-[#ACE580]">golf<span className="text-white/90">log</span></span>
           </div>
