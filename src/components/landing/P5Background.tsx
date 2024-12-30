@@ -17,16 +17,20 @@ const P5Background = () => {
         size: number;
         alpha: number;
         parallaxFactor: number;
+        bloomSize: number;
+        bloomIntensity: number;
       }> = [];
       
       const createParticle = () => ({
         x: p.random(p.width),
         y: p.random(p.height),
-        vx: p.random(-0.5, 0.5),
-        vy: p.random(-0.5, 0.5),
+        vx: p.random(-0.3, 0.3),
+        vy: p.random(-0.3, 0.3),
         size: p.random(2, 4),
         alpha: p.random(10, 30),
-        parallaxFactor: p.random(0.3, 1)
+        parallaxFactor: p.random(0.3, 1),
+        bloomSize: p.random(40, 60),
+        bloomIntensity: p.random(0.05, 0.15)
       });
 
       p.setup = () => {
@@ -34,8 +38,8 @@ const P5Background = () => {
         canvas.position(0, 0);
         canvas.style('z-index', '-1');
 
-        // Initialize particles
-        for (let i = 0; i < 50; i++) {
+        // Initialize particles with fewer elements for better performance
+        for (let i = 0; i < 30; i++) {
           particles.push(createParticle());
         }
       };
@@ -48,13 +52,13 @@ const P5Background = () => {
         scrollRef.current = window.scrollY;
         const scrollProgress = scrollRef.current / (document.documentElement.scrollHeight - window.innerHeight);
 
-        // Create smoother gradient background using multiple color stops
-        const numSteps = 200; // Increase number of steps for smoother transition
+        // Create smoother gradient background
+        const numSteps = 200;
         const colors = [
-          p.color('#F2FCE2'), // Light pastel green
-          p.color('#FEF7CD'), // Light pastel yellow
-          p.color('#E5DEFF'), // Light pastel purple
-          p.color('#D3E4FD')  // Light pastel blue
+          p.color('#F2FCE2'),
+          p.color('#FEF7CD'),
+          p.color('#E5DEFF'),
+          p.color('#D3E4FD')
         ];
         
         for (let y = 0; y < p.height; y++) {
@@ -73,9 +77,27 @@ const P5Background = () => {
           p.line(0, y, p.width, y);
         }
 
-        // Draw particles with parallax effect
+        // Draw bloom effects and particles
         particles.forEach((particle, index) => {
           const parallaxOffset = scrollRef.current * particle.parallaxFactor;
+          
+          // Draw bloom glow effect
+          const bloomColor = p.color('#ACE580');
+          bloomColor.setAlpha(particle.bloomIntensity * 255);
+          
+          // Create multiple layers of bloom for more organic feel
+          for (let i = 3; i > 0; i--) {
+            p.fill(bloomColor);
+            const size = particle.bloomSize * i;
+            p.ellipse(
+              particle.x,
+              (particle.y + parallaxOffset) % p.height,
+              size,
+              size
+            );
+          }
+
+          // Draw particle
           const baseAlpha = particle.alpha * (1 - scrollProgress * 0.5);
           p.fill(200, 200, 200, baseAlpha);
 
@@ -88,10 +110,11 @@ const P5Background = () => {
           p.ellipse(
             particle.x,
             particle.y,
-            particle.size * (1 + scrollProgress),
-            particle.size * (1 + scrollProgress)
+            particle.size,
+            particle.size
           );
 
+          // Randomly regenerate particles
           if (p.random(1) < 0.001) {
             particles[index] = createParticle();
           }
