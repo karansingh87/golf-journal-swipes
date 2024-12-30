@@ -138,8 +138,6 @@ const App = () => (
             } />
             {/* Redirect /history to /notes */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
-            {/* Catch all route - redirect to landing page */}
-            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
