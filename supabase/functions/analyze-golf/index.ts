@@ -22,9 +22,13 @@ serve(async (req) => {
 
     console.log('Analyzing transcription:', { length: transcription.length })
 
-    // Ensure proper URL formatting by removing any trailing colons
-    const supabaseUrl = (Deno.env.get('SUPABASE_URL') ?? '').replace(/:\/?$/, '')
-    
+    // Get the Supabase URL and ensure it's properly formatted
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    if (!supabaseUrl) {
+      throw new Error('SUPABASE_URL environment variable is not set')
+    }
+
+    // Create Supabase client with properly formatted URL
     const supabase = createClient(
       supabaseUrl,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
