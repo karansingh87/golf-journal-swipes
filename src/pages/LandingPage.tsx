@@ -56,7 +56,7 @@ const LandingPage = () => {
             
             <div className="space-y-4">
               <h1 className="text-[2rem] sm:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-                Turn <span className="italic font-serif">golf thoughts</span>
+                Turn golf thoughts
                 <br />
                 into <span className="italic font-serif">insights</span>
               </h1>
