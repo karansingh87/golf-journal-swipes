@@ -56,13 +56,13 @@ const LandingPage = () => {
             
             <div className="space-y-4">
               <h1 className="text-[2.5rem] sm:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
-                Simplify your day,
+                Turn Golf Thoughts
                 <br />
-                <span className="italic font-serif">one task</span>
-                <span className=""> at a time.</span>
+                <span className="italic font-serif">into</span>
+                <span className=""> Insights</span>
               </h1>
               <p className="text-xl sm:text-2xl text-zinc-400 mt-6 max-w-2xl mx-auto font-normal">
-                Get more done with less effort, in a way that works for you.
+                From range breakthroughs to on-course discoveries, every insight counts. Just talk, and let AI reveal the patterns in your game.
               </p>
             </div>
 
