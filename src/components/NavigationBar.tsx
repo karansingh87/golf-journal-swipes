@@ -52,7 +52,7 @@ const NavigationBar = () => {
             <div className="w-7 h-7 rounded-full bg-[#ACE580] flex items-center justify-center">
               <Mic className="w-4 h-4 text-zinc-900" strokeWidth={2.5} />
             </div>
-            golflog
+            <span className="text-[#ACE580]">golf</span>log
           </div>
           
           <DropdownMenu>
