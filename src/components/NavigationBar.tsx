@@ -49,7 +49,7 @@ const NavigationBar = () => {
             onClick={() => navigate('/record')}
             className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center gap-2"
           >
-            <span className="text-[#ACE580]">golf</span>log
+            <span className="text-[#ACE580]">golf</span><span>log</span>
           </div>
           
           <DropdownMenu>
