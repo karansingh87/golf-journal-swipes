@@ -15,7 +15,7 @@ const HowItWorksStep = ({ number, title, description, image, index }: HowItWorks
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.2 }}
-      className="relative bg-zinc-800/50 rounded-3xl p-8 border border-zinc-700/50"
+      className="relative bg-zinc-900 rounded-3xl p-8 border border-zinc-700/50"
     >
       {/* Step Number */}
       <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-zinc-800 w-8 h-8 rounded-full border border-zinc-700 flex items-center justify-center">
@@ -34,8 +34,8 @@ const HowItWorksStep = ({ number, title, description, image, index }: HowItWorks
       
       {/* Content */}
       <div className="space-y-3">
-        <h3 className="text-xl font-semibold text-white">{title}</h3>
-        <p className="text-zinc-400 text-base leading-relaxed">
+        <h3 className="text-lg font-semibold text-white">{title}</h3>
+        <p className="text-sm text-zinc-400 leading-relaxed">
           {description}
         </p>
       </div>
