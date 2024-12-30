@@ -49,9 +49,6 @@ const NavigationBar = () => {
             onClick={() => navigate('/record')}
             className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center gap-2"
           >
-            <div className="w-7 h-7 rounded-full bg-[#ACE580] flex items-center justify-center">
-              <Mic className="w-4 h-4 text-zinc-900" strokeWidth={2.5} />
-            </div>
             <span className="text-[#ACE580]">golf</span>log
           </div>
           
