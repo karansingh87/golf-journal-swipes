@@ -54,12 +54,17 @@ const LandingPage = () => {
               </div>
             </motion.div>
             
-            <h1 className="text-[2.25rem] sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-              Turn Golf Thoughts into Insights
-            </h1>
-            <p className="text-lg sm:text-xl text-zinc-400 mt-4 max-w-2xl mx-auto font-normal">
-              From range breakthroughs to on-course discoveries, every insight counts. Just talk, and let AI reveal the patterns in your game.
-            </p>
+            <div className="space-y-4">
+              <h1 className="text-[2.5rem] sm:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
+                Simplify your day,
+                <br />
+                <span className="italic font-serif">one task</span>
+                <span className=""> at a time.</span>
+              </h1>
+              <p className="text-xl sm:text-2xl text-zinc-400 mt-6 max-w-2xl mx-auto font-normal">
+                Get more done with less effort, in a way that works for you.
+              </p>
+            </div>
 
             <motion.div 
               whileHover={{ scale: 1.05 }}
