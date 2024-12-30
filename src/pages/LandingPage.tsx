@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Mic, Brain, LineChart, Share2 } from "lucide-react";
+import { Mic, Brain, LineChart } from "lucide-react";
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/landing/TestimonialCard";
 import BenefitsSection from "@/components/landing/BenefitsSection";
@@ -79,38 +79,44 @@ const LandingPage = () => {
         </div>
       </motion.section>
       
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center space-y-6">
-            <div className="bg-zinc-800/80 px-4 py-1.5 rounded-full">
-              <h2 className="text-sm font-medium text-white">How it works</h2>
-            </div>
-            
-            <div className="text-center space-y-4 max-w-3xl">
-              <h3 className="text-3xl sm:text-4xl font-medium text-white">
-                Getting started is <span className="font-serif italic">simple</span>.
-              </h3>
-              <p className="text-lg text-zinc-400">
-                A simple, three step process to improving your golf game.
-              </p>
+      <section className="py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col items-center space-y-12">
+            <div className="text-center space-y-6">
+              <div className="bg-zinc-800/80 px-4 py-1.5 rounded-full inline-block">
+                <span className="text-sm font-medium text-white">How it works</span>
+              </div>
+              <div className="space-y-4">
+                <h2 className="text-3xl sm:text-4xl font-medium text-white">
+                  Getting started is <span className="font-serif italic">simple</span>
+                </h2>
+                <p className="text-lg text-zinc-400">
+                  A simple, four step process to improving your golf game
+                </p>
+              </div>
             </div>
 
-            <div className="grid gap-16 mt-16">
+            <div className="grid gap-4 w-full max-w-4xl">
               {[
                 {
+                  number: "1",
                   title: "Record Your Thoughts",
-                  description: "Just tap record and talk about your game - at the range or after your round. No typing needed.",
-                  Icon: Mic
+                  description: "Just tap record and talk about your game - at the range or after your round. No typing needed."
                 },
                 {
+                  number: "2",
                   title: "Get Smart Insights",
-                  description: "AI analyzes your thoughts and organizes them into actionable insights about your game.",
-                  Icon: Brain
+                  description: "AI analyzes your thoughts and organizes them into actionable insights about your game."
                 },
                 {
+                  number: "3",
                   title: "Track Your Progress",
-                  description: "Review your journey, spot patterns, and build on what works for your game.",
-                  Icon: LineChart
+                  description: "Review your journey, spot patterns, and build on what works for your game."
+                },
+                {
+                  number: "4",
+                  title: "Share and Learn",
+                  description: "Share insights with your coach or keep them private - it's up to you."
                 }
               ].map((step, index) => (
                 <motion.div
@@ -119,15 +125,17 @@ const LandingPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="flex flex-col items-center text-center space-y-4"
+                  className="relative bg-zinc-800/50 rounded-3xl p-8 border border-zinc-700/50"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-[#ACE580] text-zinc-900 flex items-center justify-center">
-                    <step.Icon className="w-6 h-6" />
+                  <div className="absolute -top-4 left-8 bg-zinc-800 px-3 py-1 rounded-full border border-zinc-700">
+                    <span className="text-white font-medium">{step.number}</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-white">{step.title}</h3>
-                  <p className="text-zinc-400 text-base max-w-md leading-relaxed">
-                    {step.description}
-                  </p>
+                  <div className="space-y-3 pt-2">
+                    <h3 className="text-xl font-semibold text-white">{step.title}</h3>
+                    <p className="text-zinc-400 text-base leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
                 </motion.div>
               ))}
             </div>
