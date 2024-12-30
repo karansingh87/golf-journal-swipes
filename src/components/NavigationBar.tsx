@@ -1,5 +1,5 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +15,7 @@ import {
 const NavigationBar = () => {
   const supabaseClient = useSupabaseClient();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   const { data: profile } = useQuery({
@@ -41,60 +42,64 @@ const NavigationBar = () => {
     navigate('/');
   };
 
+  const isLandingPage = location.pathname === '/';
+
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] bg-zinc-900 h-14">
+    <div className={`fixed top-0 left-0 right-0 z-[100] h-14 ${isLandingPage ? 'bg-transparent' : 'bg-zinc-900'}`}>
       <div className="h-full px-4 flex justify-between items-center">
         <div 
-          onClick={() => navigate('/record')}
+          onClick={() => navigate(isLandingPage ? '/login' : '/record')}
           className="text-xl font-bold tracking-[-0.03em] cursor-pointer hover:text-white transition-colors flex items-center"
         >
           <span className="text-[#ACE580]">golf<span className="text-white/90">log</span></span>
         </div>
         
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2"
+        {!isLandingPage && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2"
+              >
+                <Menu className="w-[18px] h-[18px] text-white/70 group-hover:text-white transition-colors" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end"
+              className="w-48 bg-zinc-900 text-white border-zinc-800 rounded-none mt-0"
             >
-              <Menu className="w-[18px] h-[18px] text-white/70 group-hover:text-white transition-colors" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            align="end"
-            className="w-48 bg-zinc-900 text-white border-zinc-800 rounded-none mt-0"
-          >
-            <DropdownMenuItem 
-              className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
-              onClick={() => navigate('/record')}
-            >
-              Record
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-              className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
-              onClick={() => navigate('/notes')}
-            >
-              Notes
-            </DropdownMenuItem>
-            {profile?.is_admin && (
-              <>
-                <DropdownMenuSeparator className="bg-zinc-800" />
-                <DropdownMenuItem 
-                  className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
-                  onClick={() => navigate('/admin')}
-                >
-                  Admin Panel
-                </DropdownMenuItem>
-              </>
-            )}
-            <DropdownMenuSeparator className="bg-zinc-800" />
-            <DropdownMenuItem 
-              className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
-              onClick={handleLogout}
-            >
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <DropdownMenuItem 
+                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                onClick={() => navigate('/record')}
+              >
+                Record
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                onClick={() => navigate('/notes')}
+              >
+                Notes
+              </DropdownMenuItem>
+              {profile?.is_admin && (
+                <>
+                  <DropdownMenuSeparator className="bg-zinc-800" />
+                  <DropdownMenuItem 
+                    className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                    onClick={() => navigate('/admin')}
+                  >
+                    Admin Panel
+                  </DropdownMenuItem>
+                </>
+              )}
+              <DropdownMenuSeparator className="bg-zinc-800" />
+              <DropdownMenuItem 
+                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                onClick={handleLogout}
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </div>
   );
