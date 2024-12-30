@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu, Mic } from "lucide-react";
+import { Menu } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,9 +47,9 @@ const NavigationBar = () => {
         <div className="flex justify-between items-center">
           <div 
             onClick={() => navigate('/record')}
-            className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center gap-2"
+            className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center"
           >
-            <span className="text-[#ACE580]">golf</span><span>log</span>
+            <span><span className="text-[#ACE580]">golf</span>log</span>
           </div>
           
           <DropdownMenu>
