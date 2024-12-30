@@ -17,6 +17,11 @@ const HowItWorksStep = ({ number, title, description, image, index }: HowItWorks
       transition={{ duration: 0.5, delay: index * 0.2 }}
       className="relative bg-zinc-800/50 rounded-3xl p-8 border border-zinc-700/50"
     >
+      {/* Step Number */}
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-zinc-800 w-8 h-8 rounded-full border border-zinc-700 flex items-center justify-center">
+        <span className="text-white font-medium">{number}</span>
+      </div>
+      
       {/* Image Container */}
       <div className="relative w-full h-48 mb-8 rounded-xl overflow-hidden">
         <img
@@ -28,16 +33,11 @@ const HowItWorksStep = ({ number, title, description, image, index }: HowItWorks
       </div>
       
       {/* Content */}
-      <div className="relative">
-        <div className="absolute -top-4 left-8 bg-zinc-800 px-3 py-1 rounded-full border border-zinc-700">
-          <span className="text-white font-medium">{number}</span>
-        </div>
-        <div className="space-y-3 pt-2">
-          <h3 className="text-xl font-semibold text-white">{title}</h3>
-          <p className="text-zinc-400 text-base leading-relaxed">
-            {description}
-          </p>
-        </div>
+      <div className="space-y-3">
+        <h3 className="text-xl font-semibold text-white">{title}</h3>
+        <p className="text-zinc-400 text-base leading-relaxed">
+          {description}
+        </p>
       </div>
     </motion.div>
   );
