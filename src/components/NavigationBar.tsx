@@ -43,14 +43,14 @@ const NavigationBar = () => {
 
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 right-0 z-50 w-[95%] max-w-3xl">
-      <div className="bg-zinc-900/90 backdrop-blur-sm rounded-full px-4 py-3 shadow-lg border border-zinc-800/50">
+      <div className="bg-zinc-900/80 backdrop-blur-md rounded-full px-3 py-2 shadow-lg border border-zinc-800/30">
         <div className="flex justify-between items-center">
           <div 
             onClick={() => navigate('/record')}
             className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center gap-2"
           >
-            <div className="w-8 h-8 rounded-full bg-[#ACE580] flex items-center justify-center shadow-[0_0_15px_rgba(172,229,128,0.3)]">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-900">
+            <div className="w-7 h-7 rounded-full bg-[#ACE580] flex items-center justify-center shadow-[0_0_15px_rgba(172,229,128,0.3)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-900">
                 <circle cx="12" cy="8" r="7" />
                 <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
               </svg>
@@ -61,14 +61,14 @@ const NavigationBar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2.5 group"
+                className="rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2 group"
               >
-                <Menu className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+                <Menu className="w-[18px] h-[18px] text-white/70 group-hover:text-white transition-colors" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end"
-              className="w-48 bg-zinc-900 text-white border-zinc-800 rounded-lg shadow-xl"
+              className="w-48 bg-zinc-900/95 text-white border-zinc-800 rounded-lg shadow-xl"
             >
               <DropdownMenuItem 
                 className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
