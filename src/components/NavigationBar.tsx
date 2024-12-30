@@ -58,9 +58,10 @@ const NavigationBar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2 rounded-sm"
+                className="p-2 bg-zinc-800/80 hover:bg-zinc-700 rounded-md transition-colors"
+                aria-label="Menu"
               >
-                <Menu className="w-[18px] h-[18px] text-white hover:text-white/90 transition-colors" />
+                <Menu className="h-5 w-5 text-white" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
