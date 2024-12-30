@@ -43,7 +43,7 @@ const NavigationBar = () => {
 
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 right-0 z-[100] w-[95%] max-w-3xl">
-      <div className="bg-zinc-900/80 backdrop-blur-md rounded-full px-3 py-2 shadow-lg border border-[#ACE580]/30 shadow-[0_0_30px_-5px_rgba(172,229,128,0.4)]">
+      <div className="bg-zinc-900/80 backdrop-blur-md rounded-full px-3 py-2 shadow-lg border border-[#ACE580]/30 shadow-[0_0_20px_-5px_rgba(172,229,128,0.3)]">
         <div className="flex justify-between items-center">
           <div 
             onClick={() => navigate('/record')}
