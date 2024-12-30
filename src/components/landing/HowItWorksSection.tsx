@@ -46,7 +46,7 @@ const HowItWorksSection = () => {
             </div>
           </div>
 
-          <div className="grid gap-4 w-full max-w-4xl">
+          <div className="grid gap-8 w-full max-w-4xl">
             {steps.map((step, index) => (
               <HowItWorksStep key={step.number} {...step} index={index} />
             ))}
