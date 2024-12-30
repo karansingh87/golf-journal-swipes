@@ -54,14 +54,14 @@ const NavigationBar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2 group"
+              className="bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2"
             >
               <Menu className="w-[18px] h-[18px] text-white/70 group-hover:text-white transition-colors" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent 
             align="end"
-            className="w-48 bg-zinc-900 text-white border-zinc-800 mt-1"
+            className="w-48 bg-zinc-900 text-white border-zinc-800 rounded-none mt-0"
           >
             <DropdownMenuItem 
               className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
