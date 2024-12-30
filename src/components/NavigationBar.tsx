@@ -45,7 +45,7 @@ const NavigationBar = () => {
   const isLandingPage = location.pathname === '/';
 
   return (
-    <div className={`fixed top-0 left-0 right-0 z-[100] h-14 ${isLandingPage ? 'bg-transparent' : 'bg-zinc-900'}`}>
+    <div className="fixed top-0 left-0 right-0 z-[100] h-14 bg-zinc-900">
       <div className="h-full px-4 flex justify-between items-center">
         <div 
           onClick={() => navigate(isLandingPage ? '/login' : '/record')}

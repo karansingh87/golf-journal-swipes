@@ -29,8 +29,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const validateSession = async () => {
       try {
         setIsValidating(true);
-        
-        // First check if we have a current session
         const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
@@ -40,13 +38,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
         if (!currentSession) {
           console.log('No valid session found, redirecting to login');
-          // Clear any existing auth state
           await supabase.auth.signOut();
           navigate('/login', { replace: true });
           return;
         }
 
-        // Set up auth state change listener
         const {
           data: { subscription },
         } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -59,7 +55,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
           }
         });
 
-        // Cleanup subscription on unmount
         return () => {
           subscription.unsubscribe();
         };
@@ -93,12 +88,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <>
-      <NavigationBar />
-      {children}
-    </>
-  );
+  return children;
 };
 
 const App = () => (
@@ -108,6 +98,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <NavigationBar />
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
@@ -136,7 +127,6 @@ const App = () => (
                 <Admin />
               </ProtectedRoute>
             } />
-            {/* Redirect /history to /notes */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
           </Routes>
         </BrowserRouter>
