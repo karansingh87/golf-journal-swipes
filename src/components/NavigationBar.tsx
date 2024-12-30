@@ -65,34 +65,34 @@ const NavigationBar = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end"
-              className="w-48 bg-zinc-900/95 text-white border-zinc-800 rounded-lg shadow-xl"
+              className="w-full min-w-[280px] bg-zinc-900/95 text-white border-zinc-800/50 rounded-2xl shadow-xl mt-2 p-4"
             >
               <DropdownMenuItem 
-                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                className="cursor-pointer text-lg font-medium text-white/90 hover:text-white hover:bg-zinc-800/50 focus:bg-zinc-800/50 rounded-xl px-4 py-3 transition-colors"
                 onClick={() => navigate('/record')}
               >
                 Record
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                className="cursor-pointer text-lg font-medium text-white/90 hover:text-white hover:bg-zinc-800/50 focus:bg-zinc-800/50 rounded-xl px-4 py-3 transition-colors"
                 onClick={() => navigate('/notes')}
               >
                 Notes
               </DropdownMenuItem>
               {profile?.is_admin && (
                 <>
-                  <DropdownMenuSeparator className="bg-zinc-800" />
+                  <DropdownMenuSeparator className="bg-zinc-800/50 my-2" />
                   <DropdownMenuItem 
-                    className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                    className="cursor-pointer text-lg font-medium text-white/90 hover:text-white hover:bg-zinc-800/50 focus:bg-zinc-800/50 rounded-xl px-4 py-3 transition-colors"
                     onClick={() => navigate('/admin')}
                   >
                     Admin Panel
                   </DropdownMenuItem>
                 </>
               )}
-              <DropdownMenuSeparator className="bg-zinc-800" />
+              <DropdownMenuSeparator className="bg-zinc-800/50 my-2" />
               <DropdownMenuItem 
-                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                className="cursor-pointer text-lg font-medium text-white/90 hover:text-white hover:bg-zinc-800/50 focus:bg-zinc-800/50 rounded-xl px-4 py-3 transition-colors"
                 onClick={handleLogout}
               >
                 Logout
