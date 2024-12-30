@@ -42,7 +42,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 right-0 z-50 w-[95%] max-w-3xl">
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 right-0 z-[100] w-[95%] max-w-3xl">
       <div className="bg-zinc-900/80 backdrop-blur-md rounded-full px-3 py-2 shadow-lg border border-zinc-800/30">
         <div className="flex justify-between items-center">
           <div 
