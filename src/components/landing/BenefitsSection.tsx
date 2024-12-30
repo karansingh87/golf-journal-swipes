@@ -1,35 +1,31 @@
 import { Brain, BookOpenText, Target, Mic } from "lucide-react";
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
 
-interface BenefitCardProps {
+interface BenefitProps {
   title: string;
+  description: string;
   Icon: React.ComponentType<any>;
-  benefits: string[];
+  index: number;
 }
 
-const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
+const Benefit = ({ title, description, Icon, index }: BenefitProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="relative"
     >
-      <Card className="h-full p-8 bg-white border border-zinc-100 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-        <div className="absolute inset-0 rounded-lg bg-[#F2FCE2]/40 blur-[64px] -z-10" />
-        <div className="flex flex-col items-center text-center space-y-6">
-          <div className="w-14 h-14 rounded-xl bg-zinc-900 text-white flex items-center justify-center">
-            <Icon className="w-7 h-7" />
+      <div className="bg-zinc-900/60 backdrop-blur-sm rounded-2xl p-8 border border-zinc-800/30">
+        <div className="flex flex-col gap-4">
+          <div className="w-12 h-12 rounded-xl bg-[#ACE580] text-zinc-900 flex items-center justify-center">
+            <Icon className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-semibold tracking-tight text-zinc-900">{title}</h3>
-          <ul className="text-zinc-600 text-base space-y-4">
-            {benefits.map((benefit, index) => (
-              <li key={index} className="leading-relaxed">{benefit}</li>
-            ))}
-          </ul>
+          <h3 className="text-3xl font-medium text-white/90">{title}</h3>
+          <p className="text-lg text-zinc-400 leading-relaxed">{description}</p>
         </div>
-      </Card>
+      </div>
     </motion.div>
   );
 };
@@ -37,64 +33,48 @@ const BenefitCard = ({ title, Icon, benefits }: BenefitCardProps) => {
 const BenefitsSection = () => {
   const benefits = [
     {
-      title: "Unlock Hidden Patterns",
-      Icon: Target,
-      benefits: [
-        "Find your best pre-shot routines",
-        "See which practice drills work",
-        "Track lasting swing changes",
-        "Spot your peak performance triggers",
-      ],
-    },
-    {
-      title: "Build Real Confidence",
-      Icon: Brain,
-      benefits: [
-        "Review your success patterns",
-        "Remember what works for you",
-        "Turn breakthroughs into habits",
-        "Build your winning mindset",
-      ],
-    },
-    {
-      title: "Improve Without Extra Work",
+      title: "Record Your Thoughts",
+      description: "Just talk after your round or practice session. No typing needed - your voice is all it takes to capture every insight.",
       Icon: Mic,
-      benefits: [
-        "Just talk after you play",
-        "No typing needed",
-        "Get automatic insights",
-        "Find any moment instantly",
-      ],
     },
     {
-      title: "Never Lose Another Insight",
+      title: "Get AI Insights",
+      description: "Our AI analyzes your recordings to spot patterns and opportunities, helping you understand your game better than ever.",
+      Icon: Brain,
+    },
+    {
+      title: "Track Your Progress",
+      description: "Watch your game evolve over time with detailed trends and analytics that show you exactly what's working.",
+      Icon: Target,
+    },
+    {
+      title: "Build Your Playbook",
+      description: "Create your personal golf knowledge base. Every insight and breakthrough is saved and organized for easy reference.",
       Icon: BookOpenText,
-      benefits: [
-        "Capture breakthroughs instantly",
-        "Remember what made the difference",
-        "Build on what's working",
-        "Create your playbook",
-      ],
     },
   ];
 
   return (
-    <section className="pt-16 pb-32">
+    <section className="py-32 bg-zinc-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-b from-zinc-50/80 to-transparent rounded-3xl mx-4 sm:mx-8 lg:mx-16 py-24">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-center mb-20">
-              <div className="bg-white px-5 py-2 rounded-full shadow-sm border border-zinc-100">
-                <h2 className="text-sm font-semibold text-zinc-900">Features</h2>
-              </div>
-            </div>
+        <div className="max-w-3xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center space-y-4"
+          >
+            <h2 className="text-4xl font-medium text-white">Features</h2>
+            <p className="text-xl text-zinc-400">
+              Everything you need to improve your golf game, all in one place.
+            </p>
+          </motion.div>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {benefits.map((benefit, index) => (
-                <BenefitCard key={index} {...benefit} />
-              ))}
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {benefits.map((benefit, index) => (
+            <Benefit key={index} {...benefit} index={index} />
+          ))}
         </div>
       </div>
     </section>
