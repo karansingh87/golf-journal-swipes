@@ -56,7 +56,7 @@ const LandingPage = () => {
             
             <div className="space-y-4">
               <h1 className="text-[2rem] sm:text-6xl font-medium tracking-tight text-white leading-[1.1]">
-                Turn <span className="font-serif italic">golf thoughts</span> into{' '}
+                Turn <span className="font-normal">golf thoughts</span> into{' '}
                 <span className="font-serif italic">insights</span>
               </h1>
               <p className="text-xl sm:text-2xl text-zinc-400 mt-6 max-w-2xl mx-auto font-normal">
