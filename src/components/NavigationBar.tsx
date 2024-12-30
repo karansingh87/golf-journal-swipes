@@ -45,55 +45,55 @@ const NavigationBar = () => {
   const isLandingPage = location.pathname === '/';
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] h-14 bg-zinc-900">
-      <div className="h-full px-4 flex justify-between items-center">
+    <div className="fixed top-0 left-0 right-0 z-[100] h-14 bg-transparent border-b border-zinc-800/10">
+      <div className="h-full px-6 flex justify-between items-center">
         <div 
           onClick={() => navigate(isLandingPage ? '/login' : '/record')}
           className="text-xl font-bold tracking-[-0.03em] cursor-pointer hover:text-white transition-colors flex items-center"
         >
-          <span className="text-[#ACE580]">golf<span className="text-white/90">log</span></span>
+          <span className="text-[#ACE580]">golf<span className="text-zinc-800/90">log</span></span>
         </div>
         
         {!isLandingPage && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
-                className="p-2 bg-zinc-800/80 hover:bg-zinc-700 rounded-md transition-colors"
+                className="p-2 hover:bg-zinc-100/10 rounded-md transition-colors"
                 aria-label="Menu"
               >
-                <Menu className="h-5 w-5 text-white" />
+                <Menu className="h-5 w-5 text-zinc-800/90" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end"
-              className="w-48 bg-zinc-900 text-white border-zinc-800 rounded-none mt-0"
+              className="w-48 bg-white/95 backdrop-blur-sm border-zinc-200 rounded-lg mt-1 shadow-sm"
             >
               <DropdownMenuItem 
-                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
                 onClick={() => navigate('/record')}
               >
                 Record
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
                 onClick={() => navigate('/notes')}
               >
                 Notes
               </DropdownMenuItem>
               {profile?.is_admin && (
                 <>
-                  <DropdownMenuSeparator className="bg-zinc-800" />
+                  <DropdownMenuSeparator className="bg-zinc-200" />
                   <DropdownMenuItem 
-                    className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                    className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
                     onClick={() => navigate('/admin')}
                   >
                     Admin Panel
                   </DropdownMenuItem>
                 </>
               )}
-              <DropdownMenuSeparator className="bg-zinc-800" />
+              <DropdownMenuSeparator className="bg-zinc-200" />
               <DropdownMenuItem 
-                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
+                className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
                 onClick={handleLogout}
               >
                 Logout
