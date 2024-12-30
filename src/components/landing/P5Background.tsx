@@ -12,20 +12,20 @@ const P5Background = () => {
         {
           x: 0,
           y: 0,
-          size: 400,
-          opacity: 0.1
+          size: 600, // Primary bloom
+          opacity: 0.25 // 25% opacity for base layer
         },
         {
           x: 0,
           y: 0,
-          size: 350,
-          opacity: 0.08
+          size: 400, // Secondary bloom
+          opacity: 0.2 // 20% opacity
         },
         {
           x: 0,
           y: 0,
-          size: 300,
-          opacity: 0.05
+          size: 300, // Tertiary bloom
+          opacity: 0.15 // 15% opacity
         }
       ];
 
@@ -34,24 +34,24 @@ const P5Background = () => {
         canvas.position(0, 0);
         canvas.style('z-index', '-1');
 
-        // Set fixed positions for bloom effects
-        // Primary bloom in upper third
-        bloomPoints[0].x = p.width * 0.7;
+        // Set fixed positions for bloom effects using percentage-based calculations
+        // Primary bloom in upper right
+        bloomPoints[0].x = p.width * 0.75;
         bloomPoints[0].y = p.height * 0.25;
 
-        // Secondary bloom in lower area
-        bloomPoints[1].x = p.width * 0.2;
+        // Secondary bloom in lower left
+        bloomPoints[1].x = p.width * 0.25;
         bloomPoints[1].y = p.height * 0.75;
 
-        // Tertiary bloom
+        // Tertiary bloom in middle right
         bloomPoints[2].x = p.width * 0.85;
-        bloomPoints[2].y = p.height * 0.6;
+        bloomPoints[2].y = p.height * 0.5;
       };
 
       p.draw = () => {
         p.clear();
         
-        // Create gradient background
+        // Create dark background
         const numSteps = 200;
         for (let y = 0; y < p.height; y++) {
           const progress = y / p.height;
@@ -69,12 +69,12 @@ const P5Background = () => {
           p.line(0, y, p.width, y);
         }
 
-        // Draw bloom effects
+        // Draw bloom effects with increased opacity and layering
         bloomPoints.forEach(point => {
-          // Create layered glows for each bloom point
-          for (let i = 0; i < 3; i++) {
-            const size = point.size * (1 - i * 0.2);
-            const opacity = point.opacity * (1 - i * 0.3);
+          // Create multiple layers for each bloom point with varying opacities
+          for (let i = 0; i < 4; i++) {
+            const size = point.size * (1 - i * 0.15);
+            const opacity = point.opacity * (1 - i * 0.2);
             
             p.noStroke();
             const bloomColor = p.color('#ACE580');
@@ -92,13 +92,13 @@ const P5Background = () => {
       p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
         
-        // Update bloom positions on resize
-        bloomPoints[0].x = p.width * 0.7;
+        // Update bloom positions on resize while maintaining percentage-based positioning
+        bloomPoints[0].x = p.width * 0.75;
         bloomPoints[0].y = p.height * 0.25;
-        bloomPoints[1].x = p.width * 0.2;
+        bloomPoints[1].x = p.width * 0.25;
         bloomPoints[1].y = p.height * 0.75;
         bloomPoints[2].x = p.width * 0.85;
-        bloomPoints[2].y = p.height * 0.6;
+        bloomPoints[2].y = p.height * 0.5;
       };
     };
 
