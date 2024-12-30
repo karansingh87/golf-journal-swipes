@@ -12,7 +12,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-zinc-900">
+    <div className="min-h-screen landing-page">
       <BackgroundGlow />
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
