@@ -15,12 +15,14 @@ const Benefit = ({ title, description, Icon, index }: BenefitProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="relative"
+      className="relative group"
     >
-      <div className="bg-zinc-900/60 backdrop-blur-sm rounded-2xl p-8 border border-zinc-800/30">
+      <div className="absolute inset-0 bg-[#ACE580]/5 rounded-2xl blur-2xl group-hover:bg-[#ACE580]/10 transition-all duration-500" />
+      <div className="relative bg-zinc-900/60 backdrop-blur-sm rounded-2xl p-8 border border-zinc-800/30 hover:border-[#ACE580]/20 transition-colors duration-300">
         <div className="flex flex-col gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#ACE580] text-zinc-900 flex items-center justify-center">
-            <Icon className="w-6 h-6" />
+          <div className="w-12 h-12 rounded-xl bg-[#ACE580] text-zinc-900 flex items-center justify-center relative">
+            <div className="absolute inset-0 bg-[#ACE580]/20 rounded-xl blur-xl" />
+            <Icon className="w-6 h-6 relative z-10" />
           </div>
           <h3 className="text-3xl font-medium text-white/90">{title}</h3>
           <p className="text-lg text-zinc-400 leading-relaxed">{description}</p>
