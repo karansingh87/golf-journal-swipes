@@ -55,7 +55,7 @@ const LandingPage = () => {
             </motion.div>
             
             <div className="space-y-4">
-              <h1 className="text-[2.5rem] sm:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
+              <h1 className="text-[2rem] sm:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
                 Turn Golf Thoughts
                 <br />
                 <span className="italic font-serif">into</span>
