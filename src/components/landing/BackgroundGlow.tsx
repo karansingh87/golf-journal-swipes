@@ -3,34 +3,34 @@ const BackgroundGlow = () => {
     <div className="fixed inset-0 -z-10 overflow-hidden">
       {/* Primary bloom */}
       <div 
-        className="absolute w-[600px] h-[600px] rounded-full"
+        className="absolute w-[800px] h-[800px] rounded-full mix-blend-screen"
         style={{
-          top: '25%',
-          right: '25%',
-          background: 'radial-gradient(circle, rgba(172,229,128,0.25) 0%, rgba(172,229,128,0) 70%)',
-          filter: 'blur(60px)',
+          top: '10%',
+          right: '15%',
+          background: 'radial-gradient(circle, rgba(172,229,128,0.4) 0%, rgba(172,229,128,0) 70%)',
+          filter: 'blur(80px)',
         }}
       />
       
       {/* Secondary bloom */}
       <div 
-        className="absolute w-[400px] h-[400px] rounded-full"
+        className="absolute w-[600px] h-[600px] rounded-full mix-blend-screen"
         style={{
-          bottom: '25%',
-          left: '25%',
-          background: 'radial-gradient(circle, rgba(172,229,128,0.2) 0%, rgba(172,229,128,0) 70%)',
-          filter: 'blur(50px)',
+          bottom: '15%',
+          left: '20%',
+          background: 'radial-gradient(circle, rgba(172,229,128,0.35) 0%, rgba(172,229,128,0) 70%)',
+          filter: 'blur(70px)',
         }}
       />
       
       {/* Tertiary bloom */}
       <div 
-        className="absolute w-[300px] h-[300px] rounded-full"
+        className="absolute w-[400px] h-[400px] rounded-full mix-blend-screen"
         style={{
-          top: '50%',
-          right: '15%',
-          background: 'radial-gradient(circle, rgba(172,229,128,0.15) 0%, rgba(172,229,128,0) 70%)',
-          filter: 'blur(40px)',
+          top: '40%',
+          right: '10%',
+          background: 'radial-gradient(circle, rgba(172,229,128,0.3) 0%, rgba(172,229,128,0) 70%)',
+          filter: 'blur(60px)',
         }}
       />
       
