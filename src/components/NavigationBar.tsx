@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu, Mic, Notebook } from "lucide-react";
+import { Menu } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
 
 const NavigationBar = () => {
   const supabaseClient = useSupabaseClient();
@@ -43,58 +42,60 @@ const NavigationBar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 right-0 z-50 w-[95%] max-w-3xl">
+      <div className="bg-zinc-900/95 backdrop-blur-sm rounded-full px-4 py-3 shadow-lg border border-zinc-800/50">
+        <div className="flex justify-between items-center">
           <div 
             onClick={() => navigate('/record')}
-            className="text-2xl font-bold tracking-tighter cursor-pointer hover:opacity-80 transition-opacity"
+            className="text-xl font-bold tracking-tighter cursor-pointer text-white/90 hover:text-white transition-colors flex items-center gap-2"
           >
+            <div className="w-8 h-8 rounded-full bg-[#ACE580] flex items-center justify-center shadow-[0_0_15px_rgba(172,229,128,0.3)]">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-900">
+                <circle cx="12" cy="8" r="7" />
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+              </svg>
+            </div>
             GolfLog
           </div>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-gray-100/80 hover:bg-gray-200/80 transition-colors duration-200"
+              <button
+                className="rounded-full bg-zinc-800 hover:bg-zinc-700 transition-colors duration-200 p-2.5 group"
               >
-                <Menu className="h-5 w-5 text-gray-700" />
-              </Button>
+                <Menu className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end"
-              className="w-48 bg-white rounded-md shadow-md animate-in fade-in-80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0"
+              className="w-48 bg-zinc-900 text-white border-zinc-800 rounded-lg shadow-xl"
             >
               <DropdownMenuItem 
-                className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
                 onClick={() => navigate('/record')}
               >
-                <Mic className="h-4 w-4" />
                 Record
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
                 onClick={() => navigate('/notes')}
               >
-                <Notebook className="h-4 w-4" />
                 Notes
               </DropdownMenuItem>
               {profile?.is_admin && (
                 <>
-                  <DropdownMenuSeparator className="bg-gray-200" />
+                  <DropdownMenuSeparator className="bg-zinc-800" />
                   <DropdownMenuItem 
-                    className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                    className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
                     onClick={() => navigate('/admin')}
                   >
                     Admin Panel
                   </DropdownMenuItem>
                 </>
               )}
-              <DropdownMenuSeparator className="bg-gray-200" />
+              <DropdownMenuSeparator className="bg-zinc-800" />
               <DropdownMenuItem 
-                className="cursor-pointer flex items-center gap-2 text-gray-700 hover:bg-gray-50"
+                className="cursor-pointer text-white/70 hover:text-white hover:bg-zinc-800 focus:bg-zinc-800"
                 onClick={handleLogout}
               >
                 Logout
