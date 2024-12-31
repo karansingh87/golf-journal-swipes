@@ -42,7 +42,7 @@ const AnalysisCard = ({
     >
       <Card className={cn(
         "border rounded-2xl transition-all duration-200 hover:shadow-card-light", 
-        isOverview ? "bg-gradient-to-r from-[#defaf2] to-[#defaf3] border-[#ace380]" : "border-[#E5E7EB] bg-white",
+        isOverview ? "bg-gradient-to-r from-[#defaf2] to-[#defaf3] border-transparent" : "border-[#E5E7EB] bg-white",
         className
       )}>
         <CardHeader 
