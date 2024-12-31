@@ -66,7 +66,12 @@ const AnalysisCard = ({
             )}
           </div>
           {!isExpanded && !isOverview && summary && (
-            <p className="text-sm text-muted-foreground mt-1">{summary}</p>
+            <div className="relative mt-1">
+              <div className="max-h-[48px] overflow-hidden">
+                <p className="text-[15px] text-muted-foreground">{summary}</p>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-t from-white to-transparent" />
+            </div>
           )}
         </CardHeader>
         {(isExpanded || isOverview) && (
