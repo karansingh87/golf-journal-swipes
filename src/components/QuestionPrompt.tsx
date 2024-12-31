@@ -41,7 +41,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
             </p>
           </div>
           <p className="text-center text-sm text-gray-500">
-            Speak naturally <span className="mx-2">•</span> Quick thoughts <span className="mx-2">•</span> Keep it simple
+            Speak naturally <span className="mx-2">•</span> Keep it simple
           </p>
         </motion.div>
       </AnimatePresence>
