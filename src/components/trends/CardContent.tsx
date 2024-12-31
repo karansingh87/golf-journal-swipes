@@ -22,11 +22,9 @@ export const CardContent = ({
       
       {/* Watermark */}
       <div className="absolute bottom-3 right-3 opacity-10">
-        <img 
-          src="/lovable-uploads/20b29773-caad-40f5-bd34-ce4892ca9b9a.png" 
-          alt="Logo" 
-          className="w-8 h-8"
-        />
+        <span className="font-logo text-lg tracking-[-0.03em]">
+          golflog
+        </span>
       </div>
       
       {/* Content */}
