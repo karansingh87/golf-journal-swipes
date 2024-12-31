@@ -48,7 +48,7 @@ const AnalysisCard = ({
         <CardHeader 
           className={cn(
             "cursor-pointer select-none py-4",
-            !isOverview && "hover:bg-zinc-50 rounded-2xl"
+            !isOverview && !isExpanded && "hover:bg-zinc-50 rounded-2xl"
           )}
           onClick={!isOverview ? handleToggle : undefined}
         >

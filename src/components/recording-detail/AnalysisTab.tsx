@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import AnalysisCard from "./analysis/AnalysisCard";
-import NavigationPills from "./analysis/NavigationPills";
 import ScrollableContent from "./analysis/ScrollableContent";
 
 interface AnalysisSection {
@@ -36,51 +35,7 @@ const getSummaryFromContent = (content: string | string[]): string => {
 };
 
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
-  const [activeSection, setActiveSection] = useState<string>("");
   const [expandedSection, setExpandedSection] = useState<string>("session_story");
-  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  const scrollToSection = (sectionType: string) => {
-    const element = sectionRefs.current[sectionType];
-    if (element) {
-      const headerOffset = 180;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-      
-      setExpandedSection(sectionType);
-    }
-  };
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            const sectionType = entry.target.getAttribute('data-section-type');
-            if (sectionType) {
-              setActiveSection(sectionType);
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: '-100px 0px -50% 0px'
-      }
-    );
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
 
   if (!analysis) {
     return (
@@ -116,34 +71,12 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
-  const sections = parsedAnalysis.sections.map(section => ({
-    type: section.type,
-    title: getTitleFromType(section.type)
-  }));
-
   return (
     <div className="relative flex flex-col">
-      <div className="sticky top-[48px] z-40 bg-background/80 backdrop-blur-sm pt-4">
-        <NavigationPills
-          sections={sections}
-          activeSection={activeSection}
-          onSectionClick={scrollToSection}
-        />
-      </div>
-
       <ScrollableContent>
         <div className="space-y-4">
           {parsedAnalysis.sections.map((section, index) => (
-            <div
-              key={section.type}
-              ref={el => {
-                sectionRefs.current[section.type] = el;
-                if (el && observerRef.current) {
-                  observerRef.current.observe(el);
-                }
-              }}
-              data-section-type={section.type}
-            >
+            <div key={section.type}>
               <AnalysisCard
                 title={getTitleFromType(section.type)}
                 content={section.content}
