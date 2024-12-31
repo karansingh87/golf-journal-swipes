@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { RotateCw } from "lucide-react";
 
 interface CardContentProps {
   type: string;
@@ -27,10 +26,10 @@ export const CardContent = ({
       
       {/* Content */}
       <div className="relative z-10 space-y-8">
-        {/* Category Label */}
+        {/* Category Label - Updated padding and text size */}
         <div className="inline-block">
           <span className={cn(
-            "px-3 py-1 text-sm tracking-wide text-muted-foreground/80 uppercase",
+            "px-2.5 py-0.5 text-xs tracking-wide text-muted-foreground/80 uppercase",
             "bg-white rounded-full border",
             borderClass
           )}>
@@ -53,7 +52,6 @@ export const CardContent = ({
 
       {!isBack ? (
         <div className="relative z-10 flex items-center justify-center gap-2 text-sm text-muted-foreground/70">
-          <RotateCw className="h-4 w-4" />
           <span>Tap for details</span>
         </div>
       ) : onShare && (
