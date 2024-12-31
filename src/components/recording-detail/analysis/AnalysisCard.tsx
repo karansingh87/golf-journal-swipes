@@ -61,14 +61,14 @@ const AnalysisCard = ({
             </CardTitle>
             {!isOverview && (
               isExpanded ? 
-                <Minus className="h-5 w-5 text-muted-foreground ml-auto" /> : 
-                <Plus className="h-5 w-5 text-muted-foreground ml-auto" />
+                <Minus className="h-5 w-5 text-golf-gray-text-secondary ml-auto" /> : 
+                <Plus className="h-5 w-5 text-golf-gray-text-secondary ml-auto" />
             )}
           </div>
           {!isExpanded && !isOverview && summary && (
             <div className="relative mt-1">
               <div className="max-h-[48px] overflow-hidden">
-                <p className="text-[15px] text-muted-foreground">{summary}</p>
+                <p className="text-[15px] text-golf-gray-text-secondary">{summary}</p>
               </div>
               <div className="absolute bottom-0 left-0 right-0 h-full bg-gradient-to-t from-white to-transparent" />
             </div>
@@ -92,7 +92,7 @@ const AnalysisCard = ({
                     <li className="flex items-start gap-2 mb-3">
                       <span className={cn(
                         "mt-2 h-1 w-1 rounded-full flex-shrink-0",
-                        isOverview ? "bg-zinc-600" : "bg-golf-gray-text-secondary"
+                        isOverview ? "bg-zinc-800" : "bg-golf-gray-text-secondary"
                       )} />
                       <span className="text-[15px] leading-relaxed">{children}</span>
                     </li>
@@ -112,7 +112,7 @@ const AnalysisCard = ({
                   <li key={index} className="flex items-start gap-2">
                     <span className={cn(
                       "mt-2 h-1 w-1 rounded-full flex-shrink-0",
-                      isOverview ? "bg-zinc-600" : "bg-golf-gray-text-secondary"
+                      isOverview ? "bg-zinc-800" : "bg-golf-gray-text-secondary"
                     )} />
                     <ReactMarkdown
                       className={cn(
