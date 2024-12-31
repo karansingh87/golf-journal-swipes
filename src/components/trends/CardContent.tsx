@@ -25,7 +25,7 @@ export const CardContent = ({
         {/* Category Label */}
         <div>
           <span className={cn(
-            "px-2.5 py-0.5 text-xs tracking-wide text-muted-foreground/80 uppercase",
+            "px-2.5 py-0.5 text-xs font-medium tracking-wide text-muted-foreground uppercase",
             "bg-white rounded-full border",
             borderClass
           )}>
@@ -35,10 +35,10 @@ export const CardContent = ({
 
         {/* Title and Content with consistent spacing */}
         <div className="space-y-4">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-foreground">
             {title}
           </h2>
-          <p className="text-sm md:text-base text-muted-foreground/80 leading-relaxed">
+          <p className="text-sm md:text-base font-medium text-muted-foreground leading-relaxed">
             {content}
           </p>
         </div>
