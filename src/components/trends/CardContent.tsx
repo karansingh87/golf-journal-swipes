@@ -21,8 +21,8 @@ export const CardContent = ({
       <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
       
       {/* Watermark */}
-      <div className="absolute bottom-3 right-3 opacity-10">
-        <span className="font-logo text-lg tracking-[-0.03em]">
+      <div className="absolute bottom-3 right-6 opacity-10">
+        <span className="font-logo text-sm tracking-[-0.03em]">
           golflog
         </span>
       </div>
