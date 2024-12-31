@@ -36,7 +36,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           <div 
             className="rounded-2xl bg-white px-6 py-4 shadow-card-light"
           >
-            <p className="text-xl font-normal text-gray-600">
+            <p className="text-xl font-normal text-gray-600 text-center">
               {prompts[currentIndex]}
             </p>
           </div>
