@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Trash2, GolfBall } from "lucide-react";
+import { Loader2, ArrowLeft, Trash2, Golf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
@@ -113,7 +113,7 @@ const RecordingDetail = () => {
                 {format(new Date(recording.created_at), "MMMM d, yyyy • h:mm a")}
               </div>
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground bg-accent/50 px-2.5 py-1 rounded-full">
-                <GolfBall className="h-3.5 w-3.5" />
+                <Golf className="h-3.5 w-3.5" />
                 <span className="capitalize">{recording.session_type}</span>
               </div>
             </div>
