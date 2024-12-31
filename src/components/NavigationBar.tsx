@@ -57,11 +57,11 @@ const NavigationBar = () => {
           <span 
             className="flex items-center"
             style={{
-              color: '#ACE580',
+              color: isLandingPage ? '#ACE580' : '#18181B',
               WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
             }}
           >
-            golf<span className="text-zinc-800/90">log</span>
+            golf<span className={isLandingPage ? "text-white" : "text-zinc-800/90"}>log</span>
           </span>
         </div>
         
