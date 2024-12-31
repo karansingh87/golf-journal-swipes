@@ -37,7 +37,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
             className="rounded-2xl bg-white px-6 py-4 shadow-card-light"
           >
             <div className="mb-1">
-              <span className="text-xs font-medium text-golf-gray-light">
+              <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#DEFAF3' }}>
                 Thought Starter
               </span>
             </div>
