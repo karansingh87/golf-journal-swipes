@@ -1,9 +1,9 @@
 import { Card } from "@/components/ui/card";
-import { Brain, Star, Target, TrendingUp, AlertOctagon, RotateCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { getRandomGradient } from "./utils/patternColors";
+import { CardContent } from "./CardContent";
 
 interface Pattern {
   type: "hidden_strength" | "mental_signature" | "game_changing" | "strategic_instinct" | "growth_indicator";
@@ -17,65 +17,13 @@ interface PatternCardProps {
 
 const PatternCard = ({ pattern }: PatternCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
-
-  const getIcon = () => {
-    switch (pattern.type) {
-      case "hidden_strength":
-        return Star;
-      case "mental_signature":
-        return Brain;
-      case "strategic_instinct":
-        return Target;
-      case "growth_indicator":
-        return TrendingUp;
-      case "game_changing":
-        return AlertOctagon;
-      default:
-        return Star;
-    }
-  };
+  const [gradient, setGradient] = useState(getRandomGradient());
 
   const getTypeLabel = (type: string) => {
     return type.split('_').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
   };
-
-  const getGradientBackground = (type: string) => {
-    switch (type) {
-      case "hidden_strength":
-        return "bg-gradient-to-br from-amber-50 to-orange-100";
-      case "mental_signature":
-        return "bg-gradient-to-br from-purple-50 to-indigo-100";
-      case "strategic_instinct":
-        return "bg-gradient-to-br from-emerald-50 to-teal-100";
-      case "growth_indicator":
-        return "bg-gradient-to-br from-sky-50 to-blue-100";
-      case "game_changing":
-        return "bg-gradient-to-br from-rose-50 to-pink-100";
-      default:
-        return "bg-gradient-to-br from-gray-50 to-slate-100";
-    }
-  };
-
-  const getPillBorderColor = (type: string) => {
-    switch (type) {
-      case "hidden_strength":
-        return "border-orange-200";
-      case "mental_signature":
-        return "border-indigo-200";
-      case "strategic_instinct":
-        return "border-teal-200";
-      case "growth_indicator":
-        return "border-blue-200";
-      case "game_changing":
-        return "border-pink-200";
-      default:
-        return "border-slate-200";
-    }
-  };
-
-  const Icon = getIcon();
 
   const handleShare = async () => {
     try {
@@ -109,7 +57,9 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
           className={cn(
             "absolute inset-0 w-full h-full backface-hidden",
             "overflow-hidden border-0 rounded-3xl transition-all duration-500",
-            getGradientBackground(pattern.type)
+            "bg-gradient-to-br",
+            gradient.from,
+            gradient.to
           )}
           style={{ 
             transformStyle: "preserve-3d",
@@ -117,35 +67,13 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)"
           }}
         >
-          <div className="relative h-full flex flex-col justify-between p-8">
-            {/* Premium texture overlay */}
-            <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
-            
-            {/* Content */}
-            <div className="relative z-10 space-y-8">
-              {/* Category Label */}
-              <div className="inline-block">
-                <span className={cn(
-                  "px-3 py-1 text-sm tracking-wide text-muted-foreground/80 uppercase",
-                  "bg-white rounded-full border",
-                  getPillBorderColor(pattern.type)
-                )}>
-                  {getTypeLabel(pattern.type)}
-                </span>
-              </div>
-
-              {/* Main Insight */}
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
-                {pattern.primary_insight}
-              </h2>
-            </div>
-
-            {/* Flip indicator */}
-            <div className="relative z-10 flex items-center justify-center gap-2 text-sm text-muted-foreground/70">
-              <RotateCw className="h-4 w-4" />
-              <span>Tap for details</span>
-            </div>
-          </div>
+          <CardContent
+            type={getTypeLabel(pattern.type)}
+            title={pattern.primary_insight}
+            content={pattern.primary_insight}
+            gradientClasses={`bg-gradient-to-br ${gradient.from} ${gradient.to}`}
+            borderClass={gradient.border}
+          />
         </Card>
 
         {/* Back of card */}
@@ -153,7 +81,9 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
           className={cn(
             "absolute inset-0 w-full h-full backface-hidden",
             "overflow-hidden border-0 rounded-3xl transition-all duration-500",
-            getGradientBackground(pattern.type),
+            "bg-gradient-to-br",
+            gradient.from,
+            gradient.to,
             "bg-opacity-90"
           )}
           style={{ 
@@ -162,44 +92,15 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             transform: isFlipped ? "rotateY(0deg)" : "rotateY(-180deg)"
           }}
         >
-          <div className="relative h-full flex flex-col p-8">
-            {/* Premium texture overlay */}
-            <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-10" />
-            
-            {/* Content */}
-            <div className="relative z-10 space-y-8">
-              {/* Category Label */}
-              <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
-                <span className={cn(
-                  "px-3 py-1 text-sm tracking-wide text-muted-foreground/80 uppercase",
-                  "bg-white rounded-full border",
-                  getPillBorderColor(pattern.type)
-                )}>
-                  {getTypeLabel(pattern.type)}
-                </span>
-              </div>
-
-              {/* Details */}
-              <div className="space-y-6">
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
-                  {pattern.details}
-                </p>
-              </div>
-            </div>
-
-            {/* Share Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute bottom-6 right-6 rounded-full hover:bg-white/20"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleShare();
-              }}
-            >
-              Share insight
-            </Button>
-          </div>
+          <CardContent
+            type={getTypeLabel(pattern.type)}
+            title={pattern.primary_insight}
+            content={pattern.details}
+            isBack={true}
+            gradientClasses={`bg-gradient-to-br ${gradient.from} ${gradient.to}`}
+            borderClass={gradient.border}
+            onShare={handleShare}
+          />
         </Card>
       </div>
     </motion.div>
