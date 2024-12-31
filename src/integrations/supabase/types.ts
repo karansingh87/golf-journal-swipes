@@ -103,6 +103,7 @@ export type Database = {
           duration: number | null
           id: string
           insights: string | null
+          is_public: boolean | null
           session_type: Database["public"]["Enums"]["session_type"]
           transcription: string | null
           user_id: string
@@ -114,6 +115,7 @@ export type Database = {
           duration?: number | null
           id?: string
           insights?: string | null
+          is_public?: boolean | null
           session_type: Database["public"]["Enums"]["session_type"]
           transcription?: string | null
           user_id: string
@@ -125,6 +127,7 @@ export type Database = {
           duration?: number | null
           id?: string
           insights?: string | null
+          is_public?: boolean | null
           session_type?: Database["public"]["Enums"]["session_type"]
           transcription?: string | null
           user_id?: string

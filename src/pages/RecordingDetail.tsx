@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Trash2, CircleDot } from "lucide-react";
+import { Loader2, ArrowLeft, Trash2, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
@@ -45,6 +45,44 @@ const RecordingDetail = () => {
       return data;
     },
     enabled: !!session && !!id,
+  });
+
+  const toggleShare = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase
+        .from('recordings')
+        .update({ is_public: !recording?.is_public })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: (data) => {
+      const baseUrl = window.location.origin;
+      const shareUrl = `${baseUrl}/recording/${id}`;
+      
+      if (data.is_public) {
+        navigator.clipboard.writeText(shareUrl);
+        toast({
+          title: "Link copied!",
+          description: "Anyone with this link can now view this recording",
+        });
+      } else {
+        toast({
+          title: "Sharing disabled",
+          description: "This recording is now private",
+        });
+      }
+    },
+    onError: () => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update sharing settings",
+      });
+    },
   });
 
   const handleDelete = async () => {
@@ -118,14 +156,27 @@ const RecordingDetail = () => {
                 </div>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleDelete}
-              className="hover:bg-destructive/10"
-            >
-              <Trash2 className="h-4 w-4 text-destructive" />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => toggleShare.mutate()}
+                className={cn(
+                  "hover:bg-accent",
+                  recording.is_public && "text-golf-green"
+                )}
+              >
+                <Share2 className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleDelete}
+                className="hover:bg-destructive/10"
+              >
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </Button>
+            </div>
           </div>
         </div>
 
