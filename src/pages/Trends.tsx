@@ -117,14 +117,14 @@ const Trends = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto pt-16">
-        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <SegmentedNav />
           </div>
         </div>
         
-        <div className="px-4 sm:px-6 lg:px-8 pt-24">
+        <div className="px-4 sm:px-6 lg:px-8 pt-32">
           <TrendsRefreshBar
             lastUpdateTime={lastUpdateTime}
             onRefresh={generateTrends}
