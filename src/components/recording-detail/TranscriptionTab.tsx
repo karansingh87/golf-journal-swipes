@@ -44,7 +44,7 @@ const TranscriptionTab = ({ transcription }: TranscriptionTabProps) => {
                 </div>
               )}
               <div className="flex-1">
-                <p className="text-[15px] leading-relaxed text-foreground">
+                <p className="text-[15px] leading-relaxed text-golf-gray-text-primary">
                   {segment.text.trim()}
                 </p>
               </div>
