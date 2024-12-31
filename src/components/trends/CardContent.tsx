@@ -44,9 +44,14 @@ export const CardContent = ({
             </p>
           </div>
         ) : (
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
-            {content}
-          </h2>
+          <div className="space-y-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight text-foreground">
+              {title}
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground/80 leading-relaxed">
+              {content}
+            </p>
+          </div>
         )}
       </div>
 
