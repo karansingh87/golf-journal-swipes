@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Dumbbell } from "lucide-react";
+import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
@@ -47,6 +47,30 @@ const RecordingDetail = () => {
     enabled: !!session && !!id,
   });
 
+  const handleDelete = async () => {
+    try {
+      const { error } = await supabase
+        .from('recordings')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Recording deleted successfully",
+      });
+      navigate('/notes');
+    } catch (error) {
+      console.error("Error deleting recording:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete recording",
+      });
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen pt-16">
@@ -73,53 +97,61 @@ const RecordingDetail = () => {
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/notes')}
-            className="hover:bg-accent"
-          >
-            <ArrowLeft className="h-5 w-5 text-muted-foreground hover:text-foreground" />
-          </Button>
-          
-          <div className="flex items-center justify-between flex-1">
-            <div className="flex items-center gap-3">
-              <div className="text-lg font-medium">
-                {format(new Date(recording.created_at), "MMMM d, yyyy")}
-              </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800">
-                <Dumbbell className="h-3.5 w-3.5 text-zinc-500" />
-                <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                  {recording.session_type === 'practice' ? 'Range' : 'Course'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/notes')}
+          className="mb-6 hover:bg-accent gap-2 text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to All Notes
+        </Button>
 
         <div className={cn(
           "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",
           "transition-all duration-300",
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
-          <Tabs defaultValue="analysis" className="w-full">
-            <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="analysis">
-                Analysis
-              </TabsTrigger>
-              <TabsTrigger value="transcription">
-                Transcript
-              </TabsTrigger>
-            </TabsList>
+          <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-sm border-b border-border/50">
+            <div className="px-6 pt-6 pb-3">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <div className="text-lg font-medium">
+                    {format(new Date(recording.created_at), "MMMM d, yyyy")}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    {format(new Date(recording.created_at), "h:mm a")}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleDelete}
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              </div>
+            </div>
 
-            <TabsContent value="analysis" className="mt-0">
-              <AnalysisTab analysis={recording.analysis} />
-            </TabsContent>
-            <TabsContent value="transcription" className="mt-0">
-              <TranscriptionTab transcription={recording.transcription} />
-            </TabsContent>
-          </Tabs>
+            <Tabs defaultValue="analysis" className="w-full">
+              <TabsList className="w-full grid grid-cols-2">
+                <TabsTrigger value="analysis">
+                  Analysis
+                </TabsTrigger>
+                <TabsTrigger value="transcription">
+                  Transcript
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="analysis" className="mt-0">
+                <AnalysisTab analysis={recording.analysis} />
+              </TabsContent>
+              <TabsContent value="transcription" className="mt-0">
+                <TranscriptionTab transcription={recording.transcription} />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
       </div>
     </div>
