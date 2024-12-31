@@ -36,6 +36,12 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           <div 
             className="rounded-2xl bg-white px-6 py-4 shadow-card-light"
           >
+            <div className="mb-1">
+              <span className="text-xs text-emerald-600/70">
+                Thought Starter
+              </span>
+            </div>
+            
             <p className="text-lg font-normal text-gray-600">
               {prompts[currentIndex]}
             </p>
