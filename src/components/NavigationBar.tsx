@@ -45,7 +45,7 @@ const NavigationBar = () => {
   const isLandingPage = location.pathname === '/';
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[100] h-14 bg-transparent border-b border-zinc-800/10">
+    <div className="fixed top-0 left-0 right-0 z-[100] h-14 bg-white/80 backdrop-blur-sm border-b border-zinc-800/10">
       <div className="h-full px-6 flex justify-between items-center">
         <div className="flex-1">
           {/* Empty div for flex spacing */}
@@ -61,7 +61,7 @@ const NavigationBar = () => {
               WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
             }}
           >
-            golf<span className={isLandingPage ? "text-white" : "text-zinc-800/90"}>log</span>
+            golflog
           </span>
         </div>
         
