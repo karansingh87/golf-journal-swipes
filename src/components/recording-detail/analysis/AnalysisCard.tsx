@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 
 interface AnalysisCardProps {
   title: string;
@@ -54,16 +54,16 @@ const AnalysisCard = ({
         >
           <div className="flex items-center justify-between">
             <CardTitle className={cn(
-              "text-xl font-semibold flex items-center gap-2",
+              "text-xl font-semibold",
               isOverview ? "text-white" : "text-golf-gray-text-primary"
             )}>
               {title}
-              {!isOverview && (
-                isExpanded ? 
-                  <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
-                  <ChevronDown className="h-5 w-5 text-muted-foreground" />
-              )}
             </CardTitle>
+            {!isOverview && (
+              isExpanded ? 
+                <Minus className="h-5 w-5 text-muted-foreground ml-auto" /> : 
+                <Plus className="h-5 w-5 text-muted-foreground ml-auto" />
+            )}
           </div>
           {!isExpanded && !isOverview && summary && (
             <p className="text-sm text-muted-foreground mt-1">{summary}</p>
