@@ -36,29 +36,22 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const validateSession = async () => {
       try {
         setIsValidating(true);
-        const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        if (sessionError) {
-          console.error('Session validation error:', sessionError);
-          throw sessionError;
-        }
-
         if (!currentSession) {
-          console.log('No valid session found, redirecting to login');
-          await supabase.auth.signOut();
+          console.log('No active session found, redirecting to login');
           navigate('/login', { replace: true });
           return;
         }
 
+        // Set up auth state change listener
         const {
           data: { subscription },
-        } = supabase.auth.onAuthStateChange(async (event, session) => {
+        } = supabase.auth.onAuthStateChange((event, session) => {
           console.log('Auth state changed:', event);
           
-          if (event === 'SIGNED_OUT') {
+          if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
             navigate('/login', { replace: true });
-          } else if (event === 'TOKEN_REFRESHED') {
-            console.log('Session refreshed successfully');
           }
         });
 
@@ -73,7 +66,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
           title: "Authentication Error",
           description: "Please sign in again to continue.",
         });
-        await supabase.auth.signOut();
         navigate('/login', { replace: true });
       } finally {
         setIsValidating(false);
