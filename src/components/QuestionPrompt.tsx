@@ -31,7 +31,7 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-md mx-auto"
+          className="w-full max-w-md mx-auto space-y-3"
         >
           <div 
             className="rounded-2xl bg-white px-6 py-4 shadow-card-light"
@@ -40,6 +40,9 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
               {prompts[currentIndex]}
             </p>
           </div>
+          <p className="text-center text-sm text-gray-500">
+            Speak naturally • Quick thoughts • Keep it simple
+          </p>
         </motion.div>
       </AnimatePresence>
     </div>
