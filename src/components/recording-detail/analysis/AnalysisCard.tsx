@@ -79,7 +79,7 @@ const AnalysisCard = ({
                 )}
                 components={{
                   p: ({ children }) => (
-                    <p className="text-sm leading-relaxed mb-4 last:mb-0 max-w-[65ch]">
+                    <p className="text-[15px] leading-relaxed mb-4 last:mb-0 max-w-[65ch]">
                       {children}
                     </p>
                   ),
@@ -89,7 +89,7 @@ const AnalysisCard = ({
                         "mt-2 h-1 w-1 rounded-full flex-shrink-0",
                         isOverview ? "bg-zinc-600" : "bg-golf-gray-text-secondary"
                       )} />
-                      <span className="text-sm leading-relaxed">{children}</span>
+                      <span className="text-[15px] leading-relaxed">{children}</span>
                     </li>
                   ),
                   ul: ({ children }) => (
@@ -116,7 +116,7 @@ const AnalysisCard = ({
                       )}
                       components={{
                         p: ({ children }) => (
-                          <p className="text-sm leading-relaxed mb-0 max-w-[65ch]">
+                          <p className="text-[15px] leading-relaxed mb-0 max-w-[65ch]">
                             {children}
                           </p>
                         ),
