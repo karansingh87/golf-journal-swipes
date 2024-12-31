@@ -16,12 +16,12 @@ export const CardContent = ({
   borderClass,
 }: CardContentProps) => {
   return (
-    <div className="relative h-full flex flex-col p-8">
+    <div className="relative h-full flex flex-col p-6">
       {/* Premium texture overlay */}
       <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
       
       {/* Content */}
-      <div className="relative z-10 space-y-6">
+      <div className="relative z-10 space-y-4">
         {/* Category Label */}
         <div>
           <span className={cn(
@@ -34,8 +34,8 @@ export const CardContent = ({
         </div>
 
         {/* Title and Content with consistent spacing */}
-        <div className="space-y-4">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-foreground">
+        <div className="space-y-3">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight tracking-tight text-foreground">
             {title}
           </h2>
           <p className="text-sm md:text-base font-medium text-muted-foreground leading-relaxed">
