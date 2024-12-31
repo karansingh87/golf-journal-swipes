@@ -117,10 +117,6 @@ const RecordingDetail = () => {
                   {format(new Date(recording.created_at), "h:mm a")}
                 </div>
               </div>
-              <div className="flex items-center gap-1.5 text-sm text-muted-foreground bg-accent/50 px-2.5 py-1 rounded-full">
-                <CircleDot className="h-3.5 w-3.5" />
-                <span className="capitalize">{recording.session_type}</span>
-              </div>
             </div>
             <Button
               variant="ghost"
