@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getRandomGradient } from "./utils/patternColors";
 import { CardContent } from "./CardContent";
 
@@ -17,7 +17,7 @@ interface PatternCardProps {
 
 const PatternCard = ({ pattern }: PatternCardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [gradient, setGradient] = useState(getRandomGradient());
+  const [gradient] = useState(getRandomGradient());
 
   const getTypeLabel = (type: string) => {
     return type.split('_').map(word => 
@@ -70,7 +70,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
           <CardContent
             type={getTypeLabel(pattern.type)}
             title={pattern.primary_insight}
-            content={pattern.primary_insight}
+            content={pattern.details}
             gradientClasses={`bg-gradient-to-br ${gradient.from} ${gradient.to}`}
             borderClass={gradient.border}
           />
