@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import AnalysisCard from "./analysis/AnalysisCard";
-import NavigationPills from "./analysis/NavigationPills";
-import ScrollableContent from "./analysis/ScrollableContent";
+import { useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ChevronDown, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AnalysisSection {
   type: string;
@@ -28,54 +28,21 @@ const getTitleFromType = (type: string): string => {
   return titles[type] || type;
 };
 
+const getSummaryFromContent = (content: string | string[]): string => {
+  if (Array.isArray(content)) {
+    return content[0].split('.')[0] + '...';
+  }
+  const firstSentence = content.split('.')[0];
+  return firstSentence.length > 100 ? firstSentence.slice(0, 100) + '...' : firstSentence + '...';
+};
+
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
-  const [activeSection, setActiveSection] = useState<string>("");
-  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  const scrollToSection = (sectionType: string) => {
-    const element = sectionRefs.current[sectionType];
-    if (element) {
-      const headerOffset = 180;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
-  };
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            const sectionType = entry.target.getAttribute('data-section-type');
-            if (sectionType) {
-              setActiveSection(sectionType);
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: '-100px 0px -50% 0px'
-      }
-    );
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
+  const [expandedSection, setExpandedSection] = useState<string>("session_story");
 
   if (!analysis) {
     return (
-      <div className="flex items-center justify-center min-h-[300px]">
-        <p className="text-golf-gray-text-secondary">No analysis available for this session.</p>
+      <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+        <p className="text-muted-foreground">No analysis available for this session.</p>
       </div>
     );
   }
@@ -87,7 +54,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
 
     if (parsedAnalysis.sections.length === 1 && parsedAnalysis.sections[0].type === 'quick_note') {
       return (
-        <div className="flex items-center justify-center min-h-[300px]">
+        <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
           <div className="max-w-md text-center space-y-4">
             <h3 className="text-xl font-semibold text-golf-gray-text-primary">Need More Details</h3>
             <div className="text-golf-gray-text-secondary whitespace-pre-line">
@@ -100,49 +67,78 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   } catch (error) {
     console.error('Error parsing analysis:', error);
     return (
-      <div className="flex items-center justify-center min-h-[300px]">
-        <p className="text-golf-gray-text-secondary">Unable to load analysis. Invalid data format.</p>
+      <div className="flex items-center justify-center h-[calc(100vh-300px)] px-6">
+        <p className="text-muted-foreground">Unable to load analysis. Invalid data format.</p>
       </div>
     );
   }
 
-  const sections = parsedAnalysis.sections.map(section => ({
-    type: section.type,
-    title: getTitleFromType(section.type)
-  }));
+  const handleSectionClick = (sectionType: string) => {
+    setExpandedSection(expandedSection === sectionType ? "" : sectionType);
+  };
 
   return (
-    <div className="relative flex flex-col">
-      <div className="sticky top-[48px] z-40 bg-background/80 backdrop-blur-sm pt-4">
-        <NavigationPills
-          sections={sections}
-          activeSection={activeSection}
-          onSectionClick={scrollToSection}
-        />
-      </div>
-
-      <ScrollableContent>
-        {parsedAnalysis.sections.map((section, index) => (
+    <ScrollArea className="h-[calc(100vh-300px)] px-6">
+      <div className="space-y-4 pb-8">
+        {parsedAnalysis.sections.map((section) => (
           <div
             key={section.type}
-            ref={el => {
-              sectionRefs.current[section.type] = el;
-              if (el && observerRef.current) {
-                observerRef.current.observe(el);
-              }
-            }}
-            data-section-type={section.type}
+            className={cn(
+              "rounded-lg border transition-all duration-200",
+              expandedSection === section.type ? "bg-zinc-50 dark:bg-zinc-900" : "bg-white dark:bg-zinc-900/50"
+            )}
           >
-            <AnalysisCard
-              title={getTitleFromType(section.type)}
-              content={section.content}
-              isOverview={section.type === 'session_story'}
-              index={index}
-            />
+            <button
+              onClick={() => handleSectionClick(section.type)}
+              className={cn(
+                "w-full px-4 py-3 flex items-center justify-between",
+                "text-left transition-colors duration-200",
+                "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+              )}
+            >
+              <div className="flex items-center gap-2">
+                {expandedSection === section.type ? (
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                )}
+                <span className={cn(
+                  "font-medium",
+                  expandedSection === section.type ? "text-foreground" : "text-muted-foreground"
+                )}>
+                  {getTitleFromType(section.type)}
+                </span>
+              </div>
+            </button>
+            
+            <div className={cn(
+              "px-4 pb-4 transition-all duration-200",
+              expandedSection === section.type ? "block" : "hidden"
+            )}>
+              {Array.isArray(section.content) ? (
+                <ul className="list-disc list-inside space-y-3">
+                  {section.content.map((item, index) => (
+                    <li key={index} className="text-base leading-relaxed text-muted-foreground ml-4">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-base leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                  {section.content}
+                </p>
+              )}
+            </div>
+            
+            {expandedSection !== section.type && section.type !== 'session_story' && (
+              <div className="px-4 pb-3 text-sm text-muted-foreground">
+                {getSummaryFromContent(section.content)}
+              </div>
+            )}
           </div>
         ))}
-      </ScrollableContent>
-    </div>
+      </div>
+    </ScrollArea>
   );
 };
 
