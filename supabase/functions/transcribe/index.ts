@@ -7,7 +7,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { 
       headers: corsHeaders,
@@ -31,6 +30,9 @@ serve(async (req) => {
       console.error('No audio file provided in request');
       throw new Error('No audio file provided');
     }
+
+    // Add response_format=verbose_json to get timestamps
+    formData.append('response_format', 'verbose_json');
 
     console.log('Sending audio to OpenAI Whisper API...');
     const openAIResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
