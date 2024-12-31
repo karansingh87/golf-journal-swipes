@@ -58,6 +58,23 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
     }
   };
 
+  const getPillBorderColor = (type: string) => {
+    switch (type) {
+      case "hidden_strength":
+        return "border-orange-200";
+      case "mental_signature":
+        return "border-indigo-200";
+      case "strategic_instinct":
+        return "border-teal-200";
+      case "growth_indicator":
+        return "border-blue-200";
+      case "game_changing":
+        return "border-pink-200";
+      default:
+        return "border-slate-200";
+    }
+  };
+
   const Icon = getIcon();
 
   const handleShare = async () => {
@@ -107,9 +124,14 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             {/* Content */}
             <div className="relative z-10 space-y-8">
               {/* Category Label */}
-              <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
-                <Icon className="h-4 w-4" />
-                <span className="font-medium">{getTypeLabel(pattern.type)}</span>
+              <div className="inline-block">
+                <span className={cn(
+                  "px-3 py-1 text-sm tracking-wide text-muted-foreground/80 uppercase",
+                  "bg-white rounded-full border",
+                  getPillBorderColor(pattern.type)
+                )}>
+                  {getTypeLabel(pattern.type)}
+                </span>
               </div>
 
               {/* Main Insight */}
@@ -148,8 +170,13 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
             <div className="relative z-10 space-y-8">
               {/* Category Label */}
               <div className="flex items-center gap-2 text-sm tracking-wide text-muted-foreground/80 uppercase">
-                <Icon className="h-4 w-4" />
-                <span className="font-medium">{getTypeLabel(pattern.type)}</span>
+                <span className={cn(
+                  "px-3 py-1 text-sm tracking-wide text-muted-foreground/80 uppercase",
+                  "bg-white rounded-full border",
+                  getPillBorderColor(pattern.type)
+                )}>
+                  {getTypeLabel(pattern.type)}
+                </span>
               </div>
 
               {/* Details */}
