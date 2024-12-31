@@ -1,15 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft, Trash2, Share2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
 import { useToast } from "@/components/ui/use-toast";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnalysisTab from "@/components/recording-detail/AnalysisTab";
 import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
+import RecordingHeader from "@/components/recording-detail/RecordingHeader";
 import { useSession } from "@supabase/auth-helpers-react";
 
 const RecordingDetail = () => {
@@ -45,44 +45,6 @@ const RecordingDetail = () => {
       return data;
     },
     enabled: !!session && !!id,
-  });
-
-  const toggleShare = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase
-        .from('recordings')
-        .update({ is_public: !recording?.is_public })
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data) => {
-      const baseUrl = window.location.origin;
-      const shareUrl = `${baseUrl}/recording/${id}`;
-      
-      if (data.is_public) {
-        navigator.clipboard.writeText(shareUrl);
-        toast({
-          title: "Link copied!",
-          description: "Anyone with this link can now view this recording",
-        });
-      } else {
-        toast({
-          title: "Sharing disabled",
-          description: "This recording is now private",
-        });
-      }
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update sharing settings",
-      });
-    },
   });
 
   const handleDelete = async () => {
@@ -135,50 +97,7 @@ const RecordingDetail = () => {
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
-        <div className="flex items-center gap-4 mb-6">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate('/notes')}
-            className="hover:bg-accent"
-          >
-            <ArrowLeft className="h-5 w-5 text-muted-foreground" />
-          </Button>
-          
-          <div className="flex-1 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col">
-                <div className="text-base font-medium">
-                  {format(new Date(recording.created_at), "MMM d, yyyy")}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {format(new Date(recording.created_at), "h:mm a")}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => toggleShare.mutate()}
-                className={cn(
-                  "hover:bg-accent",
-                  recording.is_public && "text-golf-green"
-                )}
-              >
-                <Share2 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleDelete}
-                className="hover:bg-destructive/10"
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
-            </div>
-          </div>
-        </div>
+        <RecordingHeader recording={recording} onDelete={handleDelete} />
 
         <div className={cn(
           "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",
