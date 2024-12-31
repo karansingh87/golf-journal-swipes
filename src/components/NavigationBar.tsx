@@ -54,7 +54,7 @@ const NavigationBar = () => {
         </div>
         <div 
           onClick={() => navigate(isLandingPage ? '/login' : '/record')}
-          className="text-xl font-logo tracking-[-0.03em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
+          className="text-2xl font-logo tracking-[-0.03em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
         >
           <span 
             className="flex items-center"
