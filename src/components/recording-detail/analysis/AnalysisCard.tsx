@@ -42,31 +42,31 @@ const AnalysisCard = ({
     >
       <Card className={cn(
         "border rounded-2xl transition-all duration-200 hover:shadow-card-light", 
-        isOverview ? "border-zinc-800 bg-zinc-800" : "border-[#E5E7EB] bg-[#F8F9FA]",
+        isOverview ? "border-zinc-800 bg-zinc-800" : "border-[#E5E7EB] bg-white",
         className
       )}>
         <CardHeader 
           className={cn(
             "cursor-pointer select-none py-4",
-            !isOverview && "hover:bg-zinc-100 rounded-2xl"
+            !isOverview && "hover:bg-zinc-50 rounded-2xl"
           )}
           onClick={!isOverview ? handleToggle : undefined}
         >
           <div className="flex items-center justify-between">
             <CardTitle className={cn(
               "text-xl font-semibold",
-              isOverview ? "text-white" : "text-zinc-800"
+              isOverview ? "text-white" : "text-golf-gray-text-primary"
             )}>
               {title}
             </CardTitle>
             {!isOverview && (
               isExpanded ? 
-                <Minus className="h-5 w-5 text-zinc-600 ml-auto" /> : 
-                <Plus className="h-5 w-5 text-zinc-600 ml-auto" />
+                <Minus className="h-5 w-5 text-muted-foreground ml-auto" /> : 
+                <Plus className="h-5 w-5 text-muted-foreground ml-auto" />
             )}
           </div>
           {!isExpanded && !isOverview && summary && (
-            <p className="text-sm text-zinc-600 mt-1">{summary}</p>
+            <p className="text-sm text-muted-foreground mt-1">{summary}</p>
           )}
         </CardHeader>
         {(isExpanded || isOverview) && (
@@ -75,7 +75,7 @@ const AnalysisCard = ({
               <ReactMarkdown
                 className={cn(
                   "prose max-w-none",
-                  isOverview ? "text-white/90" : "text-zinc-700"
+                  isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
                 )}
                 components={{
                   p: ({ children }) => (
@@ -87,7 +87,7 @@ const AnalysisCard = ({
                     <li className="flex items-start gap-2 mb-3">
                       <span className={cn(
                         "mt-2 h-1 w-1 rounded-full flex-shrink-0",
-                        isOverview ? "bg-white/80" : "bg-zinc-400"
+                        isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
                       )} />
                       <span className="text-base leading-relaxed">{children}</span>
                     </li>
@@ -107,12 +107,12 @@ const AnalysisCard = ({
                   <li key={index} className="flex items-start gap-2">
                     <span className={cn(
                       "mt-2 h-1 w-1 rounded-full flex-shrink-0",
-                      isOverview ? "bg-white/80" : "bg-zinc-400"
+                      isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
                     )} />
                     <ReactMarkdown
                       className={cn(
                         "prose max-w-none",
-                        isOverview ? "text-white/90" : "text-zinc-700"
+                        isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
                       )}
                       components={{
                         p: ({ children }) => (
