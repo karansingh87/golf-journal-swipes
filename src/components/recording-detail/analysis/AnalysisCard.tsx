@@ -42,7 +42,7 @@ const AnalysisCard = ({
     >
       <Card className={cn(
         "border rounded-2xl transition-all duration-200 hover:shadow-card-light", 
-        isOverview ? "border-zinc-800 bg-zinc-800" : "border-[#E5E7EB] bg-white",
+        isOverview ? "bg-[#ace38066] border-[#ace380]" : "border-[#E5E7EB] bg-white",
         className
       )}>
         <CardHeader 
@@ -55,7 +55,7 @@ const AnalysisCard = ({
           <div className="flex items-center justify-between">
             <CardTitle className={cn(
               "text-xl font-semibold",
-              isOverview ? "text-white" : "text-golf-gray-text-primary"
+              isOverview ? "text-zinc-800" : "text-golf-gray-text-primary"
             )}>
               {title}
             </CardTitle>
@@ -75,7 +75,7 @@ const AnalysisCard = ({
               <ReactMarkdown
                 className={cn(
                   "prose max-w-none",
-                  isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
+                  isOverview ? "text-zinc-800" : "text-golf-gray-text-secondary"
                 )}
                 components={{
                   p: ({ children }) => (
@@ -87,7 +87,7 @@ const AnalysisCard = ({
                     <li className="flex items-start gap-2 mb-3">
                       <span className={cn(
                         "mt-2 h-1 w-1 rounded-full flex-shrink-0",
-                        isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
+                        isOverview ? "bg-zinc-600" : "bg-golf-gray-text-secondary"
                       )} />
                       <span className="text-base leading-relaxed">{children}</span>
                     </li>
@@ -107,12 +107,12 @@ const AnalysisCard = ({
                   <li key={index} className="flex items-start gap-2">
                     <span className={cn(
                       "mt-2 h-1 w-1 rounded-full flex-shrink-0",
-                      isOverview ? "bg-white/80" : "bg-golf-gray-text-secondary"
+                      isOverview ? "bg-zinc-600" : "bg-golf-gray-text-secondary"
                     )} />
                     <ReactMarkdown
                       className={cn(
                         "prose max-w-none",
-                        isOverview ? "text-white/90" : "text-golf-gray-text-secondary"
+                        isOverview ? "text-zinc-800" : "text-golf-gray-text-secondary"
                       )}
                       components={{
                         p: ({ children }) => (
