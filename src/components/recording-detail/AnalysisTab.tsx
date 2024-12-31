@@ -28,8 +28,16 @@ const getTitleFromType = (type: string): string => {
   return titles[type] || type;
 };
 
+const getSummaryFromContent = (content: string | string[]): string => {
+  if (Array.isArray(content)) {
+    return content[0].substring(0, 100) + (content[0].length > 100 ? '...' : '');
+  }
+  return content.substring(0, 100) + (content.length > 100 ? '...' : '');
+};
+
 const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
   const [activeSection, setActiveSection] = useState<string>("");
+  const [expandedSection, setExpandedSection] = useState<string>("session_story");
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -44,6 +52,8 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
         top: offsetPosition,
         behavior: "smooth"
       });
+      
+      setExpandedSection(sectionType);
     }
   };
 
@@ -122,25 +132,34 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
       </div>
 
       <ScrollableContent>
-        {parsedAnalysis.sections.map((section, index) => (
-          <div
-            key={section.type}
-            ref={el => {
-              sectionRefs.current[section.type] = el;
-              if (el && observerRef.current) {
-                observerRef.current.observe(el);
-              }
-            }}
-            data-section-type={section.type}
-          >
-            <AnalysisCard
-              title={getTitleFromType(section.type)}
-              content={section.content}
-              isOverview={section.type === 'session_story'}
-              index={index}
-            />
-          </div>
-        ))}
+        <div className="space-y-4">
+          {parsedAnalysis.sections.map((section, index) => (
+            <div
+              key={section.type}
+              ref={el => {
+                sectionRefs.current[section.type] = el;
+                if (el && observerRef.current) {
+                  observerRef.current.observe(el);
+                }
+              }}
+              data-section-type={section.type}
+            >
+              <AnalysisCard
+                title={getTitleFromType(section.type)}
+                content={section.content}
+                isOverview={section.type === 'session_story'}
+                index={index}
+                defaultExpanded={section.type === 'session_story'}
+                onExpand={(isExpanded) => {
+                  if (isExpanded) {
+                    setExpandedSection(section.type);
+                  }
+                }}
+                summary={section.type !== 'session_story' ? getSummaryFromContent(section.content) : undefined}
+              />
+            </div>
+          ))}
+        </div>
       </ScrollableContent>
     </div>
   );
