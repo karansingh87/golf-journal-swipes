@@ -20,6 +20,15 @@ export const CardContent = ({
       {/* Premium texture overlay */}
       <div className="absolute inset-0 bg-[url('/subtle-pattern.png')] opacity-5" />
       
+      {/* Watermark */}
+      <div className="absolute bottom-3 right-3 opacity-10">
+        <img 
+          src="/lovable-uploads/20b29773-caad-40f5-bd34-ce4892ca9b9a.png" 
+          alt="Logo" 
+          className="w-8 h-8"
+        />
+      </div>
+      
       {/* Content */}
       <div className="relative z-10 space-y-4">
         {/* Category Label */}
