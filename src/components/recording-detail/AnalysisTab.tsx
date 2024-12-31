@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import AnalysisCard from "./analysis/AnalysisCard";
 import ScrollableContent from "./analysis/ScrollableContent";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface AnalysisSection {
   type: string;
@@ -53,12 +54,14 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     if (parsedAnalysis.sections.length === 1 && parsedAnalysis.sections[0].type === 'quick_note') {
       return (
         <div className="flex items-center justify-center min-h-[300px]">
-          <div className="max-w-md text-center space-y-4">
-            <h3 className="text-xl font-semibold text-golf-gray-text-primary">Need More Details</h3>
-            <div className="text-golf-gray-text-secondary whitespace-pre-line">
-              {parsedAnalysis.sections[0].content}
-            </div>
-          </div>
+          <Card className="max-w-md w-full">
+            <CardContent className="pt-6">
+              <h3 className="text-xl font-semibold text-golf-gray-text-primary mb-4">Need More Details</h3>
+              <div className="text-golf-gray-text-secondary whitespace-pre-line text-left">
+                {parsedAnalysis.sections[0].content}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       );
     }
