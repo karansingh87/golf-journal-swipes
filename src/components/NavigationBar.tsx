@@ -49,9 +49,6 @@ const NavigationBar = () => {
       isLandingPage ? 'bg-zinc-900/80' : 'bg-white/80'
     }`}>
       <div className="h-full px-6 flex justify-between items-center">
-        <div className="flex-1">
-          {/* Empty div for flex spacing */}
-        </div>
         <div 
           onClick={() => navigate(isLandingPage ? '/login' : '/record')}
           className="text-2xl font-logo tracking-[-0.03em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
@@ -72,10 +69,10 @@ const NavigationBar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="h-10 w-10 bg-golf-green rounded-full flex items-center justify-center hover:opacity-90 transition-opacity"
+                  className="h-10 w-10 flex items-center justify-center hover:bg-zinc-50/50 rounded-full transition-colors"
                   aria-label="Menu"
                 >
-                  <Menu className="h-5 w-5 text-white" />
+                  <Menu className="h-5 w-5 text-zinc-900" strokeWidth={1.5} />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
