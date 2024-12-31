@@ -33,19 +33,19 @@ const RecordingCard = ({
     navigate(`/recording/${recording.id}`);
   };
 
-  const getSessionStoryPreview = (analysis: string | null): string => {
+  const getHeadlinePreview = (analysis: string | null): string => {
     if (!analysis) return "";
     
     try {
       const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
       const parsedAnalysis = JSON.parse(cleanAnalysis);
       
-      const sessionStory = parsedAnalysis.sections?.find(
-        (section: any) => section.type === 'session_story'
+      const headline = parsedAnalysis.sections?.find(
+        (section: any) => section.type === 'headline'
       );
       
-      if (sessionStory && typeof sessionStory.content === 'string') {
-        return sessionStory.content;
+      if (headline && typeof headline.content === 'string') {
+        return headline.content;
       }
       
       return "";
@@ -80,7 +80,7 @@ const RecordingCard = ({
         </div>
         {recording.analysis && (
           <div className="text-sm text-muted-foreground line-clamp-1 mt-3">
-            {getSessionStoryPreview(recording.analysis)}
+            {getHeadlinePreview(recording.analysis)}
           </div>
         )}
       </div>
