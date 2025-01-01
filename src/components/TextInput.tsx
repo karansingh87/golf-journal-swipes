@@ -52,6 +52,13 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
     setShowSessionModal(false);
   };
 
+  const handleDrawerClose = () => {
+    setIsOpen(false);
+    setTimeout(() => {
+      onCancel();
+    }, 150); // Match the drawer's close animation
+  };
+
   if (showSessionModal) {
     return (
       <SessionTypeModal
@@ -67,7 +74,12 @@ const TextInput = ({ onSubmit, onCancel, isProcessing }: TextInputProps) => {
 
   return (
     <>
-      <Drawer open={isOpen} onOpenChange={setIsOpen} onClose={handleDismiss}>
+      <Drawer 
+        open={isOpen} 
+        onOpenChange={(open) => {
+          if (!open) handleDrawerClose();
+        }}
+      >
         <DrawerContent className="h-[80vh] bg-[#FAFAF9] focus:outline-none">
           <div className="mx-auto w-full max-w-3xl h-full flex flex-col">
             <DrawerHeader className="border-b border-zinc-200 px-6 py-4">
