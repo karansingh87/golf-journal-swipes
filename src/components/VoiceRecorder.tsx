@@ -80,16 +80,10 @@ const VoiceRecorder = ({
       return;
     }
     
-    console.log('Stopping recording...', { audioChunks: audioChunks.length });
     stopRecording();
-    
     if (audioChunks.length > 0) {
-      console.log('Creating audio blob...');
       const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-      console.log('Audio blob created:', { size: audioBlob.size });
       onRecordingComplete(audioBlob, recordingTime, sessionType);
-    } else {
-      console.error('No audio chunks available');
     }
   };
 
