@@ -31,18 +31,21 @@ const QuestionPrompt = ({ prompts, isPaused }: QuestionPromptProps) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-md mx-auto space-y-3"
+          className="w-full max-w-md mx-auto"
         >
           <div 
             className="rounded-2xl bg-white px-6 py-4 shadow-card-light"
           >
-            <p className="text-xl font-normal text-gray-600 text-center">
+            <div className="mb-1">
+              <span className="text-xs text-emerald-600/70">
+                Thought Starter
+              </span>
+            </div>
+            
+            <p className="text-lg font-normal text-gray-600">
               {prompts[currentIndex]}
             </p>
           </div>
-          <p className="text-center text-sm text-gray-500">
-            Speak naturally <span className="mx-2">•</span> Keep it simple
-          </p>
         </motion.div>
       </AnimatePresence>
     </div>

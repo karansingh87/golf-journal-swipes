@@ -41,13 +41,13 @@ const RecordingControls = ({
                   cy="50"
                   r="46"
                   fill="none"
-                  stroke="#18181B"
+                  stroke="#ACE580"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeDasharray="289.02652413026095"
                   strokeDashoffset="216.76989309769572"
                   style={{
-                    filter: 'drop-shadow(0 0 2px #18181B)',
+                    filter: 'drop-shadow(0 0 2px #ACE580)',
                   }}
                 />
               </svg>
