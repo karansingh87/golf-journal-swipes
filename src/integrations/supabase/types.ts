@@ -169,12 +169,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      should_generate_trends: {
-        Args: {
-          user_uuid: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       achievement_type:
