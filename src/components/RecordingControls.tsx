@@ -1,4 +1,4 @@
-import { Pause, Mic, Notebook } from "lucide-react";
+import { Pause, Mic, Notebook, Keyboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ControlButton from "./recorder/ControlButton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,6 +10,7 @@ interface RecordingControlsProps {
   onPause: () => void;
   onResume: () => void;
   onStop: () => void;
+  onSwitchToText?: () => void;
 }
 
 const RecordingControls = ({
@@ -19,6 +20,7 @@ const RecordingControls = ({
   onPause,
   onResume,
   onStop,
+  onSwitchToText,
 }: RecordingControlsProps) => {
   const navigate = useNavigate();
 
@@ -64,7 +66,7 @@ const RecordingControls = ({
         </div>
 
         <AnimatePresence>
-          {isRecording && (
+          {isRecording ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -78,6 +80,13 @@ const RecordingControls = ({
                 className="text-white hover:text-white/90 min-w-[48px]"
               />
             </motion.div>
+          ) : (
+            <ControlButton
+              icon={Keyboard}
+              onClick={onSwitchToText}
+              variant="dark"
+              size="medium"
+            />
           )}
         </AnimatePresence>
       </div>

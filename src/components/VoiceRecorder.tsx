@@ -1,7 +1,6 @@
 import { useRecorder } from "../hooks/useRecorder";
 import RecordingTimer from "./recorder/RecordingTimer";
 import RecordingControls from "./RecordingControls";
-import KeyboardToggle from "./recorder/KeyboardToggle";
 import QuestionPrompt from "./QuestionPrompt";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
@@ -115,13 +114,11 @@ const VoiceRecorder = ({
           </div>
           <div className="flex flex-col items-center justify-center gap-12 px-4 mb-32">
             <RecordingTimer recordingTime={recordingTime} />
-            <KeyboardToggle onSwitchToText={onSwitchToText} isRecording={isRecording} />
           </div>
         </>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center gap-12 px-4 mb-32">
           <RecordingTimer recordingTime={recordingTime} />
-          <KeyboardToggle onSwitchToText={onSwitchToText} isRecording={isRecording} />
         </div>
       )}
 
@@ -132,6 +129,7 @@ const VoiceRecorder = ({
         onPause={pauseRecording}
         onResume={resumeRecording}
         onStop={handleStopRecording}
+        onSwitchToText={onSwitchToText}
       />
     </div>
   );
