@@ -106,7 +106,7 @@ const VoiceRecorder = ({
   return (
     <div className="relative flex flex-col items-center justify-between h-[100dvh] overflow-hidden">
       {sessionType && (
-        <div className="w-full mb-24">
+        <div className="w-full mt-8 mb-auto">
           <QuestionPrompt 
             prompts={prompts}
             isPaused={isPaused}
@@ -114,7 +114,7 @@ const VoiceRecorder = ({
         </div>
       )}
 
-      <div className="flex-1 flex flex-col items-center justify-center gap-8 min-h-0 px-4 mb-8">
+      <div className="flex flex-col items-center justify-center gap-12 px-4 mb-32">
         <RecordingTimer recordingTime={recordingTime} />
         <KeyboardToggle onSwitchToText={onSwitchToText} isRecording={isRecording} />
       </div>
