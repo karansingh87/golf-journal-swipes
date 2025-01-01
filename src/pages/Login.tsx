@@ -78,7 +78,6 @@ const Login = () => {
                 },
               },
             }}
-            showLinks={false}
           />
         </div>
 
