@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface RecordingState {
@@ -21,6 +21,17 @@ export const useRecorder = () => {
   });
   
   const { toast } = useToast();
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+
+  // Cleanup function to properly stop all media tracks
+  const cleanupMediaStream = () => {
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach((track) => {
+        track.stop();
+      });
+      mediaStreamRef.current = null;
+    }
+  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -32,12 +43,21 @@ export const useRecorder = () => {
         }));
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Ensure cleanup on component unmount
+      cleanupMediaStream();
+    };
   }, [state.isRecording, state.isPaused]);
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: true,
+        video: false // Explicitly deny video access
+      });
+      
+      mediaStreamRef.current = stream;
       const recorder = new MediaRecorder(stream);
       
       recorder.ondataavailable = (e) => {
@@ -49,7 +69,7 @@ export const useRecorder = () => {
         }
       };
 
-      recorder.start(1000); // Collect data every second
+      recorder.start(1000);
       setState(prev => ({
         ...prev,
         isRecording: true,
@@ -62,7 +82,7 @@ export const useRecorder = () => {
       toast({
         variant: "destructive",
         title: "Microphone access denied",
-        description: "Please allow microphone access to record",
+        description: "Please allow microphone access to record. Check your browser settings if needed.",
       });
     }
   };
@@ -84,7 +104,7 @@ export const useRecorder = () => {
   const stopRecording = () => {
     if (state.mediaRecorder) {
       state.mediaRecorder.stop();
-      state.mediaStream?.getTracks().forEach(track => track.stop());
+      cleanupMediaStream(); // Properly cleanup the media stream
       setState(prev => ({
         ...prev,
         isRecording: false,
@@ -96,6 +116,7 @@ export const useRecorder = () => {
   };
 
   const resetRecording = () => {
+    cleanupMediaStream(); // Ensure cleanup when resetting
     setState({
       isRecording: false,
       isPaused: false,
