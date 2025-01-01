@@ -29,14 +29,14 @@ const ControlButton = ({
     small: 'w-10 h-10',
     medium: 'w-12 h-12',
     default: 'w-14 h-14',
-    large: 'w-24 h-24'
+    large: 'w-28 h-28'  // Increased from w-24 h-24
   };
 
   const iconSizes = {
     small: 'w-4 h-4',
     medium: 'w-5 h-5',
     default: 'w-6 h-6',
-    large: 'w-10 h-10'
+    large: 'w-12 h-12'  // Increased from w-10 h-10
   };
   
   const buttonSize = isLarge ? sizeClasses.large : sizeClasses[size];

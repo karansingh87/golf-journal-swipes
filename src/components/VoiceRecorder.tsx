@@ -112,7 +112,7 @@ const VoiceRecorder = ({
               isPaused={isPaused}
             />
           </div>
-          <div className="flex flex-col items-center justify-center mb-48">
+          <div className="flex flex-col items-center justify-center mb-60">
             <RecordingTimer recordingTime={recordingTime} />
           </div>
         </>
