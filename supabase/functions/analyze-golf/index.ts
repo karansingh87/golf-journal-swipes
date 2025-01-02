@@ -28,7 +28,7 @@ serve(async (req) => {
       throw new Error('SUPABASE_URL environment variable is not set')
     }
 
-    // Create Supabase client with properly formatted URL
+    // Create Supabase client
     const supabase = createClient(
       supabaseUrl,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -47,36 +47,34 @@ serve(async (req) => {
 
     const analysisPrompt = promptData.prompt
 
-    // Get analysis from OpenAI using the newer model
-    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Get analysis from Anthropic using Claude
+    const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
+        'anthropic-version': '2023-06-01',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',  // Updated to use the newer model
+        model: 'claude-3-sonnet-20240229',
+        max_tokens: 4096,
         messages: [
           {
-            role: 'system',
-            content: analysisPrompt,
-          },
-          {
             role: 'user',
-            content: transcription,
-          },
-        ],
+            content: `${analysisPrompt}\n\nHere is the transcription to analyze:\n${transcription}`
+          }
+        ]
       }),
     })
 
-    if (!openAIResponse.ok) {
-      const error = await openAIResponse.text()
-      console.error('OpenAI API error:', error)
-      throw new Error(`OpenAI API error: ${error}`)
+    if (!anthropicResponse.ok) {
+      const error = await anthropicResponse.text()
+      console.error('Anthropic API error:', error)
+      throw new Error(`Anthropic API error: ${error}`)
     }
 
-    const analysisData = await openAIResponse.json()
-    const analysis = analysisData.choices[0].message.content
+    const analysisData = await anthropicResponse.json()
+    const analysis = analysisData.content[0].text
 
     console.log('Analysis completed successfully')
 
