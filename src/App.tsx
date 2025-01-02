@@ -13,6 +13,7 @@ import Onboarding from "./pages/Onboarding";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
+import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -135,6 +136,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <RecordingDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
                 </ProtectedRoute>
               }
             />
