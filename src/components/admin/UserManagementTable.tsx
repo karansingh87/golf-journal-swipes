@@ -68,8 +68,22 @@ const UserManagementTable = () => {
 
   const handleDeleteUser = async (userId: string) => {
     try {
-      const { error } = await supabase.auth.admin.deleteUser(userId);
-      if (error) throw error;
+      setDeletingUserId(userId);
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session?.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to delete user');
+      }
 
       toast({
         title: "Success",
@@ -81,7 +95,7 @@ const UserManagementTable = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to delete user.",
+        description: error.message || "Failed to delete user.",
       });
     } finally {
       setDeletingUserId(null);
@@ -125,8 +139,13 @@ const UserManagementTable = () => {
                       variant="ghost"
                       size="icon"
                       className="text-destructive hover:text-destructive/90"
+                      disabled={deletingUserId === user.id}
                     >
-                      <Trash2 className="h-4 w-4" />
+                      {deletingUserId === user.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
