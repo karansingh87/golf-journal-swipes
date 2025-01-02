@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PromptEditor from "./admin/PromptEditor";
 import PromptHistoryTable from "./admin/PromptHistoryTable";
+import UserManagementTable from "./admin/UserManagementTable";
 
 const AdminPromptPanel = () => {
   const [analysisPrompt, setAnalysisPrompt] = useState("");
@@ -137,6 +138,9 @@ const AdminPromptPanel = () => {
           <TabsTrigger value="history" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
             Change History
           </TabsTrigger>
+          <TabsTrigger value="users" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+            User Management
+          </TabsTrigger>
         </TabsList>
         
         <div className="overflow-x-auto">
@@ -162,6 +166,10 @@ const AdminPromptPanel = () => {
 
           <TabsContent value="history">
             <PromptHistoryTable history={promptHistory} />
+          </TabsContent>
+
+          <TabsContent value="users">
+            <UserManagementTable />
           </TabsContent>
         </div>
       </Tabs>
