@@ -11,27 +11,36 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import DeleteUserButton from "./DeleteUserButton";
+import { User } from "@supabase/supabase-js";
 
-interface User {
+interface ExtendedUser {
   id: string;
-  email: string;
+  email: string | undefined;
   created_at: string;
   last_sign_in_at: string | null;
 }
 
 const UserManagementTable = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<ExtendedUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   const fetchUsers = async () => {
     try {
       setIsLoading(true);
-      const { data: { users }, error } = await supabase.auth.admin.listUsers();
+      const { data: { users: supabaseUsers }, error } = await supabase.auth.admin.listUsers();
       
       if (error) throw error;
       
-      setUsers(users || []);
+      // Transform Supabase users to our ExtendedUser type
+      const transformedUsers: ExtendedUser[] = (supabaseUsers || []).map((user: User) => ({
+        id: user.id,
+        email: user.email || 'No email',
+        created_at: user.created_at,
+        last_sign_in_at: user.last_sign_in_at,
+      }));
+      
+      setUsers(transformedUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
