@@ -5,7 +5,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthCard from "@/components/auth/AuthCard";
@@ -100,17 +99,6 @@ const Signup = () => {
 
   return (
     <AuthContainer>
-      <div className="flex items-center justify-between">
-        <Button
-          variant="ghost"
-          className="p-0 hover:bg-transparent"
-          onClick={() => navigate("/")}
-        >
-          <ArrowLeft className="h-5 w-5 mr-2" />
-          Back
-        </Button>
-      </div>
-
       <AuthHeader 
         title="Create an Account" 
         subtitle="Join GolfLog to start tracking your progress" 
