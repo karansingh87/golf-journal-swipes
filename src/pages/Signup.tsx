@@ -15,13 +15,14 @@ const Signup = () => {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSignedUp, setIsSignedUp] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const session = useSession();
 
   useEffect(() => {
     const checkSessionAndOnboarding = async () => {
       if (session?.user) {
         try {
-          // Get onboarding status
           const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('onboarding_completed, onboarding_skipped')
@@ -30,7 +31,6 @@ const Signup = () => {
 
           if (profileError) throw profileError;
 
-          // Update profile with display name
           const { error: updateError } = await supabase
             .from('profiles')
             .update({ display_name: displayName })
@@ -38,7 +38,6 @@ const Signup = () => {
 
           if (updateError) throw updateError;
 
-          // Navigate based on onboarding status
           if (!profile.onboarding_completed && !profile.onboarding_skipped) {
             navigate("/onboarding");
           } else {
@@ -83,6 +82,12 @@ const Signup = () => {
 
       if (error) throw error;
 
+      setIsSignedUp(true);
+      toast({
+        title: "Account created",
+        description: "Please check your email for verification link.",
+      });
+
     } catch (error) {
       console.error('Signup error:', error);
       toast({
@@ -90,6 +95,32 @@ const Signup = () => {
         title: "Signup failed",
         description: "Please try again.",
       });
+    }
+  };
+
+  const handleResendEmail = async () => {
+    setIsResending(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Email sent",
+        description: "Verification email has been resent.",
+      });
+    } catch (error) {
+      console.error('Resend error:', error);
+      toast({
+        variant: "destructive",
+        title: "Failed to resend email",
+        description: "Please try again or contact support.",
+      });
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -150,9 +181,21 @@ const Signup = () => {
                 required
               />
             </div>
-            <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
-              Create Account
-            </Button>
+            {!isSignedUp ? (
+              <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
+                Create Account
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={handleResendEmail}
+                disabled={isResending}
+              >
+                {isResending ? "Sending..." : "Resend Verification Email"}
+              </Button>
+            )}
           </form>
         </div>
 
