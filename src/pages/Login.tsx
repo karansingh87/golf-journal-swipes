@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,13 +7,31 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthHeader from "@/components/auth/AuthHeader";
-import AuthTestingAlert from "@/components/auth/AuthTestingAlert";
+import AuthCard from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+
+interface LoginForm {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const session = useSession();
+  const form = useForm<LoginForm>({
+    defaultValues: {
+      email: localStorage.getItem('rememberedEmail') || '',
+      password: localStorage.getItem('rememberedPassword') || '',
+      rememberMe: localStorage.getItem('rememberedEmail') ? true : false
+    }
+  });
 
   useEffect(() => {
     const checkSessionAndOnboarding = async () => {
@@ -44,19 +62,35 @@ const Login = () => {
     };
 
     checkSessionAndOnboarding();
-
-    const params = new URLSearchParams(window.location.search);
-    const error = params.get('error_description');
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Authentication Error",
-        description: error,
-      });
-    }
   }, [navigate, toast, session]);
 
-  const redirectUrl = window.location.origin.replace(/\/$/, '') + '/record';
+  const onSubmit = async (data: LoginForm) => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (error) throw error;
+
+      // If remember me is checked, store the credentials
+      if (data.rememberMe) {
+        localStorage.setItem('rememberedEmail', data.email);
+        localStorage.setItem('rememberedPassword', data.password);
+      } else {
+        // If not checked, remove any stored credentials
+        localStorage.removeItem('rememberedEmail');
+        localStorage.removeItem('rememberedPassword');
+      }
+
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Login failed",
+        description: error.message,
+      });
+    }
+  };
 
   return (
     <AuthContainer>
@@ -65,44 +99,56 @@ const Login = () => {
         subtitle="Please sign in to continue" 
       />
 
-      <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
-        <Auth
-          supabaseClient={supabase}
-          appearance={{
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: '#000000',
-                  brandAccent: '#333333',
-                },
-              },
-            },
-            className: {
-              button: 'w-full px-4 py-2 text-white bg-black hover:bg-gray-800',
-              input: 'w-full px-3 py-2 border rounded-md',
-              label: 'text-sm font-medium text-gray-700',
-            },
-          }}
-          theme="light"
-          providers={[]}
-          redirectTo={redirectUrl}
-          view="sign_in"
-          showLinks={false}
-        />
-      </div>
+      <AuthCard>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              {...form.register('email')}
+              placeholder="Enter your email"
+            />
+          </div>
 
-      <div className="text-center mt-4">
-        <Button
-          variant="link"
-          className="text-gray-500 hover:text-gray-700"
-          onClick={() => navigate("/")}
-        >
-          Don't have an account? Sign up
-        </Button>
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              {...form.register('password')}
+              placeholder="Enter your password"
+            />
+          </div>
 
-      <AuthTestingAlert />
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="rememberMe"
+              {...form.register('rememberMe')}
+            />
+            <label
+              htmlFor="rememberMe"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Remember me
+            </label>
+          </div>
+
+          <Button type="submit" className="w-full">
+            Sign In
+          </Button>
+        </form>
+
+        <div className="mt-4 text-center">
+          <Button
+            variant="link"
+            className="text-gray-500 hover:text-gray-700"
+            onClick={() => navigate("/")}
+          >
+            Don't have an account? Sign up
+          </Button>
+        </div>
+      </AuthCard>
     </AuthContainer>
   );
 };
