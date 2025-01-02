@@ -42,12 +42,29 @@ const NavigationBar = () => {
   });
 
   const handleLogout = async () => {
-    await supabaseClient.auth.signOut();
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out",
-    });
-    navigate('/');
+    try {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) throw error;
+      
+      // Clear any cached data
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out",
+      });
+      
+      // Force navigation to landing page
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast({
+        variant: "destructive",
+        title: "Error logging out",
+        description: "Please try again",
+      });
+    }
   };
 
   const isLandingPage = location.pathname === '/';
