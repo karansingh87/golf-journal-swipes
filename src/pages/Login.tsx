@@ -30,6 +30,9 @@ const Login = () => {
     }
   }, [navigate, toast, session]);
 
+  // Remove any trailing slashes and ensure clean URL format
+  const redirectUrl = window.location.origin.replace(/\/$/, '') + '/record';
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-4">
       <div className="w-full max-w-md space-y-6">
@@ -59,8 +62,7 @@ const Login = () => {
             }}
             theme="light"
             providers={[]}
-            view="sign_in"
-            redirectTo={`${window.location.origin}/record`}
+            redirectTo={redirectUrl}
           />
         </div>
 
