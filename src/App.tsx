@@ -9,6 +9,8 @@ import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Onboarding from "./pages/Onboarding";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
@@ -109,31 +111,55 @@ const App = () => (
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/record" element={
-              <ProtectedRoute>
-                <VoiceRecorderContainer />
-              </ProtectedRoute>
-            } />
-            <Route path="/notes" element={
-              <ProtectedRoute>
-                <Notes />
-              </ProtectedRoute>
-            } />
-            <Route path="/trends" element={
-              <ProtectedRoute>
-                <Trends />
-              </ProtectedRoute>
-            } />
-            <Route path="/recording/:id" element={
-              <ProtectedRoute>
-                <RecordingDetail />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin" element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            } />
+            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <Onboarding />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/record"
+              element={
+                <ProtectedRoute>
+                  <VoiceRecorderContainer />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/notes"
+              element={
+                <ProtectedRoute>
+                  <Notes />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/trends"
+              element={
+                <ProtectedRoute>
+                  <Trends />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/recording/:id"
+              element={
+                <ProtectedRoute>
+                  <RecordingDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <Admin />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/history" element={<Navigate to="/notes" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
