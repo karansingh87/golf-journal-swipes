@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import OnboardingQuestion from "@/components/onboarding/OnboardingQuestion";
 
 const questions = [
   {
+    title: "What should we call you?",
+    type: "text" as const,
+    key: "display_name",
+  },
+  {
     title: "What's your handicap?",
+    type: "radio" as const,
     options: [
       { label: "Scratch or better", value: "scratch_or_better" },
       { label: "1-5", value: "1_5" },
@@ -25,6 +30,7 @@ const questions = [
   },
   {
     title: "Do you currently track your golf thoughts/progress?",
+    type: "radio" as const,
     options: [
       { label: "No, I don't track anything", value: "no_tracking" },
       { label: "Sometimes I take mental notes", value: "mental_notes" },
@@ -35,6 +41,7 @@ const questions = [
   },
   {
     title: "Do you work with a golf coach?",
+    type: "radio" as const,
     options: [
       { label: "Yes, regularly", value: "regularly" },
       { label: "Yes, occasionally", value: "occasionally" },
@@ -117,6 +124,8 @@ const Onboarding = () => {
     }
   };
 
+  const isNextDisabled = !answers[currentQuestion.key];
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-4">
       <div className="w-full max-w-lg space-y-8">
@@ -144,50 +153,20 @@ const Onboarding = () => {
               </Button>
             </div>
 
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold text-gray-900">{currentQuestion.title}</h2>
-              
-              <RadioGroup
-                value={answers[currentQuestion.key]}
-                onValueChange={(value) =>
-                  setAnswers((prev) => ({ ...prev, [currentQuestion.key]: value }))
-                }
-                className="space-y-3"
-              >
-                {currentQuestion.options.map((option) => (
-                  <div
-                    key={option.value}
-                    className={`flex items-center space-x-3 rounded-lg border p-4 cursor-pointer hover:bg-gray-50 ${
-                      answers[currentQuestion.key] === option.value
-                        ? "border-black"
-                        : "border-gray-200"
-                    }`}
-                    onClick={() =>
-                      setAnswers((prev) => ({
-                        ...prev,
-                        [currentQuestion.key]: option.value,
-                      }))
-                    }
-                  >
-                    <RadioGroupItem value={option.value} id={option.value} />
-                    <Label
-                      htmlFor={option.value}
-                      className="flex-grow cursor-pointer"
-                    >
-                      {option.label}
-                    </Label>
-                    {answers[currentQuestion.key] === option.value && (
-                      <Check className="h-5 w-5 text-black" />
-                    )}
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
+            <OnboardingQuestion
+              title={currentQuestion.title}
+              type={currentQuestion.type}
+              options={currentQuestion.options}
+              value={answers[currentQuestion.key] || ""}
+              onChange={(value) =>
+                setAnswers((prev) => ({ ...prev, [currentQuestion.key]: value }))
+              }
+            />
 
             <Button
               onClick={handleNext}
               className="w-full mt-6"
-              disabled={!answers[currentQuestion.key]}
+              disabled={isNextDisabled}
             >
               {currentStep === questions.length - 1 ? (
                 "Complete Setup"
