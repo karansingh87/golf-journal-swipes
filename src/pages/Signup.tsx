@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { Auth } from "@supabase/auth-ui-react";
@@ -9,12 +9,43 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useSession } from "@supabase/auth-helpers-react";
 
 const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [displayName, setDisplayName] = useState("");
   const [showAuth, setShowAuth] = useState(false);
+  const session = useSession();
+
+  useEffect(() => {
+    if (session?.user) {
+      // Update the profile with display name if it exists
+      if (displayName) {
+        updateProfile(session.user.id, displayName);
+      }
+      // Redirect to onboarding
+      navigate("/onboarding");
+    }
+  }, [session, navigate, displayName]);
+
+  const updateProfile = async (userId: string, name: string) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ display_name: name })
+        .eq('id', userId);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+      });
+    }
+  };
 
   const handleDisplayNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,9 +122,6 @@ const Signup = () => {
               providers={[]}
               view="sign_up"
               redirectTo={`${window.location.origin}/onboarding`}
-              queryParams={{
-                display_name: displayName,
-              }}
             />
           </div>
         )}
