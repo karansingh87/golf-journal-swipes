@@ -59,6 +59,7 @@ const Login = () => {
             }}
             theme="light"
             providers={[]}
+            view="sign_in"
             redirectTo={`${window.location.origin}/record`}
           />
         </div>
