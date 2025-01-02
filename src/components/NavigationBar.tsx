@@ -24,11 +24,19 @@ const NavigationBar = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return null;
       
-      const { data } = await supabase
+      console.log('Fetching profile for user:', session.user.id); // Debug log
+      const { data, error } = await supabase
         .from('profiles')
         .select('is_admin')
         .eq('id', session.user.id)
         .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error); // Debug log
+        throw error;
+      }
+
+      console.log('Profile data:', data); // Debug log
       return data;
     },
   });
