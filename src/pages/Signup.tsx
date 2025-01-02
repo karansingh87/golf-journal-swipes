@@ -18,21 +18,34 @@ const Signup = () => {
   const session = useSession();
 
   useEffect(() => {
-    const checkSession = async () => {
+    const checkSessionAndOnboarding = async () => {
       if (session?.user) {
         try {
+          // Get onboarding status
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('onboarding_completed, onboarding_skipped')
+            .eq('id', session.user.id)
+            .single();
+
+          if (profileError) throw profileError;
+
           // Update profile with display name
-          const { error: profileError } = await supabase
+          const { error: updateError } = await supabase
             .from('profiles')
             .update({ display_name: displayName })
             .eq('id', session.user.id);
 
-          if (profileError) throw profileError;
+          if (updateError) throw updateError;
 
-          // Navigate to onboarding
-          navigate("/onboarding");
+          // Navigate based on onboarding status
+          if (!profile.onboarding_completed && !profile.onboarding_skipped) {
+            navigate("/onboarding");
+          } else {
+            navigate("/record");
+          }
         } catch (error) {
-          console.error('Error updating profile:', error);
+          console.error('Error checking profile:', error);
           toast({
             variant: "destructive",
             title: "Error",
@@ -42,7 +55,7 @@ const Signup = () => {
       }
     };
 
-    checkSession();
+    checkSessionAndOnboarding();
   }, [session, navigate, displayName, toast]);
 
   const handleSignup = async (e: React.FormEvent) => {

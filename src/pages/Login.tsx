@@ -13,10 +13,35 @@ const Login = () => {
   const session = useSession();
 
   useEffect(() => {
-    // Only redirect if we have a valid session
-    if (session?.user) {
-      navigate("/record");
-    }
+    const checkSessionAndOnboarding = async () => {
+      if (session?.user) {
+        try {
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('onboarding_completed, onboarding_skipped')
+            .eq('id', session.user.id)
+            .single();
+
+          if (error) throw error;
+
+          // Navigate based on onboarding status
+          if (!profile.onboarding_completed && !profile.onboarding_skipped) {
+            navigate("/onboarding");
+          } else {
+            navigate("/record");
+          }
+        } catch (error) {
+          console.error('Error checking profile:', error);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to check profile status. Please try again.",
+          });
+        }
+      }
+    };
+
+    checkSessionAndOnboarding();
 
     // Check for any error parameters in the URL (from OAuth redirects)
     const params = new URLSearchParams(window.location.search);
