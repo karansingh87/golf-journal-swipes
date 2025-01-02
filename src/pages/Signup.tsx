@@ -15,49 +15,71 @@ const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [displayName, setDisplayName] = useState("");
-  const [showAuth, setShowAuth] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const session = useSession();
 
   useEffect(() => {
-    if (session?.user) {
-      // Update the profile with display name if it exists
-      if (displayName) {
-        updateProfile(session.user.id, displayName);
+    const checkSession = async () => {
+      if (session?.user) {
+        try {
+          // Update profile with display name
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({ display_name: displayName })
+            .eq('id', session.user.id);
+
+          if (profileError) throw profileError;
+
+          // Navigate to onboarding
+          navigate("/onboarding");
+        } catch (error) {
+          console.error('Error updating profile:', error);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to complete signup. Please try again.",
+          });
+        }
       }
-      // Redirect to onboarding
-      navigate("/onboarding");
-    }
-  }, [session, navigate, displayName]);
+    };
 
-  const updateProfile = async (userId: string, name: string) => {
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ display_name: name })
-        .eq('id', userId);
+    checkSession();
+  }, [session, navigate, displayName, toast]);
 
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
-      });
-    }
-  };
-
-  const handleDisplayNameSubmit = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!displayName.trim()) {
+    
+    if (!displayName.trim() || !email.trim() || !password.trim()) {
       toast({
         variant: "destructive",
-        title: "Display name required",
-        description: "Please enter a display name to continue",
+        title: "All fields required",
+        description: "Please fill in all fields to continue",
       });
       return;
     }
-    setShowAuth(true);
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            display_name: displayName,
+          },
+        },
+      });
+
+      if (error) throw error;
+
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast({
+        variant: "destructive",
+        title: "Signup failed",
+        description: "Please try again.",
+      });
+    }
   };
 
   return (
@@ -79,52 +101,46 @@ const Signup = () => {
           <p className="text-gray-500">Join GolfLog to start tracking your progress</p>
         </div>
 
-        {!showAuth ? (
-          <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
-            <form onSubmit={handleDisplayNameSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="displayName">Display Name</Label>
-                <Input
-                  id="displayName"
-                  type="text"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Enter your display name"
-                  className="w-full"
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Continue
-              </Button>
-            </form>
-          </div>
-        ) : (
-          <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
-            <Auth
-              supabaseClient={supabase}
-              appearance={{
-                theme: ThemeSupa,
-                variables: {
-                  default: {
-                    colors: {
-                      brand: '#000000',
-                      brandAccent: '#333333',
-                    },
-                  },
-                },
-                className: {
-                  button: 'w-full px-4 py-2 text-white bg-black hover:bg-gray-800',
-                  input: 'w-full px-3 py-2 border rounded-md',
-                  label: 'text-sm font-medium text-gray-700',
-                },
-              }}
-              theme="light"
-              providers={[]}
-              view="sign_up"
-              redirectTo={`${window.location.origin}/onboarding`}
-            />
-          </div>
-        )}
+        <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
+          <form onSubmit={handleSignup} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="displayName">Display Name</Label>
+              <Input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Enter your display name"
+                className="w-full"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="w-full"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Create a password"
+                className="w-full"
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Sign Up
+            </Button>
+          </form>
+        </div>
 
         <Alert className="bg-blue-50 border-blue-200">
           <AlertDescription className="text-sm text-blue-800">
