@@ -59,26 +59,7 @@ const Login = () => {
             }}
             theme="light"
             providers={[]}
-            magicLink={false}
-            view="sign_in"
             redirectTo={`${window.location.origin}/record`}
-            localization={{
-              variables: {
-                sign_in: {
-                  email_label: 'Email',
-                  password_label: 'Password',
-                  button_label: 'Sign In',
-                  loading_button_label: 'Signing in...',
-                },
-                sign_up: {
-                  email_label: 'Email',
-                  password_label: 'Password',
-                  button_label: 'Sign Up',
-                  loading_button_label: 'Signing up...',
-                },
-              },
-            }}
-            showLinks={false}
           />
         </div>
 
