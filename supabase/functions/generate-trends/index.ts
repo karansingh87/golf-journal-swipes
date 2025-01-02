@@ -62,10 +62,21 @@ serve(async (req) => {
     }
 
     // Prepare data for AI - only send essential information
-    const recordingsData = recordings.map(r => ({
-      analysis: r.analysis ? JSON.parse(r.analysis) : null,
-      date: r.created_at
-    })).filter(r => r.analysis !== null);
+    const recordingsData = recordings.map(r => {
+      try {
+        return {
+          analysis: r.analysis ? JSON.parse(r.analysis) : null,
+          date: r.created_at
+        }
+      } catch (error) {
+        console.error('Error parsing recording analysis:', error)
+        return null
+      }
+    }).filter(r => r !== null && r.analysis !== null)
+
+    if (recordingsData.length === 0) {
+      throw new Error('No valid recordings found for analysis')
+    }
 
     console.log('Sending request to AI with data length:', JSON.stringify(recordingsData).length)
 
@@ -84,21 +95,21 @@ serve(async (req) => {
           messages: [
             {
               role: 'user',
-              content: promptData.trends_prompt + '\n\n' + JSON.stringify(recordingsData),
+              content: `${promptData.trends_prompt}\n\nPlease provide your response as a valid JSON object. Do not include markdown code blocks or any other formatting. Here is the data to analyze:\n\n${JSON.stringify(recordingsData)}`,
             },
           ],
           max_tokens: 4096,
         }),
-      });
+      })
 
       if (!anthropicResponse.ok) {
-        const error = await anthropicResponse.text();
-        console.error('Anthropic API error:', error);
-        throw new Error(`Anthropic API error: ${error}`);
+        const error = await anthropicResponse.text()
+        console.error('Anthropic API error:', error)
+        throw new Error(`Anthropic API error: ${error}`)
       }
 
-      const anthropicData = await anthropicResponse.json();
-      aiResponse = anthropicData.content[0].text;
+      const anthropicData = await anthropicResponse.json()
+      aiResponse = anthropicData.content[0].text
     } else {
       // Call OpenAI API
       const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -112,35 +123,42 @@ serve(async (req) => {
           messages: [
             {
               role: 'system',
-              content: promptData.trends_prompt,
+              content: 'You must respond with a valid JSON object. Do not include markdown code blocks or any other formatting.',
             },
             {
               role: 'user',
-              content: JSON.stringify(recordingsData),
+              content: `${promptData.trends_prompt}\n\nAnalyze this data:\n${JSON.stringify(recordingsData)}`,
             },
           ],
         }),
-      });
+      })
 
       if (!openAIResponse.ok) {
-        const error = await openAIResponse.text();
-        console.error('OpenAI API error:', error);
-        throw new Error(`OpenAI API error: ${error}`);
+        const error = await openAIResponse.text()
+        console.error('OpenAI API error:', error)
+        throw new Error(`OpenAI API error: ${error}`)
       }
 
-      const openAIData = await openAIResponse.json();
-      aiResponse = openAIData.choices[0].message.content;
+      const openAIData = await openAIResponse.json()
+      aiResponse = openAIData.choices[0].message.content
     }
 
-    // Clean up the AI response by removing markdown code blocks
-    const cleanResponse = aiResponse.replace(/```json\n|\n```/g, '');
-    
+    // Clean up the AI response and ensure it's valid JSON
+    let cleanResponse = aiResponse
     try {
-      // Validate that the response is valid JSON
-      JSON.parse(cleanResponse);
+      // First try to parse as is
+      JSON.parse(cleanResponse)
     } catch (error) {
-      console.error('Invalid JSON response from AI:', cleanResponse);
-      throw new Error('AI response is not valid JSON');
+      // If parsing fails, try to clean up markdown and try again
+      console.log('Initial JSON parsing failed, attempting to clean response')
+      cleanResponse = aiResponse.replace(/```json\n|\n```/g, '').trim()
+      
+      try {
+        JSON.parse(cleanResponse)
+      } catch (error) {
+        console.error('Failed to parse AI response as JSON:', cleanResponse)
+        throw new Error('AI response is not valid JSON even after cleanup')
+      }
     }
 
     // Update trends table
