@@ -31,10 +31,10 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Get the trends prompt
+    // Get the trends prompt and model configuration
     const { data: promptData, error: promptError } = await supabaseClient
       .from('prompt_config')
-      .select('trends_prompt')
+      .select('trends_prompt, model_provider, model_name')
       .single()
 
     if (promptError) {
@@ -61,51 +61,94 @@ serve(async (req) => {
       throw new Error('No recordings found for analysis')
     }
 
-    // Prepare data for OpenAI - only send essential information
+    // Prepare data for AI - only send essential information
     const recordingsData = recordings.map(r => ({
       analysis: r.analysis ? JSON.parse(r.analysis) : null,
       date: r.created_at
     })).filter(r => r.analysis !== null);
 
-    console.log('Sending request to OpenAI with data length:', JSON.stringify(recordingsData).length)
+    console.log('Sending request to AI with data length:', JSON.stringify(recordingsData).length)
 
-    // Get analysis from OpenAI using the newer model
-    const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o',  // Updated to use the newer model
-        messages: [
-          {
-            role: 'system',
-            content: promptData.trends_prompt,
-          },
-          {
-            role: 'user',
-            content: JSON.stringify(recordingsData),
-          },
-        ],
-      }),
-    })
+    let aiResponse;
+    if (promptData.model_provider === 'anthropic') {
+      // Call Anthropic API
+      const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: promptData.model_name,
+          messages: [
+            {
+              role: 'user',
+              content: promptData.trends_prompt + '\n\n' + JSON.stringify(recordingsData),
+            },
+          ],
+          max_tokens: 4096,
+        }),
+      });
 
-    if (!openAIResponse.ok) {
-      const error = await openAIResponse.text()
-      console.error('OpenAI API error:', error)
-      throw new Error(`OpenAI API error: ${error}`)
+      if (!anthropicResponse.ok) {
+        const error = await anthropicResponse.text();
+        console.error('Anthropic API error:', error);
+        throw new Error(`Anthropic API error: ${error}`);
+      }
+
+      const anthropicData = await anthropicResponse.json();
+      aiResponse = anthropicData.content[0].text;
+    } else {
+      // Call OpenAI API
+      const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: promptData.model_name,
+          messages: [
+            {
+              role: 'system',
+              content: promptData.trends_prompt,
+            },
+            {
+              role: 'user',
+              content: JSON.stringify(recordingsData),
+            },
+          ],
+        }),
+      });
+
+      if (!openAIResponse.ok) {
+        const error = await openAIResponse.text();
+        console.error('OpenAI API error:', error);
+        throw new Error(`OpenAI API error: ${error}`);
+      }
+
+      const openAIData = await openAIResponse.json();
+      aiResponse = openAIData.choices[0].message.content;
     }
 
-    const analysisData = await openAIResponse.json()
-    const trendsOutput = analysisData.choices[0].message.content
+    // Clean up the AI response by removing markdown code blocks
+    const cleanResponse = aiResponse.replace(/```json\n|\n```/g, '');
+    
+    try {
+      // Validate that the response is valid JSON
+      JSON.parse(cleanResponse);
+    } catch (error) {
+      console.error('Invalid JSON response from AI:', cleanResponse);
+      throw new Error('AI response is not valid JSON');
+    }
 
     // Update trends table
     const { error: updateError } = await supabaseClient
       .from('trends')
       .upsert({
         user_id,
-        trends_output: trendsOutput,
+        trends_output: cleanResponse,
         analyzed_recordings: recordings.map(r => r.id),
         last_analysis_at: new Date().toISOString()
       })
