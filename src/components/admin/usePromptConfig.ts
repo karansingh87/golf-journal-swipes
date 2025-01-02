@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const usePromptConfig = () => {
   const [analysisPrompt, setAnalysisPrompt] = useState("");
   const [trendsPrompt, setTrendsPrompt] = useState("");
+  const [modelProvider, setModelProvider] = useState("anthropic");
+  const [modelName, setModelName] = useState("claude-3-5-sonnet-20241022");
   const [promptHistory, setPromptHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -14,7 +16,7 @@ export const usePromptConfig = () => {
       console.log('Fetching prompt configuration...');
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt, trends_prompt')
+        .select('prompt, trends_prompt, model_provider, model_name')
         .single();
 
       if (error) {
@@ -28,12 +30,16 @@ export const usePromptConfig = () => {
       }
 
       if (data) {
-        console.log('Prompts fetched successfully:', {
+        console.log('Prompts and model config fetched successfully:', {
           analysisPromptLength: data.prompt?.length,
           trendsPromptLength: data.trends_prompt?.length,
+          modelProvider: data.model_provider,
+          modelName: data.model_name,
         });
         setAnalysisPrompt(data.prompt);
         setTrendsPrompt(data.trends_prompt || '');
+        setModelProvider(data.model_provider);
+        setModelName(data.model_name);
       }
     };
 
@@ -64,8 +70,8 @@ export const usePromptConfig = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async (type: 'analysis' | 'trends') => {
-    console.log(`Saving ${type} prompt...`);
+  const handleSave = async (type: 'analysis' | 'trends' | 'model') => {
+    console.log(`Saving ${type}...`);
     setIsLoading(true);
     try {
       const { data: configData, error: configError } = await supabase
@@ -78,9 +84,18 @@ export const usePromptConfig = () => {
         throw configError;
       }
 
-      const updateData = type === 'analysis' 
-        ? { prompt: analysisPrompt }
-        : { trends_prompt: trendsPrompt };
+      let updateData = {};
+      switch (type) {
+        case 'analysis':
+          updateData = { prompt: analysisPrompt };
+          break;
+        case 'trends':
+          updateData = { trends_prompt: trendsPrompt };
+          break;
+        case 'model':
+          updateData = { model_provider: modelProvider, model_name: modelName };
+          break;
+      }
 
       const { error } = await supabase
         .from('prompt_config')
@@ -88,7 +103,7 @@ export const usePromptConfig = () => {
         .eq('id', configData.id);
 
       if (error) {
-        console.error(`Error updating ${type} prompt:`, error);
+        console.error(`Error updating ${type}:`, error);
         throw error;
       }
 
@@ -102,17 +117,17 @@ export const usePromptConfig = () => {
         setPromptHistory(newHistory);
       }
 
-      console.log(`${type} prompt updated successfully`);
+      console.log(`${type} updated successfully`);
       toast({
         title: "Success",
-        description: `${type.charAt(0).toUpperCase() + type.slice(1)} prompt configuration has been updated.`,
+        description: `${type.charAt(0).toUpperCase() + type.slice(1)} configuration has been updated.`,
       });
     } catch (error) {
-      console.error(`Error updating ${type} prompt:`, error);
+      console.error(`Error updating ${type}:`, error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: `Failed to update the ${type} prompt configuration.`,
+        description: `Failed to update the ${type} configuration.`,
       });
     } finally {
       setIsLoading(false);
@@ -122,10 +137,14 @@ export const usePromptConfig = () => {
   return {
     analysisPrompt,
     trendsPrompt,
+    modelProvider,
+    modelName,
     promptHistory,
     isLoading,
     setAnalysisPrompt,
     setTrendsPrompt,
+    setModelProvider,
+    setModelName,
     handleSave,
   };
 };

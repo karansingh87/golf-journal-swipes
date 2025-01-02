@@ -2,15 +2,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PromptEditor from "./PromptEditor";
 import PromptHistoryTable from "./PromptHistoryTable";
 import UserManagementTable from "./UserManagementTable";
+import ModelConfig from "./ModelConfig";
 
 interface AdminTabsProps {
   analysisPrompt: string;
   trendsPrompt: string;
   promptHistory: any[];
   isLoading: boolean;
+  modelProvider: string;
+  modelName: string;
   onAnalysisPromptChange: (value: string) => void;
   onTrendsPromptChange: (value: string) => void;
-  onSave: (type: 'analysis' | 'trends') => void;
+  onSave: (type: 'analysis' | 'trends' | 'model') => void;
+  onModelProviderChange: (value: string) => void;
+  onModelNameChange: (value: string) => void;
 }
 
 const AdminTabs = ({
@@ -18,9 +23,13 @@ const AdminTabs = ({
   trendsPrompt,
   promptHistory,
   isLoading,
+  modelProvider,
+  modelName,
   onAnalysisPromptChange,
   onTrendsPromptChange,
   onSave,
+  onModelProviderChange,
+  onModelNameChange,
 }: AdminTabsProps) => {
   return (
     <Tabs defaultValue="analysis" className="w-full">
@@ -30,6 +39,9 @@ const AdminTabs = ({
         </TabsTrigger>
         <TabsTrigger value="trends" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Trends Prompt
+        </TabsTrigger>
+        <TabsTrigger value="model" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+          Model Config
         </TabsTrigger>
         <TabsTrigger value="history" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Change History
@@ -57,6 +69,17 @@ const AdminTabs = ({
             onSave={() => onSave('trends')}
             isLoading={isLoading}
             type="trends"
+          />
+        </TabsContent>
+
+        <TabsContent value="model">
+          <ModelConfig
+            modelProvider={modelProvider}
+            modelName={modelName}
+            onProviderChange={onModelProviderChange}
+            onModelNameChange={onModelNameChange}
+            onSave={() => onSave('model')}
+            isLoading={isLoading}
           />
         </TabsContent>
 
