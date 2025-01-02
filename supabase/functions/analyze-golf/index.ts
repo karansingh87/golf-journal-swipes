@@ -47,7 +47,7 @@ serve(async (req) => {
 
     const analysisPrompt = promptData.prompt
 
-    // Get analysis from OpenAI
+    // Get analysis from OpenAI using the newer model
     const openAIResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -55,7 +55,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'gpt-4o',  // Updated to use the newer model
         messages: [
           {
             role: 'system',
