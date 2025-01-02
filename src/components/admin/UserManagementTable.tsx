@@ -28,9 +28,24 @@ const UserManagementTable = () => {
   const fetchUsers = async () => {
     try {
       setIsLoading(true);
-      const { data: { users: supabaseUsers }, error } = await supabase.auth.admin.listUsers();
-      
-      if (error) throw error;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No session');
+
+      const response = await fetch(
+        'https://ffrdieftaulfjaymmexb.functions.supabase.co/list-users',
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch users');
+      }
+
+      const { users: supabaseUsers } = await response.json();
       
       // Transform Supabase users to our ExtendedUser type
       const transformedUsers: ExtendedUser[] = (supabaseUsers || []).map((user: User) => ({
@@ -46,7 +61,7 @@ const UserManagementTable = () => {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to fetch users.",
+        description: error instanceof Error ? error.message : "Failed to fetch users.",
       });
     } finally {
       setIsLoading(false);
