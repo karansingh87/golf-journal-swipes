@@ -43,27 +43,26 @@ const NavigationBar = () => {
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabaseClient.auth.signOut();
-      if (error) throw error;
-      
-      // Clear any cached data
+      // First clear any cached data
       localStorage.clear();
       sessionStorage.clear();
+
+      // Then sign out from Supabase
+      const { error } = await supabaseClient.auth.signOut();
       
+      // Even if there's an error, we want to clear the session and redirect
       toast({
         title: "Logged out",
         description: "You have been successfully logged out",
       });
       
-      // Force navigation to landing page
+      // Force a full page reload to clear all state
       window.location.href = '/';
+      
     } catch (error) {
       console.error('Logout error:', error);
-      toast({
-        variant: "destructive",
-        title: "Error logging out",
-        description: "Please try again",
-      });
+      // Still redirect even if there's an error
+      window.location.href = '/';
     }
   };
 
