@@ -1,37 +1,26 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthHeader from "@/components/auth/AuthHeader";
 import AuthCard from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 
 interface LoginForm {
   email: string;
   password: string;
-  rememberMe: boolean;
 }
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const session = useSession();
-  const form = useForm<LoginForm>({
-    defaultValues: {
-      email: localStorage.getItem('rememberedEmail') || '',
-      password: localStorage.getItem('rememberedPassword') || '',
-      rememberMe: localStorage.getItem('rememberedEmail') ? true : false
-    }
-  });
+  const form = useForm<LoginForm>();
 
   useEffect(() => {
     const checkSessionAndOnboarding = async () => {
@@ -73,16 +62,6 @@ const Login = () => {
 
       if (error) throw error;
 
-      // If remember me is checked, store the credentials
-      if (data.rememberMe) {
-        localStorage.setItem('rememberedEmail', data.email);
-        localStorage.setItem('rememberedPassword', data.password);
-      } else {
-        // If not checked, remove any stored credentials
-        localStorage.removeItem('rememberedEmail');
-        localStorage.removeItem('rememberedPassword');
-      }
-
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -108,6 +87,7 @@ const Login = () => {
               type="email"
               {...form.register('email')}
               placeholder="Enter your email"
+              autoComplete="username email" // Added for password manager
             />
           </div>
 
@@ -118,20 +98,8 @@ const Login = () => {
               type="password"
               {...form.register('password')}
               placeholder="Enter your password"
+              autoComplete="current-password" // Added for password manager
             />
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="rememberMe"
-              {...form.register('rememberMe')}
-            />
-            <label
-              htmlFor="rememberMe"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Remember me
-            </label>
           </div>
 
           <Button type="submit" className="w-full">
