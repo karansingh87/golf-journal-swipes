@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -97,8 +95,8 @@ const Signup = () => {
         </div>
 
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-gray-900">Create an Account</h1>
-          <p className="text-gray-500">Join GolfLog to start tracking your progress</p>
+          <h1 className="text-2xl font-bold">Welcome Back</h1>
+          <p className="text-gray-500">Please sign in to continue</p>
         </div>
 
         <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
@@ -115,7 +113,7 @@ const Signup = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Email address</Label>
               <Input
                 id="email"
                 type="email"
@@ -126,7 +124,7 @@ const Signup = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Create a Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -136,8 +134,8 @@ const Signup = () => {
                 className="w-full"
               />
             </div>
-            <Button type="submit" className="w-full">
-              Sign Up
+            <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
+              Sign up
             </Button>
           </form>
         </div>
@@ -147,6 +145,16 @@ const Signup = () => {
             For testing, you can create a new account with any email. The verification email step has been disabled.
           </AlertDescription>
         </Alert>
+
+        <div className="text-center">
+          <Button
+            variant="link"
+            className="text-gray-500 hover:text-gray-700"
+            onClick={() => navigate("/login")}
+          >
+            Already have an account? Sign in
+          </Button>
+        </div>
       </div>
     </div>
   );
