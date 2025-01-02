@@ -95,8 +95,8 @@ const Signup = () => {
         </div>
 
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold">Welcome Back</h1>
-          <p className="text-gray-500">Please sign in to continue</p>
+          <h1 className="text-2xl font-bold text-gray-900">Create an Account</h1>
+          <p className="text-gray-500">Join GolfLog to start tracking your progress</p>
         </div>
 
         <div className="bg-white p-8 rounded-lg shadow-md border border-gray-200">
@@ -110,10 +110,11 @@ const Signup = () => {
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Enter your display name"
                 className="w-full"
+                required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email address</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -121,10 +122,11 @@ const Signup = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="w-full"
+                required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Create a Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -132,10 +134,11 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Create a password"
                 className="w-full"
+                required
               />
             </div>
             <Button type="submit" className="w-full bg-black text-white hover:bg-gray-800">
-              Sign up
+              Create Account
             </Button>
           </form>
         </div>
