@@ -50,11 +50,11 @@ const NavigationBar = () => {
         description: "You have been successfully logged out",
       });
       
-      window.location.href = '/';
+      navigate('/login');
       
     } catch (error) {
       console.error('Logout error:', error);
-      window.location.href = '/';
+      navigate('/login');
     }
   };
 

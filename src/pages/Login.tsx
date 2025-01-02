@@ -8,6 +8,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthHeader from "@/components/auth/AuthHeader";
 import AuthTestingAlert from "@/components/auth/AuthTestingAlert";
+import { Button } from "@/components/ui/button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -86,7 +87,19 @@ const Login = () => {
           theme="light"
           providers={[]}
           redirectTo={redirectUrl}
+          view="sign_in"
+          showLinks={false}
         />
+      </div>
+
+      <div className="text-center mt-4">
+        <Button
+          variant="link"
+          className="text-gray-500 hover:text-gray-700"
+          onClick={() => navigate("/")}
+        >
+          Don't have an account? Sign up
+        </Button>
       </div>
 
       <AuthTestingAlert />
