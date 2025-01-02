@@ -7,7 +7,6 @@ import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react
 import { supabase } from "./integrations/supabase/client";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
-import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Onboarding from "./pages/Onboarding";
@@ -97,9 +96,8 @@ const App = () => (
           <Toaster />
           <Sonner />
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
             <Route
               path="/onboarding"
               element={

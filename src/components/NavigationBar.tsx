@@ -24,7 +24,6 @@ const NavigationBar = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return null;
       
-      console.log('Fetching profile for user:', session.user.id); // Debug log
       const { data, error } = await supabase
         .from('profiles')
         .select('is_admin')
@@ -32,55 +31,45 @@ const NavigationBar = () => {
         .single();
 
       if (error) {
-        console.error('Error fetching profile:', error); // Debug log
+        console.error('Error fetching profile:', error);
         throw error;
       }
 
-      console.log('Profile data:', data); // Debug log
       return data;
     },
   });
 
   const handleLogout = async () => {
     try {
-      // First clear any cached data
       localStorage.clear();
       sessionStorage.clear();
-
-      // Then sign out from Supabase
       const { error } = await supabaseClient.auth.signOut();
       
-      // Even if there's an error, we want to clear the session and redirect
       toast({
         title: "Logged out",
         description: "You have been successfully logged out",
       });
       
-      // Force a full page reload to clear all state
       window.location.href = '/';
       
     } catch (error) {
       console.error('Logout error:', error);
-      // Still redirect even if there's an error
       window.location.href = '/';
     }
   };
 
-  const isLandingPage = location.pathname === '/';
+  const isAuthPage = location.pathname === '/' || location.pathname === '/login';
 
   return (
-    <div className={`fixed top-0 left-0 right-0 z-[100] h-14 backdrop-blur-sm border-b border-zinc-800/10 ${
-      isLandingPage ? 'bg-zinc-900/80' : 'bg-white/80'
-    }`}>
+    <div className="fixed top-0 left-0 right-0 z-[100] h-14 backdrop-blur-sm border-b border-zinc-800/10 bg-white/80">
       <div className="h-full px-6 flex justify-between items-center">
         <div 
-          onClick={() => navigate(isLandingPage ? '/login' : '/record')}
+          onClick={() => navigate(isAuthPage ? '/' : '/record')}
           className="text-2xl font-logo tracking-[-0.03em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
         >
           <span 
-            className="flex items-center"
+            className="flex items-center text-zinc-900"
             style={{
-              color: isLandingPage ? '#FFFFFF' : '#18181B',
               WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
             }}
           >
@@ -89,7 +78,7 @@ const NavigationBar = () => {
         </div>
         
         <div className="flex-1 flex justify-end">
-          {!isLandingPage && (
+          {!isAuthPage && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
