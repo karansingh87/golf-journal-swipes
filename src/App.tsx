@@ -24,7 +24,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Protected Route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { session } = useSessionContext();
   

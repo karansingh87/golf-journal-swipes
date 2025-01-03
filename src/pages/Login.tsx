@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import { useSessionContext } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthHeader from "@/components/auth/AuthHeader";
@@ -13,49 +12,44 @@ import { Label } from "@/components/ui/label";
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { session } = useSessionContext();
-
-  // Redirect if already logged in
-  useEffect(() => {
-    if (session) {
-      navigate('/record');
-    }
-  }, [session, navigate]);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-
-    if (!email || !password) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Please fill in all fields",
-      });
-      return;
-    }
+    setLoading(true);
 
     try {
+      const formData = new FormData(e.currentTarget);
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+
+      console.log('Attempting login with:', { email });
+
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Login error:', error);
+        throw error;
+      }
 
       toast({
         title: "Success",
         description: "Successfully logged in",
       });
+
+      navigate('/record');
     } catch (error: any) {
-      console.error("Login error:", error);
+      console.error('Login error:', error);
       toast({
         variant: "destructive",
         title: "Login failed",
         description: error.message || "An error occurred during login",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,8 +86,12 @@ const Login = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full">
-            Sign In
+          <Button 
+            type="submit" 
+            className="w-full"
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
 
@@ -101,7 +99,8 @@ const Login = () => {
           <Button
             variant="link"
             className="text-gray-500 hover:text-gray-700"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/signup")}
+            disabled={loading}
           >
             Don't have an account? Sign up
           </Button>
