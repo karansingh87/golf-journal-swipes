@@ -8,11 +8,9 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
-    flowType: "pkce",
+    detectSessionInUrl: true,
     storage: localStorage,
     storageKey: "golflog-auth-token",
-    debug: true
   },
   global: {
     headers: {
