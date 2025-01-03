@@ -8,14 +8,12 @@ const INITIAL_RETRY_DELAY = 1000; // 1 second
 export const useAuth = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      setRetryCount(0);
       
       const attemptSignIn = async (attempt: number): Promise<boolean> => {
         try {
@@ -25,7 +23,6 @@ export const useAuth = () => {
           });
 
           if (signInError) {
-            // Handle specific auth errors
             if (signInError.message.includes('Invalid login')) {
               toast({
                 variant: "destructive",
@@ -36,13 +33,13 @@ export const useAuth = () => {
             }
             
             // For network errors, attempt retry
-            if (signInError.message.includes('fetch') && attempt < MAX_RETRIES) {
+            if ((signInError.message.includes('fetch') || signInError.message.includes('network')) && attempt < MAX_RETRIES) {
+              console.log(`Retry attempt ${attempt + 1} of ${MAX_RETRIES}`);
               const retryDelay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
               await delay(retryDelay);
               return attemptSignIn(attempt + 1);
             }
 
-            // Handle other errors
             toast({
               variant: "destructive",
               title: "Login failed",
@@ -51,10 +48,16 @@ export const useAuth = () => {
             return false;
           }
 
+          toast({
+            title: "Success",
+            description: "Successfully logged in.",
+          });
           return true;
-        } catch (error) {
+
+        } catch (error: any) {
           console.error('Sign in attempt failed:', error);
           if (attempt < MAX_RETRIES) {
+            console.log(`Retry attempt ${attempt + 1} of ${MAX_RETRIES}`);
             const retryDelay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
             await delay(retryDelay);
             return attemptSignIn(attempt + 1);
@@ -63,10 +66,9 @@ export const useAuth = () => {
         }
       };
 
-      const success = await attemptSignIn(0);
-      return success;
+      return await attemptSignIn(0);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Unexpected error:', error);
       toast({
         variant: "destructive",

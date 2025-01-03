@@ -56,7 +56,6 @@ const Login = () => {
   const handleSubmit = async (data: LoginFormData) => {
     const success = await signIn(data.email, data.password);
     if (success) {
-      // Session will be handled by the useEffect above
       console.log("Login successful");
     }
   };
