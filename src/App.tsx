@@ -23,10 +23,10 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <SessionContextProvider supabaseClient={supabase}>
+  <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <BrowserRouter>
+      <SessionContextProvider supabaseClient={supabase}>
+        <TooltipProvider>
           <NavigationBar />
           <Toaster />
           <Sonner />
@@ -46,10 +46,10 @@ const App = () => (
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+        </TooltipProvider>
+      </SessionContextProvider>
     </QueryClientProvider>
-  </SessionContextProvider>
+  </BrowserRouter>
 );
 
 export default App;
