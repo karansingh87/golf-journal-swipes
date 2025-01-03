@@ -7,7 +7,7 @@ const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
-    detectSessionInUrl: false,
-    autoRefreshToken: false,
+    autoRefreshToken: true,
+    detectSessionInUrl: false
   }
 });
