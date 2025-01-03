@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +15,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        navigate('/record');
+      }
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,24 +55,10 @@ const Login = () => {
       }
 
       console.log("Login successful:", data);
-
-      // Check profile status
-      const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('onboarding_completed, onboarding_skipped')
-        .single();
-
-      if (profileError) {
-        console.error("Profile fetch error:", profileError);
-        throw profileError;
-      }
-
-      // Navigate based on onboarding status
-      if (profile && !profile.onboarding_completed && !profile.onboarding_skipped) {
-        navigate('/onboarding');
-      } else {
-        navigate('/record');
-      }
+      toast({
+        title: "Success",
+        description: "Successfully logged in",
+      });
 
     } catch (error: any) {
       console.error("Login process error:", error);
