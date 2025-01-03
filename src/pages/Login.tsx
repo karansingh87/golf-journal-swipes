@@ -27,12 +27,16 @@ const formSchema = z.object({
 
 type LoginForm = z.infer<typeof formSchema>;
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
+
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const session = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(formSchema),
@@ -78,6 +82,8 @@ const Login = () => {
     checkSessionAndOnboarding();
   }, [session, navigate, mounted, toast]);
 
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
   const onSubmit = async (data: LoginForm) => {
     if (isLoading) return;
     
@@ -91,11 +97,20 @@ const Login = () => {
 
       if (signInError) {
         console.error('Sign in error:', signInError);
+        
+        // Check if it's a network error and we should retry
+        if (signInError.message.includes('fetch') && retryCount < MAX_RETRIES) {
+          setRetryCount(prev => prev + 1);
+          await delay(RETRY_DELAY * Math.pow(2, retryCount)); // Exponential backoff
+          onSubmit(data); // Retry the submission
+          return;
+        }
+
         let errorMessage = "An error occurred during login. Please try again.";
         
         if (signInError.message.includes('Invalid login')) {
           errorMessage = "Incorrect email or password. Please try again.";
-        } else if (signInError.message.includes('network')) {
+        } else if (signInError.message.includes('network') || signInError.message.includes('fetch')) {
           errorMessage = "Network error. Please check your connection and try again.";
         }
         
@@ -107,7 +122,8 @@ const Login = () => {
         return;
       }
 
-      // Session will be automatically handled by the SessionContextProvider
+      setRetryCount(0); // Reset retry count on successful login
+      
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
