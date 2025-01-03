@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useSession } from "@supabase/auth-helpers-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,31 +8,34 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 type HandicapRange = "scratch_or_better" | "1_5" | "6_10" | "11_15" | "16_20" | "21_25" | "26_plus" | "new_to_golf";
 
 const Settings = () => {
   const { toast } = useToast();
-  const supabaseClient = useSupabaseClient();
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const session = useSession();
+  const navigate = useNavigate();
 
-  const { data: profile, refetch } = useQuery({
-    queryKey: ['profile'],
+  const { data: profile } = useQuery({
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) return null;
-      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+      }
+
       return data;
     },
+    enabled: !!session?.user?.id,
   });
 
   const [formData, setFormData] = useState({
@@ -44,168 +46,173 @@ const Settings = () => {
 
   const updateProfile = async () => {
     try {
-      setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user?.id) return;
-
       const { error } = await supabase
         .from('profiles')
         .update(formData)
-        .eq('id', session.user.id);
+        .eq('id', session?.user?.id);
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Profile updated successfully",
+        description: "Your profile has been updated",
       });
-      refetch();
-    } catch (error: any) {
+    } catch (error) {
+      console.error('Error updating profile:', error);
       toast({
-        variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: "Failed to update profile",
+        variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
-  const updatePassword = async () => {
-    if (newPassword !== confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Passwords do not match",
-      });
-      return;
-    }
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
+  const handlePasswordChange = async () => {
     try {
-      setLoading(true);
-      const { error } = await supabaseClient.auth.updateUser({
-        password: newPassword,
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword
       });
 
       if (error) throw error;
 
       toast({
         title: "Success",
-        description: "Password updated successfully",
+        description: "Your password has been updated",
       });
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch (error: any) {
+      
+      setCurrentPassword('');
+      setNewPassword('');
+    } catch (error) {
+      console.error('Error updating password:', error);
       toast({
-        variant: "destructive",
         title: "Error",
-        description: error.message,
+        description: "Failed to update password",
+        variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        display_name: profile.display_name || '',
+        location: profile.location || '',
+        handicap_range: profile.handicap_range as HandicapRange || 'new_to_golf',
+      });
+    }
+  }, [profile]);
 
   return (
-    <div className="container max-w-2xl mx-auto pt-20 px-4">
-      <h1 className="text-2xl font-bold mb-6">Settings</h1>
-      
-      <Tabs defaultValue="profile" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-        </TabsList>
+    <div className="min-h-screen bg-white pt-20">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <Card className="p-6">
+          <Tabs defaultValue="profile" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+            </TabsList>
 
-        <TabsContent value="profile">
-          <Card className="p-6 space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="display_name">Display Name</Label>
-              <Input
-                id="display_name"
-                value={formData.display_name}
-                onChange={(e) => setFormData(prev => ({ ...prev, display_name: e.target.value }))}
-                placeholder="Enter your display name"
-              />
-            </div>
+            <TabsContent value="profile" className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="display_name">Display Name</Label>
+                <Input
+                  id="display_name"
+                  value={formData.display_name}
+                  onChange={(e) => setFormData(prev => ({ ...prev, display_name: e.target.value }))}
+                  placeholder="Enter your display name"
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
-              <Input
-                id="location"
-                value={formData.location}
-                onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                placeholder="Enter your location"
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="location">Location</Label>
+                <Input
+                  id="location"
+                  value={formData.location}
+                  onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                  placeholder="Enter your location"
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="handicap_range">Handicap Range</Label>
-              <Select
-                value={formData.handicap_range}
-                onValueChange={(value: HandicapRange) => 
-                  setFormData(prev => ({ ...prev, handicap_range: value }))
-                }
+              <div className="space-y-2">
+                <Label htmlFor="handicap_range">Handicap Range</Label>
+                <Select
+                  value={formData.handicap_range}
+                  onValueChange={(value: HandicapRange) => 
+                    setFormData(prev => ({ ...prev, handicap_range: value }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select your handicap range" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="scratch_or_better">Scratch or better</SelectItem>
+                    <SelectItem value="1_5">1-5</SelectItem>
+                    <SelectItem value="6_10">6-10</SelectItem>
+                    <SelectItem value="11_15">11-15</SelectItem>
+                    <SelectItem value="16_20">16-20</SelectItem>
+                    <SelectItem value="21_25">21-25</SelectItem>
+                    <SelectItem value="26_plus">26+</SelectItem>
+                    <SelectItem value="new_to_golf">New to golf</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button
+                onClick={updateProfile}
+                className="w-full sm:w-auto"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your handicap range" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="scratch_or_better">Scratch or better</SelectItem>
-                  <SelectItem value="1_5">1-5</SelectItem>
-                  <SelectItem value="6_10">6-10</SelectItem>
-                  <SelectItem value="11_15">11-15</SelectItem>
-                  <SelectItem value="16_20">16-20</SelectItem>
-                  <SelectItem value="21_25">21-25</SelectItem>
-                  <SelectItem value="26_plus">26+</SelectItem>
-                  <SelectItem value="new_to_golf">New to golf</SelectItem>
-                </SelectContent>
-              </Select>
+                Save Changes
+              </Button>
+            </TabsContent>
+
+            <TabsContent value="security" className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="current-password">Current Password</Label>
+                <Input
+                  id="current-password"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="new-password">New Password</Label>
+                <Input
+                  id="new-password"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+
+              <Button
+                onClick={handlePasswordChange}
+                className="w-full sm:w-auto"
+                disabled={!currentPassword || !newPassword}
+              >
+                Update Password
+              </Button>
+            </TabsContent>
+          </Tabs>
+
+          {profile?.is_admin && (
+            <div className="mt-8 pt-8 border-t">
+              <h2 className="text-lg font-semibold mb-4">Admin Settings</h2>
+              <Button
+                variant="outline"
+                onClick={() => navigate('/admin')}
+                className="w-full sm:w-auto"
+              >
+                Go to Admin Panel
+              </Button>
             </div>
-
-            <Button 
-              onClick={updateProfile} 
-              disabled={loading}
-              className="w-full"
-            >
-              {loading ? "Updating..." : "Update Profile"}
-            </Button>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="security">
-          <Card className="p-6 space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="new_password">New Password</Label>
-              <Input
-                id="new_password"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Enter new password"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="confirm_password">Confirm Password</Label>
-              <Input
-                id="confirm_password"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm new password"
-              />
-            </div>
-
-            <Button 
-              onClick={updatePassword} 
-              disabled={loading}
-              className="w-full"
-            >
-              {loading ? "Updating..." : "Update Password"}
-            </Button>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          )}
+        </Card>
+      </div>
     </div>
   );
 };
