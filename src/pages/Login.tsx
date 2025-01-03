@@ -30,7 +30,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-      console.log("Attempting login...");
+      console.log("Attempting login with email:", email);
       
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
@@ -93,6 +93,7 @@ const Login = () => {
               placeholder="Enter your email"
               disabled={loading}
               required
+              autoComplete="email"
             />
           </div>
 
@@ -106,6 +107,7 @@ const Login = () => {
               placeholder="Enter your password"
               disabled={loading}
               required
+              autoComplete="current-password"
             />
           </div>
 
