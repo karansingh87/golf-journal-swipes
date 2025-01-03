@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
+import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
 
 const queryClient = new QueryClient({
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/trends" element={<Trends />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/settings" element={<Settings />} />
             
             {/* Redirects */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />

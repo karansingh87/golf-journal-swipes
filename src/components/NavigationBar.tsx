@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Menu } from "lucide-react";
+import { Menu, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,6 +103,14 @@ const NavigationBar = () => {
                   onClick={() => navigate('/notes')}
                 >
                   Notes
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-zinc-200" />
+                <DropdownMenuItem 
+                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                  onClick={() => navigate('/settings')}
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Settings
                 </DropdownMenuItem>
                 {profile?.is_admin && (
                   <>
