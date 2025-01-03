@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
+const INITIAL_RETRY_DELAY = 1000; // 1 second
 
 export const useAuth = () => {
   const { toast } = useToast();
@@ -15,47 +15,63 @@ export const useAuth = () => {
   const signIn = async (email: string, password: string) => {
     try {
       setIsLoading(true);
+      setRetryCount(0);
       
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const attemptSignIn = async (attempt: number): Promise<boolean> => {
+        try {
+          const { error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
 
-      if (signInError) {
-        console.error('Sign in error:', signInError);
-        
-        // Check if it's a network error and we should retry
-        if (signInError.message.includes('fetch') && retryCount < MAX_RETRIES) {
-          setRetryCount(prev => prev + 1);
-          await delay(RETRY_DELAY * Math.pow(2, retryCount)); // Exponential backoff
-          return signIn(email, password); // Retry the submission
+          if (signInError) {
+            // Handle specific auth errors
+            if (signInError.message.includes('Invalid login')) {
+              toast({
+                variant: "destructive",
+                title: "Login failed",
+                description: "Invalid email or password. Please try again.",
+              });
+              return false;
+            }
+            
+            // For network errors, attempt retry
+            if (signInError.message.includes('fetch') && attempt < MAX_RETRIES) {
+              const retryDelay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
+              await delay(retryDelay);
+              return attemptSignIn(attempt + 1);
+            }
+
+            // Handle other errors
+            toast({
+              variant: "destructive",
+              title: "Login failed",
+              description: signInError.message || "An unexpected error occurred.",
+            });
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error('Sign in attempt failed:', error);
+          if (attempt < MAX_RETRIES) {
+            const retryDelay = INITIAL_RETRY_DELAY * Math.pow(2, attempt);
+            await delay(retryDelay);
+            return attemptSignIn(attempt + 1);
+          }
+          throw error;
         }
+      };
 
-        let errorMessage = "An error occurred during login. Please try again.";
-        
-        if (signInError.message.includes('Invalid login')) {
-          errorMessage = "Incorrect email or password. Please try again.";
-        } else if (signInError.message.includes('network') || signInError.message.includes('fetch')) {
-          errorMessage = "Network error. Please check your connection and try again.";
-        }
-        
-        toast({
-          variant: "destructive",
-          title: "Login failed",
-          description: errorMessage,
-        });
-        return false;
-      }
+      const success = await attemptSignIn(0);
+      return success;
 
-      setRetryCount(0); // Reset retry count on successful login
-      return true;
-      
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: "An unexpected error occurred. Please try again.",
+        description: "Unable to connect to the server. Please check your connection and try again.",
       });
       return false;
     } finally {
