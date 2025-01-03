@@ -8,6 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+type HandicapRange = "scratch_or_better" | "1_5" | "6_10" | "11_15" | "16_20" | "21_25" | "26_plus" | "new_to_golf";
 
 const Settings = () => {
   const { toast } = useToast();
@@ -36,7 +39,7 @@ const Settings = () => {
   const [formData, setFormData] = useState({
     display_name: profile?.display_name || '',
     location: profile?.location || '',
-    handicap_range: profile?.handicap_range || '',
+    handicap_range: profile?.handicap_range as HandicapRange || 'new_to_golf',
   });
 
   const updateProfile = async () => {
@@ -137,12 +140,26 @@ const Settings = () => {
 
             <div className="space-y-2">
               <Label htmlFor="handicap_range">Handicap Range</Label>
-              <Input
-                id="handicap_range"
+              <Select
                 value={formData.handicap_range}
-                onChange={(e) => setFormData(prev => ({ ...prev, handicap_range: e.target.value }))}
-                placeholder="Enter your handicap range"
-              />
+                onValueChange={(value: HandicapRange) => 
+                  setFormData(prev => ({ ...prev, handicap_range: value }))
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your handicap range" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="scratch_or_better">Scratch or better</SelectItem>
+                  <SelectItem value="1_5">1-5</SelectItem>
+                  <SelectItem value="6_10">6-10</SelectItem>
+                  <SelectItem value="11_15">11-15</SelectItem>
+                  <SelectItem value="16_20">16-20</SelectItem>
+                  <SelectItem value="21_25">21-25</SelectItem>
+                  <SelectItem value="26_plus">26+</SelectItem>
+                  <SelectItem value="new_to_golf">New to golf</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <Button 
