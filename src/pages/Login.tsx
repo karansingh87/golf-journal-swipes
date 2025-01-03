@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import AuthContainer from "@/components/auth/AuthContainer";
@@ -8,7 +8,6 @@ import AuthHeader from "@/components/auth/AuthHeader";
 import AuthCard from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -32,6 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const session = useSession();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(formSchema),
@@ -49,57 +49,61 @@ const Login = () => {
             .from('profiles')
             .select('onboarding_completed, onboarding_skipped')
             .eq('id', session.user.id)
-            .single();
+            .maybeSingle();
 
-          if (error) throw error;
+          if (error) {
+            console.error('Error fetching profile:', error);
+            return;
+          }
 
-          if (!profile.onboarding_completed && !profile.onboarding_skipped) {
+          if (profile && (!profile.onboarding_completed && !profile.onboarding_skipped)) {
             navigate("/onboarding");
           } else {
             navigate("/record");
           }
         } catch (error) {
           console.error('Error checking profile:', error);
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: "Failed to check profile status. Please try again.",
-          });
         }
       }
     };
 
     checkSessionAndOnboarding();
-  }, [navigate, toast, session]);
+  }, [session, navigate]);
 
   const onSubmit = async (data: LoginForm) => {
     try {
+      setIsLoading(true);
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
       if (error) {
-        if (error.message === "Invalid login credentials") {
+        if (error.message.includes('Invalid login')) {
           toast({
             variant: "destructive",
             title: "Login failed",
             description: "Incorrect email or password. Please try again.",
           });
         } else {
+          console.error('Login error:', error);
           toast({
             variant: "destructive",
             title: "Login failed",
-            description: error.message,
+            description: "An error occurred during login. Please try again.",
           });
         }
+        return;
       }
-    } catch (error: any) {
+    } catch (error) {
+      console.error('Unexpected error:', error);
       toast({
         variant: "destructive",
         title: "Login failed",
         description: "An unexpected error occurred. Please try again.",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,6 +129,7 @@ const Login = () => {
                       type="email"
                       placeholder="Enter your email"
                       autoComplete="username email"
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -144,6 +149,7 @@ const Login = () => {
                       type="password"
                       placeholder="Enter your password"
                       autoComplete="current-password"
+                      disabled={isLoading}
                     />
                   </FormControl>
                   <FormMessage />
@@ -151,8 +157,8 @@ const Login = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
         </Form>
@@ -161,7 +167,8 @@ const Login = () => {
           <Button
             variant="link"
             className="text-gray-500 hover:text-gray-700"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/signup")}
+            disabled={isLoading}
           >
             Don't have an account? Sign up
           </Button>
