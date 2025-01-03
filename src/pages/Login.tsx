@@ -1,50 +1,21 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { LoginForm, LoginFormData } from "@/components/auth/LoginForm";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthHeader from "@/components/auth/AuthHeader";
 import AuthCard from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginForm = z.infer<typeof formSchema>;
-
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const session = useSession();
-  const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-
-  const form = useForm<LoginForm>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  const { signIn, isLoading } = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -82,59 +53,11 @@ const Login = () => {
     checkSessionAndOnboarding();
   }, [session, navigate, mounted, toast]);
 
-  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const onSubmit = async (data: LoginForm) => {
-    if (isLoading) return;
-    
-    try {
-      setIsLoading(true);
-      
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      });
-
-      if (signInError) {
-        console.error('Sign in error:', signInError);
-        
-        // Check if it's a network error and we should retry
-        if (signInError.message.includes('fetch') && retryCount < MAX_RETRIES) {
-          setRetryCount(prev => prev + 1);
-          await delay(RETRY_DELAY * Math.pow(2, retryCount)); // Exponential backoff
-          onSubmit(data); // Retry the submission
-          return;
-        }
-
-        let errorMessage = "An error occurred during login. Please try again.";
-        
-        if (signInError.message.includes('Invalid login')) {
-          errorMessage = "Incorrect email or password. Please try again.";
-        } else if (signInError.message.includes('network') || signInError.message.includes('fetch')) {
-          errorMessage = "Network error. Please check your connection and try again.";
-        }
-        
-        toast({
-          variant: "destructive",
-          title: "Login failed",
-          description: errorMessage,
-        });
-        return;
-      }
-
-      setRetryCount(0); // Reset retry count on successful login
-      
-    } catch (error) {
-      console.error('Unexpected error:', error);
-      toast({
-        variant: "destructive",
-        title: "Login failed",
-        description: "An unexpected error occurred. Please try again.",
-      });
-    } finally {
-      if (mounted) {
-        setIsLoading(false);
-      }
+  const handleSubmit = async (data: LoginFormData) => {
+    const success = await signIn(data.email, data.password);
+    if (success) {
+      // Session will be handled by the useEffect above
+      console.log("Login successful");
     }
   };
 
@@ -146,53 +69,7 @@ const Login = () => {
       />
 
       <AuthCard>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder="Enter your email"
-                      autoComplete="username email"
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="Enter your password"
-                      autoComplete="current-password"
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
-        </Form>
+        <LoginForm onSubmit={handleSubmit} isLoading={isLoading} />
 
         <div className="mt-4 text-center">
           <Button
