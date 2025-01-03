@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { useSessionContext } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import AuthContainer from "@/components/auth/AuthContainer";
 import AuthHeader from "@/components/auth/AuthHeader";
@@ -12,25 +13,21 @@ import { Label } from "@/components/ui/label";
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { session } = useSessionContext();
 
+  // Redirect if already logged in
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        navigate('/record');
-      }
-    });
+    if (session) {
+      navigate('/record');
+    }
+  }, [session, navigate]);
 
-    return () => {
-      authListener?.subscription.unsubscribe();
-    };
-  }, [navigate]);
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+
     if (!email || !password) {
       toast({
         variant: "destructive",
@@ -41,34 +38,24 @@ const Login = () => {
     }
 
     try {
-      setLoading(true);
-      console.log("Attempting login with email:", email);
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
       });
 
-      if (error) {
-        console.error("Login error:", error);
-        throw error;
-      }
+      if (error) throw error;
 
-      console.log("Login successful:", data);
       toast({
         title: "Success",
         description: "Successfully logged in",
       });
-
     } catch (error: any) {
-      console.error("Login process error:", error);
+      console.error("Login error:", error);
       toast({
         variant: "destructive",
         title: "Login failed",
         description: error.message || "An error occurred during login",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -85,11 +72,9 @@ const Login = () => {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              disabled={loading}
               required
               autoComplete="email"
             />
@@ -99,22 +84,16 @@ const Login = () => {
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
+              name="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              disabled={loading}
               required
               autoComplete="current-password"
             />
           </div>
 
-          <Button 
-            type="submit" 
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? "Signing in..." : "Sign In"}
+          <Button type="submit" className="w-full">
+            Sign In
           </Button>
         </form>
 
@@ -123,7 +102,6 @@ const Login = () => {
             variant="link"
             className="text-gray-500 hover:text-gray-700"
             onClick={() => navigate("/")}
-            disabled={loading}
           >
             Don't have an account? Sign up
           </Button>
