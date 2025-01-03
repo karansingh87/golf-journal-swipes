@@ -3,13 +3,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { SessionContextProvider, useSessionContext } from "@supabase/auth-helpers-react";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Onboarding from "./pages/Onboarding";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
@@ -24,16 +22,6 @@ const queryClient = new QueryClient({
   },
 });
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { session } = useSessionContext();
-  
-  if (!session) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <SessionContextProvider supabaseClient={supabase}>
@@ -45,39 +33,13 @@ const App = () => (
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
             
-            {/* Protected routes */}
-            <Route path="/onboarding" element={
-              <ProtectedRoute>
-                <Onboarding />
-              </ProtectedRoute>
-            } />
-            <Route path="/record" element={
-              <ProtectedRoute>
-                <VoiceRecorderContainer />
-              </ProtectedRoute>
-            } />
-            <Route path="/notes" element={
-              <ProtectedRoute>
-                <Notes />
-              </ProtectedRoute>
-            } />
-            <Route path="/trends" element={
-              <ProtectedRoute>
-                <Trends />
-              </ProtectedRoute>
-            } />
-            <Route path="/recording/:id" element={
-              <ProtectedRoute>
-                <RecordingDetail />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin" element={
-              <ProtectedRoute>
-                <Admin />
-              </ProtectedRoute>
-            } />
+            {/* App routes */}
+            <Route path="/record" element={<VoiceRecorderContainer />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/recording/:id" element={<RecordingDetail />} />
+            <Route path="/admin" element={<Admin />} />
             
             {/* Redirects */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
