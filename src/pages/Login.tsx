@@ -10,15 +10,23 @@ const Login = () => {
   useEffect(() => {
     const autoLogin = async () => {
       try {
+        console.log('Starting auto-login process...');
+        
         // Using a test admin account
         const { data, error } = await supabase.auth.signInWithPassword({
           email: "admin@golflog.com",
           password: "admin123",
         });
 
-        if (error) throw error;
+        if (error) {
+          console.error('Auto-login error:', error);
+          throw error;
+        }
+
+        console.log('Login response:', data);
 
         if (data?.user) {
+          console.log('Login successful, user:', data.user);
           toast({
             title: "Auto-login successful",
             description: "Logged in as admin",
