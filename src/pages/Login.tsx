@@ -30,29 +30,44 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      console.log("Attempting login...");
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password.trim(),
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Login error:", error);
+        throw error;
+      }
 
-      // Successful login
-      const { data: profile } = await supabase
+      console.log("Login successful:", data);
+
+      // Check profile status
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('onboarding_completed, onboarding_skipped')
         .single();
 
+      if (profileError) {
+        console.error("Profile fetch error:", profileError);
+        throw profileError;
+      }
+
+      // Navigate based on onboarding status
       if (profile && !profile.onboarding_completed && !profile.onboarding_skipped) {
         navigate('/onboarding');
       } else {
         navigate('/record');
       }
+
     } catch (error: any) {
+      console.error("Login process error:", error);
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: error.message,
+        description: error.message || "An error occurred during login",
       });
     } finally {
       setLoading(false);
@@ -77,6 +92,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               disabled={loading}
+              required
             />
           </div>
 
@@ -89,6 +105,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               disabled={loading}
+              required
             />
           </div>
 
