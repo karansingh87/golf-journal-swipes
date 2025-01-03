@@ -23,21 +23,14 @@ const Login = () => {
       const email = formData.get('email') as string;
       const password = formData.get('password') as string;
 
-      console.log('Starting login attempt...');
-      
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password.trim(),
       });
 
-      console.log('Login response:', { data, error });
-
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (data?.user) {
-        console.log('Login successful, navigating...');
         toast({
           title: "Success",
           description: "Successfully logged in",
