@@ -12,6 +12,9 @@ const Login = () => {
       try {
         console.log('Starting auto-login process...');
         
+        // Clear any existing sessions first
+        await supabase.auth.signOut();
+        
         // Using a test admin account
         const { data, error } = await supabase.auth.signInWithPassword({
           email: "admin@golflog.com",
@@ -47,10 +50,10 @@ const Login = () => {
   }, [navigate, toast]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="text-center">
         <h1 className="text-2xl font-bold mb-4">Auto-logging in as admin...</h1>
-        <p className="text-gray-500">Please wait</p>
+        <p className="text-muted-foreground">Please wait</p>
       </div>
     </div>
   );
