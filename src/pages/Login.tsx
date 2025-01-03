@@ -16,20 +16,32 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        navigate("/record");
+      }
+    });
+
     if (session?.user) {
       navigate("/record");
     }
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
   }, [session, navigate]);
 
   const handleSubmit = async (data: LoginFormData) => {
     try {
       setIsLoading(true);
+      
       const { error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
       if (error) {
+        console.error('Login error:', error);
         toast({
           variant: "destructive",
           title: "Login failed",
@@ -42,6 +54,7 @@ const Login = () => {
         title: "Success",
         description: "Successfully logged in.",
       });
+      
     } catch (error: any) {
       console.error('Login error:', error);
       toast({
