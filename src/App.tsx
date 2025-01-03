@@ -13,7 +13,6 @@ import Onboarding from "./pages/Onboarding";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
-import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +21,8 @@ import { useToast } from "./components/ui/use-toast";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 3,
-      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-      staleTime: 5000,
-      refetchOnWindowFocus: true,
+      retry: 1,
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -37,57 +34,42 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isValidating, setIsValidating] = useState(true);
   
   useEffect(() => {
-    let mounted = true;
-
     const validateSession = async () => {
       try {
         setIsValidating(true);
-        const { data: { session: currentSession }, error } = await supabase.auth.getSession();
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        if (error) throw error;
-        
-        if (!currentSession && mounted) {
+        if (!currentSession) {
           navigate('/login');
           return;
         }
 
         const {
           data: { subscription },
-        } = supabase.auth.onAuthStateChange((event, session) => {
-          if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-            if (!session && mounted) {
-              navigate('/login');
-            }
+        } = supabase.auth.onAuthStateChange((event) => {
+          if (event === 'SIGNED_OUT') {
+            navigate('/login');
           }
         });
 
         return () => {
-          mounted = false;
           subscription.unsubscribe();
         };
 
-      } catch (error: any) {
+      } catch (error) {
         console.error('Auth error:', error);
         toast({
           variant: "destructive",
           title: "Authentication Error",
-          description: error.message || "Please sign in again to continue.",
+          description: "Please sign in again to continue.",
         });
-        if (mounted) {
-          navigate('/login');
-        }
+        navigate('/login');
       } finally {
-        if (mounted) {
-          setIsValidating(false);
-        }
+        setIsValidating(false);
       }
     };
 
     validateSession();
-
-    return () => {
-      mounted = false;
-    };
   }, [navigate, toast]);
 
   if (isValidating) {
@@ -114,9 +96,8 @@ const App = () => (
           <Toaster />
           <Sonner />
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
             <Route
               path="/onboarding"
               element={
@@ -158,14 +139,6 @@ const App = () => (
               }
             />
             <Route
-              path="/settings"
-              element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/admin"
               element={
                 <ProtectedRoute>
@@ -174,7 +147,7 @@ const App = () => (
               }
             />
             <Route path="/history" element={<Navigate to="/notes" replace />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

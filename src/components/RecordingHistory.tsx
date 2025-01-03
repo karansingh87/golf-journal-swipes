@@ -3,10 +3,17 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "../integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
 import RecordingCard from "./RecordingCard";
-import { handleQueryResponse } from "@/utils/supabaseHelpers";
-import { Database } from "@/integrations/supabase/types";
 
-type Recording = Database['public']['Tables']['recordings']['Row'];
+interface Recording {
+  id: string;
+  created_at: string;
+  audio_url: string | null;
+  transcription: string | null;
+  analysis: string | null;
+  insights: string | null;
+  duration: number;
+  session_type: "course" | "practice";
+}
 
 interface RecordingHistoryProps {
   searchQuery: string;
@@ -27,13 +34,14 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
     if (!session) return;
 
     try {
-      const response = await supabase
+      const { data, error } = await supabase
         .from('recordings')
         .select('*')
         .eq('user_id', session.user.id)
         .order('created_at', { ascending: false });
 
-      const data = handleQueryResponse(response);
+      if (error) throw error;
+
       setRecordings(data || []);
     } catch (error) {
       console.error("Error fetching recordings:", error);
@@ -49,12 +57,12 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await supabase
+      const { error } = await supabase
         .from('recordings')
         .delete()
         .eq('id', id);
 
-      handleQueryResponse(response);
+      if (error) throw error;
 
       toast({
         title: "Success",
