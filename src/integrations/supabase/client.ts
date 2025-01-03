@@ -12,9 +12,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     flowType: "pkce",
     storage: localStorage,
     storageKey: "golflog-auth-token",
-    debug: true,
-    retryAttempts: 3,
-    retryInterval: 1000,
+    debug: true
   },
   global: {
     headers: {
