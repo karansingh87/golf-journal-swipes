@@ -32,6 +32,7 @@ const Login = () => {
   const { toast } = useToast();
   const session = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(formSchema),
@@ -42,8 +43,13 @@ const Login = () => {
   });
 
   useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  useEffect(() => {
     const checkSessionAndOnboarding = async () => {
-      if (session?.user) {
+      if (session?.user && mounted) {
         try {
           const { data: profile, error } = await supabase
             .from('profiles')
@@ -68,33 +74,32 @@ const Login = () => {
     };
 
     checkSessionAndOnboarding();
-  }, [session, navigate]);
+  }, [session, navigate, mounted]);
 
   const onSubmit = async (data: LoginForm) => {
+    if (isLoading) return;
+    
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({
+      
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
-      if (error) {
-        if (error.message.includes('Invalid login')) {
-          toast({
-            variant: "destructive",
-            title: "Login failed",
-            description: "Incorrect email or password. Please try again.",
-          });
-        } else {
-          console.error('Login error:', error);
-          toast({
-            variant: "destructive",
-            title: "Login failed",
-            description: "An error occurred during login. Please try again.",
-          });
-        }
+      if (signInError) {
+        console.error('Sign in error:', signInError);
+        toast({
+          variant: "destructive",
+          title: "Login failed",
+          description: signInError.message.includes('Invalid login') 
+            ? "Incorrect email or password. Please try again."
+            : "An error occurred during login. Please try again.",
+        });
         return;
       }
+
+      // Session will be automatically handled by the SessionContextProvider
     } catch (error) {
       console.error('Unexpected error:', error);
       toast({
@@ -103,7 +108,9 @@ const Login = () => {
         description: "An unexpected error occurred. Please try again.",
       });
     } finally {
-      setIsLoading(false);
+      if (mounted) {
+        setIsLoading(false);
+      }
     }
   };
 
