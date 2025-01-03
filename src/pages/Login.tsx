@@ -57,10 +57,7 @@ const Login = () => {
             .eq('id', session.user.id)
             .maybeSingle();
 
-          if (error) {
-            console.error('Error fetching profile:', error);
-            return;
-          }
+          if (error) throw error;
 
           if (profile && (!profile.onboarding_completed && !profile.onboarding_skipped)) {
             navigate("/onboarding");
@@ -69,12 +66,17 @@ const Login = () => {
           }
         } catch (error) {
           console.error('Error checking profile:', error);
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: "Failed to check user profile. Please try again.",
+          });
         }
       }
     };
 
     checkSessionAndOnboarding();
-  }, [session, navigate, mounted]);
+  }, [session, navigate, mounted, toast]);
 
   const onSubmit = async (data: LoginForm) => {
     if (isLoading) return;
@@ -89,12 +91,18 @@ const Login = () => {
 
       if (signInError) {
         console.error('Sign in error:', signInError);
+        let errorMessage = "An error occurred during login. Please try again.";
+        
+        if (signInError.message.includes('Invalid login')) {
+          errorMessage = "Incorrect email or password. Please try again.";
+        } else if (signInError.message.includes('network')) {
+          errorMessage = "Network error. Please check your connection and try again.";
+        }
+        
         toast({
           variant: "destructive",
           title: "Login failed",
-          description: signInError.message.includes('Invalid login') 
-            ? "Incorrect email or password. Please try again."
-            : "An error occurred during login. Please try again.",
+          description: errorMessage,
         });
         return;
       }
