@@ -199,7 +199,13 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_status: {
+        Row: {
+          id: string | null
+          is_admin: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
