@@ -29,10 +29,6 @@ const AnalysisCard = ({
     onExpand?.(!isExpanded);
   };
 
-  const shouldUseBullets = (title: string) => {
-    return ['Mindset', 'Breakthroughs', 'Patterns & Potential'].includes(title);
-  };
-
   const renderContent = () => {
     if (Array.isArray(content)) {
       return (
@@ -40,24 +36,6 @@ const AnalysisCard = ({
           {content.map((item, idx) => (
             <li key={idx} className="leading-relaxed">
               {item}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-
-    if (shouldUseBullets(title)) {
-      // Split the content by sentences and create bullet points
-      const sentences = content
-        .split(/[.!?]+/)
-        .map(s => s.trim())
-        .filter(s => s.length > 0);
-
-      return (
-        <ul className="list-disc list-inside space-y-2">
-          {sentences.map((sentence, idx) => (
-            <li key={idx} className="leading-relaxed">
-              {sentence}.
             </li>
           ))}
         </ul>
