@@ -1,35 +1,8 @@
-import { useRecorder } from "../hooks/useRecorder";
+import { useEffect } from "react";
 import RecordingTimer from "./recorder/RecordingTimer";
 import RecordingControls from "./RecordingControls";
-import QuestionPrompt from "./QuestionPrompt";
-import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
-
-const COURSE_PROMPTS = [
-  "Walk me through your round.",
-  "What moments are staying with you?",
-  "How did your game feel?",
-  "What did you discover?",
-  "Tell me about your scoring.",
-  "Which shots are you thinking about?",
-  "What decisions stand out?",
-  "Share your strengths and challenges.",
-  "What made this round different?",
-  "What's worth remembering?"
-];
-
-const PRACTICE_PROMPTS = [
-  "What clicked during practice?",
-  "Walk me through what was working.",
-  "Tell me about the good and challenging moments.",
-  "What discoveries did you make?",
-  "What moments stand out?",
-  "What feels different?",
-  "Tell me your practice story.",
-  "What did you figure out?",
-  "Share your highs and lows.",
-  "What did you learn?"
-];
+import RecordingStatus from "./recorder/RecordingStatus";
+import RecordingPrompts from "./recorder/RecordingPrompts";
 
 interface VoiceRecorderProps {
   isTranscribing: boolean;
@@ -87,40 +60,18 @@ const VoiceRecorder = ({
     }
   };
 
-  const prompts = sessionType === 'course' ? COURSE_PROMPTS : PRACTICE_PROMPTS;
-
-  if (isTranscribing) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-background/95 backdrop-blur-[2px] z-50">
-        <div className="flex flex-col items-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
-          <p className="text-golf-green/80 text-sm font-medium">
-            Processing your recording...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="relative flex flex-col items-center h-[100dvh] overflow-hidden">
-      {sessionType ? (
-        <>
-          <div className="w-full mt-8 mb-auto">
-            <QuestionPrompt 
-              prompts={prompts}
-              isPaused={isPaused}
-            />
-          </div>
-          <div className="flex flex-col items-center justify-center mb-60">
-            <RecordingTimer recordingTime={recordingTime} />
-          </div>
-        </>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center mb-32">
-          <RecordingTimer recordingTime={recordingTime} />
-        </div>
-      )}
+      <RecordingStatus isTranscribing={isTranscribing} />
+      
+      <RecordingPrompts 
+        sessionType={sessionType}
+        isPaused={isPaused}
+      />
+
+      <div className="flex-1 flex flex-col items-center justify-center mb-32">
+        <RecordingTimer recordingTime={recordingTime} />
+      </div>
 
       <RecordingControls
         isRecording={isRecording}
