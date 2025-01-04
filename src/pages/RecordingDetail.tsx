@@ -60,13 +60,10 @@ const RecordingDetail = () => {
         }
       }
 
-      const parsedRecording = {
+      return {
         ...data,
         analysis: parsedAnalysis
       };
-      
-      console.log('Fetched recording:', parsedRecording);
-      return parsedRecording;
     },
     enabled: !!session && !!id,
   });
@@ -118,10 +115,17 @@ const RecordingDetail = () => {
     );
   }
 
+  const headerProps = {
+    id: recording.id,
+    created_at: recording.created_at,
+    is_public: recording.is_public,
+    analysis: recording.analysis
+  };
+
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
-        <RecordingHeader recording={recording} onDelete={handleDelete} />
+        <RecordingHeader recording={headerProps} onDelete={handleDelete} />
 
         <div className={cn(
           "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",

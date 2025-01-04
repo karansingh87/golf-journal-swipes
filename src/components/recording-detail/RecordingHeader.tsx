@@ -1,112 +1,71 @@
-import { ArrowLeft, Trash2, Share2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { MoreHorizontal, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+interface AnalysisSection {
+  type: string;
+  content: string | string[];
+}
+
+interface Analysis {
+  sections: AnalysisSection[];
+}
 
 interface RecordingHeaderProps {
   recording: {
     id: string;
     created_at: string;
     is_public: boolean;
-    analysis?: {
-      sections?: {
-        type: string;
-        content: string;
-      }[];
-    };
+    analysis?: Analysis | null;
   };
-  onDelete: () => Promise<void>;
+  onDelete: () => void;
 }
 
 const RecordingHeader = ({ recording, onDelete }: RecordingHeaderProps) => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const headline = recording.analysis?.sections?.find(
-    section => section.type === "headline"
-  )?.content || "Untitled Session";
-
-  const handleShare = async () => {
-    try {
-      // First make the recording public
-      const { error: updateError } = await supabase
-        .from('recordings')
-        .update({ is_public: true })
-        .eq('id', recording.id);
-
-      if (updateError) throw updateError;
-
-      // Generate the shareable URL
-      const shareUrl = `${window.location.origin}/recording/${recording.id}`;
-
-      // Check if Web Share API is supported
-      if (navigator.share) {
-        await navigator.share({
-          title: 'Golf Session Recording',
-          text: 'Check out my golf session recording!',
-          url: shareUrl
-        });
-      } else {
-        // Fallback to clipboard copy
-        await navigator.clipboard.writeText(shareUrl);
-        toast({
-          title: "Link copied!",
-          description: "Share link has been copied to your clipboard",
-        });
-      }
-    } catch (error) {
-      console.error('Error sharing:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to share recording",
-      });
-    }
+  const getHeadline = () => {
+    if (!recording.analysis?.sections) return "Golf Session";
+    const headlineSection = recording.analysis.sections.find(
+      (section) => section.type === "headline"
+    );
+    if (!headlineSection) return "Golf Session";
+    return Array.isArray(headlineSection.content)
+      ? headlineSection.content[0]
+      : headlineSection.content;
   };
 
   return (
-    <div className="flex items-center gap-4 mb-6">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={() => navigate('/notes')}
-        className="hover:bg-accent"
-      >
-        <ArrowLeft className="h-5 w-5 text-muted-foreground" />
-      </Button>
-      
-      <div className="flex-1 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex flex-col">
-            <div className="text-base font-medium">
-              {headline}
-            </div>
-            <div className="text-xs text-muted-foreground">
-              {format(new Date(recording.created_at), "MMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleShare}
-            className="hover:bg-accent"
-          >
-            <Share2 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onDelete}
-            className="hover:bg-destructive/10"
-          >
-            <Trash2 className="h-4 w-4 text-destructive" />
-          </Button>
-        </div>
+    <div className="flex justify-between items-start mb-6">
+      <div>
+        <h1 className="text-2xl font-semibold text-golf-gray-text-primary mb-2">
+          {getHeadline()}
+        </h1>
+        <p className="text-sm text-golf-gray-text-secondary">
+          {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
+        </p>
       </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            className="text-red-600 focus:text-red-600"
+            onClick={onDelete}
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };
