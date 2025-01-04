@@ -10,6 +10,12 @@ interface RecordingHeaderProps {
     id: string;
     created_at: string;
     is_public: boolean;
+    analysis?: {
+      sections?: {
+        type: string;
+        content: string;
+      }[];
+    };
   };
   onDelete: () => Promise<void>;
 }
@@ -17,6 +23,10 @@ interface RecordingHeaderProps {
 const RecordingHeader = ({ recording, onDelete }: RecordingHeaderProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const headline = recording.analysis?.sections?.find(
+    section => section.type === "headline"
+  )?.content || "Untitled Session";
 
   const handleShare = async () => {
     try {
@@ -71,10 +81,10 @@ const RecordingHeader = ({ recording, onDelete }: RecordingHeaderProps) => {
         <div className="flex items-center gap-3">
           <div className="flex flex-col">
             <div className="text-base font-medium">
-              {format(new Date(recording.created_at), "MMM d, yyyy")}
+              {headline}
             </div>
             <div className="text-xs text-muted-foreground">
-              {format(new Date(recording.created_at), "h:mm a")}
+              {format(new Date(recording.created_at), "MMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
             </div>
           </div>
         </div>
