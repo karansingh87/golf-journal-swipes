@@ -24,37 +24,6 @@ const RecordingControls = ({
 }: RecordingControlsProps) => {
   const navigate = useNavigate();
 
-  const renderMainButton = () => (
-    <div className="relative">
-      {isRecording && !isPaused && (
-        <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
-          <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="46"
-              fill="none"
-              stroke="#18181B"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="289.02652413026095"
-              strokeDashoffset="216.76989309769572"
-              style={{ filter: 'drop-shadow(0 0 2px #18181B)' }}
-            />
-          </svg>
-        </div>
-      )}
-      <ControlButton
-        icon={isRecording && !isPaused ? Pause : Mic}
-        onClick={isRecording ? (isPaused ? onResume : onPause) : onStart}
-        isLarge
-        isActive={isRecording}
-        isPaused={isPaused}
-        variant="dark"
-      />
-    </div>
-  );
-
   return (
     <div className="fixed bottom-0 inset-x-0 pb-8 pt-4 bg-gradient-to-t from-background to-transparent">
       <div className="flex items-center justify-between max-w-md mx-auto px-12">
@@ -65,7 +34,36 @@ const RecordingControls = ({
           size="medium"
         />
 
-        {renderMainButton()}
+        <div className="relative">
+          {isRecording && !isPaused && (
+            <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
+              <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="46"
+                  fill="none"
+                  stroke="#18181B"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeDasharray="289.02652413026095"
+                  strokeDashoffset="216.76989309769572"
+                  style={{
+                    filter: 'drop-shadow(0 0 2px #18181B)',
+                  }}
+                />
+              </svg>
+            </div>
+          )}
+          <ControlButton
+            icon={isRecording && !isPaused ? Pause : Mic}
+            onClick={isRecording ? (isPaused ? onResume : onPause) : onStart}
+            isLarge
+            isActive={isRecording}
+            isPaused={isPaused}
+            variant="dark"
+          />
+        </div>
 
         <AnimatePresence>
           {isRecording ? (
