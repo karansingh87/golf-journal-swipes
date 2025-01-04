@@ -12,6 +12,15 @@ import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
 import RecordingHeader from "@/components/recording-detail/RecordingHeader";
 import { useSession } from "@supabase/auth-helpers-react";
 
+interface AnalysisSection {
+  type: string;
+  content: string;
+}
+
+interface Analysis {
+  sections?: AnalysisSection[];
+}
+
 const RecordingDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -41,8 +50,14 @@ const RecordingDetail = () => {
         throw error;
       }
       
-      console.log('Fetched recording:', data);
-      return data;
+      // Parse the analysis JSON string if it exists
+      const parsedRecording = {
+        ...data,
+        analysis: data.analysis ? JSON.parse(data.analysis) : undefined
+      };
+      
+      console.log('Fetched recording:', parsedRecording);
+      return parsedRecording;
     },
     enabled: !!session && !!id,
   });
