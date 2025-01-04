@@ -18,7 +18,6 @@ interface AnalysisTabProps {
 
 const getTitleFromType = (type: string): string => {
   const titles: Record<string, string> = {
-    headline: "Headline",
     session_story: "Session Story",
     mindset: "Mindset",
     breakthroughs: "Breakthroughs",
@@ -71,17 +70,19 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
     );
   }
 
-  // Reorder sections to ensure mindset comes after session_story
-  const orderedSections = analysis.sections.sort((a, b) => {
-    const order = ['headline', 'session_story', 'mindset', 'breakthroughs', 'opportunities', 'patterns_and_potential', 'key_takeaway'];
-    return order.indexOf(a.type) - order.indexOf(b.type);
-  });
+  // Filter out the headline section and reorder remaining sections
+  const filteredSections = analysis.sections
+    .filter(section => section.type !== 'headline')
+    .sort((a, b) => {
+      const order = ['session_story', 'mindset', 'breakthroughs', 'opportunities', 'patterns_and_potential', 'key_takeaway'];
+      return order.indexOf(a.type) - order.indexOf(b.type);
+    });
 
   return (
     <div className="relative flex flex-col">
       <ScrollableContent>
         <div className="space-y-4">
-          {orderedSections.map((section, index) => (
+          {filteredSections.map((section, index) => (
             <div key={section.type}>
               <AnalysisCard
                 title={getTitleFromType(section.type)}
