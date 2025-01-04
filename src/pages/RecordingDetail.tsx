@@ -14,11 +14,11 @@ import { useSession } from "@supabase/auth-helpers-react";
 
 interface AnalysisSection {
   type: string;
-  content: string;
+  content: string | string[];
 }
 
 interface Analysis {
-  sections?: AnalysisSection[];
+  sections: AnalysisSection[];
 }
 
 const RecordingDetail = () => {
@@ -51,9 +51,18 @@ const RecordingDetail = () => {
       }
       
       // Parse the analysis JSON string if it exists
+      let parsedAnalysis: Analysis | null = null;
+      if (data.analysis) {
+        try {
+          parsedAnalysis = JSON.parse(data.analysis);
+        } catch (e) {
+          console.error('Error parsing analysis:', e);
+        }
+      }
+
       const parsedRecording = {
         ...data,
-        analysis: data.analysis ? JSON.parse(data.analysis) : undefined
+        analysis: parsedAnalysis
       };
       
       console.log('Fetched recording:', parsedRecording);
