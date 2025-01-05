@@ -4,6 +4,7 @@ import PromptHistoryTable from "./PromptHistoryTable";
 import UserManagementTable from "./UserManagementTable";
 import ModelConfig from "./ModelConfig";
 import LandingPageContent from "./LandingPageContent";
+import ColorConfigTab from "./ColorConfigTab";
 
 interface AdminTabsProps {
   analysisPrompt: string;
@@ -53,6 +54,9 @@ const AdminTabs = ({
         <TabsTrigger value="landing" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Landing Page
         </TabsTrigger>
+        <TabsTrigger value="colors" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+          Colors
+        </TabsTrigger>
       </TabsList>
       
       <div className="overflow-x-auto">
@@ -97,6 +101,10 @@ const AdminTabs = ({
 
         <TabsContent value="landing">
           <LandingPageContent />
+        </TabsContent>
+
+        <TabsContent value="colors">
+          <ColorConfigTab />
         </TabsContent>
       </div>
     </Tabs>
