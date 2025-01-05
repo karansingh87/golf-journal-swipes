@@ -1,6 +1,6 @@
 const AppShowcase = () => {
   return (
-    <div className="relative py-16 overflow-hidden bg-white/80 backdrop-blur-sm">
+    <div className="relative py-16 overflow-hidden bg-white/30 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-7xl">
         {/* App Screenshots with floating animation */}
         <div className="relative flex justify-center animate-float" style={{ animationDelay: '1s' }}>
