@@ -6,20 +6,20 @@ const PricingSection = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="py-24 bg-white/5 backdrop-blur-sm">
+    <div className="py-24 bg-white/80 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-7xl">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl font-semibold tracking-tight text-zinc-200 sm:text-5xl">
+          <h2 className="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
             One Plan, Total Access
           </h2>
           
-          <div className="mt-16 p-8 bg-white/10 backdrop-blur-sm rounded-3xl shadow-card-light hover-card-animation">
+          <div className="mt-16 p-8 bg-white/90 backdrop-blur-sm rounded-3xl shadow-card-light hover-card-animation">
             <div className="flex items-baseline justify-center gap-2">
-              <span className="text-5xl font-semibold text-zinc-200">$19</span>
-              <span className="text-xl text-zinc-400">/month</span>
+              <span className="text-5xl font-semibold text-zinc-900">$19</span>
+              <span className="text-xl text-zinc-600">/month</span>
             </div>
             
-            <p className="mt-6 text-lg text-zinc-300">
+            <p className="mt-6 text-lg text-zinc-600">
               We offer an all-inclusive, ad-free golf experience designed for serious players who want to improve.
             </p>
 
@@ -35,8 +35,8 @@ const PricingSection = () => {
                 "Multi-device support",
                 "Priority customer support"
               ].map((feature) => (
-                <li key={feature} className="flex items-center gap-3 text-zinc-400">
-                  <Check className="w-5 h-5 text-zinc-300 animate-float" style={{ animationDelay: '0.1s' }} />
+                <li key={feature} className="flex items-center gap-3 text-zinc-600">
+                  <Check className="w-5 h-5 text-zinc-600 animate-float" style={{ animationDelay: '0.1s' }} />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -44,7 +44,7 @@ const PricingSection = () => {
 
             <Button 
               size="lg"
-              className="w-full mt-10 text-base font-medium bg-zinc-200 hover:bg-zinc-300 text-zinc-900 transform transition-all duration-300 hover:scale-105"
+              className="w-full mt-10 text-base font-medium bg-zinc-900 hover:bg-zinc-800 transform transition-all duration-300 hover:scale-105"
               onClick={() => navigate("/record")}
             >
               Get started right now
