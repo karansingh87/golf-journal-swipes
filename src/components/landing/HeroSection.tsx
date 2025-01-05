@@ -8,7 +8,7 @@ const HeroSection = () => {
   return (
     <div className="relative pt-20 pb-24 sm:pt-24 sm:pb-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col items-center text-center">
+        <div className="mt-12 flex flex-col items-center text-center">
           {/* Animated Mic Icon */}
           <div className="mb-8 relative">
             <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
