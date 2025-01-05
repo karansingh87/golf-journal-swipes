@@ -1,12 +1,7 @@
 import { format } from "date-fns";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+import { ArrowLeft, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface AnalysisSection {
   type: string;
@@ -28,6 +23,8 @@ interface RecordingHeaderProps {
 }
 
 const RecordingHeader = ({ recording, onDelete }: RecordingHeaderProps) => {
+  const navigate = useNavigate();
+  
   const getHeadline = () => {
     if (!recording.analysis?.sections) return "Golf Session";
     const headlineSection = recording.analysis.sections.find(
@@ -41,31 +38,32 @@ const RecordingHeader = ({ recording, onDelete }: RecordingHeaderProps) => {
 
   return (
     <div className="flex justify-between items-start mb-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-golf-gray-text-primary mb-2">
-          {getHeadline()}
-        </h1>
-        <p className="text-sm text-golf-gray-text-secondary">
-          {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
-        </p>
+      <div className="flex items-center gap-3">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 p-0"
+          onClick={() => navigate('/notes')}
+        >
+          <ArrowLeft className="h-4 w-4" />
+        </Button>
+        <div>
+          <h1 className="text-2xl font-semibold text-golf-gray-text-primary mb-2">
+            {getHeadline()}
+          </h1>
+          <p className="text-sm text-golf-gray-text-secondary">
+            {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
+          </p>
+        </div>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="text-red-600 focus:text-red-600"
-            onClick={onDelete}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+        onClick={onDelete}
+      >
+        <Trash2 className="h-4 w-4" />
+      </Button>
     </div>
   );
 };
