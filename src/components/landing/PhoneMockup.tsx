@@ -29,25 +29,14 @@ const PhoneMockup = () => {
             }
           }
         }}
-        className="mx-auto max-w-[300px] relative"
+        className="mx-auto max-w-[800px] relative"
       >
-        {/* iPhone Frame */}
-        <div className="relative mx-auto rounded-[3rem] border-[14px] border-black bg-black shadow-xl">
-          {/* Screen Content */}
-          <div className="relative rounded-[2rem] overflow-hidden bg-white aspect-[9/19.5]">
-            <img
-              src="/lovable-uploads/39e5d958-bcef-459c-985e-6847af214c0d.png"
-              alt="GolfLog App Interface"
-              className="absolute inset-0 w-full h-full object-contain"
-            />
-          </div>
-          
-          {/* Dynamic Island */}
-          <div className="absolute top-0 inset-x-0 flex justify-center">
-            <div className="w-[120px] h-[35px] bg-black rounded-b-3xl"></div>
-          </div>
-        </div>
-
+        <img
+          src="/lovable-uploads/ff0f8814-2b50-4563-98a8-b00c832848af.png"
+          alt="GolfLog App Interface"
+          className="w-full h-auto"
+        />
+        
         {/* Decorative Elements */}
         <div className="absolute -z-10 blur-3xl opacity-20 -inset-x-20 -top-20 -bottom-20 bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-400 animate-pulse"></div>
       </motion.div>
