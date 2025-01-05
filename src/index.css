@@ -55,44 +55,132 @@
   }
 }
 
-/* Grid Animation with Electric Effect */
+/* Enhanced Grid Animation with Electric Effect */
 .grid-background {
   background-size: 30px 30px;
   background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   position: relative;
   overflow: hidden;
 }
 
-/* Electric Spark Animation */
-.grid-background::before {
+/* Multiple Electric Spark Animations */
+.grid-background::before,
+.grid-background::after {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
   width: 200%;
   height: 100%;
+  opacity: 0.5;
+}
+
+.grid-background::before {
+  left: -100%;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(24, 24, 27, 0.1),
+    rgba(255, 255, 255, 0.2),
     transparent
   );
-  animation: spark 3s linear infinite;
+  animation: spark1 4s linear infinite;
 }
 
-@keyframes spark {
+.grid-background::after {
+  right: -100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: spark2 3.5s linear infinite;
+}
+
+@keyframes spark1 {
   0% {
-    transform: translateX(-50%) skewX(-45deg);
+    transform: translateX(-100%) skewX(-45deg);
   }
   100% {
-    transform: translateX(0%) skewX(-45deg);
+    transform: translateX(100%) skewX(-45deg);
   }
 }
 
-/* Update section backgrounds for better grid visibility */
+@keyframes spark2 {
+  0% {
+    transform: translateX(100%) skewX(45deg);
+  }
+  100% {
+    transform: translateX(-100%) skewX(45deg);
+  }
+}
+
+/* Enhanced section backgrounds for better grid visibility */
 .landing-page section {
-  background-color: rgba(255, 255, 255, 0.7) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
   backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover card animation */
+.hover-card-animation {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card-animation:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradient blob animation */
+.gradient-blob {
+  filter: blur(40px);
+  animation: blob-bounce 8s infinite ease;
+  opacity: 0.3;
+  mix-blend-mode: plus-lighter;
+}
+
+@keyframes blob-bounce {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -20px) scale(1.1);
+  }
+  50% {
+    transform: translate(-10px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(-20px, -10px) scale(1.05);
+  }
+}
+
+/* Float animation */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Section fade in */
+.section-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: section-fade-in 0.8s ease-out forwards;
+}
+
+@keyframes section-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
