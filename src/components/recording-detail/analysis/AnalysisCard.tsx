@@ -34,7 +34,7 @@ const AnalysisCard = ({
       return (
         <ul className="list-disc list-inside space-y-2">
           {content.map((item, idx) => (
-            <li key={idx} className="leading-relaxed">
+            <li key={idx} className="leading-normal">
               {item}
             </li>
           ))}
@@ -42,7 +42,7 @@ const AnalysisCard = ({
       );
     }
 
-    return <p className="leading-relaxed">{content}</p>;
+    return <p className="leading-normal">{content}</p>;
   };
 
   return (
