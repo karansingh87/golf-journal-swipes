@@ -29,10 +29,10 @@ const PhoneMockup = () => {
             }
           }
         }}
-        className="mx-auto max-w-[800px] relative"
+        className="mx-auto max-w-[800px] px-12 sm:px-24 md:px-32 relative"
       >
         <img
-          src="/lovable-uploads/ff0f8814-2b50-4563-98a8-b00c832848af.png"
+          src="/lovable-uploads/f9bfd946-1214-4ba6-b7aa-496cfd3cca3f.png"
           alt="GolfLog App Interface"
           className="w-full h-auto"
         />
