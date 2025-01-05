@@ -11,8 +11,25 @@ const HeroSection = () => {
         {/* Mic Icon with recording animation */}
         <div className="flex justify-center mb-8">
           <div className="relative">
-            {/* Pulse ring animation */}
-            <div className="absolute inset-0 rounded-full bg-zinc-900/20 animate-pulse-ring" />
+            {/* Rotating ring animation */}
+            <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
+              <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="46"
+                  fill="none"
+                  stroke="#18181B"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeDasharray="289.02652413026095"
+                  strokeDashoffset="216.76989309769572"
+                  style={{
+                    filter: 'drop-shadow(0 0 2px #18181B)',
+                  }}
+                />
+              </svg>
+            </div>
             
             {/* Mic icon container */}
             <div className="relative w-20 h-20 flex items-center justify-center rounded-full bg-zinc-900 animate-float shadow-lg">
