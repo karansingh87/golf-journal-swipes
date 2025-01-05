@@ -1,3 +1,4 @@
+import React from "react";
 import { Headphones, Brain, Share2 } from "lucide-react";
 
 interface BenefitsSectionProps {
