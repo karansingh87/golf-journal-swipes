@@ -3,6 +3,7 @@ import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
+import Footer from "@/components/landing/Footer";
 
 const Landing = () => {
   return (
@@ -18,6 +19,7 @@ const Landing = () => {
       <BenefitsSection />
       <PricingSection />
       <FAQSection />
+      <Footer />
     </div>
   );
 };
