@@ -76,13 +76,55 @@ const GridBackground = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
-      style={{ 
-        opacity: isMobile ? 0.5 : 1,
-      }}
-    />
+    <div className="fixed inset-0 pointer-events-none">
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0"
+        style={{ 
+          opacity: isMobile ? 0.5 : 1,
+        }}
+      />
+      
+      {/* SVG Overlay for Animations */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        style={{ opacity: isMobile ? 0.5 : 0.7 }}
+      >
+        {/* Horizontal Pulse */}
+        <circle r="3" fill="#3b82f6" opacity="0.6">
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+          <animateMotion
+            dur="4s"
+            repeatCount="indefinite"
+            path="M 0,100 L 2000,100"
+          />
+        </circle>
+
+        {/* Vertical Pulse */}
+        <circle r="3" fill="#3b82f6" opacity="0.6">
+          <animateMotion
+            dur="5s"
+            repeatCount="indefinite"
+            path="M 200,0 L 200,2000"
+          />
+        </circle>
+
+        {/* Diagonal Pulse */}
+        <circle r="3" fill="#3b82f6" opacity="0.6">
+          <animateMotion
+            dur="6s"
+            repeatCount="indefinite"
+            path="M 0,0 L 2000,2000"
+          />
+        </circle>
+      </svg>
+    </div>
   );
 };
 
