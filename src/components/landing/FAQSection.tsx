@@ -38,11 +38,15 @@ const FAQSection = () => {
         
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`} className="border-b border-zinc-200">
-              <AccordionTrigger className="text-lg text-left font-medium text-zinc-900 py-6 hover:no-underline hover:text-zinc-700">
+            <AccordionItem 
+              key={index} 
+              value={`item-${index}`} 
+              className="group border-b border-zinc-200 transition-colors duration-300"
+            >
+              <AccordionTrigger className="text-lg text-left font-medium text-zinc-900 py-6 hover:no-underline hover:text-zinc-700 group-hover:bg-zinc-50/50 px-4 rounded-lg transition-colors duration-300">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-base text-zinc-600 pb-6">
+              <AccordionContent className="text-base text-zinc-600 pb-6 px-4">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
