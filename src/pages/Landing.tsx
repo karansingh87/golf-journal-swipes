@@ -31,6 +31,49 @@ const Landing = () => {
           </div>
         </div>
       </div>
+
+      {/* Hero Section */}
+      <div className="relative pt-20 pb-24 sm:pt-24 sm:pb-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex flex-col items-center text-center">
+            {/* App Icon */}
+            <div className="mb-8">
+              <img 
+                src="/lovable-uploads/55c59618-ff9c-4053-ad6e-04a165dca4ec.png" 
+                alt="GolfLog App Icon" 
+                className="w-24 h-24"
+              />
+            </div>
+            
+            {/* Main Heading */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-gray-900 max-w-4xl mx-auto">
+              Turn Your Golf Talk Into Insights
+            </h1>
+            
+            {/* Subheading */}
+            <p className="mt-6 text-lg sm:text-xl leading-8 text-gray-600 max-w-2xl mx-auto">
+              Stop losing valuable insights after your round. Just talk about your game like you always do, and let AI reveal patterns in your game
+            </p>
+            
+            {/* CTA Buttons */}
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+              <Button
+                onClick={() => navigate("/signup")}
+                className="text-base sm:text-lg px-8 py-6 h-auto bg-[#4169E1] hover:bg-[#3154b3]"
+              >
+                Start your GolfLog
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/demo")}
+                className="text-base sm:text-lg px-8 py-6 h-auto"
+              >
+                See how it works
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
