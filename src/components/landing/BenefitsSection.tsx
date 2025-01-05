@@ -11,8 +11,8 @@ const BenefitsSection = () => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Voice-First Experience Card */}
           <div className="p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover-card-animation">
-            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-blue-100 rounded-xl animate-float">
-              <Headphones className="w-6 h-6 text-blue-600" />
+            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-zinc-100 rounded-xl animate-float">
+              <Headphones className="w-6 h-6 text-zinc-600" />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-zinc-900">Voice-First Experience</h3>
             <p className="mb-6 text-zinc-600">As Natural As Talking About Your Round: No more fumbling with note-taking apps or forgetting key insights.</p>
@@ -35,8 +35,8 @@ const BenefitsSection = () => {
 
           {/* Algorithm Card */}
           <div className="p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover-card-animation">
-            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-amber-100 rounded-xl animate-float" style={{ animationDelay: '0.2s' }}>
-              <Brain className="w-6 h-6 text-amber-600" />
+            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-zinc-100 rounded-xl animate-float" style={{ animationDelay: '0.2s' }}>
+              <Brain className="w-6 h-6 text-zinc-600" />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-zinc-900">Algorithm That Knows You</h3>
             <p className="mb-6 text-zinc-600">Our intelligent algorithm doesn't just suggest what's popular—it learns your unique tastes and evolves with you.</p>
@@ -59,8 +59,8 @@ const BenefitsSection = () => {
 
           {/* Fair Pay Card */}
           <div className="p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover-card-animation">
-            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-pink-100 rounded-xl animate-float" style={{ animationDelay: '0.4s' }}>
-              <DollarSign className="w-6 h-6 text-pink-600" />
+            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-zinc-100 rounded-xl animate-float" style={{ animationDelay: '0.4s' }}>
+              <DollarSign className="w-6 h-6 text-zinc-600" />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-zinc-900">Fair Pay to Artists</h3>
             <p className="mb-6 text-zinc-600">At Rhythmiq, we believe that great music deserves fair compensation. We've built our platform on the principle of fair pay.</p>

@@ -36,7 +36,7 @@ const PricingSection = () => {
                 "Priority customer support"
               ].map((feature) => (
                 <li key={feature} className="flex items-center gap-3 text-zinc-600">
-                  <Check className="w-5 h-5 text-blue-600 animate-float" style={{ animationDelay: '0.1s' }} />
+                  <Check className="w-5 h-5 text-zinc-600 animate-float" style={{ animationDelay: '0.1s' }} />
                   <span>{feature}</span>
                 </li>
               ))}
@@ -44,7 +44,7 @@ const PricingSection = () => {
 
             <Button 
               size="lg"
-              className="w-full mt-10 text-base font-medium bg-blue-600 hover:bg-blue-700 transform transition-all duration-300 hover:scale-105"
+              className="w-full mt-10 text-base font-medium bg-zinc-900 hover:bg-zinc-800 transform transition-all duration-300 hover:scale-105"
               onClick={() => navigate("/record")}
             >
               Get started right now

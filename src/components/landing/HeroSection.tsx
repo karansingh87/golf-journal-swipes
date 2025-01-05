@@ -31,7 +31,7 @@ const HeroSection = () => {
           <Button
             onClick={() => navigate("/record")}
             size="lg"
-            className="text-base font-medium bg-blue-600 hover:bg-blue-700 transform transition-all duration-200 hover:scale-105"
+            className="text-base font-medium bg-zinc-900 hover:bg-zinc-800 transform transition-all duration-200 hover:scale-105"
           >
             Start your GolfLog
           </Button>
