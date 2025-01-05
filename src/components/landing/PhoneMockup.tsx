@@ -111,18 +111,22 @@ const PhoneMockup = () => {
           <CarouselContent>
             {screenshots.map((screenshot, index) => (
               <CarouselItem key={index}>
-                <div className="flex flex-col items-center space-y-6 p-4">
+                <div className="flex flex-col items-center space-y-4">
                   <div className="relative w-full aspect-[9/19]">
                     <img
                       src={screenshot.image}
                       alt={screenshot.title}
-                      className="object-cover w-full h-full"
+                      className="object-cover w-full h-full rounded-xl"
                       loading="lazy"
                     />
                   </div>
-                  <div className="text-center max-w-[80%] animate-fade-in">
-                    <h3 className="text-xl font-semibold mb-2 font-serif">{screenshot.title}</h3>
-                    <p className="text-muted-foreground text-sm md:text-base">{screenshot.description}</p>
+                  <div className="bg-zinc-50/80 backdrop-blur-sm rounded-xl p-4 w-[280px] -mt-16 relative z-10 shadow-lg ring-1 ring-zinc-900/5">
+                    <h3 className="text-lg font-semibold mb-1.5 text-zinc-900 font-serif tracking-tight">
+                      {screenshot.title}
+                    </h3>
+                    <p className="text-sm text-zinc-600 leading-relaxed">
+                      {screenshot.description}
+                    </p>
                   </div>
                 </div>
               </CarouselItem>
@@ -131,7 +135,7 @@ const PhoneMockup = () => {
           
           <div className="flex items-center justify-center mt-8 space-x-4">
             <CarouselPrevious 
-              className="relative static translate-y-0 hover:bg-secondary/80"
+              className="relative static translate-y-0 hover:bg-zinc-100/80"
               aria-label="Previous slide"
             />
             <div className="flex space-x-2" role="tablist" aria-label="Carousel navigation">
@@ -141,8 +145,8 @@ const PhoneMockup = () => {
                   onClick={() => emblaApi?.scrollTo(index)}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     selectedIndex === index 
-                      ? "bg-foreground scale-125" 
-                      : "bg-foreground/50 hover:bg-foreground/75"
+                      ? "bg-zinc-900 scale-125" 
+                      : "bg-zinc-400 hover:bg-zinc-600"
                   }`}
                   role="tab"
                   aria-selected={selectedIndex === index}
@@ -151,7 +155,7 @@ const PhoneMockup = () => {
               ))}
             </div>
             <CarouselNext 
-              className="relative static translate-y-0 hover:bg-secondary/80"
+              className="relative static translate-y-0 hover:bg-zinc-100/80"
               aria-label="Next slide"
             />
           </div>
