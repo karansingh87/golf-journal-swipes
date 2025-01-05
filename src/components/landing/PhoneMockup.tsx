@@ -4,8 +4,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import useEmblaCarousel from "embla-carousel-react";
 import AutoPlay from "embla-carousel-autoplay";
@@ -55,21 +53,12 @@ const PhoneMockup = () => {
     }, 
     [AutoPlay({ delay: 4000, stopOnInteraction: false })]
   );
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     if (isInView) {
       controls.start("visible");
     }
   }, [isInView, controls]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    emblaApi.on("select", () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-    });
-  }, [emblaApi]);
 
   return (
     <section 
@@ -121,7 +110,7 @@ const PhoneMockup = () => {
                     />
                   </div>
                   <div className="bg-zinc-50/80 backdrop-blur-sm rounded-xl p-4 w-[270px] -mt-16 relative z-10 shadow-lg ring-1 ring-zinc-900/5">
-                    <h3 className="text-lg font-semibold mb-1.5 text-zinc-900 font-serif tracking-tight">
+                    <h3 className="text-lg font-medium mb-1.5 text-zinc-900 tracking-tight">
                       {screenshot.title}
                     </h3>
                     <p className="text-sm text-zinc-600 leading-relaxed">
@@ -132,33 +121,6 @@ const PhoneMockup = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          
-          <div className="flex items-center justify-center mt-8 space-x-4">
-            <CarouselPrevious 
-              className="relative static translate-y-0 hover:bg-zinc-100/80"
-              aria-label="Previous slide"
-            />
-            <div className="flex space-x-2" role="tablist" aria-label="Carousel navigation">
-              {screenshots.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => emblaApi?.scrollTo(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    selectedIndex === index 
-                      ? "bg-zinc-900 scale-125" 
-                      : "bg-zinc-400 hover:bg-zinc-600"
-                  }`}
-                  role="tab"
-                  aria-selected={selectedIndex === index}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
-            <CarouselNext 
-              className="relative static translate-y-0 hover:bg-zinc-100/80"
-              aria-label="Next slide"
-            />
-          </div>
         </Carousel>
       </motion.div>
     </section>
