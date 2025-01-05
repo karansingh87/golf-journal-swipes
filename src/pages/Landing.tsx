@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Mic } from "lucide-react";
+import { Mic, Headphones, Brain, Share2 } from "lucide-react";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -87,6 +87,91 @@ const Landing = () => {
               >
                 See how it works
               </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="py-24 sm:py-32 bg-white relative">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
+            {/* Voice-First Experience */}
+            <div className="flex flex-col items-start">
+              <div className="rounded-lg p-2 bg-[#F1F0FB]">
+                <Headphones className="h-6 w-6 text-[#4169E1]" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold text-gray-900">Voice-First Experience</h3>
+              <p className="mt-4 text-gray-600 leading-7">
+                As Natural As Talking About Your Round: No more fumbling with note-taking apps or forgetting key insights.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  "Talk Like You're With Your Playing Partners",
+                  "Capture Thoughts Right After Your Round",
+                  "Works Great During Practice Sessions",
+                  "Perfect for Post-Round Reflections",
+                  "Share Stories With Your Coach",
+                  "No Audio Ads"
+                ].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-[#4169E1]" />
+                    <span className="text-sm text-gray-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* AI-Powered Insights */}
+            <div className="flex flex-col items-start">
+              <div className="rounded-lg p-2 bg-[#F1F0FB]">
+                <Brain className="h-6 w-6 text-[#4169E1]" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold text-gray-900">AI-Powered Insights</h3>
+              <p className="mt-4 text-gray-600 leading-7">
+                Our intelligent AI doesn't just transcribe—it learns your unique playing style and evolves with you, providing personalized insights that matter.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  "Pattern Recognition",
+                  "Personalized Recommendations",
+                  "Performance Tracking",
+                  "Skill Development Focus",
+                  "Game Improvement Tips",
+                  "Mental Game Analysis"
+                ].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-[#4169E1]" />
+                    <span className="text-sm text-gray-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Share & Connect */}
+            <div className="flex flex-col items-start">
+              <div className="rounded-lg p-2 bg-[#F1F0FB]">
+                <Share2 className="h-6 w-6 text-[#4169E1]" />
+              </div>
+              <h3 className="mt-6 text-xl font-semibold text-gray-900">Share & Connect</h3>
+              <p className="mt-4 text-gray-600 leading-7">
+                Share your progress with coaches, track improvements over time, and build a comprehensive record of your golf journey.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  "Coach Collaboration",
+                  "Progress Tracking",
+                  "Round History",
+                  "Easy Sharing",
+                  "Secure Storage",
+                  "Data Insights"
+                ].map((feature) => (
+                  <li key={feature} className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-[#4169E1]" />
+                    <span className="text-sm text-gray-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
