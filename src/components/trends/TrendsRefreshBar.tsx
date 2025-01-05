@@ -36,22 +36,30 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
         // If we have analyzed recordings and the array is not empty
         if (trendsData?.analyzed_recordings?.length > 0) {
           try {
-            // Count recordings not included in the last analysis
-            const { count } = await supabase
-              .from('recordings')
-              .select('*', { count: 'exact', head: true })
-              .not('id', 'in', `(${trendsData.analyzed_recordings.map(id => `'${id}'`).join(',')})`)
-              .single();
+            // Filter out any invalid UUIDs
+            const validRecordingIds = trendsData.analyzed_recordings.filter(id => 
+              typeof id === 'string' && id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)
+            );
 
-            console.log('New recordings count:', count);
-            setNewRecordingsCount(count || 0);
+            if (validRecordingIds.length > 0) {
+              // Count recordings not included in the last analysis
+              const { count } = await supabase
+                .from('recordings')
+                .select('*', { count: 'exact', head: true })
+                .not('id', 'in', `(${validRecordingIds.map(id => `'${id}'`).join(',')})`)
+                .single();
+
+              console.log('New recordings count:', count);
+              setNewRecordingsCount(count || 0);
+            } else {
+              console.log('No valid recording IDs found, counting all recordings');
+              setNewRecordingsCount(recordingsCount);
+            }
           } catch (error) {
             console.error('Error counting new recordings:', error);
-            // If there's an error counting, assume all recordings are new
             setNewRecordingsCount(recordingsCount);
           }
         } else {
-          // If no trends data or no analyzed recordings, all recordings are new
           console.log('No analyzed recordings found, counting all recordings');
           setNewRecordingsCount(recordingsCount);
         }
