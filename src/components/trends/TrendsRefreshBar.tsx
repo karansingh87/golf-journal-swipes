@@ -28,7 +28,7 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
           .select('analyzed_recordings')
           .order('created_at', { ascending: false })
           .limit(1)
-          .single();
+          .maybeSingle();
 
         if (trendsData?.analyzed_recordings) {
           // Count recordings not included in the last analysis
@@ -37,7 +37,10 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
             .select('*', { count: 'exact', head: true })
             .not('id', 'in', `(${trendsData.analyzed_recordings.join(',')})`);
 
+          console.log('New recordings count:', count);
           setNewRecordingsCount(count || 0);
+        } else {
+          console.log('No trends data found or no analyzed recordings');
         }
       } catch (error) {
         console.error('Error checking new recordings:', error);
