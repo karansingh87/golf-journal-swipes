@@ -3,12 +3,16 @@ import BenefitsSection from "@/components/landing/BenefitsSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
+import GridOverlay from "@/components/landing/GridOverlay";
 
 const Landing = () => {
   return (
     <div className="relative min-h-screen bg-white overflow-hidden">
       {/* Animated grid background */}
       <div className="fixed inset-0 grid-background pointer-events-none" />
+      
+      {/* Animated grid overlay with pulses */}
+      <GridOverlay />
       
       {/* Gradient blobs - Added more blobs for continuous flow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
