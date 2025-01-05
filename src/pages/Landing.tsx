@@ -1,5 +1,4 @@
 import HeroSection from "@/components/landing/HeroSection";
-import AppShowcase from "@/components/landing/AppShowcase";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
@@ -28,9 +27,6 @@ const Landing = () => {
       <div className="relative">
         <div className="section-fade-in" style={{ animationDelay: '0s' }}>
           <HeroSection />
-        </div>
-        <div className="section-fade-in" style={{ animationDelay: '0.2s' }}>
-          <AppShowcase />
         </div>
         <div className="section-fade-in" style={{ animationDelay: '0.4s' }}>
           <BenefitsSection />
