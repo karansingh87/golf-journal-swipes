@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/landing/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
+import PhoneMockup from "@/components/landing/PhoneMockup";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
@@ -34,6 +35,7 @@ const Landing = () => {
       
       <Navigation />
       <HeroSection content={content?.hero} />
+      <PhoneMockup />
       <BenefitsSection content={content?.benefits} />
       <PricingSection content={content?.pricing} />
       <FAQSection content={content?.faq} />
