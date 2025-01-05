@@ -2,7 +2,7 @@ import { Headphones, Brain, DollarSign } from "lucide-react";
 
 const BenefitsSection = () => {
   return (
-    <div className="py-24 bg-zinc-50">
+    <div className="py-24 bg-zinc-50/80 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-7xl">
         <h2 className="text-3xl font-semibold text-center text-zinc-900 sm:text-4xl mb-16">
           The Smart, Fair, and Superior Way to Listen
@@ -10,8 +10,8 @@ const BenefitsSection = () => {
         
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Voice-First Experience Card */}
-          <div className="p-6 bg-white rounded-2xl shadow-sm">
-            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-blue-100 rounded-xl">
+          <div className="p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover-card-animation">
+            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-blue-100 rounded-xl animate-float">
               <Headphones className="w-6 h-6 text-blue-600" />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-zinc-900">Voice-First Experience</h3>
@@ -34,8 +34,8 @@ const BenefitsSection = () => {
           </div>
 
           {/* Algorithm Card */}
-          <div className="p-6 bg-white rounded-2xl shadow-sm">
-            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-amber-100 rounded-xl">
+          <div className="p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover-card-animation">
+            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-amber-100 rounded-xl animate-float" style={{ animationDelay: '0.2s' }}>
               <Brain className="w-6 h-6 text-amber-600" />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-zinc-900">Algorithm That Knows You</h3>
@@ -58,8 +58,8 @@ const BenefitsSection = () => {
           </div>
 
           {/* Fair Pay Card */}
-          <div className="p-6 bg-white rounded-2xl shadow-sm">
-            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-pink-100 rounded-xl">
+          <div className="p-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm hover-card-animation">
+            <div className="flex items-center justify-center w-12 h-12 mb-6 bg-pink-100 rounded-xl animate-float" style={{ animationDelay: '0.4s' }}>
               <DollarSign className="w-6 h-6 text-pink-600" />
             </div>
             <h3 className="mb-3 text-xl font-semibold text-zinc-900">Fair Pay to Artists</h3>

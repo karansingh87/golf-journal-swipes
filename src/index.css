@@ -55,9 +55,9 @@
   }
 }
 
-/* Grid Animation */
+/* Grid Animation - Updated with smaller grid */
 .grid-background {
-  background-size: 50px 50px;
+  background-size: 30px 30px; /* Reduced from 50px */
   background-image: 
     linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
@@ -69,11 +69,11 @@
     background-position: 0 0;
   }
   100% {
-    background-position: 50px 50px;
+    background-position: 30px 30px; /* Adjusted to match new grid size */
   }
 }
 
-/* Floating Animation */
+/* Enhanced Floating Animation */
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -85,6 +85,20 @@
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+/* Section Transitions */
+.section-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: section-fade-in 0.8s ease-out forwards;
+}
+
+@keyframes section-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Existing animations */
@@ -110,7 +124,7 @@
   animation: spin 4s linear infinite;
 }
 
-/* Gradient Blob Animation */
+/* Enhanced Gradient Blob Animation */
 .gradient-blob {
   filter: blur(40px);
   animation: blob-bounce 8s infinite ease;
@@ -131,4 +145,14 @@
   75% {
     transform: translate(-20px, -10px) scale(1.05);
   }
+}
+
+/* Card hover effects */
+.hover-card-animation {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card-animation:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
 }
