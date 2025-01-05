@@ -33,12 +33,14 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
           .limit(1)
           .maybeSingle();
 
+        // If we have analyzed recordings and the array is not empty
         if (trendsData?.analyzed_recordings?.length > 0) {
           // Count recordings not included in the last analysis
           const { count } = await supabase
             .from('recordings')
             .select('*', { count: 'exact', head: true })
-            .not('id', 'in', `(${trendsData.analyzed_recordings.join(',')})`);
+            .not('id', 'in', `(${trendsData.analyzed_recordings.join(',')})`)
+            .single();
 
           console.log('New recordings count:', count);
           setNewRecordingsCount(count || 0);
