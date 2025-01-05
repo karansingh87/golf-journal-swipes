@@ -6,14 +6,14 @@ const PricingSection = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="py-24 bg-white/80 backdrop-blur-sm">
+    <div className="py-24 bg-white/30 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-7xl">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
             One Plan, Total Access
           </h2>
           
-          <div className="mt-16 p-8 bg-white/90 backdrop-blur-sm rounded-3xl shadow-card-light hover-card-animation">
+          <div className="mt-16 p-8 bg-white/40 backdrop-blur-sm rounded-3xl shadow-card-light hover-card-animation">
             <div className="flex items-baseline justify-center gap-2">
               <span className="text-5xl font-semibold text-zinc-900">$19</span>
               <span className="text-xl text-zinc-600">/month</span>

@@ -7,7 +7,7 @@ import {
 
 const FAQSection = () => {
   return (
-    <div className="py-24 bg-zinc-50/80 backdrop-blur-sm">
+    <div className="py-24 bg-zinc-50/30 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-3xl">
         <h2 className="text-4xl font-semibold text-center text-zinc-900 mb-16">
           Common Questions
@@ -15,7 +15,7 @@ const FAQSection = () => {
         
         <Accordion type="single" collapsible className="w-full space-y-6">
           <AccordionItem value="cancel" className="border-none hover-card-animation">
-            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/90 backdrop-blur-sm rounded-xl">
+            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/40 backdrop-blur-sm rounded-xl">
               Can I cancel my subscription anytime?
             </AccordionTrigger>
             <AccordionContent className="text-zinc-600 text-lg mt-2 px-6">
@@ -24,7 +24,7 @@ const FAQSection = () => {
           </AccordionItem>
 
           <AccordionItem value="trial" className="border-none hover-card-animation">
-            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/90 backdrop-blur-sm rounded-xl">
+            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/40 backdrop-blur-sm rounded-xl">
               Is there a free trial available?
             </AccordionTrigger>
             <AccordionContent className="text-zinc-600 text-lg mt-2 px-6">
@@ -33,7 +33,7 @@ const FAQSection = () => {
           </AccordionItem>
 
           <AccordionItem value="offline" className="border-none hover-card-animation">
-            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/90 backdrop-blur-sm rounded-xl">
+            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/40 backdrop-blur-sm rounded-xl">
               How do I download recordings for offline access?
             </AccordionTrigger>
             <AccordionContent className="text-zinc-600 text-lg mt-2 px-6">
@@ -42,7 +42,7 @@ const FAQSection = () => {
           </AccordionItem>
 
           <AccordionItem value="data" className="border-none hover-card-animation">
-            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/90 backdrop-blur-sm rounded-xl">
+            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/40 backdrop-blur-sm rounded-xl">
               What happens to my data if I cancel?
             </AccordionTrigger>
             <AccordionContent className="text-zinc-600 text-lg mt-2 px-6">
@@ -51,7 +51,7 @@ const FAQSection = () => {
           </AccordionItem>
 
           <AccordionItem value="devices" className="border-none hover-card-animation">
-            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/90 backdrop-blur-sm rounded-xl">
+            <AccordionTrigger className="text-xl font-medium text-zinc-900 hover:no-underline px-6 py-4 bg-white/40 backdrop-blur-sm rounded-xl">
               How many devices can I use?
             </AccordionTrigger>
             <AccordionContent className="text-zinc-600 text-lg mt-2 px-6">
