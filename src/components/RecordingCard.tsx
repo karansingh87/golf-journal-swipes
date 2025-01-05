@@ -37,6 +37,7 @@ const RecordingCard = ({
     if (!analysis) return "";
     
     try {
+      // First try to parse as JSON
       const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
       const parsedAnalysis = JSON.parse(cleanAnalysis);
       
@@ -48,9 +49,15 @@ const RecordingCard = ({
         return headlineSection.content;
       }
       
+      // If no headline section found but it's valid JSON, return empty string
       return "";
     } catch (error) {
-      console.error('Error parsing analysis:', error);
+      // If JSON parsing fails, try to extract first meaningful line
+      const lines = analysis.split('\n').filter(line => line.trim());
+      if (lines.length > 0) {
+        // Remove markdown headers and clean the line
+        return lines[0].replace(/^#+\s*/, '').trim();
+      }
       return "";
     }
   };

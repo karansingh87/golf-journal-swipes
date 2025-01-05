@@ -19,7 +19,10 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
 
   useEffect(() => {
     const checkNewRecordings = async () => {
-      if (!lastUpdateTime) return;
+      if (!lastUpdateTime) {
+        setNewRecordingsCount(recordingsCount);
+        return;
+      }
 
       try {
         // Get the latest trends entry to find which recordings were last analyzed
@@ -30,7 +33,7 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
           .limit(1)
           .maybeSingle();
 
-        if (trendsData?.analyzed_recordings) {
+        if (trendsData?.analyzed_recordings?.length > 0) {
           // Count recordings not included in the last analysis
           const { count } = await supabase
             .from('recordings')
@@ -40,7 +43,9 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
           console.log('New recordings count:', count);
           setNewRecordingsCount(count || 0);
         } else {
-          console.log('No trends data found or no analyzed recordings');
+          // If no trends data or no analyzed recordings, all recordings are new
+          console.log('No analyzed recordings found, counting all recordings');
+          setNewRecordingsCount(recordingsCount);
         }
       } catch (error) {
         console.error('Error checking new recordings:', error);
