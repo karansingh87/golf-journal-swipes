@@ -10,6 +10,9 @@ const Landing = () => {
       {/* Grid Background */}
       <div className="fixed inset-0 grid-background pointer-events-none" />
       
+      {/* Gradient Overlay */}
+      <div className="gradient-overlay" />
+      
       <Navigation />
       <HeroSection />
       <BenefitsSection />
