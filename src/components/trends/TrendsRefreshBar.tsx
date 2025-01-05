@@ -55,11 +55,11 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
   };
 
   return (
-    <div className="space-y-2 pt-4">
+    <div className="space-y-2 pt-8">
       {newRecordingsCount >= 3 && (
         <Alert className="mb-2">
           <AlertDescription>
-            You have {newRecordingsCount} new recordings since your last trends analysis. Consider refreshing your trends for updated insights.
+            You have new recordings since your last trends analysis. Refresh for updated insights.
           </AlertDescription>
         </Alert>
       )}
