@@ -2,7 +2,17 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
-const PricingSection = () => {
+interface PricingSectionProps {
+  content?: {
+    title: string;
+    price: string;
+    interval: string;
+    description: string;
+    features: string[];
+  };
+}
+
+const PricingSection = ({ content }: PricingSectionProps) => {
   const navigate = useNavigate();
   
   return (
@@ -10,10 +20,10 @@ const PricingSection = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-4">
-            One Plan,
+            {content?.title?.split(',')[0] || "One Plan,"}
           </h2>
           <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-16">
-            Total Access
+            {content?.title?.split(',')[1] || "Total Access"}
           </h2>
         </div>
 
@@ -23,16 +33,16 @@ const PricingSection = () => {
             
             <div className="relative z-10">
               <div className="flex items-baseline gap-x-2">
-                <span className="text-5xl font-bold tracking-tight text-zinc-900">$19</span>
-                <span className="text-base text-zinc-500">/month</span>
+                <span className="text-5xl font-bold tracking-tight text-zinc-900">${content?.price || "19"}</span>
+                <span className="text-base text-zinc-500">/{content?.interval || "month"}</span>
               </div>
 
               <p className="mt-6 text-base leading-7 text-zinc-600">
-                We offer an all-inclusive, ad-free golf recording experience designed for serious golfers who want to improve their game.
+                {content?.description || "We offer an all-inclusive, ad-free golf recording experience designed for serious golfers who want to improve their game."}
               </p>
 
               <ul className="mt-8 space-y-4">
-                {[
+                {(content?.features || [
                   "Unlimited Voice Recording Time",
                   "AI-Powered Game Analysis",
                   "Access to Exclusive Insights",
@@ -42,7 +52,7 @@ const PricingSection = () => {
                   "Coach Collaboration Tools",
                   "Multi-Device Support",
                   "Priority Customer Support",
-                ].map((feature) => (
+                ]).map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
                     <div className="rounded-full p-1 bg-zinc-900 group-hover:scale-110 transition-transform duration-300">
                       <Check className="h-3 w-3 text-white" />

@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/landing/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
 import BenefitsSection from "@/components/landing/BenefitsSection";
@@ -6,6 +8,22 @@ import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
 
 const Landing = () => {
+  const { data: content } = useQuery({
+    queryKey: ['landingPageContent'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('landing_page_content')
+        .select('*');
+      
+      if (error) throw error;
+      
+      return data.reduce((acc: Record<string, any>, item: any) => {
+        acc[item.section] = item.content;
+        return acc;
+      }, {});
+    }
+  });
+
   return (
     <div className="min-h-screen bg-white">
       {/* Grid Background */}
@@ -15,10 +33,10 @@ const Landing = () => {
       <div className="gradient-overlay" />
       
       <Navigation />
-      <HeroSection />
-      <BenefitsSection />
-      <PricingSection />
-      <FAQSection />
+      <HeroSection content={content?.hero} />
+      <BenefitsSection content={content?.benefits} />
+      <PricingSection content={content?.pricing} />
+      <FAQSection content={content?.faq} />
       <Footer />
     </div>
   );

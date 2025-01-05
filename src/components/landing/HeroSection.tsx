@@ -2,7 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Mic } from "lucide-react";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  content?: {
+    title: string;
+    subtitle: string;
+  };
+}
+
+const HeroSection = ({ content }: HeroSectionProps) => {
   const navigate = useNavigate();
   
   return (
@@ -36,11 +43,11 @@ const HeroSection = () => {
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-zinc-900 max-w-4xl mx-auto">
-            Turn Your Golf Talk Into Insights
+            {content?.title || "Turn Your Golf Talk Into Insights"}
           </h1>
           
           <p className="mt-6 text-lg sm:text-xl leading-8 text-zinc-600 max-w-2xl mx-auto">
-            Stop losing valuable insights after your round. Just talk about your game like you always do, and let AI reveal patterns in your game
+            {content?.subtitle || "Stop losing valuable insights after your round. Just talk about your game like you always do, and let AI reveal patterns in your game"}
           </p>
           
           <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">

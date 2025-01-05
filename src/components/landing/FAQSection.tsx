@@ -5,8 +5,18 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const FAQSection = () => {
-  const faqs = [
+interface FAQSectionProps {
+  content?: {
+    title: string;
+    questions: Array<{
+      question: string;
+      answer: string;
+    }>;
+  };
+}
+
+const FAQSection = ({ content }: FAQSectionProps) => {
+  const defaultQuestions = [
     {
       question: "Can I cancel my subscription anytime?",
       answer: "Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period."
@@ -29,15 +39,17 @@ const FAQSection = () => {
     }
   ];
 
+  const questions = content?.questions || defaultQuestions;
+
   return (
     <div className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-16 text-center">
-          Common Questions
+          {content?.title || "Common Questions"}
         </h2>
         
         <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
+          {questions.map((faq, index) => (
             <AccordionItem 
               key={index} 
               value={`item-${index}`} 
