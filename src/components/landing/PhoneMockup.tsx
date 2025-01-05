@@ -31,6 +31,16 @@ const screenshots: ScreenshotData[] = [
     image: "/lovable-uploads/bb2a5651-bb9d-4849-bcac-67aeecd2f025.png",
     title: "Detailed Analysis",
     description: "Get comprehensive insights about your game, including session stories and mindset analysis."
+  },
+  {
+    image: "/lovable-uploads/7c4e6f30-82be-4721-a3f9-a7b87858823a.png",
+    title: "Session Insights",
+    description: "Deep dive into your performance with detailed breakdowns of mindset, breakthroughs, and opportunities."
+  },
+  {
+    image: "/lovable-uploads/0ffb7065-6622-4b6d-8945-9c03333d7f97.png",
+    title: "Progress Tracking",
+    description: "Track your improvements and breakthroughs with personalized insights and trend analysis."
   }
 ];
 
