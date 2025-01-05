@@ -2,7 +2,7 @@ import { Headphones, Brain, DollarSign } from "lucide-react";
 
 const BenefitsSection = () => {
   return (
-    <div className="py-24 bg-zinc-50/80 backdrop-blur-sm">
+    <div className="py-24 bg-zinc-50/40 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-7xl">
         <h2 className="text-3xl font-semibold text-center text-zinc-900 sm:text-4xl mb-16">
           The Smart, Fair, and Superior Way to Listen

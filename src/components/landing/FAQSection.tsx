@@ -7,7 +7,7 @@ import {
 
 const FAQSection = () => {
   return (
-    <div className="py-24 bg-zinc-50/80 backdrop-blur-sm">
+    <div className="py-24 bg-zinc-50/40 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-3xl">
         <h2 className="text-4xl font-semibold text-center text-zinc-900 mb-16">
           Common Questions

@@ -6,7 +6,7 @@ const PricingSection = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="py-24 bg-white/80 backdrop-blur-sm">
+    <div className="py-24 bg-white/40 backdrop-blur-sm">
       <div className="px-4 mx-auto max-w-7xl">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-4xl font-semibold tracking-tight text-zinc-900 sm:text-5xl">
