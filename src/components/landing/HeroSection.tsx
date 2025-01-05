@@ -50,10 +50,10 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             {content?.subtitle || "Stop losing valuable insights after your round. Just talk about your game like you always do, and let AI reveal patterns in your game"}
           </p>
           
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               onClick={() => navigate("/signup")}
-              className="text-base sm:text-lg px-8 py-6 h-auto bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group"
+              className="text-base px-6 py-2.5 h-auto bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group"
             >
               <span className="relative z-10">Start your GolfLog</span>
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
@@ -61,7 +61,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             <Button
               variant="outline"
               onClick={() => navigate("/demo")}
-              className="text-base sm:text-lg px-8 py-6 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50 relative overflow-hidden group"
+              className="text-base px-6 py-2.5 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50 relative overflow-hidden group"
             >
               <span className="relative z-10">See how it works</span>
               <div className="absolute inset-0 bg-zinc-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
