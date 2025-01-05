@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Mic } from "lucide-react";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -7,14 +8,16 @@ const HeroSection = () => {
   return (
     <div className="px-4 pt-32 pb-16 mx-auto max-w-7xl sm:pt-40 sm:pb-24">
       <div className="text-center">
-        {/* App Icon with floating animation */}
+        {/* Mic Icon with recording animation */}
         <div className="flex justify-center mb-8">
-          <div className="w-20 h-20 overflow-hidden rounded-2xl bg-zinc-900 animate-float shadow-lg">
-            <img 
-              src="/lovable-uploads/4e485704-bf8e-40e2-89b0-7e45e27dde72.png" 
-              alt="GolfLog Icon"
-              className="w-full h-full object-cover"
-            />
+          <div className="relative">
+            {/* Pulse ring animation */}
+            <div className="absolute inset-0 rounded-full bg-zinc-900/20 animate-pulse-ring" />
+            
+            {/* Mic icon container */}
+            <div className="relative w-20 h-20 flex items-center justify-center rounded-full bg-zinc-900 animate-float shadow-lg">
+              <Mic className="w-10 h-10 text-white" />
+            </div>
           </div>
         </div>
 
