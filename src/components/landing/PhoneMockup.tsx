@@ -109,11 +109,11 @@ const PhoneMockup = () => {
                       loading="lazy"
                     />
                   </div>
-                  <div className="bg-zinc-50/80 backdrop-blur-sm rounded-lg p-3.5 w-[270px] -mt-16 relative z-10 shadow-md ring-1 ring-zinc-900/5">
-                    <h3 className="text-base font-medium mb-1 text-zinc-900 tracking-tight">
+                  <div className="bg-zinc-900/90 backdrop-blur-sm rounded-lg p-3.5 w-[270px] -mt-16 relative z-10 shadow-md ring-1 ring-zinc-50/10">
+                    <h3 className="text-base font-medium mb-1 text-zinc-50 tracking-tight">
                       {screenshot.title}
                     </h3>
-                    <p className="text-sm text-zinc-600 leading-snug">
+                    <p className="text-sm text-zinc-300 leading-snug">
                       {screenshot.description}
                     </p>
                   </div>
