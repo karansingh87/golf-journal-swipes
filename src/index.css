@@ -37,11 +37,6 @@
     @apply bg-background text-foreground;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
-
-  /* Override background for landing page */
-  .landing-page {
-    @apply bg-zinc-900;
-  }
 }
 
 @layer base {
@@ -55,24 +50,9 @@
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes dash {
-  0% {
-    stroke-dashoffset: 289.02652413026095;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-.animate-spin-slow {
-  animation: spin 4s linear infinite;
+.grid-background {
+  background-size: 25px 25px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-position: top center;
 }
