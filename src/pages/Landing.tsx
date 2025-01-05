@@ -1,4 +1,5 @@
 import HeroSection from "@/components/landing/HeroSection";
+import AppShowcase from "@/components/landing/AppShowcase";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
@@ -8,6 +9,7 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-white">
       <HeroSection />
+      <AppShowcase />
       <BenefitsSection />
       <PricingSection />
       <FAQSection />
