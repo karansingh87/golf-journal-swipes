@@ -112,7 +112,7 @@ const SegmentedNav = () => {
           <span className="relative">
             {segment.label}
             {segment.value === 'trends' && hasNewRecordings && (
-              <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
+              <div className="absolute -top-1 -right-2 w-2 h-2 bg-red-500 rounded-full" />
             )}
           </span>
         </button>
