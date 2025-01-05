@@ -23,6 +23,11 @@ const screenshots: ScreenshotData[] = [
     description: "Easily capture your golf sessions with voice recordings - quick, simple, and hands-free."
   },
   {
+    image: "/lovable-uploads/ff6ca37a-ddc1-42ff-a2ac-1199d6b7099b.png",
+    title: "Detailed Transcripts",
+    description: "Review your session notes with clear, organized transcripts of your recordings."
+  },
+  {
     image: "/lovable-uploads/bb2a5651-bb9d-4849-bcac-67aeecd2f025.png",
     title: "Detailed Analysis",
     description: "Get comprehensive insights about your game, including session stories and mindset analysis."
@@ -90,7 +95,7 @@ const PhoneMockup = () => {
               stopOnInteraction: false,
             }),
           ]}
-          className="w-full max-w-[300px] mx-auto"
+          className="w-full max-w-[275px] mx-auto"
           aria-label="Screenshot carousel"
         >
           <CarouselContent>
