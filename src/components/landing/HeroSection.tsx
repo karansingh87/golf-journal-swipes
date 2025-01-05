@@ -31,8 +31,8 @@ const HeroSection = () => {
               </svg>
             </div>
             
-            {/* Mic icon container */}
-            <div className="relative w-20 h-20 flex items-center justify-center rounded-full bg-zinc-900 animate-float shadow-lg">
+            {/* Mic icon container - removed animate-float class */}
+            <div className="relative w-20 h-20 flex items-center justify-center rounded-full bg-zinc-900 shadow-lg">
               <Mic className="w-10 h-10 text-white" />
             </div>
           </div>
