@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Mic } from "lucide-react";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -36,13 +37,29 @@ const Landing = () => {
       <div className="relative pt-20 pb-24 sm:pt-24 sm:pb-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col items-center text-center">
-            {/* App Icon */}
-            <div className="mb-8">
-              <img 
-                src="/lovable-uploads/55c59618-ff9c-4053-ad6e-04a165dca4ec.png" 
-                alt="GolfLog App Icon" 
-                className="w-24 h-24"
-              />
+            {/* Animated Mic Icon */}
+            <div className="mb-8 relative">
+              <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
+                <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="46"
+                    fill="none"
+                    stroke="#18181B"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeDasharray="289.02652413026095"
+                    strokeDashoffset="216.76989309769572"
+                    style={{
+                      filter: 'drop-shadow(0 0 2px #18181B)',
+                    }}
+                  />
+                </svg>
+              </div>
+              <div className="w-24 h-24 rounded-full bg-zinc-950 flex items-center justify-center">
+                <Mic className="w-12 h-12 text-white" />
+              </div>
             </div>
             
             {/* Main Heading */}
