@@ -50,8 +50,9 @@ const PhoneMockup = () => {
     { 
       loop: true,
       align: "center",
+      duration: 50, // Smoother transition duration
     }, 
-    [AutoPlay({ delay: 4000, stopOnInteraction: false })]
+    [AutoPlay({ delay: 5000, stopOnInteraction: false })] // Longer delay between slides
   );
 
   useEffect(() => {
@@ -87,10 +88,11 @@ const PhoneMockup = () => {
           opts={{
             align: "center",
             loop: true,
+            duration: 50, // Smoother transition duration
           }}
           plugins={[
             AutoPlay({
-              delay: 4000,
+              delay: 5000, // Longer delay between slides
               stopOnInteraction: false,
             }),
           ]}
