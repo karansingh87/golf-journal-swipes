@@ -7,6 +7,7 @@ import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
@@ -33,6 +34,7 @@ const App = () => (
           <Sonner />
           <Routes>
             {/* Public routes */}
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             
             {/* App routes */}
@@ -45,8 +47,7 @@ const App = () => (
             
             {/* Redirects */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </TooltipProvider>
       </SessionContextProvider>

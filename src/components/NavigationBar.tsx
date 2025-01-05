@@ -50,7 +50,7 @@ const NavigationBar = () => {
         description: "You have been successfully logged out",
       });
       
-      navigate('/login');
+      navigate('/');
       
     } catch (error) {
       console.error('Logout error:', error);
@@ -58,13 +58,15 @@ const NavigationBar = () => {
     }
   };
 
-  const isAuthPage = location.pathname === '/' || location.pathname === '/login';
+  const isPublicPage = location.pathname === '/' || location.pathname === '/login';
+
+  if (location.pathname === '/') return null;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] h-14 backdrop-blur-sm border-b border-zinc-800/10 bg-white/80">
       <div className="h-full px-6 flex justify-between items-center">
         <div 
-          onClick={() => navigate(isAuthPage ? '/' : '/record')}
+          onClick={() => navigate(isPublicPage ? '/' : '/record')}
           className="text-2xl font-logo tracking-[-0.03em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
         >
           <span 
@@ -78,7 +80,7 @@ const NavigationBar = () => {
         </div>
         
         <div className="flex-1 flex justify-end">
-          {!isAuthPage && (
+          {!isPublicPage && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
