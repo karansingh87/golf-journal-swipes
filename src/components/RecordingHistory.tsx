@@ -27,11 +27,13 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    fetchRecordings();
-  }, [session]);
+    if (session?.user?.id) {
+      fetchRecordings();
+    }
+  }, [session?.user?.id]);
 
   const fetchRecordings = async () => {
-    if (!session) return;
+    if (!session?.user?.id) return;
 
     try {
       const { data, error } = await supabase
@@ -40,7 +42,10 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
         .eq('user_id', session.user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching recordings:", error);
+        throw error;
+      }
 
       setRecordings(data || []);
     } catch (error) {

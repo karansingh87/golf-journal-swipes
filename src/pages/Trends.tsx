@@ -17,20 +17,23 @@ const Trends = () => {
   const session = useSession();
   const navigate = useNavigate();
 
-  // Redirect if not authenticated
-  if (!session) {
-    navigate('/login');
-    return null;
-  }
-
   useEffect(() => {
+    if (!session) {
+      navigate('/login');
+      return;
+    }
+
     const fetchRecordingsCount = async () => {
-      const { count } = await supabase
-        .from('recordings')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', session.user.id);
-      
-      setRecordingsCount(count || 0);
+      try {
+        const { count } = await supabase
+          .from('recordings')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', session.user.id);
+        
+        setRecordingsCount(count || 0);
+      } catch (error) {
+        console.error('Error fetching recordings count:', error);
+      }
     };
 
     const fetchLatestTrends = async () => {
@@ -43,7 +46,10 @@ const Trends = () => {
           .limit(1)
           .maybeSingle();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching trends:', error);
+          return;
+        }
 
         if (trends?.trends_output) {
           try {
@@ -51,9 +57,14 @@ const Trends = () => {
             const parsedTrends = JSON.parse(cleanTrendsOutput);
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
-            setLastUpdateTime(new Date(trends.last_analysis_at));
+            setLastUpdateTime(trends.last_analysis_at ? new Date(trends.last_analysis_at) : null);
           } catch (error) {
             console.error('Error parsing trends data:', error);
+            toast({
+              title: "Error",
+              description: "Failed to parse trends data. Please try refreshing.",
+              variant: "destructive",
+            });
           }
         }
       } catch (error) {
@@ -63,9 +74,11 @@ const Trends = () => {
 
     fetchRecordingsCount();
     fetchLatestTrends();
-  }, [session.user.id]);
+  }, [session, navigate]);
 
   const generateTrends = async () => {
+    if (!session) return;
+
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
@@ -114,6 +127,10 @@ const Trends = () => {
       setIsLoading(false);
     }
   };
+
+  if (!session) {
+    return null;
+  }
 
   return (
     <div className="min-h-[100dvh] bg-background">
