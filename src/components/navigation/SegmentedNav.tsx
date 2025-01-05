@@ -108,13 +108,13 @@ const SegmentedNav = () => {
             index === 0 ? "border-r border-zinc-200" : ""
           )}
         >
-          <div className="relative">
-            {segment.icon}
+          {segment.icon}
+          <span className="relative">
+            {segment.label}
             {segment.value === 'trends' && hasNewRecordings && (
               <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
             )}
-          </div>
-          {segment.label}
+          </span>
         </button>
       ))}
     </div>
