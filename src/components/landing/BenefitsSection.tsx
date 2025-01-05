@@ -6,12 +6,12 @@ const BenefitsSection = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:gap-12 lg:grid-cols-3">
           {/* Voice-First Experience */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-[#4169E1]/10">
-            <div className="rounded-lg p-3 bg-[#4169E1]/5 inline-block">
-              <Headphones className="h-6 w-6 text-[#4169E1]" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-zinc-200">
+            <div className="rounded-lg p-3 bg-zinc-50 inline-block">
+              <Headphones className="h-6 w-6 text-zinc-900" />
             </div>
-            <h3 className="mt-6 text-xl font-semibold text-[#4169E1]">Voice-First Experience</h3>
-            <p className="mt-4 text-[#3154b3] leading-7">
+            <h3 className="mt-6 text-xl font-semibold text-zinc-900">Voice-First Experience</h3>
+            <p className="mt-4 text-zinc-600 leading-7">
               As Natural As Talking About Your Round: No more fumbling with note-taking apps or forgetting key insights.
             </p>
             <ul className="mt-6 space-y-4">
@@ -24,20 +24,20 @@ const BenefitsSection = () => {
                 "No Audio Ads"
               ].map((feature) => (
                 <li key={feature} className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-[#4169E1] mt-2.5" />
-                  <span className="text-sm text-[#3154b3]">{feature}</span>
+                  <div className="h-2 w-2 rounded-full bg-zinc-900 mt-2.5" />
+                  <span className="text-sm text-zinc-600">{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* AI-Powered Insights */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-[#4169E1]/10">
-            <div className="rounded-lg p-3 bg-[#4169E1]/5 inline-block">
-              <Brain className="h-6 w-6 text-[#4169E1]" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-zinc-200">
+            <div className="rounded-lg p-3 bg-zinc-50 inline-block">
+              <Brain className="h-6 w-6 text-zinc-900" />
             </div>
-            <h3 className="mt-6 text-xl font-semibold text-[#4169E1]">AI-Powered Insights</h3>
-            <p className="mt-4 text-[#3154b3] leading-7">
+            <h3 className="mt-6 text-xl font-semibold text-zinc-900">AI-Powered Insights</h3>
+            <p className="mt-4 text-zinc-600 leading-7">
               Our intelligent AI doesn't just transcribe—it learns your unique playing style and evolves with you, providing personalized insights that matter.
             </p>
             <ul className="mt-6 space-y-4">
@@ -50,20 +50,20 @@ const BenefitsSection = () => {
                 "Mental Game Analysis"
               ].map((feature) => (
                 <li key={feature} className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-[#4169E1] mt-2.5" />
-                  <span className="text-sm text-[#3154b3]">{feature}</span>
+                  <div className="h-2 w-2 rounded-full bg-zinc-900 mt-2.5" />
+                  <span className="text-sm text-zinc-600">{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Share & Connect */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-[#4169E1]/10">
-            <div className="rounded-lg p-3 bg-[#4169E1]/5 inline-block">
-              <Share2 className="h-6 w-6 text-[#4169E1]" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-zinc-200">
+            <div className="rounded-lg p-3 bg-zinc-50 inline-block">
+              <Share2 className="h-6 w-6 text-zinc-900" />
             </div>
-            <h3 className="mt-6 text-xl font-semibold text-[#4169E1]">Share & Connect</h3>
-            <p className="mt-4 text-[#3154b3] leading-7">
+            <h3 className="mt-6 text-xl font-semibold text-zinc-900">Share & Connect</h3>
+            <p className="mt-4 text-zinc-600 leading-7">
               Share your progress with coaches, track improvements over time, and build a comprehensive record of your golf journey.
             </p>
             <ul className="mt-6 space-y-4">
@@ -76,8 +76,8 @@ const BenefitsSection = () => {
                 "Data Insights"
               ].map((feature) => (
                 <li key={feature} className="flex items-start gap-3">
-                  <div className="h-2 w-2 rounded-full bg-[#4169E1] mt-2.5" />
-                  <span className="text-sm text-[#3154b3]">{feature}</span>
+                  <div className="h-2 w-2 rounded-full bg-zinc-900 mt-2.5" />
+                  <span className="text-sm text-zinc-600">{feature}</span>
                 </li>
               ))}
             </ul>

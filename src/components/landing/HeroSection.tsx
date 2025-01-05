@@ -34,25 +34,25 @@ const HeroSection = () => {
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-gray-900 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-zinc-900 max-w-4xl mx-auto">
             Turn Your Golf Talk Into Insights
           </h1>
           
-          <p className="mt-6 text-lg sm:text-xl leading-8 text-gray-600 max-w-2xl mx-auto">
+          <p className="mt-6 text-lg sm:text-xl leading-8 text-zinc-600 max-w-2xl mx-auto">
             Stop losing valuable insights after your round. Just talk about your game like you always do, and let AI reveal patterns in your game
           </p>
           
           <div className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
             <Button
               onClick={() => navigate("/signup")}
-              className="text-base sm:text-lg px-8 py-6 h-auto bg-[#4169E1] hover:bg-[#3154b3]"
+              className="text-base sm:text-lg px-8 py-6 h-auto bg-zinc-900 hover:bg-zinc-800"
             >
               Start your GolfLog
             </Button>
             <Button
               variant="outline"
               onClick={() => navigate("/demo")}
-              className="text-base sm:text-lg px-8 py-6 h-auto"
+              className="text-base sm:text-lg px-8 py-6 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50"
             >
               See how it works
             </Button>
