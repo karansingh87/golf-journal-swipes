@@ -95,7 +95,7 @@ const PhoneMockup = () => {
               stopOnInteraction: false,
             }),
           ]}
-          className="w-full max-w-[275px] mx-auto"
+          className="w-full max-w-[220px] mx-auto"
           aria-label="Screenshot carousel"
         >
           <CarouselContent>
