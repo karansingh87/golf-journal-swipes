@@ -26,7 +26,7 @@ const Landing = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fefcfb]">
       {/* Grid Background */}
       <div className="fixed inset-0 grid-background pointer-events-none" />
       
