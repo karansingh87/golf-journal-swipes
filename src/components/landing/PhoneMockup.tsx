@@ -105,14 +105,14 @@ const PhoneMockup = () => {
               stopOnInteraction: false,
             }),
           ]}
-          className="w-full max-w-[220px] mx-auto"
+          className="w-full max-w-[280px] mx-auto"
           aria-label="Screenshot carousel"
         >
           <CarouselContent>
             {screenshots.map((screenshot, index) => (
               <CarouselItem key={index}>
                 <div className="flex flex-col items-center space-y-4">
-                  <div className="relative w-full aspect-[9/19]">
+                  <div className="relative w-[220px] aspect-[9/19] mx-auto">
                     <img
                       src={screenshot.image}
                       alt={screenshot.title}
