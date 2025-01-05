@@ -55,12 +55,12 @@
   }
 }
 
-/* Grid Animation - Updated with smaller grid */
+/* Grid Animation - Updated with smaller grid and lighter color */
 .grid-background {
-  background-size: 30px 30px; /* Reduced from 50px */
+  background-size: 25px 25px; /* Reduced from 30px */
   background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   animation: grid-scroll 20s linear infinite;
 }
 
@@ -69,7 +69,7 @@
     background-position: 0 0;
   }
   100% {
-    background-position: 30px 30px; /* Adjusted to match new grid size */
+    background-position: 25px 25px; /* Adjusted to match new grid size */
   }
 }
 
