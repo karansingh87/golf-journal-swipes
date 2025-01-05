@@ -1,19 +1,11 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import ColorPicker from "./ColorPicker";
-import { Plus, Save, Trash2 } from "lucide-react";
-
-interface ColorConfig {
-  id: string;
-  name: string;
-  colors: Record<string, string>;
-  is_active: boolean;
-}
+import { ColorConfig, ColorConfigResponse, transformColorConfig } from "./types";
+import ThemeHeader from "./color-config/ThemeHeader";
+import ThemeNameInput from "./color-config/ThemeNameInput";
 
 const ColorConfigTab = () => {
   const [configs, setConfigs] = useState<ColorConfig[]>([]);
@@ -34,9 +26,10 @@ const ColorConfigTab = () => {
 
       if (error) throw error;
 
-      setConfigs(data || []);
-      if (data && data.length > 0) {
-        setSelectedConfig(data[0].id);
+      const transformedConfigs = (data || []).map(transformColorConfig);
+      setConfigs(transformedConfigs);
+      if (transformedConfigs.length > 0) {
+        setSelectedConfig(transformedConfigs[0].id);
       }
     } catch (error) {
       console.error('Error fetching color configs:', error);
@@ -137,13 +130,11 @@ const ColorConfigTab = () => {
   const handleActivate = async (configId: string) => {
     setIsLoading(true);
     try {
-      // First, deactivate all configs
       await supabase
         .from('color_config')
         .update({ is_active: false })
         .neq('id', 'placeholder');
 
-      // Then activate the selected config
       const { error } = await supabase
         .from('color_config')
         .update({ is_active: true })
@@ -169,17 +160,35 @@ const ColorConfigTab = () => {
     }
   };
 
-  const selectedTheme = configs.find(config => config.id === selectedConfig);
+  const handleNameChange = async (configId: string, name: string) => {
+    try {
+      const { error } = await supabase
+        .from('color_config')
+        .update({ name })
+        .eq('id', configId);
+      
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Failed to update theme name",
+          variant: "destructive",
+        });
+      } else {
+        fetchColorConfigs();
+      }
+    } catch (error) {
+      console.error('Error updating theme name:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update theme name",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Color Themes</h2>
-        <Button onClick={handleCreate} className="flex items-center gap-2">
-          <Plus className="w-4 h-4" />
-          New Theme
-        </Button>
-      </div>
+      <ThemeHeader onCreateTheme={handleCreate} />
 
       <Tabs value={selectedConfig || ''} onValueChange={setSelectedConfig}>
         <TabsList className="w-full flex-wrap h-auto gap-2 bg-transparent">
@@ -199,48 +208,14 @@ const ColorConfigTab = () => {
 
         {configs.map((config) => (
           <TabsContent key={config.id} value={config.id} className="space-y-6">
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <Label htmlFor="themeName">Theme Name</Label>
-                <Input
-                  id="themeName"
-                  value={config.name}
-                  onChange={async (e) => {
-                    const { error } = await supabase
-                      .from('color_config')
-                      .update({ name: e.target.value })
-                      .eq('id', config.id);
-                    
-                    if (error) {
-                      toast({
-                        title: "Error",
-                        description: "Failed to update theme name",
-                        variant: "destructive",
-                      });
-                    } else {
-                      fetchColorConfigs();
-                    }
-                  }}
-                />
-              </div>
-              <div className="flex items-end gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => handleActivate(config.id)}
-                  disabled={config.is_active || isLoading}
-                >
-                  Activate Theme
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  onClick={() => handleDelete(config.id)}
-                  disabled={configs.length === 1}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
+            <ThemeNameInput
+              config={config}
+              isLoading={isLoading}
+              onNameChange={(name) => handleNameChange(config.id, name)}
+              onActivate={() => handleActivate(config.id)}
+              onDelete={() => handleDelete(config.id)}
+              canDelete={configs.length > 1}
+            />
 
             <ColorPicker
               colors={config.colors}
