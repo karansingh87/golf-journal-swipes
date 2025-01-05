@@ -120,7 +120,7 @@ const PhoneMockup = () => {
                       loading="lazy"
                     />
                   </div>
-                  <div className="bg-zinc-50/80 backdrop-blur-sm rounded-xl p-4 w-[280px] -mt-16 relative z-10 shadow-lg ring-1 ring-zinc-900/5">
+                  <div className="bg-zinc-50/80 backdrop-blur-sm rounded-xl p-4 w-[270px] -mt-16 relative z-10 shadow-lg ring-1 ring-zinc-900/5">
                     <h3 className="text-lg font-semibold mb-1.5 text-zinc-900 font-serif tracking-tight">
                       {screenshot.title}
                     </h3>
