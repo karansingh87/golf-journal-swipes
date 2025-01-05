@@ -62,7 +62,7 @@ const PhoneMockup = () => {
 
   return (
     <section 
-      className="relative py-24 overflow-hidden"
+      className="relative py-12 overflow-hidden"
       aria-label="App screenshots showcase"
     >
       <motion.div
