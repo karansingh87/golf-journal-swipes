@@ -58,7 +58,7 @@ const PhoneMockup = () => {
 
   return (
     <section 
-      className="relative py-24 overflow-hidden bg-gradient-to-b from-background to-secondary/20"
+      className="relative py-24 overflow-hidden"
       aria-label="App screenshots showcase"
     >
       <motion.div
@@ -90,14 +90,14 @@ const PhoneMockup = () => {
               stopOnInteraction: false,
             }),
           ]}
-          className="w-full max-w-[400px] mx-auto"
+          className="w-full max-w-[300px] mx-auto"
           aria-label="Screenshot carousel"
         >
           <CarouselContent>
             {screenshots.map((screenshot, index) => (
               <CarouselItem key={index}>
                 <div className="flex flex-col items-center space-y-6 p-4">
-                  <div className="relative w-full aspect-[9/19] rounded-[2.5rem] overflow-hidden shadow-xl transition-transform duration-300 hover:scale-[1.02]">
+                  <div className="relative w-full aspect-[9/19]">
                     <img
                       src={screenshot.image}
                       alt={screenshot.title}
@@ -141,9 +141,6 @@ const PhoneMockup = () => {
             />
           </div>
         </Carousel>
-
-        {/* Decorative Elements */}
-        <div className="absolute -z-10 blur-3xl opacity-20 -inset-x-20 -top-20 -bottom-20 bg-gradient-to-r from-zinc-400 via-zinc-200 to-zinc-400 animate-pulse"></div>
       </motion.div>
     </section>
   );
