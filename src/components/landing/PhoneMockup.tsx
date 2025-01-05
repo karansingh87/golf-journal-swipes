@@ -38,7 +38,7 @@ const PhoneMockup = () => {
             <img
               src="/lovable-uploads/39e5d958-bcef-459c-985e-6847af214c0d.png"
               alt="GolfLog App Interface"
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-contain"
             />
           </div>
           
