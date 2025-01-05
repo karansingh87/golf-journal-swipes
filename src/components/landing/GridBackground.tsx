@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { useMediaQuery } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const GridBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     const canvas = canvasRef.current;
