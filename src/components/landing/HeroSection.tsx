@@ -53,18 +53,18 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               onClick={() => navigate("/signup")}
-              className="text-base px-6 py-2.5 h-auto bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group"
+              className="text-base px-6 py-2.5 h-auto bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-xl"
             >
               <span className="relative z-10">Start your GolfLog</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-xl"></div>
             </Button>
             <Button
               variant="outline"
               onClick={() => navigate("/demo")}
-              className="text-base px-6 py-2.5 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50 relative overflow-hidden group"
+              className="text-base px-6 py-2.5 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50 relative overflow-hidden group rounded-xl"
             >
               <span className="relative z-10">See how it works</span>
-              <div className="absolute inset-0 bg-zinc-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+              <div className="absolute inset-0 bg-zinc-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-xl"></div>
             </Button>
           </div>
         </div>
