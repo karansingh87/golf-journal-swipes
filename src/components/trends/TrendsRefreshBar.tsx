@@ -25,47 +25,17 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
       }
 
       try {
-        // Get the latest trends entry to find which recordings were last analyzed
-        const { data: trendsData } = await supabase
-          .from('trends')
-          .select('analyzed_recordings')
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
+        // Get recordings created after the last trends update
+        const { count } = await supabase
+          .from('recordings')
+          .select('*', { count: 'exact', head: true })
+          .gt('created_at', lastUpdateTime.toISOString());
 
-        // If we have analyzed recordings and the array is not empty
-        if (trendsData?.analyzed_recordings?.length > 0) {
-          try {
-            // Filter out any invalid UUIDs
-            const validRecordingIds = trendsData.analyzed_recordings.filter(id => 
-              typeof id === 'string' && id.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)
-            );
-
-            if (validRecordingIds.length > 0) {
-              // Count recordings not included in the last analysis
-              const { count } = await supabase
-                .from('recordings')
-                .select('*', { count: 'exact', head: true })
-                .not('id', 'in', `(${validRecordingIds.map(id => `'${id}'`).join(',')})`)
-                .single();
-
-              console.log('New recordings count:', count);
-              setNewRecordingsCount(count || 0);
-            } else {
-              console.log('No valid recording IDs found, counting all recordings');
-              setNewRecordingsCount(recordingsCount);
-            }
-          } catch (error) {
-            console.error('Error counting new recordings:', error);
-            setNewRecordingsCount(recordingsCount);
-          }
-        } else {
-          console.log('No analyzed recordings found, counting all recordings');
-          setNewRecordingsCount(recordingsCount);
-        }
+        console.log('New recordings since last trends:', count);
+        setNewRecordingsCount(count || 0);
       } catch (error) {
         console.error('Error checking new recordings:', error);
-        setNewRecordingsCount(recordingsCount);
+        setNewRecordingsCount(0);
       }
     };
 
@@ -85,7 +55,7 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 pt-4">
       {newRecordingsCount >= 3 && (
         <Alert className="mb-2">
           <AlertDescription>
