@@ -1,39 +1,57 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { supabase } from "./integrations/supabase/client";
+import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
-import Landing from "./pages/Landing";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
-import Settings from "./pages/Settings";
 import Admin from "./pages/Admin";
-import Onboarding from "./pages/Onboarding";
+import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-function App() {
-  return (
+const App = () => (
+  <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <Router>
-        <NavigationBar />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/notes" element={<Notes />} />
-          <Route path="/trends" element={<Trends />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/recording/:id" element={<RecordingDetail />} />
-        </Routes>
-        <Toaster />
-      </Router>
+      <SessionContextProvider supabaseClient={supabase}>
+        <TooltipProvider>
+          <NavigationBar />
+          <Toaster />
+          <Sonner />
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<Login />} />
+            
+            {/* App routes */}
+            <Route path="/record" element={<VoiceRecorderContainer />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/recording/:id" element={<RecordingDetail />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/settings" element={<Settings />} />
+            
+            {/* Redirects */}
+            <Route path="/history" element={<Navigate to="/notes" replace />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </TooltipProvider>
+      </SessionContextProvider>
     </QueryClientProvider>
-  );
-}
+  </BrowserRouter>
+);
 
 export default App;
