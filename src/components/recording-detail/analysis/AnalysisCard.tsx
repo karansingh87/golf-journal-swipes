@@ -42,7 +42,7 @@ const AnalysisCard = ({
       );
     }
 
-    return <p>{content}</p>;
+    return <p className="leading-relaxed">{content}</p>;
   };
 
   return (
