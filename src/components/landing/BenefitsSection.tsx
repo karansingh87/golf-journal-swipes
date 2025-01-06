@@ -6,33 +6,33 @@ const features = [
   // Hero features (top row)
   {
     title: "Capture What Works",
-    description: "Record your best rounds and practice sessions. What worked today? Your future self will thank you.",
+    description: "Those magical rounds and practice breakthroughs? Finally understand why. GolfLog captures your insights in the moment, before they fade. From perfect drives to productive range sessions, keep what works.",
     icon: Sparkles,
   },
   {
     title: "Zero Extra Work",
-    description: "Just talk naturally about your game. We'll organize your insights and spot the patterns that matter.",
+    description: "No typing. No manual tracking. Just talk about your rounds and practice like you already do. Whether it's post-round thoughts or range session breakthroughs, we'll turn your words into actionable insights.",
     icon: MessageSquare,
   },
   {
-    title: "Beyond Numbers",
-    description: "Understand your mental game, decision making, and course strategy. Not just another stats tracker.",
+    title: "Beyond the Numbers",
+    description: "While others track just scores and stats, GolfLog captures the complete story of your golf journey. Understand the mental game tricks, swing thoughts, and practice methods that actually work for YOUR game.",
     icon: Brain,
   },
   // Supporting features (bottom row)
   {
     title: "Personal Patterns",
-    description: "Discover your unique strengths and opportunities. Build on what already works for your game.",
+    description: "Discover your unique performance triggers. From practice drills to pre-shot routines, see which approaches actually improve your game. Connect range breakthroughs to course success.",
     icon: PieChart,
   },
   {
     title: "Coach-Ready Insights",
-    description: "Share detailed session notes with your coach. Make every lesson more focused and productive.",
+    description: "Share focused insights with your coach about rounds and practice. Transform your lessons with clear progression tracking. No more \"What were we working on last time?\" See how practice translates to performance.",
     icon: Users,
   },
   {
-    title: "Golf Time Machine",
-    description: "Look back at your journey. What changed? What stayed consistent? Your story, your progress.",
+    title: "Your Golf Time Machine",
+    description: "Go back to any moment in your journey. That perfect drive on 17? That breakthrough range session? Every insight is saved, searchable, and ready to reinforce your confidence. Build on what works, both on and off the course.",
     icon: Clock,
   },
 ];
