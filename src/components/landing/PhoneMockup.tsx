@@ -25,7 +25,7 @@ const screenshots: ScreenshotData[] = [
   },
   {
     image: "/lovable-uploads/0ffb7065-6622-4b6d-8945-9c03333d7f97.png",
-    title: "Track progress over time.",
+    title: "Discover your winning patterns.",
   }
 ];
 
