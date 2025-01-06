@@ -3,7 +3,6 @@ import PromptEditor from "./PromptEditor";
 import PromptHistoryTable from "./PromptHistoryTable";
 import UserManagementTable from "./UserManagementTable";
 import ModelConfig from "./ModelConfig";
-import LandingPageContent from "./LandingPageContent";
 import ColorConfigTab from "./ColorConfigTab";
 
 interface AdminTabsProps {
@@ -51,9 +50,6 @@ const AdminTabs = ({
         <TabsTrigger value="users" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           User Management
         </TabsTrigger>
-        <TabsTrigger value="landing" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
-          Landing Page
-        </TabsTrigger>
         <TabsTrigger value="colors" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Colors
         </TabsTrigger>
@@ -97,10 +93,6 @@ const AdminTabs = ({
 
         <TabsContent value="users">
           <UserManagementTable />
-        </TabsContent>
-
-        <TabsContent value="landing">
-          <LandingPageContent />
         </TabsContent>
 
         <TabsContent value="colors">
