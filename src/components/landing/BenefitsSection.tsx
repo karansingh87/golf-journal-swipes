@@ -35,15 +35,13 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="relative py-4">
-    <div className="flex flex-col space-y-2">
-      <div className="flex flex-col items-start space-y-2">
-        <div className="flex items-center gap-2">
-          <div className="text-zinc-900">
-            <Icon className="w-4 h-4" />
-          </div>
-          <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
+  <div className="relative py-3">
+    <div className="flex flex-col space-y-1.5">
+      <div className="flex items-center gap-2">
+        <div className="text-zinc-900">
+          <Icon className="w-4 h-4" />
         </div>
+        <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
       </div>
       <p className="text-sm text-zinc-600 leading-relaxed">{description}</p>
     </div>
@@ -52,16 +50,16 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
 
 const BenefitsSection = () => {
   return (
-    <section className="py-24 sm:py-32">
+    <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-white p-8 shadow-lg ring-1 ring-zinc-900/5">
-          <div className="mb-16">
+        <div className="relative overflow-hidden rounded-3xl bg-white p-6 shadow-lg ring-1 ring-zinc-900/5">
+          <div className="mb-12">
             <h2 className="text-3xl font-normal text-zinc-900 max-w-2xl">
               Simple tool, <span className="font-semibold">powerful features</span>
             </h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature) => (
               <FeatureItem key={feature.title} {...feature} />
             ))}
