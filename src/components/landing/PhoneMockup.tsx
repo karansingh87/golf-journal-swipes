@@ -39,6 +39,10 @@ const PhoneMockup = () => {
 
   // Adjusted to give even more scroll time per screenshot
   const adjustedProgress = useTransform(scrollYProgress, [0.1, 0.85], [0, screenshots.length - 1]);
+  const badgeOpacity = useTransform(scrollYProgress, 
+    [0.2, 0.3, 0.7, 0.8], // Fade in and out points
+    [0, 1, 1, 0]
+  );
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
 
@@ -71,16 +75,19 @@ const PhoneMockup = () => {
             }
           }}
           viewport={{ once: true, margin: "-100px" }}
-          className="container px-4 mx-auto"
+          className="container px-4 mx-auto flex flex-col items-center"
         >
-          <div className="flex flex-col items-center mb-8">
+          <motion.div 
+            style={{ opacity: badgeOpacity }}
+            className="mb-8"
+          >
             <Badge 
               variant="outline" 
               className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
             >
               How it works
             </Badge>
-          </div>
+          </motion.div>
           <div className="w-full max-w-[250px] mx-auto">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative w-[275px] aspect-[9/19] mx-auto">
