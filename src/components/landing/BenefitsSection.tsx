@@ -36,7 +36,7 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-center text-center bg-white/80 backdrop-blur-sm rounded-lg p-6">
+  <div className="flex flex-col items-center text-center rounded-lg p-6">
     <div className="mb-3">
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
@@ -48,7 +48,7 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
 const BenefitsSection = () => {
   return (
     <section className="py-32 sm:py-40">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 bg-white/10 backdrop-blur-sm rounded-xl py-12">
         <div className="flex flex-col items-center space-y-4 mb-12">
           <Badge 
             variant="outline" 
