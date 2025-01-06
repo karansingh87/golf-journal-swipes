@@ -36,14 +36,14 @@ const features = [
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
   <div className="relative py-4">
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-4">
-        <div className="p-2 rounded-full bg-zinc-900 text-white">
-          <Icon className="w-6 h-6" />
+    <div className="flex flex-col space-y-3">
+      <div className="flex items-center space-x-3">
+        <div className="p-1.5 rounded-full bg-zinc-900 text-white">
+          <Icon className="w-4 h-4" />
         </div>
-        <h3 className="text-xl font-medium text-zinc-900">{title}</h3>
+        <h3 className="text-base font-medium text-zinc-900">{title}</h3>
       </div>
-      <p className="text-base text-zinc-600 leading-relaxed">{description}</p>
+      <p className="text-sm text-zinc-600 leading-relaxed">{description}</p>
     </div>
   </div>
 );
