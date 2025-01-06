@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital@0;1&family=Poppins:wght@700&family=Roboto:wght@700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital@0;1&family=Poppins:wght@100;400;700&family=Roboto:wght@700&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -97,3 +97,4 @@
   animation: gradientFlow 15s ease infinite;
   pointer-events: none;
 }
+
