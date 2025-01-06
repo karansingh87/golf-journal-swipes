@@ -35,7 +35,7 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-center text-center">
+  <div className="flex flex-col items-start">
     <div className="mb-4">
       <Icon className="w-8 h-8 text-zinc-900" />
     </div>
@@ -48,6 +48,11 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="flex flex-col items-start mb-12">
+          <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-zinc-100 text-zinc-800">
+            Benefits
+          </span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
           {features.map((feature) => (
             <FeatureItem key={feature.title} {...feature} />
