@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, MessageSquare, Brain, PieChart, Users, TrendingUp } from "lucide-react";
+import { Sparkles, MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
 
 const features = [
   {
@@ -20,7 +20,7 @@ const features = [
   {
     title: "Your Golf Time Machine",
     description: "Every breakthrough moment automatically tagged and instantly searchable. That perfect drive or game-changing range session? Build on what works with smart pattern recognition.",
-    icon: Clock,
+    icon: Timer,
   },
   {
     title: "Coach-Ready Insights",
