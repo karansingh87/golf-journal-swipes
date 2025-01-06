@@ -48,19 +48,25 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
 const BenefitsSection = () => {
   return (
     <section className="py-32 sm:py-40">
-      <div className="mx-auto max-w-6xl px-12 lg:px-16 bg-white/10 backdrop-blur-sm rounded-3xl py-12">
-        <div className="flex flex-col items-center space-y-4 mb-12">
-          <Badge 
-            variant="outline" 
-            className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
-          >
-            Features
-          </Badge>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-          {features.map((feature) => (
-            <FeatureItem key={feature.title} {...feature} />
-          ))}
+      <div className="mx-auto max-w-6xl px-12 lg:px-16">
+        <div className="group rounded-2xl bg-white/80 backdrop-blur-sm p-8 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-50/50 to-zinc-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          
+          <div className="relative z-10">
+            <div className="flex flex-col items-center space-y-4 mb-12">
+              <Badge 
+                variant="outline" 
+                className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
+              >
+                Features
+              </Badge>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+              {features.map((feature) => (
+                <FeatureItem key={feature.title} {...feature} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
