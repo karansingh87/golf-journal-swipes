@@ -36,8 +36,8 @@ const PhoneMockup = () => {
     offset: ["start center", "end center"]
   });
 
-  // Adjusted to give more scroll time per screenshot
-  const adjustedProgress = useTransform(scrollYProgress, [0.15, 0.8], [0, screenshots.length - 1]);
+  // Adjusted to give even more scroll time per screenshot
+  const adjustedProgress = useTransform(scrollYProgress, [0.1, 0.85], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
 
@@ -55,7 +55,7 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[350vh] py-12"
+      className="relative min-h-[400vh] py-12"
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-[20vh] h-[60vh] flex items-center justify-center">
