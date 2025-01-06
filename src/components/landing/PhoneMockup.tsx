@@ -37,8 +37,8 @@ const PhoneMockup = () => {
   });
 
   // Adjust the scroll progress to start changing after the first full scroll
-  // Increased the range to make transitions slower
-  const adjustedProgress = useTransform(scrollYProgress, [0.2, 0.95], [0, screenshots.length - 1]);
+  // Increased the range to make transitions slower and last screen stay longer
+  const adjustedProgress = useTransform(scrollYProgress, [0.2, 0.85], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
 
@@ -73,9 +73,9 @@ const PhoneMockup = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="container px-4 mx-auto"
         >
-          <div className="w-full max-w-[280px] mx-auto">
+          <div className="w-full max-w-[320px] mx-auto">
             <div className="flex flex-col items-center space-y-4">
-              <div className="relative w-[220px] aspect-[9/19] mx-auto">
+              <div className="relative w-[275px] aspect-[9/19] mx-auto">
                 <AnimatePresence mode="popLayout" initial={false}>
                   <motion.div
                     key={screenshots[displayedIndex].image}
@@ -100,7 +100,7 @@ const PhoneMockup = () => {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
-                  className="font-[400] text-base text-center text-golf-gray-light"
+                  className="font-[500] text-lg text-center text-golf-gray-light"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
