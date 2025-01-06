@@ -44,7 +44,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           
           <h1 className="font-poppins text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto flex flex-col" style={{ fontWeight: 400 }}>
             Your best golf insights,
-            <span><span className="italic" style={{ fontWeight: 200 }}>spoken</span> not lost</span>
+            <span><span className="italic" style={{ fontWeight: 100 }}>spoken</span> not lost</span>
           </h1>
           
           <p className="mt-6 text-lg sm:text-xl leading-8 text-zinc-600 max-w-2xl mx-auto">
