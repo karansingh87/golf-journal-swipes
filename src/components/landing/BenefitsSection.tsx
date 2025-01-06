@@ -63,7 +63,7 @@ const BenefitsSection = () => {
                 Features
               </Badge>
               <h2 className="text-3xl font-bold text-center text-zinc-900 max-w-2xl">
-                Simple tool, powerful insights
+                Simple tool, powerful features
               </h2>
             </div>
             
