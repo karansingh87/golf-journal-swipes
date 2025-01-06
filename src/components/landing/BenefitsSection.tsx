@@ -48,7 +48,7 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
 const BenefitsSection = () => {
   return (
     <section className="py-32 sm:py-40">
-      <div className="mx-auto max-w-6xl px-12 lg:px-16">
+      <div className="mx-auto max-w-7xl px-12 lg:px-16">
         <div className="group rounded-2xl bg-white/80 backdrop-blur-sm p-8 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-zinc-50/50 to-zinc-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           
