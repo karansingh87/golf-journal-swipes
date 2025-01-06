@@ -49,7 +49,7 @@ const BenefitsSection = () => {
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center w-full mb-12">
-          <span className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-white border border-zinc-200 text-zinc-800 shadow-[0_0_0_1px_rgba(255,255,255,1)]">
+          <span className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-white border border-zinc-200 text-zinc-800 shadow-[0_0_0_1px_rgba(255,255,255,1)] relative before:absolute before:inset-0 before:bg-white before:rounded-full before:-z-10">
             Benefits
           </span>
         </div>
