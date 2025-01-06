@@ -37,13 +37,11 @@ const features = [
 const FeatureItem = ({ title, description, icon: Icon }) => (
   <div className="relative group p-8 rounded-2xl transition-all duration-300 hover:bg-white/80 hover:shadow-lg">
     <div className="flex flex-col items-start space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="p-2 rounded-full bg-zinc-900 text-white">
-          <Icon className="w-5 h-5" />
-        </div>
-        <h3 className="font-poppins text-base font-semibold text-zinc-900">{title}</h3>
+      <div className="p-3 rounded-full bg-zinc-900 text-white">
+        <Icon className="w-6 h-6" />
       </div>
-      <p className="text-sm text-zinc-600 leading-relaxed">{description}</p>
+      <h3 className="font-poppins text-lg font-semibold text-zinc-900">{title}</h3>
+      <p className="text-base text-zinc-600 leading-relaxed">{description}</p>
     </div>
   </div>
 );
@@ -57,7 +55,7 @@ const BenefitsSection = () => {
           
           <div className="relative">
             <div className="flex flex-col items-center space-y-8 mb-16">
-              <h2 className="text-3xl font-medium text-left text-zinc-900 max-w-2xl font-poppins font-[500]">
+              <h2 className="text-3xl font-medium text-center text-zinc-900 max-w-2xl font-sans">
                 Simple tool, powerful features
               </h2>
             </div>
