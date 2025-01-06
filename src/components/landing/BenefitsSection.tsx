@@ -48,10 +48,14 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex justify-center w-full mb-12">
-          <span className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-zinc-50 border border-zinc-200 text-zinc-800 shadow-[0_0_0_1px_rgba(229,231,235,1)] relative before:absolute before:inset-0 before:bg-zinc-50 before:rounded-full before:-z-10">
-            Benefits
-          </span>
+        <div className="flex flex-col items-center mb-16">
+          <div className="w-20 h-px bg-zinc-200 mb-8" />
+          <h2 className="text-3xl sm:text-4xl font-semibold text-zinc-900 text-center mb-4 font-serif">
+            Simple tool, Powerful insights
+          </h2>
+          <p className="text-lg text-zinc-600 text-center max-w-2xl">
+            The smart way to understand your game
+          </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
           {features.map((feature) => (
