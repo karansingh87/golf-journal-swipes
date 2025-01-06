@@ -63,7 +63,7 @@ const BenefitsSection = () => {
                 Features
               </Badge>
               <h2 className="text-3xl font-bold text-center text-zinc-900 max-w-2xl">
-                Everything you need to improve your game
+                Simple tool, powerful insights
               </h2>
             </div>
             
