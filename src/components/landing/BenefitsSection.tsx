@@ -56,8 +56,8 @@ const BenefitsSection = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-white p-8 shadow-lg ring-1 ring-zinc-900/5">
           <div className="mb-16">
-            <h2 className="text-3xl font-medium text-zinc-900 max-w-2xl">
-              Simple tool, powerful features
+            <h2 className="text-3xl font-normal text-zinc-900 max-w-2xl">
+              Simple tool, <span className="font-semibold">powerful features</span>
             </h2>
           </div>
           
