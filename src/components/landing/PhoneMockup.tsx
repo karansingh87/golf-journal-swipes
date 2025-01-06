@@ -105,7 +105,7 @@ const PhoneMockup = () => {
                       loading="lazy"
                     />
                   </div>
-                  <p className="font-poppins font-[400] text-base text-center text-[#8B5CF6]/80">
+                  <p className="font-poppins font-[400] text-base text-center text-golf-gray-light">
                     {screenshot.title}
                   </p>
                 </div>
