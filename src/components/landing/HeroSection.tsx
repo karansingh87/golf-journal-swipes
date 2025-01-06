@@ -66,10 +66,9 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             <Button
               variant="outline"
               onClick={() => navigate("/demo")}
-              className="text-base px-6 py-2.5 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50 relative overflow-hidden group rounded-xl"
+              className="text-base px-6 py-2.5 h-auto border-zinc-200 text-zinc-900 hover:bg-zinc-50 rounded-xl"
             >
-              <span className="relative z-10">See how it works</span>
-              <div className="absolute inset-0 bg-zinc-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-xl"></div>
+              <span>See how it works</span>
             </Button>
           </div>
         </div>
