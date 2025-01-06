@@ -48,9 +48,9 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col items-start space-y-4 mb-12">
+        <div className="flex flex-col items-start space-y-4 mb-12 pt-8">
           <div className="w-20 h-px bg-zinc-200" />
-          <h2 className="text-3xl sm:text-4xl font-poppins font-light text-zinc-900">
+          <h2 className="text-3xl sm:text-4xl font-poppins font-normal text-zinc-900">
             Simple tool, powerful insights.
           </h2>
         </div>
