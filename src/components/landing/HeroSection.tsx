@@ -46,7 +46,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Your best golf insights,
             <br />
             <span className="flex items-center justify-center gap-2">
-              <span className="italic font-[200]">spoken</span>
+              <span className="italic font-[300]">spoken</span>
               <span>not lost.</span>
             </span>
           </h1>
