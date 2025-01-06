@@ -36,7 +36,8 @@ const PhoneMockup = () => {
     offset: ["start center", "end center"]
   });
 
-  const adjustedProgress = useTransform(scrollYProgress, [0.2, 0.85], [0, screenshots.length - 1]);
+  // Adjusted to give more scroll time per screenshot
+  const adjustedProgress = useTransform(scrollYProgress, [0.15, 0.8], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
 
@@ -54,7 +55,7 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[300vh] py-12"
+      className="relative min-h-[350vh] py-12"
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-[20vh] h-[60vh] flex items-center justify-center">
@@ -64,7 +65,7 @@ const PhoneMockup = () => {
             opacity: 1, 
             y: 0,
             transition: {
-              duration: 0.8,
+              duration: 0.5,
               ease: "easeOut"
             }
           }}
@@ -79,7 +80,7 @@ const PhoneMockup = () => {
                   {screenshots.map((_, index) => (
                     <div
                       key={index}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                      className={`w-1.5 h-1.5 rounded-full transition-colors duration-200 ${
                         index === displayedIndex
                           ? "bg-golf-gray-light"
                           : "bg-golf-gray-light/30"
@@ -96,7 +97,7 @@ const PhoneMockup = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ 
-                      duration: 0.8,
+                      duration: 0.4,
                       ease: [0.4, 0, 0.2, 1]
                     }}
                   >
@@ -117,7 +118,7 @@ const PhoneMockup = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ 
-                    duration: 0.6,
+                    duration: 0.3,
                     ease: [0.4, 0, 0.2, 1]
                   }}
                 >
