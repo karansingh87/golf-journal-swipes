@@ -35,12 +35,12 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex items-start space-x-3">
-    <Icon className="w-5 h-5 text-zinc-900 mt-1 flex-shrink-0" />
-    <div>
-      <h3 className="text-sm font-medium text-zinc-900 mb-1">{title}</h3>
-      <p className="text-sm text-zinc-600 leading-relaxed">{description}</p>
+  <div className="flex flex-col items-center text-center">
+    <div className="mb-4">
+      <Icon className="w-8 h-8 text-zinc-900" />
     </div>
+    <h3 className="font-poppins text-lg font-medium text-zinc-900 mb-2">{title}</h3>
+    <p className="text-sm font-inter text-zinc-600 leading-relaxed max-w-sm">{description}</p>
   </div>
 );
 
@@ -48,7 +48,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
           {features.map((feature) => (
             <FeatureItem key={feature.title} {...feature} />
           ))}
