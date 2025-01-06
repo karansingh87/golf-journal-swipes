@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
+import { MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const features = [
@@ -36,7 +36,7 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-start text-left">
+  <div className="flex flex-col items-center text-center">
     <div className="mb-3">
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
@@ -49,8 +49,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col items-start space-y-4 mb-12">
-          <div className="w-20 h-px bg-zinc-200" />
+        <div className="flex flex-col items-center pt-8">
           <Badge 
             variant="outline" 
             className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
@@ -58,7 +57,7 @@ const BenefitsSection = () => {
             Features
           </Badge>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 mt-12">
           {features.map((feature) => (
             <FeatureItem key={feature.title} {...feature} />
           ))}
