@@ -13,19 +13,19 @@ const screenshots: ScreenshotData[] = [
   },
   {
     image: "/lovable-uploads/ff6ca37a-ddc1-42ff-a2ac-1199d6b7099b.png",
-    title: "Watch your words flow live.",
+    title: "Watch your thoughts turn to text.",
   },
   {
     image: "/lovable-uploads/bb2a5651-bb9d-4849-bcac-67aeecd2f025.png",
-    title: "AI analyzes your golf mind.",
+    title: "Your story comes together.",
   },
   {
     image: "/lovable-uploads/7c4e6f30-82be-4721-a3f9-a7b87858823a.png",
-    title: "Uncover your deep insights.",
+    title: "Get mindset and breakthrough insights.",
   },
   {
     image: "/lovable-uploads/0ffb7065-6622-4b6d-8945-9c03333d7f97.png",
-    title: "See patterns across time.",
+    title: "Track progress over time.",
   }
 ];
 
