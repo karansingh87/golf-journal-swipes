@@ -42,12 +42,12 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             </div>
           </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-zinc-900 max-w-4xl mx-auto">
-            {content?.title || "Turn Your Golf Talk Into Insights"}
+          <h1 className="font-poppins font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-zinc-900 max-w-4xl mx-auto">
+            Your best golf insights, <span className="italic">spoken</span> not lost
           </h1>
           
           <p className="mt-6 text-lg sm:text-xl leading-8 text-zinc-600 max-w-2xl mx-auto">
-            {content?.subtitle || "Stop losing valuable insights after your round. Just talk about your game like you always do, and let AI reveal patterns in your game"}
+            Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
           </p>
           
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
