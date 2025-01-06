@@ -53,7 +53,7 @@ const BenefitsSection = () => {
           <div className="w-20 h-px bg-zinc-200" />
           <Badge 
             variant="outline" 
-            className="bg-[#8B5CF6] hover:bg-[#8B5CF6] text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
+            className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
           >
             Features
           </Badge>
