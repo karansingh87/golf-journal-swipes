@@ -1,12 +1,5 @@
-import { useEffect, useRef } from "react";
-import { motion, useInView, useAnimation } from "framer-motion";
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-import useEmblaCarousel from "embla-carousel-react";
-import AutoPlay from "embla-carousel-autoplay";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform, useInView, useAnimation } from "framer-motion";
 
 interface ScreenshotData {
   image: string;
@@ -37,83 +30,79 @@ const screenshots: ScreenshotData[] = [
 ];
 
 const PhoneMockup = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const controls = useAnimation();
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { 
-      loop: true,
-      align: "center",
-      duration: 50,
-    }, 
-    [AutoPlay({ delay: 4000, stopOnInteraction: false })]
-  );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
+  // Calculate which screenshot to show based on scroll progress
+  const currentIndex = useTransform(scrollYProgress, [0, 1], [0, screenshots.length - 1]);
+  
+  const [displayedIndex, setDisplayedIndex] = useState(0);
+
+  // Update the displayed index when scroll progress changes
   useEffect(() => {
-    if (isInView) {
-      controls.start("visible");
-    }
-  }, [isInView, controls]);
+    const unsubscribe = currentIndex.on("change", (latest) => {
+      setDisplayedIndex(Math.round(latest));
+    });
+    return () => unsubscribe();
+  }, [currentIndex]);
 
   return (
     <section 
-      className="relative py-12 overflow-hidden"
+      ref={containerRef}
+      className="relative min-h-[200vh] py-12"
       aria-label="App screenshots showcase"
     >
-      <motion.div
-        ref={ref}
-        initial="hidden"
-        animate={controls}
-        variants={{
-          hidden: { opacity: 0, y: 50 },
-          visible: { 
+      <div className="sticky top-[20vh] h-[60vh] flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ 
             opacity: 1, 
             y: 0,
             transition: {
               duration: 0.8,
               ease: "easeOut"
             }
-          }
-        }}
-        className="container px-4 mx-auto"
-      >
-        <Carousel
-          ref={emblaRef}
-          opts={{
-            align: "center",
-            loop: true,
-            duration: 50,
           }}
-          plugins={[
-            AutoPlay({
-              delay: 4000,
-              stopOnInteraction: false,
-            }),
-          ]}
-          className="w-full max-w-[280px] mx-auto"
-          aria-label="Screenshot carousel"
+          viewport={{ once: true, margin: "-100px" }}
+          className="container px-4 mx-auto"
         >
-          <CarouselContent>
-            {screenshots.map((screenshot, index) => (
-              <CarouselItem key={index}>
-                <div className="flex flex-col items-center space-y-4">
-                  <div className="relative w-[220px] aspect-[9/19] mx-auto">
-                    <img
-                      src={screenshot.image}
-                      alt={screenshot.title}
-                      className="object-cover w-full h-full rounded-xl"
-                      loading="lazy"
-                    />
-                  </div>
-                  <p className="font-poppins font-[400] text-base text-center text-golf-gray-light">
-                    {screenshot.title}
-                  </p>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </motion.div>
+          <div className="w-full max-w-[280px] mx-auto">
+            <div className="flex flex-col items-center space-y-4">
+              <motion.div 
+                className="relative w-[220px] aspect-[9/19] mx-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.img
+                  key={screenshots[displayedIndex].image}
+                  src={screenshots[displayedIndex].image}
+                  alt={screenshots[displayedIndex].title}
+                  className="object-cover w-full h-full rounded-xl"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  loading="lazy"
+                />
+              </motion.div>
+              <motion.p 
+                key={screenshots[displayedIndex].title}
+                className="font-poppins font-[400] text-base text-center text-golf-gray-light"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {screenshots[displayedIndex].title}
+              </motion.p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 };
