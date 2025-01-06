@@ -49,7 +49,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-32 sm:py-40">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col items-start space-y-4 mb-12">
+        <div className="flex flex-col items-center space-y-4 mb-12">
           <Badge 
             variant="outline" 
             className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
