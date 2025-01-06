@@ -36,12 +36,12 @@ const features = [
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
   <div className="relative group p-8 rounded-2xl transition-all duration-300 hover:bg-white/80 hover:shadow-lg">
-    <div className="flex flex-col items-center text-center space-y-4">
+    <div className="flex flex-col items-start space-y-4">
       <div className="p-3 rounded-full bg-zinc-900 text-white">
         <Icon className="w-6 h-6" />
       </div>
       <h3 className="font-poppins text-lg font-semibold text-zinc-900">{title}</h3>
-      <p className="text-base text-zinc-600 leading-relaxed max-w-lg mx-auto">{description}</p>
+      <p className="text-base text-zinc-600 leading-relaxed">{description}</p>
     </div>
   </div>
 );
