@@ -36,7 +36,7 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-start text-left">
+  <div className="flex flex-col items-center text-center bg-white/80 backdrop-blur-sm rounded-lg p-6">
     <div className="mb-3">
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
