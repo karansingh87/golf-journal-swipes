@@ -50,6 +50,7 @@ const BenefitsSection = () => {
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col items-center space-y-4 mb-12">
+          <Sparkles className="w-6 h-6 text-zinc-900 mb-4" />
           <Badge 
             variant="outline" 
             className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
