@@ -42,15 +42,16 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             </div>
           </div>
           
-          <h1 className="font-poppins text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto flex flex-col">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto">
             Your best golf insights,
-            <span>
-              <span className="font-poppins italic" style={{ fontWeight: 100, fontVariationSettings: "'wght' 100" }}>spoken</span>
-              <span style={{ fontWeight: 400 }}> not lost</span>
+            <br />
+            <span className="flex items-center justify-center gap-2">
+              <span className="italic font-thin" style={{ fontWeight: 100 }}>spoken</span>
+              <span className="font-normal">not lost.</span>
             </span>
           </h1>
           
-          <p className="mt-6 text-base sm:text-lg leading-6 text-zinc-600 max-w-2xl mx-auto" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <p className="mt-6 text-base leading-6 text-zinc-600 max-w-2xl mx-auto font-inter">
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
           </p>
           
