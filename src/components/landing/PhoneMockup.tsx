@@ -36,8 +36,6 @@ const PhoneMockup = () => {
     offset: ["start center", "end center"]
   });
 
-  // Adjust the scroll progress to start changing after the first full scroll
-  // Increased the range to make transitions slower and last screen stay longer
   const adjustedProgress = useTransform(scrollYProgress, [0.2, 0.85], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
@@ -76,6 +74,20 @@ const PhoneMockup = () => {
           <div className="w-full max-w-[320px] mx-auto">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative w-[275px] aspect-[9/19] mx-auto">
+                {/* Progress Dots */}
+                <div className="absolute -right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2">
+                  {screenshots.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${
+                        index === displayedIndex
+                          ? "bg-golf-gray-light"
+                          : "bg-golf-gray-light/30"
+                      }`}
+                    />
+                  ))}
+                </div>
+                
                 <AnimatePresence mode="popLayout" initial={false}>
                   <motion.div
                     key={screenshots[displayedIndex].image}
