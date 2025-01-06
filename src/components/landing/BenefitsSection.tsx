@@ -36,10 +36,10 @@ const features = [
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
   <div className="relative py-4">
-    <div className="flex flex-col space-y-3">
-      <div className="flex flex-col items-start space-y-2">
+    <div className="flex flex-col space-y-2">
+      <div className="flex flex-col items-start space-y-1">
         <div className="text-zinc-900">
-          <Icon className="w-3 h-3" />
+          <Icon className="w-4 h-4" />
         </div>
         <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
       </div>
