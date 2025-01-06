@@ -41,13 +41,13 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
     <h3 className="font-poppins text-base font-medium text-zinc-900 mb-2">{title}</h3>
-    <p className="text-sm font-inter text-zinc-600 leading-relaxed max-w-sm">{description}</p>
+    <p className="text-sm font-inter text-zinc-600 leading-relaxed">{description}</p>
   </div>
 );
 
 const BenefitsSection = () => {
   return (
-    <section className="py-32 sm:py-40">
+    <section className="py-32 sm:py-40 mx-4">
       <div className="mx-auto max-w-6xl px-12 lg:px-16 bg-white/10 backdrop-blur-sm rounded-3xl py-12">
         <div className="flex flex-col items-center space-y-4 mb-12">
           <Badge 
