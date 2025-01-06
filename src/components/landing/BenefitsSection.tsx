@@ -41,7 +41,7 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
         <div className="p-1 rounded-full bg-zinc-900 text-white">
           <Icon className="w-3 h-3" />
         </div>
-        <h3 className="text-base font-medium text-zinc-900">{title}</h3>
+        <h3 className="text-base font-semibold text-zinc-900">{title}</h3>
       </div>
       <p className="text-sm text-zinc-600 leading-relaxed">{description}</p>
     </div>
