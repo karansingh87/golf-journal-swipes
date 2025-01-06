@@ -47,7 +47,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             <span><span className="italic" style={{ fontWeight: 100 }}>spoken</span> not lost</span>
           </h1>
           
-          <p className="mt-6 text-lg sm:text-xl leading-8 text-zinc-600 max-w-2xl mx-auto">
+          <p className="mt-6 text-base sm:text-lg leading-6 text-zinc-600 max-w-2xl mx-auto" style={{ fontFamily: 'Inter, sans-serif' }}>
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
           </p>
           
