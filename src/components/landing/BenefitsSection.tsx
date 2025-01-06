@@ -4,32 +4,32 @@ import { MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide
 const features = [
   {
     title: "Capture On Your Terms",
-    description: "Record your thoughts your way - voice notes on the drive home, quick text after a range session, or whenever it feels right. Smart analysis turns your natural golf talk into clear insights.",
+    description: "Record your thoughts your way - voice notes on the drive home, quick text after a range session, or whenever it feels right. No manual tracking, just capture insights on your terms.",
     icon: MessageSquare,
   },
   {
     title: "Personal Patterns",
-    description: "Intelligent pattern detection spots your unique performance triggers. From practice drills to pre-shot routines, see what actually improves your game. Like having a brilliant caddie in your pocket.",
+    description: "Discover your unique performance triggers. From practice drills to pre-shot routines, see what really improves your scores.",
     icon: PieChart,
   },
   {
     title: "Beyond the Numbers",
-    description: "While others track just scores and stats, GolfLog's deep analysis captures your complete golf story. Understand the mental game tricks and swing thoughts that work for YOUR game.",
+    description: "While others track just scores and stats, GolfLog captures the complete story of your golf journey. Understand what actually works for YOUR game.",
     icon: Brain,
   },
   {
     title: "Your Golf Time Machine",
-    description: "Every breakthrough moment automatically tagged and instantly searchable. That perfect drive or game-changing range session? Build on what works with smart pattern recognition.",
+    description: "Go back to any breakthrough moment. That perfect drive or game-changing range session? Every insight saved and searchable.",
     icon: Timer,
   },
   {
     title: "Coach-Ready Insights",
-    description: "Share focused insights with your coach. Automated progress tracking spots trends and patterns. No more \"What were we working on last time?\"",
+    description: "Share focused insights with your coach. No more \"What were we working on last time?\" Transform your practice and play.",
     icon: Users,
   },
   {
     title: "Practice to Performance",
-    description: "Advanced analytics connect your range breakthroughs to course success. See which practice methods deliver real results, backed by real performance data.",
+    description: "Connect your range breakthroughs to course success. See which practice methods deliver real results for your game.",
     icon: TrendingUp,
   },
 ];
