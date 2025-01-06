@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
+import { MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const features = [
@@ -36,32 +36,38 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-center text-center rounded-lg p-8 w-full max-w-none">
-    <div className="mb-3">
-      <Icon className="w-6 h-6 text-zinc-900" />
+  <div className="relative group p-8 rounded-2xl transition-all duration-300 hover:bg-white/80 hover:shadow-lg">
+    <div className="flex flex-col items-center text-center space-y-4">
+      <div className="p-3 rounded-full bg-zinc-900 text-white">
+        <Icon className="w-6 h-6" />
+      </div>
+      <h3 className="font-poppins text-lg font-semibold text-zinc-900">{title}</h3>
+      <p className="text-base text-zinc-600 leading-relaxed max-w-lg mx-auto">{description}</p>
     </div>
-    <h3 className="font-poppins text-base font-medium text-zinc-900 mb-2 w-full">{title}</h3>
-    <p className="text-sm font-inter text-zinc-600 leading-relaxed w-full max-w-none px-4 sm:px-8 md:px-12">{description}</p>
   </div>
 );
 
 const BenefitsSection = () => {
   return (
-    <section className="py-32 sm:py-40">
-      <div className="mx-auto max-w-7xl px-12 lg:px-16">
-        <div className="group rounded-2xl bg-white/80 backdrop-blur-sm p-8 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-zinc-50/50 to-zinc-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <section className="py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-zinc-50 to-white p-8 shadow-xl ring-1 ring-zinc-900/5">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5" />
           
-          <div className="relative z-10">
-            <div className="flex flex-col items-center space-y-4 mb-12">
+          <div className="relative">
+            <div className="flex flex-col items-center space-y-8 mb-16">
               <Badge 
                 variant="outline" 
-                className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
+                className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-6 py-1.5 text-sm font-medium"
               >
                 Features
               </Badge>
+              <h2 className="text-3xl font-bold text-center text-zinc-900 max-w-2xl">
+                Everything you need to improve your game
+              </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((feature) => (
                 <FeatureItem key={feature.title} {...feature} />
               ))}
