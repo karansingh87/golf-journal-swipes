@@ -35,7 +35,7 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="relative group p-6 rounded-2xl transition-all duration-300 hover:bg-white/80 hover:shadow-lg">
+  <div className="relative py-4">
     <div className="flex flex-col space-y-4">
       <div className="flex items-center space-x-4">
         <div className="p-2 rounded-full bg-zinc-900 text-white">
@@ -52,21 +52,17 @@ const BenefitsSection = () => {
   return (
     <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-zinc-50 to-white p-8 shadow-xl ring-1 ring-zinc-900/5">
-          <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="relative">
+          <div className="mb-16">
+            <h2 className="text-4xl font-medium text-zinc-900 max-w-2xl">
+              Simple tool, powerful features
+            </h2>
+          </div>
           
-          <div className="relative">
-            <div className="mb-16">
-              <h2 className="text-4xl font-medium text-zinc-900 max-w-2xl">
-                Simple tool, powerful features
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {features.map((feature) => (
-                <FeatureItem key={feature.title} {...feature} />
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature) => (
+              <FeatureItem key={feature.title} {...feature} />
+            ))}
           </div>
         </div>
       </div>
