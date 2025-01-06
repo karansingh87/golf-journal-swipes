@@ -40,7 +40,7 @@ const FeatureItem = ({ title, description, icon: Icon }) => (
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
     <h3 className="font-poppins text-base font-medium text-zinc-900 mb-2">{title}</h3>
-    <p className="text-sm font-inter text-zinc-600 leading-relaxed max-w-sm">{description}</p>
+    <p className="text-sm text-zinc-600 leading-relaxed max-w-sm">{description}</p>
   </div>
 );
 
