@@ -1,6 +1,5 @@
 import React from "react";
 import { MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 
 const features = [
   {
@@ -56,12 +55,6 @@ const BenefitsSection = () => {
           
           <div className="relative">
             <div className="flex flex-col items-center space-y-8 mb-16">
-              <Badge 
-                variant="outline" 
-                className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-6 py-1.5 text-sm font-medium"
-              >
-                Features
-              </Badge>
               <h2 className="text-3xl font-bold text-center text-zinc-900 max-w-2xl">
                 Simple tool, powerful features
               </h2>
