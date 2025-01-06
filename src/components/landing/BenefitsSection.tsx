@@ -48,8 +48,8 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col items-start mb-12">
-          <span className="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-zinc-100 text-zinc-800">
+        <div className="flex justify-center w-full mb-12">
+          <span className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium bg-zinc-100 text-zinc-800">
             Benefits
           </span>
         </div>
