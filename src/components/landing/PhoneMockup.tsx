@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
 
 interface ScreenshotData {
   image: string;
@@ -72,7 +73,15 @@ const PhoneMockup = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="container px-4 mx-auto"
         >
-          <div className="w-full max-w-[320px] mx-auto">
+          <div className="flex flex-col items-center mb-8">
+            <Badge 
+              variant="outline" 
+              className="bg-zinc-900 hover:bg-zinc-800 text-white border-0 rounded-full px-4 py-1 text-sm font-medium"
+            >
+              How it works
+            </Badge>
+          </div>
+          <div className="w-full max-w-[250px] mx-auto">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative w-[275px] aspect-[9/19] mx-auto">
                 {/* Progress Dots */}
