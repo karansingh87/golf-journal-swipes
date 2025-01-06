@@ -36,12 +36,12 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-center text-center rounded-lg p-8">
+  <div className="flex flex-col items-center text-center rounded-lg p-8 w-full">
     <div className="mb-3">
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
     <h3 className="font-poppins text-base font-medium text-zinc-900 mb-2">{title}</h3>
-    <p className="text-sm font-inter text-zinc-600 leading-relaxed">{description}</p>
+    <p className="text-sm font-inter text-zinc-600 leading-relaxed w-full">{description}</p>
   </div>
 );
 
