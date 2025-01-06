@@ -75,7 +75,7 @@ const PhoneMockup = () => {
             }
           }}
           viewport={{ once: true, margin: "-100px" }}
-          className="container px-4 mx-auto flex flex-col items-center"
+          className="container max-w-screen-sm px-4 mx-auto flex flex-col items-center"
         >
           <motion.div 
             style={{ opacity: badgeOpacity }}
@@ -88,9 +88,9 @@ const PhoneMockup = () => {
               How it works
             </Badge>
           </motion.div>
-          <div className="w-full max-w-[250px] mx-auto">
+          <div className="w-[250px] mx-auto">
             <div className="flex flex-col items-center space-y-4">
-              <div className="relative w-[275px] aspect-[9/19] mx-auto">
+              <div className="relative w-[250px] aspect-[9/19]">
                 {/* Progress Dots */}
                 <div className="absolute -right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2">
                   {screenshots.map((_, index) => (
