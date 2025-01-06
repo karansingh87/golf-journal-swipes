@@ -50,10 +50,10 @@ const BenefitsSection = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col items-center mb-16">
           <div className="w-20 h-px bg-zinc-200 mb-8" />
-          <h2 className="text-3xl sm:text-4xl font-semibold text-zinc-900 text-center mb-4 font-serif">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-zinc-900 text-center mb-4 font-poppins">
             Simple tool, Powerful insights
           </h2>
-          <p className="text-lg text-zinc-600 text-center max-w-2xl">
+          <p className="text-lg text-zinc-600 text-center max-w-2xl font-inter">
             The smart way to understand your game
           </p>
         </div>
