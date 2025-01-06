@@ -37,20 +37,26 @@ const PhoneMockup = () => {
   });
 
   // Adjust the scroll progress to start changing after the first full scroll
-  const adjustedProgress = useTransform(scrollYProgress, [0.2, 0.9], [0, screenshots.length - 1]);
+  // Increased the range to make transitions slower
+  const adjustedProgress = useTransform(scrollYProgress, [0.2, 0.95], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState(0);
 
   useEffect(() => {
     const unsubscribe = adjustedProgress.on("change", (latest) => {
-      setDisplayedIndex(Math.round(latest));
+      const newIndex = Math.round(latest);
+      if (newIndex !== displayedIndex) {
+        setPreviousIndex(displayedIndex);
+        setDisplayedIndex(newIndex);
+      }
     });
     return () => unsubscribe();
-  }, [adjustedProgress]);
+  }, [adjustedProgress, displayedIndex]);
 
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[200vh] py-12"
+      className="relative min-h-[300vh] py-12"
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-[20vh] h-[60vh] flex items-center justify-center">
@@ -70,24 +76,28 @@ const PhoneMockup = () => {
           <div className="w-full max-w-[280px] mx-auto">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative w-[220px] aspect-[9/19] mx-auto">
-                <AnimatePresence mode="wait">
-                  <motion.img
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.div
                     key={screenshots[displayedIndex].image}
-                    src={screenshots[displayedIndex].image}
-                    alt={screenshots[displayedIndex].title}
-                    className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                    className="absolute inset-0"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ 
-                      duration: 0.5,
-                      ease: "easeInOut"
+                      duration: 0.8,
+                      ease: [0.4, 0, 0.2, 1]
                     }}
-                    loading="lazy"
-                  />
+                  >
+                    <img
+                      src={screenshots[displayedIndex].image}
+                      alt={screenshots[displayedIndex].title}
+                      className="w-full h-full object-cover rounded-xl"
+                      loading="lazy"
+                    />
+                  </motion.div>
                 </AnimatePresence>
               </div>
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
                   className="font-[400] text-base text-center text-golf-gray-light"
@@ -95,8 +105,8 @@ const PhoneMockup = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ 
-                    duration: 0.5,
-                    ease: "easeInOut"
+                    duration: 0.6,
+                    ease: [0.4, 0, 0.2, 1]
                   }}
                 >
                   {screenshots[displayedIndex].title}
