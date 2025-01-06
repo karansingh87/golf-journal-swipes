@@ -55,7 +55,7 @@ const BenefitsSection = () => {
           
           <div className="relative">
             <div className="flex flex-col items-center space-y-8 mb-16">
-              <h2 className="text-3xl font-bold text-center text-zinc-900 max-w-2xl">
+              <h2 className="text-3xl font-medium text-center text-zinc-900 max-w-2xl font-sans">
                 Simple tool, powerful features
               </h2>
             </div>
