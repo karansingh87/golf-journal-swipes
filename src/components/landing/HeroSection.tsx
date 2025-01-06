@@ -42,7 +42,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             </div>
           </div>
           
-          <h1 className="text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto">
+          <h1 className="font-poppins text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto">
             Your best golf insights,
             <br />
             <span className="flex items-center justify-center gap-2">
