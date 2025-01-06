@@ -42,7 +42,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             </div>
           </div>
           
-          <h1 className="font-poppins font-semibold text-4xl sm:text-5xl md:text-6xl tracking-tight text-zinc-900 max-w-4xl mx-auto flex flex-col">
+          <h1 className="font-poppins font-semibold text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto flex flex-col">
             Your best golf insights,
             <span><span className="italic font-normal">spoken</span> not lost</span>
           </h1>
