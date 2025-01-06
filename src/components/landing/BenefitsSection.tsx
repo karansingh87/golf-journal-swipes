@@ -35,7 +35,7 @@ const features = [
 ];
 
 const FeatureItem = ({ title, description, icon: Icon }) => (
-  <div className="flex flex-col items-center text-center">
+  <div className="flex flex-col items-start text-left">
     <div className="mb-3">
       <Icon className="w-6 h-6 text-zinc-900" />
     </div>
@@ -48,7 +48,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex flex-col items-center space-y-4 mb-12">
+        <div className="flex flex-col items-start space-y-4 mb-12">
           <div className="w-20 h-px bg-zinc-200" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
