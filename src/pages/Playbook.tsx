@@ -112,16 +112,16 @@ const Playbook = () => {
   return (
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <SegmentedNav />
           </div>
         </div>
         
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32">
-          <div className="mb-12">
-            <h1 className="text-3xl font-bold mb-3">Hi {displayName},</h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold mb-2">Hi {displayName},</h1>
+            <p className="text-base text-muted-foreground">
               Welcome to your personal golf playbook. Here you'll find your most valuable 
               insights, breakthroughs, and patterns we've discovered from your golf journey. 
               Think of this as your personalized guide to your best golf.
@@ -129,7 +129,7 @@ const Playbook = () => {
           </div>
 
           <div className="fixed bottom-8 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-            <div className="space-y-4">
+            <div className="space-y-3">
               <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
               <TrendsCard />
               <PlaceholderCard />
