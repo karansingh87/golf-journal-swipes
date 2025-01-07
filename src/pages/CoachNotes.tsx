@@ -85,9 +85,6 @@ const CoachNotes = () => {
                       {note.recording_ids.length} Recording{note.recording_ids.length !== 1 ? 's' : ''}
                     </span>
                   </div>
-                  <div className="text-sm text-muted-foreground line-clamp-1 mt-3">
-                    {note.notes}
-                  </div>
                 </div>
               </Card>
             ))}
