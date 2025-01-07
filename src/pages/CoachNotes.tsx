@@ -82,7 +82,7 @@ const CoachNotes = () => {
                       </div>
                     </div>
                     <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#F1F1F1] text-zinc-600 shadow-sm hover:bg-[#E8E8E8] transition-colors">
-                      {note.recording_ids.length} Recording{note.recording_ids.length !== 1 ? 's' : ''}
+                      Based on {note.recording_ids.length} recording{note.recording_ids.length !== 1 ? 's' : ''}
                     </span>
                   </div>
                 </div>
