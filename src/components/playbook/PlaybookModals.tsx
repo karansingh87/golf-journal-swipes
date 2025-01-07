@@ -9,7 +9,8 @@ interface PlaybookModalsProps {
   latestNoteId?: string;
   isGenerating: boolean;
   onGenerateNotes: (selectedRecordings: string[]) => Promise<void>;
-  openActionModal: () => void;
+  isActionModalOpen: boolean;
+  setIsActionModalOpen: (open: boolean) => void;
 }
 
 const PlaybookModals = ({ 
@@ -17,9 +18,9 @@ const PlaybookModals = ({
   latestNoteId, 
   isGenerating, 
   onGenerateNotes,
-  openActionModal
+  isActionModalOpen,
+  setIsActionModalOpen
 }: PlaybookModalsProps) => {
-  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const navigate = useNavigate();

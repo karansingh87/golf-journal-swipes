@@ -7,11 +7,13 @@ import PlaybookHeader from "@/components/playbook/PlaybookHeader";
 import PlaybookActions from "@/components/playbook/PlaybookActions";
 import PlaybookModals from "@/components/playbook/PlaybookModals";
 import { useCoachingNotes } from "@/hooks/useCoachingNotes";
+import { useState } from "react";
 
 const Playbook = () => {
   const session = useSession();
   const navigate = useNavigate();
   const { isGenerating, generateNotes } = useCoachingNotes();
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -94,7 +96,8 @@ const Playbook = () => {
         latestNoteId={latestNote?.id}
         isGenerating={isGenerating}
         onGenerateNotes={handleGenerateNotes}
-        openActionModal={() => setIsActionModalOpen(true)}
+        isActionModalOpen={isActionModalOpen}
+        setIsActionModalOpen={setIsActionModalOpen}
       />
     </div>
   );
