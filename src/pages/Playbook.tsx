@@ -155,9 +155,11 @@ const Playbook = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 w-full pt-20">
-        <PlaybookHeader displayName={displayName} />
-        <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
+      <div className="flex-1 flex flex-col w-full pt-20">
+        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+          <PlaybookHeader displayName={displayName} />
+          <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
+        </div>
       </div>
 
       {/* Modals */}
