@@ -80,13 +80,15 @@ const Playbook = () => {
 
       if (error) throw error;
 
-      const { error: saveError } = await supabase
+      const { data: noteData, error: saveError } = await supabase
         .from('coaching_notes')
         .insert({
           user_id: session.user.id,
           recording_ids: selectedRecordings,
           notes: JSON.stringify(data.analysis)
-        });
+        })
+        .select()
+        .single();
 
       if (saveError) throw saveError;
 
@@ -97,7 +99,9 @@ const Playbook = () => {
       
       setIsSelectionModalOpen(false);
       setSelectedRecordings([]);
-      navigate('/coach_notes');
+      
+      // Navigate to the specific coach note detail page
+      navigate(`/coach_notes/${noteData.id}`);
     } catch (error) {
       console.error('Error generating notes:', error);
       toast({
