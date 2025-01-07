@@ -80,28 +80,26 @@ const SegmentedNav = () => {
 
   return (
     <div className="flex justify-center w-full max-w-xs mx-auto">
-      {segments.map((segment, index) => (
-        <button
-          key={segment.value}
-          onClick={() => navigate(segment.path)}
-          className={cn(
-            "segment-button",
-            "flex items-center gap-2 px-6 py-2.5 rounded-md text-sm font-medium transition-colors duration-150",
-            "flex-1 justify-center relative",
-            "outline-none focus:outline-none focus-visible:outline-none active:outline-none",
-            "select-none touch-none",
-            currentPath === segment.path
-              ? "bg-golf-green text-white"
-              : "text-golf-gray-text-secondary hover:text-golf-gray-text-primary",
-            index === 0 ? "border-r border-zinc-200" : ""
-          )}
-        >
-          {segment.icon}
-          <span className="relative">
-            {segment.label}
-          </span>
-        </button>
-      ))}
+      <div className="flex w-full bg-gray-100/80 rounded-xl p-1 shadow-sm">
+        {segments.map((segment, index) => (
+          <button
+            key={segment.value}
+            onClick={() => navigate(segment.path)}
+            className={cn(
+              "flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
+              "flex-1 justify-center relative",
+              "outline-none focus:outline-none focus-visible:outline-none active:outline-none",
+              "select-none touch-none",
+              currentPath === segment.path
+                ? "bg-black text-white shadow-sm"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+            )}
+          >
+            {segment.icon}
+            <span>{segment.label}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
