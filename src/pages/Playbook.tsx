@@ -2,7 +2,6 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import SegmentedNav from "@/components/navigation/SegmentedNav";
 import PlaybookHeader from "@/components/playbook/PlaybookHeader";
 import PlaybookActions from "@/components/playbook/PlaybookActions";
 import PlaybookModals from "@/components/playbook/PlaybookModals";
@@ -75,15 +74,8 @@ const Playbook = () => {
       {/* Header is fixed, so we need padding to offset content */}
       <div className="h-14" /> {/* Offset for fixed header */}
       
-      {/* Tab Navigation */}
-      <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <SegmentedNav />
-        </div>
-      </div>
-
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col w-full pt-20">
+      <div className="flex-1 flex flex-col w-full">
         <div className="max-w-7xl mx-auto w-full px-10 sm:px-14 lg:px-20">
           <PlaybookHeader displayName={displayName} />
           <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
