@@ -148,17 +148,15 @@ const Playbook = () => {
       <div className="h-14" /> {/* Offset for fixed header */}
       
       {/* Tab Navigation */}
-      <div className="px-4 sm:px-6 md:px-8">
-        <SegmentedNav />
+      <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <SegmentedNav />
+        </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 w-full">
+      <div className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 w-full pt-20">
         <PlaybookHeader displayName={displayName} />
-        
-        {/* Spacer to push cards to bottom */}
-        <div className="flex-1" />
-
         <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
       </div>
 
