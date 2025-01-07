@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { RefreshCw } from "lucide-react";
 import { format } from "date-fns";
-import { CoachingNotesButton } from "./CoachingNotesButton";
+import CoachingNotesButton from "./CoachingNotesButton";
 
 interface TrendsRefreshBarProps {
   lastUpdateTime: Date | null;
