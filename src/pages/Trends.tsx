@@ -119,7 +119,11 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="px-4 sm:px-6 lg:px-8 pt-16">
-          <TrendsHeader />
+          <TrendsHeader 
+            lastUpdateTime={lastUpdateTime}
+            onRefresh={generateTrends}
+            isLoading={isLoading}
+          />
           <TrendsRefreshBar
             lastUpdateTime={lastUpdateTime}
             onRefresh={generateTrends}
