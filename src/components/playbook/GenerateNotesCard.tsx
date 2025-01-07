@@ -8,9 +8,9 @@ const GenerateNotesCard: FC<GenerateNotesCardProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="w-full py-9 px-3 bg-gradient-to-br from-purple-50 to-indigo-100 
+      className="w-full py-9 px-3 bg-gradient-to-br from-purple-50/80 to-indigo-100/80 
         backdrop-blur-sm hover:from-purple-100 hover:to-indigo-200 rounded-2xl 
-        border border-indigo-200 shadow-sm transition-all duration-200
+        shadow-sm transition-all duration-200
         flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
       <div className="relative w-8 h-8 flex items-center justify-center">
