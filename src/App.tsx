@@ -15,6 +15,8 @@ import Admin from "./pages/Admin";
 import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
 import Playbook from "./pages/Playbook";
+import CoachNotes from "./pages/CoachNotes";
+import CoachNoteDetail from "./pages/CoachNoteDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,10 +28,10 @@ const queryClient = new QueryClient({
 });
 
 const App = () => (
-  <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <SessionContextProvider supabaseClient={supabase}>
-        <TooltipProvider>
+  <QueryClientProvider client={queryClient}>
+    <SessionContextProvider supabaseClient={supabase}>
+      <TooltipProvider>
+        <BrowserRouter>
           <NavigationBar />
           <Toaster />
           <Sonner />
@@ -44,6 +46,8 @@ const App = () => (
             <Route path="/trends" element={<Trends />} />
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
+            <Route path="/coach_notes" element={<CoachNotes />} />
+            <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />
             
@@ -51,10 +55,10 @@ const App = () => (
             <Route path="/history" element={<Navigate to="/notes" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </TooltipProvider>
-      </SessionContextProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
+        </BrowserRouter>
+      </TooltipProvider>
+    </SessionContextProvider>
+  </QueryClientProvider>
 );
 
 export default App;
