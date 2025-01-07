@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Book, Loader2 } from "lucide-react";
+import { Book, FileText, MessageSquare, Loader2 } from "lucide-react";
 import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
 
 const Playbook = () => {
@@ -29,7 +29,7 @@ const Playbook = () => {
     enabled: !!session?.user?.id,
   });
 
-  const { data: coachingNotes, isLoading: isLoadingNotes } = useQuery({
+  const { data: coachingNotes } = useQuery({
     queryKey: ['coaching_notes'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -92,43 +92,85 @@ const Playbook = () => {
     }
   };
 
+  const handleRowClick = (action: 'select' | 'generate' | 'view') => {
+    switch (action) {
+      case 'select':
+        setIsModalOpen(true);
+        break;
+      case 'generate':
+        if (selectedRecordings.length > 0) {
+          handleGenerateNotes();
+        } else {
+          toast({
+            title: "No recordings selected",
+            description: "Please select recordings first before generating notes.",
+          });
+        }
+        break;
+      case 'view':
+        // Scroll to notes section if exists
+        const notesSection = document.getElementById('notes-section');
+        if (notesSection) {
+          notesSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        break;
+    }
+  };
+
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-semibold">Playbook</h1>
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            className="gap-2"
-          >
-            <Book className="h-4 w-4" />
-            Generate Coach Notes
-          </Button>
+      <div className="max-w-4xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
+        {/* Top Section - Reserved for future content */}
+        <div className="h-16"></div>
+
+        {/* Middle Section - Instructions */}
+        <div className="text-center mb-12">
+          <p className="text-lg text-muted-foreground">
+            Generate personalized coaching notes from your golf session recordings.
+            Select up to three recordings to analyze your performance and receive detailed feedback.
+          </p>
         </div>
 
-        {isLoadingNotes ? (
-          <div className="flex items-center justify-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          </div>
-        ) : coachingNotes?.length === 0 ? (
-          <div className="text-center text-muted-foreground py-12">
-            No coaching notes yet. Generate your first note by selecting recordings.
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {coachingNotes?.map((note) => (
-              <div key={note.id} className="bg-card rounded-lg shadow-sm">
-                <div className="p-4 border-b">
-                  <p className="text-sm text-muted-foreground">
-                    Generated on {new Date(note.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <CoachingNoteDisplay note={JSON.parse(note.notes)} />
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Interactive Rows */}
+        <div className="space-y-4">
+          {/* Select Recordings Row */}
+          <button
+            onClick={() => handleRowClick('select')}
+            className="w-full p-6 bg-card hover:bg-accent rounded-lg border transition-colors flex items-center gap-4 group"
+          >
+            <FileText className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <div className="text-left">
+              <h3 className="font-medium">Select Recordings</h3>
+              <p className="text-sm text-muted-foreground">Choose up to 3 recordings for analysis</p>
+            </div>
+          </button>
 
+          {/* Generate Notes Row */}
+          <button
+            onClick={() => handleRowClick('generate')}
+            className="w-full p-6 bg-card hover:bg-accent rounded-lg border transition-colors flex items-center gap-4 group"
+          >
+            <MessageSquare className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <div className="text-left">
+              <h3 className="font-medium">Generate Notes</h3>
+              <p className="text-sm text-muted-foreground">Create coaching insights from selected recordings</p>
+            </div>
+          </button>
+
+          {/* View Notes Row */}
+          <button
+            onClick={() => handleRowClick('view')}
+            className="w-full p-6 bg-card hover:bg-accent rounded-lg border transition-colors flex items-center gap-4 group"
+          >
+            <Book className="h-6 w-6 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <div className="text-left">
+              <h3 className="font-medium">View Notes</h3>
+              <p className="text-sm text-muted-foreground">Review your coaching history and insights</p>
+            </div>
+          </button>
+        </div>
+
+        {/* Recording Selection Modal */}
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent>
             <DialogHeader>
@@ -188,6 +230,22 @@ const Playbook = () => {
             </div>
           </DialogContent>
         </Dialog>
+
+        {/* Notes Display Section */}
+        {coachingNotes && coachingNotes.length > 0 && (
+          <div id="notes-section" className="mt-16 space-y-8">
+            {coachingNotes.map((note) => (
+              <div key={note.id} className="bg-card rounded-lg shadow-sm">
+                <div className="p-4 border-b">
+                  <p className="text-sm text-muted-foreground">
+                    Generated on {new Date(note.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <CoachingNoteDisplay note={JSON.parse(note.notes)} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
