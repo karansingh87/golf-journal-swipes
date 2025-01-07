@@ -3,22 +3,22 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import GenerateNotesCard from "@/components/playbook/GenerateNotesCard";
 import TrendsCard from "@/components/playbook/TrendsCard";
 import PlaceholderCard from "@/components/playbook/PlaceholderCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
-import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import CoachingActionModal from "@/components/playbook/CoachingActionModal";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 
 const Playbook = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedNotes, setGeneratedNotes] = useState<any>(null);
-  const [showNotesModal, setShowNotesModal] = useState(false);
   const { toast } = useToast();
   const session = useSession();
+  const navigate = useNavigate();
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -44,6 +44,23 @@ const Playbook = () => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
+      return data;
+    },
+    enabled: !!session?.user?.id,
+  });
+
+  const { data: latestNote } = useQuery({
+    queryKey: ['latest_coaching_note'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('coaching_notes')
+        .select('*')
+        .eq('user_id', session?.user?.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') throw error;
       return data;
     },
     enabled: !!session?.user?.id,
@@ -79,10 +96,9 @@ const Playbook = () => {
         description: "Coach notes have been generated successfully.",
       });
       
-      setIsModalOpen(false);
-      setGeneratedNotes(data.analysis);
-      setShowNotesModal(true);
+      setIsSelectionModalOpen(false);
       setSelectedRecordings([]);
+      navigate('/coach_notes');
     } catch (error) {
       console.error('Error generating notes:', error);
       toast({
@@ -93,6 +109,24 @@ const Playbook = () => {
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  const handleViewLatest = () => {
+    if (latestNote) {
+      navigate(`/coach_notes/${latestNote.id}`);
+    } else {
+      toast({
+        title: "No Notes Found",
+        description: "You haven't generated any coaching notes yet.",
+        variant: "destructive",
+      });
+    }
+    setIsActionModalOpen(false);
+  };
+
+  const handleCreateNew = () => {
+    setIsActionModalOpen(false);
+    setIsSelectionModalOpen(true);
   };
 
   const handleRecordingSelect = (id: string) => {
@@ -130,7 +164,7 @@ const Playbook = () => {
 
           <div className="fixed bottom-8 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
             <div className="space-y-3">
-              <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
+              <GenerateNotesCard onClick={() => setIsActionModalOpen(true)} />
               <TrendsCard />
               <PlaceholderCard />
             </div>
@@ -138,10 +172,17 @@ const Playbook = () => {
         </div>
       </div>
 
+      <CoachingActionModal
+        isOpen={isActionModalOpen}
+        onClose={() => setIsActionModalOpen(false)}
+        onViewLatest={handleViewLatest}
+        onCreateNew={handleCreateNew}
+      />
+
       <RecordingSelectionModal
-        isOpen={isModalOpen}
+        isOpen={isSelectionModalOpen}
         onClose={() => {
-          setIsModalOpen(false);
+          setIsSelectionModalOpen(false);
           setSelectedRecordings([]);
         }}
         recordings={recordings || []}
@@ -150,14 +191,6 @@ const Playbook = () => {
         onGenerate={handleGenerateNotes}
         isGenerating={isGenerating}
       />
-
-      <Dialog open={showNotesModal} onOpenChange={setShowNotesModal}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-          {generatedNotes && (
-            <CoachingNoteDisplay note={generatedNotes} />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
