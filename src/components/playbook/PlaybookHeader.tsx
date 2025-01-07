@@ -10,9 +10,8 @@ const PlaybookHeader = ({ displayName }: PlaybookHeaderProps) => {
       <h1 className="text-2xl font-bold text-golf-gray-text-primary">
         Hi {displayName},
       </h1>
-      <p className="text-sm text-golf-gray-text-secondary mt-2 mb-8">
-        Welcome to your personal golf playbook. Here you'll find your most valuable 
-        insights, breakthroughs, and patterns we've discovered from your golf journey.
+      <p className="text-sm text-golf-gray-text-secondary mt-2 mb-12">
+        Welcome to your golf playbook. Your insights and breakthroughs, all in one place.
       </p>
     </div>
   );
