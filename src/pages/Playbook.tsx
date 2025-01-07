@@ -1,23 +1,17 @@
-import { useState } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
-import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
-import CoachingActionModal from "@/components/playbook/CoachingActionModal";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 import PlaybookHeader from "@/components/playbook/PlaybookHeader";
 import PlaybookActions from "@/components/playbook/PlaybookActions";
+import PlaybookModals from "@/components/playbook/PlaybookModals";
+import { useCoachingNotes } from "@/hooks/useCoachingNotes";
 
 const Playbook = () => {
-  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
-  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
-  const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
+  const { isGenerating, generateNotes } = useCoachingNotes();
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -65,83 +59,11 @@ const Playbook = () => {
     enabled: !!session?.user?.id,
   });
 
-  const handleGenerateNotes = async () => {
-    if (!session?.user?.id) return;
-    
-    setIsGenerating(true);
-    try {
-      const selectedRecordingsData = recordings?.filter(
-        recording => selectedRecordings.includes(recording.id)
-      );
-
-      const { data, error } = await supabase.functions.invoke('generate-coaching-notes', {
-        body: { recordings: selectedRecordingsData }
-      });
-
-      if (error) throw error;
-
-      const { data: noteData, error: saveError } = await supabase
-        .from('coaching_notes')
-        .insert({
-          user_id: session.user.id,
-          recording_ids: selectedRecordings,
-          notes: JSON.stringify(data.analysis)
-        })
-        .select()
-        .single();
-
-      if (saveError) throw saveError;
-
-      toast({
-        title: "Success",
-        description: "Coach notes have been generated successfully.",
-      });
-      
-      setIsSelectionModalOpen(false);
-      setSelectedRecordings([]);
-      
-      // Navigate to the specific coach note detail page
+  const handleGenerateNotes = async (selectedRecordings: string[]) => {
+    const noteData = await generateNotes(selectedRecordings, recordings || []);
+    if (noteData) {
       navigate(`/coach_notes/${noteData.id}`);
-    } catch (error) {
-      console.error('Error generating notes:', error);
-      toast({
-        title: "Error",
-        description: "Failed to generate coach notes. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsGenerating(false);
     }
-  };
-
-  const handleViewLatest = () => {
-    if (latestNote) {
-      navigate(`/coach_notes/${latestNote.id}`);
-    } else {
-      toast({
-        title: "No Notes Found",
-        description: "You haven't generated any coaching notes yet.",
-        variant: "destructive",
-      });
-    }
-    setIsActionModalOpen(false);
-  };
-
-  const handleCreateNew = () => {
-    setIsActionModalOpen(false);
-    setIsSelectionModalOpen(true);
-  };
-
-  const handleRecordingSelect = (id: string) => {
-    setSelectedRecordings(prev => {
-      if (prev.includes(id)) {
-        return prev.filter(recordingId => recordingId !== id);
-      }
-      if (prev.length < 3) {
-        return [...prev, id];
-      }
-      return prev;
-    });
   };
 
   const displayName = userProfile?.display_name || 'Golfer';
@@ -167,24 +89,11 @@ const Playbook = () => {
       </div>
 
       {/* Modals */}
-      <CoachingActionModal
-        isOpen={isActionModalOpen}
-        onClose={() => setIsActionModalOpen(false)}
-        onViewLatest={handleViewLatest}
-        onCreateNew={handleCreateNew}
-      />
-
-      <RecordingSelectionModal
-        isOpen={isSelectionModalOpen}
-        onClose={() => {
-          setIsSelectionModalOpen(false);
-          setSelectedRecordings([]);
-        }}
-        recordings={recordings || []}
-        selectedRecordings={selectedRecordings}
-        onSelect={handleRecordingSelect}
-        onGenerate={handleGenerateNotes}
+      <PlaybookModals
+        recordings={recordings}
+        latestNoteId={latestNote?.id}
         isGenerating={isGenerating}
+        onGenerateNotes={handleGenerateNotes}
       />
     </div>
   );
