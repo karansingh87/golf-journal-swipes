@@ -5,11 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import GenerateNotesCard from "@/components/playbook/GenerateNotesCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
-import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
+import { useNavigate } from "react-router-dom";
 
 const Playbook = () => {
   const session = useSession();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -19,20 +20,6 @@ const Playbook = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('recordings')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!session?.user?.id,
-  });
-
-  const { data: coachingNotes, refetch: refetchNotes } = useQuery({
-    queryKey: ['coaching_notes'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('coaching_notes')
         .select('*')
         .order('created_at', { ascending: false });
       
@@ -74,7 +61,8 @@ const Playbook = () => {
       
       setIsModalOpen(false);
       setSelectedRecordings([]);
-      refetchNotes();
+      // Navigate to notes page after successful generation
+      navigate('/notes');
     } catch (error) {
       console.error('Error generating notes:', error);
       toast({
@@ -106,24 +94,12 @@ const Playbook = () => {
           <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
         </div>
 
-        {coachingNotes && coachingNotes.length > 0 && (
-          <div className="space-y-8">
-            {coachingNotes.map((note) => (
-              <div key={note.id} className="bg-card rounded-lg shadow-sm">
-                <div className="p-4 border-b">
-                  <p className="text-sm text-muted-foreground">
-                    Generated on {new Date(note.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-                <CoachingNoteDisplay note={JSON.parse(note.notes)} />
-              </div>
-            ))}
-          </div>
-        )}
-
         <RecordingSelectionModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedRecordings([]);
+          }}
           recordings={recordings || []}
           selectedRecordings={selectedRecordings}
           onSelect={handleRecordingSelect}
