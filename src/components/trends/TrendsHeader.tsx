@@ -24,11 +24,11 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <h1 className="text-2xl font-semibold text-golf-gray-text-primary">
+        <h1 className="text-2xl font-semibold text-golf-gray-text-primary text-left">
           Trends
         </h1>
       </div>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground pl-9">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground pl-9 text-left">
         {lastUpdateTime && (
           <span>
             Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
