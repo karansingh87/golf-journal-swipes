@@ -17,15 +17,13 @@ const Trends = () => {
   const session = useSession();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!session) {
-      navigate('/login');
-    }
-  }, [session, navigate]);
+  // Redirect if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
 
   useEffect(() => {
-    if (!session?.user?.id) return;
-
     const fetchRecordingsCount = async () => {
       const { count } = await supabase
         .from('recordings')
@@ -65,11 +63,9 @@ const Trends = () => {
 
     fetchRecordingsCount();
     fetchLatestTrends();
-  }, [session?.user?.id]);
+  }, [session.user.id]);
 
   const generateTrends = async () => {
-    if (!session?.user?.id) return;
-    
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
@@ -118,10 +114,6 @@ const Trends = () => {
       setIsLoading(false);
     }
   };
-
-  if (!session) {
-    return null;
-  }
 
   return (
     <div className="min-h-[100dvh] bg-background">
