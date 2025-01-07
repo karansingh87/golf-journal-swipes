@@ -80,7 +80,7 @@ const SegmentedNav = () => {
 
   return (
     <div className="flex justify-center w-full max-w-xs mx-auto">
-      <div className="flex w-full bg-gray-200/80 rounded-xl p-1 shadow-sm">
+      <div className="flex w-full bg-gray-200/60 rounded-xl p-1 shadow-sm">
         {segments.map((segment, index) => (
           <button
             key={segment.value}
