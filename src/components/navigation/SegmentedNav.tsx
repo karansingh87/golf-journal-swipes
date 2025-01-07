@@ -91,7 +91,7 @@ const SegmentedNav = () => {
             "outline-none focus:outline-none focus-visible:outline-none active:outline-none",
             "select-none touch-none",
             currentPath === segment.path
-              ? "text-golf-gray-text-primary font-semibold"
+              ? "bg-golf-green text-white"
               : "text-golf-gray-text-secondary hover:text-golf-gray-text-primary",
             index === 0 ? "border-r border-zinc-200" : ""
           )}
