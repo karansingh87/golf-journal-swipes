@@ -156,7 +156,7 @@ const Playbook = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col w-full pt-20">
-        <div className="max-w-7xl mx-auto w-full px-8 sm:px-12 lg:px-16">
+        <div className="max-w-7xl mx-auto w-full px-10 sm:px-14 lg:px-20">
           <PlaybookHeader displayName={displayName} />
           <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
         </div>
