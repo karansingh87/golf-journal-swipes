@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Recording {
   id: string;
@@ -65,41 +66,43 @@ const RecordingSelector = ({
   }
 
   return (
-    <div className="space-y-4">
-      <p className="text-sm text-muted-foreground mb-4">
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">
         Select up to 3 rounds for analysis
       </p>
-      <div className="space-y-2">
-        {recordings.map((recording) => {
-          const isSelected = selectedRecordings.includes(recording.id);
-          const isDisabled = !isSelected && selectedRecordings.length >= 3;
+      <ScrollArea className="h-[280px] pr-4">
+        <div className="space-y-2">
+          {recordings.map((recording) => {
+            const isSelected = selectedRecordings.includes(recording.id);
+            const isDisabled = !isSelected && selectedRecordings.length >= 3;
 
-          return (
-            <div
-              key={recording.id}
-              className="flex items-start space-x-3 p-3 rounded-lg border bg-card"
-            >
-              <Checkbox
-                id={recording.id}
-                checked={isSelected}
-                onCheckedChange={() => handleToggle(recording.id)}
-                disabled={isDisabled}
-              />
-              <div className="flex-1 space-y-1">
-                <Label
-                  htmlFor={recording.id}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {format(new Date(recording.created_at), "MMM d, yyyy")}
-                </Label>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {recording.transcription?.substring(0, 100)}...
-                </p>
+            return (
+              <div
+                key={recording.id}
+                className="flex items-start space-x-3 p-2.5 rounded-lg border bg-card"
+              >
+                <Checkbox
+                  id={recording.id}
+                  checked={isSelected}
+                  onCheckedChange={() => handleToggle(recording.id)}
+                  disabled={isDisabled}
+                />
+                <div className="flex-1 min-w-0">
+                  <Label
+                    htmlFor={recording.id}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {format(new Date(recording.created_at), "MMM d, yyyy")}
+                  </Label>
+                  <p className="text-xs text-muted-foreground mt-1 truncate">
+                    {recording.transcription?.substring(0, 60)}...
+                  </p>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
     </div>
   );
 };
