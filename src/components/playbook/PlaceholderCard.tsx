@@ -3,9 +3,9 @@ import { Plus } from "lucide-react";
 const PlaceholderCard = () => {
   return (
     <button
-      className="w-full py-9 px-3 bg-gradient-to-br from-amber-50 to-orange-100
-        backdrop-blur-sm hover:from-amber-100 hover:to-orange-200 rounded-2xl 
-        border border-white/20 shadow-sm transition-all duration-200
+      className="w-full py-9 px-3 bg-gradient-to-br from-emerald-50 to-teal-100
+        backdrop-blur-sm hover:from-emerald-100 hover:to-teal-200 rounded-2xl 
+        border border-teal-200 shadow-sm transition-all duration-200
         flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
       <div className="relative w-6 h-6 flex items-center justify-center">
