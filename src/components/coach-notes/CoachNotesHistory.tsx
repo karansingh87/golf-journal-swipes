@@ -34,9 +34,10 @@ const CoachNotesHistory = ({ searchQuery }: CoachNotesHistoryProps) => {
         .order('created_at', { ascending: false });
       
       if (error) throw error;
+      setIsLoading(false);
       return data;
     },
-    onSettled: () => setIsLoading(false),
+    enabled: !!session
   });
 
   const filteredNotes = notes.filter((note) => {
