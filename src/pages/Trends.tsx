@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import SegmentedNav from "@/components/navigation/SegmentedNav";
 import TrendsRefreshBar from "@/components/trends/TrendsRefreshBar";
 import TrendsContent from "@/components/trends/TrendsContent";
 import { useToast } from "@/hooks/use-toast";
@@ -118,11 +117,7 @@ const Trends = () => {
   return (
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-          <SegmentedNav />
-        </div>
-        
-        <div className="px-4 sm:px-6 lg:px-8 pt-32">
+        <div className="px-4 sm:px-6 lg:px-8 pt-16">
           <TrendsRefreshBar
             lastUpdateTime={lastUpdateTime}
             onRefresh={generateTrends}
