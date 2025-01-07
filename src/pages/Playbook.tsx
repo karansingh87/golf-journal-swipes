@@ -121,7 +121,7 @@ const Playbook = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32">
           <div className="mb-8 pt-6">
             <h1 className="text-2xl font-bold mb-2">Hi {displayName},</h1>
-            <p className="text-base text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Welcome to your personal golf playbook. Here you'll find your most valuable 
               insights, breakthroughs, and patterns we've discovered from your golf journey. 
               Think of this as your personalized guide to your best golf.
