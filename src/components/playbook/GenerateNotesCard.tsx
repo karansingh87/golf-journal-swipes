@@ -8,7 +8,7 @@ const GenerateNotesCard = ({ onClick }: GenerateNotesCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full py-2 px-3 bg-card hover:bg-accent rounded-2xl border transition-colors 
+      className="w-full py-3 px-3 bg-card hover:bg-accent rounded-2xl border transition-colors 
         flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
       <div className="relative w-6 h-6 flex items-center justify-center">
