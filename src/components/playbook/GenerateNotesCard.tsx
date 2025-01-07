@@ -21,9 +21,9 @@ const GenerateNotesCard: FC<GenerateNotesCardProps> = ({ onClick }) => {
         />
       </div>
       <div className="text-left">
-        <h3 className="font-semibold text-base leading-none mb-2">Generate Coaching Notes</h3>
+        <h3 className="font-semibold text-base leading-none mb-2">Coach Summary</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
-          Analyze your recordings and get personalized insights
+          Plan what to discuss at your next lesson for more productive coaching
         </p>
       </div>
     </button>
