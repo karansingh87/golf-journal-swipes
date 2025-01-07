@@ -1,4 +1,5 @@
 import { type FC } from "react";
+import { Target } from "lucide-react";
 
 interface GenerateNotesCardProps {
   onClick: () => void;
@@ -14,11 +15,7 @@ const GenerateNotesCard: FC<GenerateNotesCardProps> = ({ onClick }) => {
         flex items-start gap-4 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
       <div className="w-10 h-10 flex items-center justify-center pt-1">
-        <img 
-          src="/lovable-uploads/51c81539-1d3d-4e04-823d-61425adb5abd.png"
-          alt="Coach icon"
-          className="w-6 h-6"
-        />
+        <Target className="w-6 h-6 text-gray-800" />
       </div>
       <div className="text-left">
         <h3 className="font-semibold text-base leading-none mb-2">Coach Summary</h3>
