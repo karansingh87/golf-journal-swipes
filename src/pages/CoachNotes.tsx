@@ -5,8 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const CoachNotes = () => {
   const session = useSession();
@@ -63,19 +64,31 @@ const CoachNotes = () => {
             {notes?.map((note) => (
               <Card 
                 key={note.id}
-                className="cursor-pointer hover:bg-accent/50 transition-colors"
+                className={cn(
+                  "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer relative",
+                  "rounded-2xl border border-border/50 backdrop-blur-sm active:scale-[0.99]",
+                  "bg-white/80 p-5"
+                )}
                 onClick={() => navigate(`/coach_notes/${note.id}`)}
               >
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">
-                    Coaching Note - {format(new Date(note.created_at), "MMMM d, yyyy")}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Based on {note.recording_ids.length} recording{note.recording_ids.length !== 1 ? 's' : ''}
-                  </p>
-                </CardContent>
+                <div className="flex flex-col">
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <div className="text-sm font-medium">
+                        {format(new Date(note.created_at), "MMM d, yyyy")}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {format(new Date(note.created_at), "h:mm a")}
+                      </div>
+                    </div>
+                    <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#F1F1F1] text-zinc-600 shadow-sm hover:bg-[#E8E8E8] transition-colors">
+                      {note.recording_ids.length} Recording{note.recording_ids.length !== 1 ? 's' : ''}
+                    </span>
+                  </div>
+                  <div className="text-sm text-muted-foreground line-clamp-1 mt-3">
+                    {note.notes}
+                  </div>
+                </div>
               </Card>
             ))}
           </div>
