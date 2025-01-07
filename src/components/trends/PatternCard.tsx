@@ -29,7 +29,7 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="w-full max-w-[90vw] h-[50vh] mx-auto px-4"
+      className="w-full max-w-[90vw] h-[55vh] mx-auto px-4"
     >
       <Card 
         className={cn(
