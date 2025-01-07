@@ -25,7 +25,6 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
       }
 
       try {
-        // Get recordings created after the last trends update
         const { count } = await supabase
           .from('recordings')
           .select('*', { count: 'exact', head: true })
@@ -55,15 +54,15 @@ const TrendsRefreshBar = ({ lastUpdateTime, onRefresh, isLoading, recordingsCoun
   };
 
   return (
-    <div className="space-y-2 pt-8">
+    <div className="space-y-1.5 pt-2">
       {newRecordingsCount >= 3 && (
-        <Alert className="mb-2">
+        <Alert className="mb-1">
           <AlertDescription>
             You have new recordings since your last trends analysis. Refresh for updated insights.
           </AlertDescription>
         </Alert>
       )}
-      <div className="w-full max-w-[90vw] mx-auto px-4 flex items-center justify-end gap-2 text-sm text-muted-foreground py-2">
+      <div className="w-full max-w-[90vw] mx-auto px-4 flex items-center justify-end gap-2 text-sm text-muted-foreground">
         {lastUpdateTime && (
           <span>
             Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
