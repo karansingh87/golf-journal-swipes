@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import GenerateNotesCard from "@/components/playbook/GenerateNotesCard";
+import TrendsCard from "@/components/playbook/TrendsCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
 import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -92,8 +93,9 @@ const Playbook = () => {
   return (
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-2xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
-        <div className="mb-12">
+        <div className="space-y-4 mb-12">
           <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
+          <TrendsCard />
         </div>
 
         <RecordingSelectionModal
