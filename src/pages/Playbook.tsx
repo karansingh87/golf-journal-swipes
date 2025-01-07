@@ -9,15 +9,16 @@ import PlaceholderCard from "@/components/playbook/PlaceholderCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
 import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import SegmentedNav from "@/components/navigation/SegmentedNav";
 
 const Playbook = () => {
-  const session = useSession();
-  const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedNotes, setGeneratedNotes] = useState<any>(null);
   const [showNotesModal, setShowNotesModal] = useState(false);
+  const { toast } = useToast();
+  const session = useSession();
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -110,45 +111,53 @@ const Playbook = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-2xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
-        <div className="mb-16">
-          <h1 className="text-4xl font-bold mb-6">Hi {displayName},</h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            Welcome to your personal golf playbook. Here you'll find your most valuable 
-            insights, breakthroughs, and patterns we've discovered from your golf journey. 
-            Think of this as your personalized guide to your best golf.
-          </p>
-        </div>
-
-        <div className="fixed bottom-8 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-          <div className="space-y-4">
-            <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
-            <TrendsCard />
-            <PlaceholderCard />
+      <div className="max-w-7xl mx-auto">
+        <div className="fixed top-16 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <SegmentedNav />
           </div>
         </div>
+        
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32">
+          <div className="mb-12">
+            <h1 className="text-3xl font-bold mb-3">Hi {displayName},</h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Welcome to your personal golf playbook. Here you'll find your most valuable 
+              insights, breakthroughs, and patterns we've discovered from your golf journey. 
+              Think of this as your personalized guide to your best golf.
+            </p>
+          </div>
 
-        <RecordingSelectionModal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedRecordings([]);
-          }}
-          recordings={recordings || []}
-          selectedRecordings={selectedRecordings}
-          onSelect={handleRecordingSelect}
-          onGenerate={handleGenerateNotes}
-          isGenerating={isGenerating}
-        />
-
-        <Dialog open={showNotesModal} onOpenChange={setShowNotesModal}>
-          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-            {generatedNotes && (
-              <CoachingNoteDisplay note={generatedNotes} />
-            )}
-          </DialogContent>
-        </Dialog>
+          <div className="fixed bottom-8 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+            <div className="space-y-4">
+              <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
+              <TrendsCard />
+              <PlaceholderCard />
+            </div>
+          </div>
+        </div>
       </div>
+
+      <RecordingSelectionModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedRecordings([]);
+        }}
+        recordings={recordings || []}
+        selectedRecordings={selectedRecordings}
+        onSelect={handleRecordingSelect}
+        onGenerate={handleGenerateNotes}
+        isGenerating={isGenerating}
+      />
+
+      <Dialog open={showNotesModal} onOpenChange={setShowNotesModal}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          {generatedNotes && (
+            <CoachingNoteDisplay note={generatedNotes} />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
