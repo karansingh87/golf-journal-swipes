@@ -44,7 +44,7 @@ const CoachingNoteDisplay = ({ note }: CoachingNoteDisplayProps) => {
   ];
 
   return (
-    <ScrollArea className="h-[calc(100vh-12rem)] w-full">
+    <ScrollArea className="w-full">
       <div className="space-y-4 p-4">
         {sections.map((section) => (
           <Card key={section.title}>
