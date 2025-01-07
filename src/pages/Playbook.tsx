@@ -5,15 +5,17 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import GenerateNotesCard from "@/components/playbook/GenerateNotesCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
-import { useNavigate } from "react-router-dom";
+import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const Playbook = () => {
   const session = useSession();
   const { toast } = useToast();
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedNotes, setGeneratedNotes] = useState<any>(null);
+  const [showNotesModal, setShowNotesModal] = useState(false);
 
   const { data: recordings } = useQuery({
     queryKey: ['recordings'],
@@ -60,9 +62,9 @@ const Playbook = () => {
       });
       
       setIsModalOpen(false);
+      setGeneratedNotes(data.analysis);
+      setShowNotesModal(true);
       setSelectedRecordings([]);
-      // Navigate to notes page after successful generation
-      navigate('/notes');
     } catch (error) {
       console.error('Error generating notes:', error);
       toast({
@@ -106,6 +108,14 @@ const Playbook = () => {
           onGenerate={handleGenerateNotes}
           isGenerating={isGenerating}
         />
+
+        <Dialog open={showNotesModal} onOpenChange={setShowNotesModal}>
+          <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+            {generatedNotes && (
+              <CoachingNoteDisplay notes={generatedNotes} />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
