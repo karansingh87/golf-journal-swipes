@@ -18,6 +18,21 @@ const Playbook = () => {
   const [generatedNotes, setGeneratedNotes] = useState<any>(null);
   const [showNotesModal, setShowNotesModal] = useState(false);
 
+  const { data: userProfile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('id', session?.user?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!session?.user?.id,
+  });
+
   const { data: recordings } = useQuery({
     queryKey: ['recordings'],
     queryFn: async () => {
@@ -90,12 +105,25 @@ const Playbook = () => {
     });
   };
 
+  const displayName = userProfile?.display_name || 'Golfer';
+
   return (
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-2xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
-        <div className="space-y-4 mb-12">
-          <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
-          <TrendsCard />
+        <div className="mb-16">
+          <h1 className="text-4xl font-bold mb-6">Hi {displayName},</h1>
+          <p className="text-xl text-muted-foreground leading-relaxed">
+            Welcome to your personal golf playbook. Here you'll find your most valuable 
+            insights, breakthroughs, and patterns we've discovered from your golf journey. 
+            Think of this as your personalized guide to your best golf.
+          </p>
+        </div>
+
+        <div className="fixed bottom-8 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
+          <div className="space-y-4">
+            <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
+            <TrendsCard />
+          </div>
         </div>
 
         <RecordingSelectionModal
