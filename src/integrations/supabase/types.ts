@@ -125,6 +125,7 @@ export type Database = {
       }
       prompt_config: {
         Row: {
+          coaching_prompt: string | null
           created_at: string | null
           id: string
           model_name: string
@@ -134,6 +135,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          coaching_prompt?: string | null
           created_at?: string | null
           id?: string
           model_name?: string
@@ -143,6 +145,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          coaching_prompt?: string | null
           created_at?: string | null
           id?: string
           model_name?: string

@@ -8,13 +8,15 @@ import ColorConfigTab from "./ColorConfigTab";
 interface AdminTabsProps {
   analysisPrompt: string;
   trendsPrompt: string;
+  coachingPrompt: string;
   promptHistory: any[];
   isLoading: boolean;
   modelProvider: string;
   modelName: string;
   onAnalysisPromptChange: (value: string) => void;
   onTrendsPromptChange: (value: string) => void;
-  onSave: (type: 'analysis' | 'trends' | 'model') => void;
+  onCoachingPromptChange: (value: string) => void;
+  onSave: (type: 'analysis' | 'trends' | 'model' | 'coaching') => void;
   onModelProviderChange: (value: string) => void;
   onModelNameChange: (value: string) => void;
 }
@@ -22,12 +24,14 @@ interface AdminTabsProps {
 const AdminTabs = ({
   analysisPrompt,
   trendsPrompt,
+  coachingPrompt,
   promptHistory,
   isLoading,
   modelProvider,
   modelName,
   onAnalysisPromptChange,
   onTrendsPromptChange,
+  onCoachingPromptChange,
   onSave,
   onModelProviderChange,
   onModelNameChange,
@@ -40,6 +44,9 @@ const AdminTabs = ({
         </TabsTrigger>
         <TabsTrigger value="trends" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Trends Prompt
+        </TabsTrigger>
+        <TabsTrigger value="coaching" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
+          Coaching Prompt
         </TabsTrigger>
         <TabsTrigger value="model" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Model Config
@@ -73,6 +80,16 @@ const AdminTabs = ({
             onSave={() => onSave('trends')}
             isLoading={isLoading}
             type="trends"
+          />
+        </TabsContent>
+
+        <TabsContent value="coaching">
+          <PromptEditor
+            value={coachingPrompt}
+            onChange={onCoachingPromptChange}
+            onSave={() => onSave('coaching')}
+            isLoading={isLoading}
+            type="coaching"
           />
         </TabsContent>
 

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const usePromptConfig = () => {
   const [analysisPrompt, setAnalysisPrompt] = useState("");
   const [trendsPrompt, setTrendsPrompt] = useState("");
+  const [coachingPrompt, setCoachingPrompt] = useState("");
   const [modelProvider, setModelProvider] = useState("anthropic");
   const [modelName, setModelName] = useState("claude-3-5-sonnet-20241022");
   const [promptHistory, setPromptHistory] = useState([]);
@@ -16,7 +17,7 @@ export const usePromptConfig = () => {
       console.log('Fetching prompt configuration...');
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt, trends_prompt, model_provider, model_name')
+        .select('prompt, trends_prompt, coaching_prompt, model_provider, model_name')
         .single();
 
       if (error) {
@@ -33,11 +34,13 @@ export const usePromptConfig = () => {
         console.log('Prompts and model config fetched successfully:', {
           analysisPromptLength: data.prompt?.length,
           trendsPromptLength: data.trends_prompt?.length,
+          coachingPromptLength: data.coaching_prompt?.length,
           modelProvider: data.model_provider,
           modelName: data.model_name,
         });
         setAnalysisPrompt(data.prompt);
         setTrendsPrompt(data.trends_prompt || '');
+        setCoachingPrompt(data.coaching_prompt || '');
         setModelProvider(data.model_provider);
         setModelName(data.model_name);
       }
@@ -70,7 +73,7 @@ export const usePromptConfig = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async (type: 'analysis' | 'trends' | 'model') => {
+  const handleSave = async (type: 'analysis' | 'trends' | 'model' | 'coaching') => {
     console.log(`Saving ${type}...`);
     setIsLoading(true);
     try {
@@ -91,6 +94,9 @@ export const usePromptConfig = () => {
           break;
         case 'trends':
           updateData = { trends_prompt: trendsPrompt };
+          break;
+        case 'coaching':
+          updateData = { coaching_prompt: coachingPrompt };
           break;
         case 'model':
           updateData = { model_provider: modelProvider, model_name: modelName };
@@ -137,12 +143,14 @@ export const usePromptConfig = () => {
   return {
     analysisPrompt,
     trendsPrompt,
+    coachingPrompt,
     modelProvider,
     modelName,
     promptHistory,
     isLoading,
     setAnalysisPrompt,
     setTrendsPrompt,
+    setCoachingPrompt,
     setModelProvider,
     setModelName,
     handleSave,

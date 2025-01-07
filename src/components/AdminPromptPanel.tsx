@@ -5,12 +5,14 @@ const AdminPromptPanel = () => {
   const {
     analysisPrompt,
     trendsPrompt,
+    coachingPrompt,
     modelProvider,
     modelName,
     promptHistory,
     isLoading,
     setAnalysisPrompt,
     setTrendsPrompt,
+    setCoachingPrompt,
     setModelProvider,
     setModelName,
     handleSave,
@@ -23,12 +25,14 @@ const AdminPromptPanel = () => {
       <AdminTabs
         analysisPrompt={analysisPrompt}
         trendsPrompt={trendsPrompt}
+        coachingPrompt={coachingPrompt}
         modelProvider={modelProvider}
         modelName={modelName}
         promptHistory={promptHistory}
         isLoading={isLoading}
         onAnalysisPromptChange={setAnalysisPrompt}
         onTrendsPromptChange={setTrendsPrompt}
+        onCoachingPromptChange={setCoachingPrompt}
         onModelProviderChange={setModelProvider}
         onModelNameChange={setModelName}
         onSave={handleSave}
