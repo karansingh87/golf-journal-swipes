@@ -7,7 +7,8 @@ const TrendsCard = () => {
   return (
     <button
       onClick={() => navigate('/trends')}
-      className="w-full py-6 px-3 bg-white/40 backdrop-blur-sm hover:bg-white/50 rounded-2xl 
+      className="w-full py-6 px-3 bg-gradient-to-br from-emerald-50 to-teal-100
+        backdrop-blur-sm hover:from-emerald-100 hover:to-teal-200 rounded-2xl 
         border border-white/20 shadow-sm transition-all duration-200
         flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
