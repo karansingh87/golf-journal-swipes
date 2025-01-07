@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import GenerateNotesCard from "@/components/playbook/GenerateNotesCard";
 import TrendsCard from "@/components/playbook/TrendsCard";
+import PlaceholderCard from "@/components/playbook/PlaceholderCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
 import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -123,6 +124,7 @@ const Playbook = () => {
           <div className="space-y-4">
             <GenerateNotesCard onClick={() => setIsModalOpen(true)} />
             <TrendsCard />
+            <PlaceholderCard />
           </div>
         </div>
 
