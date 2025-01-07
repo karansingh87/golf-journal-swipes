@@ -3,11 +3,12 @@ import { Plus } from "lucide-react";
 const PlaceholderCard = () => {
   return (
     <button
-      className="w-full py-6 px-3 bg-card hover:bg-accent rounded-2xl border transition-colors 
+      className="w-full py-6 px-3 bg-white/40 backdrop-blur-sm hover:bg-white/50 rounded-2xl 
+        border border-white/20 shadow-sm transition-all duration-200
         flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
       <div className="relative w-6 h-6 flex items-center justify-center">
-        <div className="absolute inset-0 bg-zinc-100 rounded-full group-hover:bg-zinc-50 
+        <div className="absolute inset-0 bg-white/80 rounded-full group-hover:bg-white/90 
           transition-colors duration-200" />
         <Plus className="w-3.5 h-3.5 text-zinc-950 relative z-10" />
       </div>
