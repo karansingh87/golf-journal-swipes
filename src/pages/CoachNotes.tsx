@@ -52,7 +52,7 @@ const CoachNotes = () => {
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-2xl font-semibold text-golf-gray-text-primary">
               Coaching Notes
             </h1>
           </div>
