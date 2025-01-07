@@ -9,6 +9,7 @@ import Settings from "@/pages/Settings";
 import Onboarding from "@/pages/Onboarding";
 import RecordingDetail from "@/pages/RecordingDetail";
 import CoachingNotesDetail from "@/components/coaching-notes/CoachingNotesDetail";
+import Playbook from "@/pages/Playbook";
 import NavigationBar from "@/components/NavigationBar";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
@@ -31,6 +32,7 @@ function App() {
             <Route path="/notes/:id" element={<RecordingDetail />} />
             <Route path="/coaching-notes/:id" element={<CoachingNotesDetail />} />
             <Route path="/trends" element={<Trends />} />
+            <Route path="/playbook" element={<Playbook />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/onboarding" element={<Onboarding />} />
