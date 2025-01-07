@@ -9,7 +9,7 @@ interface PlaybookActionsProps {
 
 const PlaybookActions = ({ onGenerateClick }: PlaybookActionsProps) => {
   return (
-    <div className="space-y-2 pb-6">
+    <div className="flex-1 flex flex-col space-y-2 pb-6 min-h-[calc(100vh-13rem)]">
       <GenerateNotesCard onClick={onGenerateClick} />
       <TrendsCard />
       <PlaceholderCard />
