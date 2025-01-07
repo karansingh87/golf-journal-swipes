@@ -155,6 +155,10 @@ const Playbook = () => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 w-full">
         <PlaybookHeader displayName={displayName} />
+        
+        {/* Spacer to push cards to bottom */}
+        <div className="flex-1" />
+
         <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
       </div>
 
