@@ -36,9 +36,7 @@ serve(async (req) => {
       return `Round ${index + 1}:\nTranscription: ${rec.transcription}\nAnalysis: ${rec.analysis}\n\n`;
     }).join('\n');
 
-    const systemPrompt = `You are an expert golf coach analyzing round transcripts. Create a structured coaching summary.`;
-    
-    const userPrompt = `Analyze these golf round transcripts and create a structured coach summary which is returned as a JSON object with the following structure:
+    const prompt = `You are an expert golf coach analyzing round transcripts. Analyze these golf round transcripts and create a structured coach summary which is returned as a JSON object with the following structure:
 {
   "technical_observations": [
     // List of key patterns in setup, swing mechanics, and ball flight
@@ -62,7 +60,7 @@ Here are the rounds to analyze:
 
 ${roundContext}`;
 
-    // Call Claude API
+    // Call Claude API with the correct format
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -73,9 +71,9 @@ ${roundContext}`;
       body: JSON.stringify({
         model: 'claude-3-sonnet-20240229',
         max_tokens: 4000,
+        system: 'You are an expert golf coach analyzing round transcripts.',
         messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
+          { role: 'user', content: prompt }
         ],
       }),
     });
