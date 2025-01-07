@@ -79,19 +79,7 @@ const SegmentedNav = () => {
   }, []);
 
   return (
-    <div className="flex p-1 bg-zinc-100 rounded-lg border border-zinc-200 w-full max-w-xs mx-auto">
-      <style>
-        {`
-          .segment-button {
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            -webkit-appearance: none;
-            appearance: none;
-            transform: translateZ(0);
-            user-select: none;
-          }
-        `}
-      </style>
+    <div className="flex justify-center w-full max-w-xs mx-auto">
       {segments.map((segment, index) => (
         <button
           key={segment.value}
@@ -103,8 +91,8 @@ const SegmentedNav = () => {
             "outline-none focus:outline-none focus-visible:outline-none active:outline-none",
             "select-none touch-none",
             currentPath === segment.path
-              ? "bg-zinc-950 text-white"
-              : "text-zinc-600 bg-transparent hover:bg-transparent active:bg-transparent focus:bg-transparent",
+              ? "text-golf-gray-text-primary font-semibold"
+              : "text-golf-gray-text-secondary hover:text-golf-gray-text-primary",
             index === 0 ? "border-r border-zinc-200" : ""
           )}
         >

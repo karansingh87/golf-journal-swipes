@@ -144,34 +144,41 @@ const Playbook = () => {
   const displayName = userProfile?.display_name || 'Golfer';
 
   return (
-    <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto">
-        <div className="fixed top-16 left-0 right-0 z-50 border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <SegmentedNav />
-          </div>
-        </div>
-        
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-32">
-          <div className="mb-8 pt-6">
-            <h1 className="text-2xl font-bold mb-2">Hi {displayName},</h1>
-            <p className="text-sm text-muted-foreground">
-              Welcome to your personal golf playbook. Here you'll find your most valuable 
-              insights, breakthroughs, and patterns we've discovered from your golf journey. 
-              Think of this as your personalized guide to your best golf.
-            </p>
-          </div>
+    <div className="flex flex-col h-[100dvh] bg-background">
+      {/* Header is fixed, so we need padding to offset content */}
+      <div className="h-14" /> {/* Offset for fixed header */}
+      
+      {/* Tab Navigation */}
+      <div className="px-4 sm:px-6 lg:px-8 py-4">
+        <SegmentedNav />
+      </div>
 
-          <div className="fixed bottom-8 left-0 right-0 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
-            <div className="space-y-3">
-              <GenerateNotesCard onClick={() => setIsActionModalOpen(true)} />
-              <TrendsCard />
-              <PlaceholderCard />
-            </div>
-          </div>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto w-full">
+        {/* Greeting Section */}
+        <div className="pt-6">
+          <h1 className="text-2xl font-bold text-golf-gray-text-primary">
+            Hi {displayName},
+          </h1>
+          <p className="text-sm text-golf-gray-text-secondary mt-2">
+            Welcome to your personal golf playbook. Here you'll find your most valuable 
+            insights, breakthroughs, and patterns we've discovered from your golf journey. 
+            Think of this as your personalized guide to your best golf.
+          </p>
+        </div>
+
+        {/* Spacer to push cards to bottom */}
+        <div className="flex-1" />
+
+        {/* Action Cards */}
+        <div className="space-y-3 pb-8">
+          <GenerateNotesCard onClick={() => setIsActionModalOpen(true)} />
+          <TrendsCard />
+          <PlaceholderCard />
         </div>
       </div>
 
+      {/* Modals */}
       <CoachingActionModal
         isOpen={isActionModalOpen}
         onClose={() => setIsActionModalOpen(false)}
