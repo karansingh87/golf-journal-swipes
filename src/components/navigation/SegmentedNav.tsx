@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Notebook, BookOpen } from "lucide-react";
+import { NotebookPen, Notebook, BookOpen } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,13 +15,13 @@ const segments: SegmentItem[] = [
   {
     label: "Notes",
     value: "notes",
-    icon: <Notebook className="h-4 w-4" />,
+    icon: <NotebookPen className="h-4 w-4" />,
     path: "/notes"
   },
   {
     label: "Playbook",
     value: "playbook",
-    icon: <BookOpen className="h-4 w-4" />,
+    icon: <Notebook className="h-4 w-4" />,
     path: "/playbook"
   }
 ];
