@@ -1,60 +1,97 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Session } from "@supabase/supabase-js";
 import { supabase } from "./integrations/supabase/client";
-import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
-import NavigationBar from "./components/NavigationBar";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { Toaster } from "./components/ui/toaster";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Notes from "./pages/Notes";
-import Trends from "./pages/Trends";
-import Admin from "./pages/Admin";
-import Settings from "./pages/Settings";
-import RecordingDetail from "./pages/RecordingDetail";
 import Playbook from "./pages/Playbook";
+import CoachNotes from "./pages/CoachNotes";
+import CoachNoteDetail from "./pages/CoachNoteDetail";
+import PrivateRoute from "./components/PrivateRoute";
+import Onboarding from "./pages/Onboarding";
+import Settings from "./pages/Settings";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+function App() {
+  const [session, setSession] = useState<Session | null>(null);
 
-const App = () => (
-  <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <SessionContextProvider supabaseClient={supabase}>
-        <TooltipProvider>
-          <NavigationBar />
-          <Toaster />
-          <Sonner />
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            
-            {/* App routes */}
-            <Route path="/record" element={<VoiceRecorderContainer />} />
-            <Route path="/notes" element={<Notes />} />
-            <Route path="/trends" element={<Trends />} />
-            <Route path="/playbook" element={<Playbook />} />
-            <Route path="/recording/:id" element={<RecordingDetail />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/settings" element={<Settings />} />
-            
-            {/* Redirects */}
-            <Route path="/history" element={<Navigate to="/notes" replace />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </TooltipProvider>
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return (
+    <Router>
+      <SessionContextProvider supabaseClient={supabase} initialSession={session}>
+        <Toaster />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/notes"
+            element={
+              <PrivateRoute>
+                <Notes />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/playbook"
+            element={
+              <PrivateRoute>
+                <Playbook />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/coach_notes"
+            element={
+              <PrivateRoute>
+                <CoachNotes />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/coach_notes/:id"
+            element={
+              <PrivateRoute>
+                <CoachNoteDetail />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/onboarding"
+            element={
+              <PrivateRoute>
+                <Onboarding />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
       </SessionContextProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
-);
+    </Router>
+  );
+}
 
 export default App;

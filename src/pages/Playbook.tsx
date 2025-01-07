@@ -2,23 +2,21 @@ import { useState } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import GenerateNotesCard from "@/components/playbook/GenerateNotesCard";
 import TrendsCard from "@/components/playbook/TrendsCard";
 import PlaceholderCard from "@/components/playbook/PlaceholderCard";
 import RecordingSelectionModal from "@/components/playbook/RecordingSelectionModal";
-import CoachingNoteDisplay from "@/components/playbook/CoachingNoteDisplay";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import SegmentedNav from "@/components/navigation/SegmentedNav";
 
 const Playbook = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedNotes, setGeneratedNotes] = useState<any>(null);
-  const [showNotesModal, setShowNotesModal] = useState(false);
   const { toast } = useToast();
   const session = useSession();
+  const navigate = useNavigate();
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -80,9 +78,8 @@ const Playbook = () => {
       });
       
       setIsModalOpen(false);
-      setGeneratedNotes(data.analysis);
-      setShowNotesModal(true);
       setSelectedRecordings([]);
+      navigate('/coach_notes');
     } catch (error) {
       console.error('Error generating notes:', error);
       toast({
@@ -150,14 +147,6 @@ const Playbook = () => {
         onGenerate={handleGenerateNotes}
         isGenerating={isGenerating}
       />
-
-      <Dialog open={showNotesModal} onOpenChange={setShowNotesModal}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-          {generatedNotes && (
-            <CoachingNoteDisplay note={generatedNotes} />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
