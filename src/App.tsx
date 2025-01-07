@@ -13,6 +13,8 @@ import CoachNotes from "./pages/CoachNotes";
 import CoachNoteDetail from "./pages/CoachNoteDetail";
 import Onboarding from "./pages/Onboarding";
 import Settings from "./pages/Settings";
+import Trends from "./pages/Trends";
+import RecordingDetail from "./pages/RecordingDetail";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -42,6 +44,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/notes" element={<Notes />} />
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/recording/:id" element={<RecordingDetail />} />
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/coach_notes" element={<CoachNotes />} />
             <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
