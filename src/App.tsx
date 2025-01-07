@@ -14,6 +14,7 @@ import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
 import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
+import Playbook from "./pages/Playbook";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/record" element={<VoiceRecorderContainer />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/trends" element={<Trends />} />
+            <Route path="/playbook" element={<Playbook />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />

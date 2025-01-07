@@ -106,6 +106,12 @@ const NavigationBar = () => {
                 >
                   Notes
                 </DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                  onClick={() => navigate('/playbook')}
+                >
+                  Playbook
+                </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-zinc-200" />
                 <DropdownMenuItem 
                   className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
