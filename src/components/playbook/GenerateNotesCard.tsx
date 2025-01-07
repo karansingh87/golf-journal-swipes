@@ -1,10 +1,10 @@
-import { MessageSquare } from "lucide-react";
+import { type FC } from "react";
 
 interface GenerateNotesCardProps {
   onClick: () => void;
 }
 
-const GenerateNotesCard = ({ onClick }: GenerateNotesCardProps) => {
+const GenerateNotesCard: FC<GenerateNotesCardProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -16,7 +16,11 @@ const GenerateNotesCard = ({ onClick }: GenerateNotesCardProps) => {
       <div className="relative w-6 h-6 flex items-center justify-center">
         <div className="absolute inset-0 bg-white/80 rounded-full group-hover:bg-white/90 
           transition-colors duration-200" />
-        <MessageSquare className="w-3.5 h-3.5 text-zinc-950 relative z-10" />
+        <img 
+          src="/lovable-uploads/51c81539-1d3d-4e04-823d-61425adb5abd.png"
+          alt="Coach icon"
+          className="w-3.5 h-3.5 relative z-10"
+        />
       </div>
       <div className="text-left">
         <h3 className="font-medium text-sm leading-none mb-0.5">Generate Coaching Notes</h3>
