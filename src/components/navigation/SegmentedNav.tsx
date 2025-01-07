@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Notebook, TrendingUp } from "lucide-react";
+import { Notebook, Book } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,10 +19,10 @@ const segments: SegmentItem[] = [
     path: "/notes"
   },
   {
-    label: "Trends",
-    value: "trends",
-    icon: <TrendingUp className="h-4 w-4" />,
-    path: "/trends"
+    label: "Playbook",
+    value: "playbook",
+    icon: <Book className="h-4 w-4" />,
+    path: "/playbook"
   }
 ];
 
@@ -99,9 +99,6 @@ const SegmentedNav = () => {
           {segment.icon}
           <span className="relative">
             {segment.label}
-            {segment.value === 'trends' && hasNewRecordings && (
-              <div className="absolute -top-1 -right-4 w-2 h-2 bg-red-500 rounded-full" />
-            )}
           </span>
         </button>
       ))}
