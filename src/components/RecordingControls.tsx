@@ -1,4 +1,4 @@
-import { Pause, Mic, Notebook, Keyboard } from "lucide-react";
+import { Pause, Mic, NotebookPen, Keyboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ControlButton from "./recorder/ControlButton";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,7 +28,7 @@ const RecordingControls = ({
     <div className="fixed bottom-0 inset-x-0 pb-8 pt-4 bg-gradient-to-t from-background to-transparent">
       <div className="flex items-center justify-between max-w-md mx-auto px-12">
         <ControlButton
-          icon={Notebook}
+          icon={NotebookPen}
           onClick={() => navigate('/notes')}
           variant="dark"
           size="medium"
