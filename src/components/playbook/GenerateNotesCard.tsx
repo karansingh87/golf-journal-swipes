@@ -13,13 +13,11 @@ const GenerateNotesCard: FC<GenerateNotesCardProps> = ({ onClick }) => {
         shadow-sm transition-all duration-200
         flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
-      <div className="relative w-8 h-8 flex items-center justify-center">
-        <div className="absolute inset-0 bg-white/80 rounded-full group-hover:bg-white/90 
-          transition-colors duration-200" />
+      <div className="w-8 h-8 flex items-center justify-center">
         <img 
           src="/lovable-uploads/51c81539-1d3d-4e04-823d-61425adb5abd.png"
           alt="Coach icon"
-          className="w-5 h-5 relative z-10"
+          className="w-5 h-5"
         />
       </div>
       <div className="text-left">
