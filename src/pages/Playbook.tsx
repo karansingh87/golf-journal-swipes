@@ -112,7 +112,7 @@ const Playbook = () => {
         <Dialog open={showNotesModal} onOpenChange={setShowNotesModal}>
           <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
             {generatedNotes && (
-              <CoachingNoteDisplay notes={generatedNotes} />
+              <CoachingNoteDisplay note={generatedNotes} />
             )}
           </DialogContent>
         </Dialog>
