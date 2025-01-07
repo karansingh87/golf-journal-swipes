@@ -40,34 +40,34 @@ const RecordingSelectionModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm p-0 gap-0 bg-white rounded-xl">
-        <DialogHeader className="p-4 pb-2">
-          <DialogTitle>Select up to 3 Recordings</DialogTitle>
+      <DialogContent className="max-w-[360px] p-0 gap-0 bg-white rounded-xl">
+        <DialogHeader className="p-3 pb-2 border-b">
+          <DialogTitle className="text-sm font-medium">Select Recordings</DialogTitle>
         </DialogHeader>
         
-        <ScrollArea className="max-h-[60vh] px-4">
-          <div className="space-y-2 pb-4">
+        <ScrollArea className="max-h-[400px] px-3">
+          <div className="space-y-1.5 py-2">
             {recordings?.slice(0, displayCount).map((recording) => (
               <button
                 key={recording.id}
-                className={`w-full p-3 rounded-lg border text-left transition-all flex items-center gap-3
+                className={`w-full p-2.5 rounded-lg border text-left transition-all flex items-start gap-2.5
                   ${
                     selectedRecordings.includes(recording.id)
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:bg-accent"
+                      ? "border-primary/20 bg-primary/5"
+                      : "border-border/40 hover:bg-accent/40"
                   }`}
                 onClick={() => onSelect(recording.id)}
               >
                 {selectedRecordings.includes(recording.id) ? (
-                  <CheckSquare className="w-5 h-5 text-primary flex-shrink-0" />
+                  <CheckSquare className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                 ) : (
-                  <Square className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+                  <Square className="w-4 h-4 text-muted-foreground/70 flex-shrink-0 mt-0.5" />
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium line-clamp-2">
-                    {recording.transcription?.slice(0, 100)}...
+                  <p className="text-xs leading-relaxed text-foreground/90 line-clamp-2">
+                    {recording.transcription?.slice(0, 80)}...
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-[11px] text-muted-foreground mt-1">
                     {format(new Date(recording.created_at), "MMM d, yyyy")}
                   </p>
                 </div>
@@ -77,36 +77,36 @@ const RecordingSelectionModal = ({
             {displayCount < (recordings?.length || 0) && (
               <Button
                 variant="ghost"
-                className="w-full mt-2"
+                className="w-full h-8 text-xs"
                 onClick={handleLoadMore}
               >
-                <PlusSquare className="w-4 h-4 mr-2" />
+                <PlusSquare className="w-3.5 h-3.5 mr-1.5" />
                 Load More
               </Button>
             )}
           </div>
         </ScrollArea>
 
-        <div className="flex items-center justify-between gap-2 p-4 border-t">
-          <p className="text-sm text-muted-foreground">
+        <div className="flex items-center justify-between gap-2 p-3 border-t">
+          <p className="text-xs text-muted-foreground">
             {selectedRecordings.length}/3 selected
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             <Button
               variant="outline"
               onClick={onClose}
-              className="h-9"
+              className="h-8 text-xs px-3"
             >
               Cancel
             </Button>
             <Button
               onClick={onGenerate}
               disabled={selectedRecordings.length === 0 || isGenerating}
-              className="h-9"
+              className="h-8 text-xs px-3"
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
                   Generating...
                 </>
               ) : (
