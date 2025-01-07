@@ -29,8 +29,13 @@ const RecordingDetail = () => {
   const isDark = theme === 'dark';
   const session = useSession();
 
-  // Fetch recording data
-  const { data: recording, isLoading, error } = useQuery({
+  // Redirect if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
+
+  const { data: recording, isLoading } = useQuery({
     queryKey: ['recording', id],
     queryFn: async () => {
       console.log('Fetching recording with ID:', id);
@@ -38,15 +43,11 @@ const RecordingDetail = () => {
         .from('recordings')
         .select('*')
         .eq('id', id)
-        .maybeSingle();
+        .single();
 
       if (error) {
         console.error('Error fetching recording:', error);
         throw error;
-      }
-
-      if (!data) {
-        throw new Error('Recording not found');
       }
       
       // Parse the analysis JSON string if it exists
@@ -64,51 +65,8 @@ const RecordingDetail = () => {
         analysis: parsedAnalysis
       };
     },
-    enabled: !!id && !!session,
+    enabled: !!session && !!id,
   });
-
-  // Handle loading state
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen pt-16">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  // Handle error state
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
-        <p className="text-lg text-muted-foreground">
-          {error instanceof Error ? error.message : 'Failed to load recording'}
-        </p>
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/notes')}
-          className="mt-4"
-        >
-          Go back to notes
-        </Button>
-      </div>
-    );
-  }
-
-  // Handle not found state
-  if (!recording) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
-        <p className="text-lg text-muted-foreground">Recording not found</p>
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/notes')}
-          className="mt-4"
-        >
-          Go back to notes
-        </Button>
-      </div>
-    );
-  }
 
   const handleDelete = async () => {
     try {
@@ -133,6 +91,29 @@ const RecordingDetail = () => {
       });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen pt-16">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!recording) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
+        <p className="text-lg text-muted-foreground">Recording not found</p>
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/notes')}
+          className="mt-4"
+        >
+          Go back to notes
+        </Button>
+      </div>
+    );
+  }
 
   const headerProps = {
     id: recording.id,
