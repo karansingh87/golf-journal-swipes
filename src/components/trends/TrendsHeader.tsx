@@ -28,7 +28,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
           Trends
         </h1>
       </div>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground pl-11">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground pl-9">
         {lastUpdateTime && (
           <span>
             Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
