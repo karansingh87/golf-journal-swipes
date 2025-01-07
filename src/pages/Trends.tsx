@@ -20,8 +20,11 @@ const Trends = () => {
   useEffect(() => {
     if (!session) {
       navigate('/login');
-      return;
     }
+  }, [session, navigate]);
+
+  useEffect(() => {
+    if (!session?.user?.id) return;
 
     const fetchRecordingsCount = async () => {
       const { count } = await supabase
@@ -62,13 +65,15 @@ const Trends = () => {
 
     fetchRecordingsCount();
     fetchLatestTrends();
-  }, [session, navigate]);
+  }, [session?.user?.id]);
 
   const generateTrends = async () => {
+    if (!session?.user?.id) return;
+    
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
-        body: { user_id: session?.user.id }
+        body: { user_id: session.user.id }
       });
       
       if (error) throw error;
@@ -83,7 +88,7 @@ const Trends = () => {
         const { data: trends, error: fetchError } = await supabase
           .from('trends')
           .select('trends_output, milestone_type, last_analysis_at')
-          .eq('user_id', session?.user.id)
+          .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
           .maybeSingle();
