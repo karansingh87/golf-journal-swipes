@@ -58,20 +58,20 @@ const RecordingSelector = ({
   };
 
   if (isLoading) {
-    return <div className="text-center py-4">Loading recordings...</div>;
+    return <div className="text-center py-3 text-sm">Loading recordings...</div>;
   }
 
   if (recordings.length === 0) {
-    return <div className="text-center py-4">No recordings found</div>;
+    return <div className="text-center py-3 text-sm">No recordings found</div>;
   }
 
   return (
-    <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">
+    <div className="space-y-2">
+      <p className="text-xs text-muted-foreground px-1">
         Select up to 3 rounds for analysis
       </p>
-      <ScrollArea className="h-[280px] pr-4">
-        <div className="space-y-2">
+      <ScrollArea className="h-[240px]">
+        <div className="space-y-1.5 pr-2">
           {recordings.map((recording) => {
             const isSelected = selectedRecordings.includes(recording.id);
             const isDisabled = !isSelected && selectedRecordings.length >= 3;
@@ -79,23 +79,24 @@ const RecordingSelector = ({
             return (
               <div
                 key={recording.id}
-                className="flex items-start space-x-3 p-2.5 rounded-lg border bg-card"
+                className="flex items-start gap-2 p-2 rounded-md border bg-card"
               >
                 <Checkbox
                   id={recording.id}
                   checked={isSelected}
                   onCheckedChange={() => handleToggle(recording.id)}
                   disabled={isDisabled}
+                  className="mt-0.5"
                 />
                 <div className="flex-1 min-w-0">
                   <Label
                     htmlFor={recording.id}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     {format(new Date(recording.created_at), "MMM d, yyyy")}
                   </Label>
-                  <p className="text-xs text-muted-foreground mt-1 truncate">
-                    {recording.transcription?.substring(0, 60)}...
+                  <p className="text-[11px] text-muted-foreground mt-0.5 truncate">
+                    {recording.transcription?.substring(0, 50)}...
                   </p>
                 </div>
               </div>

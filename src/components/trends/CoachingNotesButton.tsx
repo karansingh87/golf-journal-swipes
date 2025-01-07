@@ -59,29 +59,31 @@ export const CoachingNotesButton = () => {
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Generate Coaching Notes</DialogTitle>
+        <DialogContent className="sm:max-w-[360px] p-4">
+          <DialogHeader className="px-1">
+            <DialogTitle className="text-base">Generate Coaching Notes</DialogTitle>
           </DialogHeader>
           
-          <div className="py-4">
+          <div className="py-2">
             <RecordingSelector
               selectedRecordings={selectedRecordings}
               onSelectionChange={setSelectedRecordings}
             />
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 pt-2">
             <Button
               variant="outline"
               onClick={() => setIsOpen(false)}
               disabled={isLoading}
+              className="h-8"
             >
               Cancel
             </Button>
             <Button
               onClick={handleGenerateNotes}
               disabled={selectedRecordings.length === 0 || isLoading}
+              className="h-8"
             >
               {isLoading ? "Generating..." : "Generate Notes"}
             </Button>
