@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useToast } from "@/components/ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Book } from "lucide-react";
+import { Book, Loader2 } from "lucide-react";
 
 const Playbook = () => {
   const session = useSession();
@@ -40,7 +40,28 @@ const Playbook = () => {
 
     setIsGenerating(true);
     try {
-      // TODO: Implement the actual note generation logic here
+      // Get the full recording data for selected recordings
+      const selectedRecordingsData = recordings?.filter(
+        recording => selectedRecordings.includes(recording.id)
+      );
+
+      const { data, error } = await supabase.functions.invoke('generate-coaching-notes', {
+        body: { recordings: selectedRecordingsData }
+      });
+
+      if (error) throw error;
+
+      // Save the coaching notes
+      const { error: saveError } = await supabase
+        .from('coaching_notes')
+        .insert({
+          user_id: session.user.id,
+          recording_ids: selectedRecordings,
+          notes: JSON.stringify(data.analysis)
+        });
+
+      if (saveError) throw saveError;
+
       toast({
         title: "Success",
         description: "Coach notes have been generated successfully.",
@@ -118,7 +139,14 @@ const Playbook = () => {
                   onClick={handleGenerateNotes}
                   disabled={selectedRecordings.length === 0 || isGenerating}
                 >
-                  {isGenerating ? "Generating..." : "Generate Notes"}
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    "Generate Notes"
+                  )}
                 </Button>
               </div>
             </div>
