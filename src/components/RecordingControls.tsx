@@ -29,7 +29,7 @@ const RecordingControls = ({
       <div className="flex items-center justify-between max-w-md mx-auto px-12">
         <ControlButton
           icon={NotebookPen}
-          onClick={() => navigate('/notes')}
+          onClick={() => navigate('/playbook')}
           variant="dark"
           size="medium"
         />
