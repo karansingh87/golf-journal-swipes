@@ -154,8 +154,8 @@ const Playbook = () => {
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 w-full pt-20">
+      {/* Main Content Area - adjusted top padding to start after nav */}
+      <div className="flex-1 flex flex-col px-4 sm:px-6 md:px-8 w-full mt-24">
         <PlaybookHeader displayName={displayName} />
         <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
       </div>
