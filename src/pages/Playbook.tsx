@@ -94,6 +94,7 @@ const Playbook = () => {
         latestNoteId={latestNote?.id}
         isGenerating={isGenerating}
         onGenerateNotes={handleGenerateNotes}
+        openActionModal={() => setIsActionModalOpen(true)}
       />
     </div>
   );
