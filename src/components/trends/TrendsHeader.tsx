@@ -14,7 +14,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   const navigate = useNavigate();
   
   return (
-    <div className="space-y-1">
+    <div className="space-y-1 pt-3">
       <div className="flex items-center gap-3">
         <Button
           variant="ghost"
