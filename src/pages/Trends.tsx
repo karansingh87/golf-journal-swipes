@@ -121,13 +121,13 @@ const Trends = () => {
       <div className="max-w-7xl mx-auto pt-14">
         <PageBreadcrumb currentPage="Trends" />
         <div className="px-6 py-2 flex items-center justify-between">
-          <span className="text-sm font-light text-zinc-300">
+          <span className="text-xs font-light text-zinc-400">
             {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
           </span>
           <button
             onClick={generateTrends}
             disabled={isLoading}
-            className="text-zinc-300 hover:text-foreground transition-colors"
+            className="text-zinc-400 hover:text-foreground transition-colors"
           >
             <RefreshCw 
               className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
