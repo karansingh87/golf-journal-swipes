@@ -69,12 +69,12 @@ const RecordingCard = ({
       className={cn(
         "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer relative",
         "rounded-2xl border border-border/50 backdrop-blur-sm active:scale-[0.99]",
-        "bg-white/80 p-5"
+        "bg-white/80 p-4"
       )}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col space-y-2">
         <div className="flex items-center justify-between">
-          <div className="flex flex-col">
+          <div className="flex flex-col space-y-0.5">
             <div className="text-sm font-medium">
               {format(new Date(recording.created_at), "MMM d, yyyy")}
             </div>
@@ -83,14 +83,14 @@ const RecordingCard = ({
             </div>
           </div>
           <span className={cn(
-            "px-3 py-1.5 rounded-full text-xs font-medium transition-colors",
+            "px-3 py-1 rounded-full text-xs font-medium transition-colors",
             sessionTypeStyles[recording.session_type]
           )}>
             {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
           </span>
         </div>
         {recording.analysis && (
-          <div className="text-sm text-muted-foreground line-clamp-1 mt-3">
+          <div className="text-sm text-muted-foreground line-clamp-1">
             {getHeadline(recording.analysis)}
           </div>
         )}
