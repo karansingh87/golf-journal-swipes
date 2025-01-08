@@ -15,7 +15,7 @@ const FloatingRecordButton = () => {
           isLarge={false}
           isActive={true}
           variant="dark"
-          size="large"
+          size="medium"
           className="hover:scale-105 active:scale-95 transition-transform duration-200 shadow-lg"
         />
       </div>
