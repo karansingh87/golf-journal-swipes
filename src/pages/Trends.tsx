@@ -148,6 +148,7 @@ const Trends = () => {
           >
             <RefreshCw 
               className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
+              strokeWidth={newRecordingsCount >= 3 ? 2.5 : 2}
             />
           </button>
         </div>
