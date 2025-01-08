@@ -18,7 +18,7 @@ const AnalysisCard = ({
   content,
   isOverview = false,
   index,
-  defaultExpanded = true, // Changed default value to true
+  defaultExpanded = true,
   onExpand,
   summary,
 }: AnalysisCardProps) => {
@@ -34,7 +34,7 @@ const AnalysisCard = ({
       return (
         <ul className="list-disc list-inside space-y-2">
           {content.map((item, idx) => (
-            <li key={idx} className="text-sm leading-normal font-sans">
+            <li key={idx} className="text-sm leading-normal font-sans text-muted-foreground">
               {item}
             </li>
           ))}
@@ -42,7 +42,7 @@ const AnalysisCard = ({
       );
     }
 
-    return <p className="text-sm leading-normal font-sans">{content}</p>;
+    return <p className="text-sm leading-normal font-sans text-muted-foreground">{content}</p>;
   };
 
   return (
@@ -70,9 +70,9 @@ const AnalysisCard = ({
             isExpanded ? "max-h-[1000px] opacity-100" : "max-h-16 opacity-80"
           )}
         >
-          <div className="text-golf-gray-text-secondary">
+          <div>
             {isExpanded ? renderContent() : (
-              <p className="text-sm leading-normal font-sans">
+              <p className="text-sm leading-normal font-sans text-muted-foreground">
                 {summary || (Array.isArray(content) ? content[0] : content)}
               </p>
             )}
