@@ -13,7 +13,7 @@ const CoachNotesHeader = ({ lastUpdateTime, onRefresh, isLoading }: CoachNotesHe
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="flex flex-col px-8 py-2.5">
+      <div className="flex flex-col px-7 py-2.5">
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
