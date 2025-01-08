@@ -29,7 +29,7 @@ const TrendsContent = ({
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
         <RefreshCw className="w-8 h-8 text-muted-foreground animate-spin" />
         <p className="text-muted-foreground text-center">
-          Just a moment, your latest trends are on the way!
+          Refreshing your latest trends!
         </p>
       </div>
     );
