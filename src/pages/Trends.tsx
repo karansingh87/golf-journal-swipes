@@ -116,16 +116,14 @@ const Trends = () => {
 
   return (
     <div className="min-h-[100dvh] bg-background">
-      <div className="max-w-7xl mx-auto">
-        <div className="px-4 sm:px-6 lg:px-8 pt-16">
-          <PageBreadcrumb currentPage="Trends" />
-          <div className="mt-6">
-            <TrendsContent
-              trendsData={trendsData}
-              recordingsCount={recordingsCount}
-              milestone={milestone}
-            />
-          </div>
+      <div className="max-w-7xl mx-auto pt-14">
+        <PageBreadcrumb currentPage="Trends" />
+        <div className="px-2 sm:px-6 lg:px-8 pt-4">
+          <TrendsContent
+            trendsData={trendsData}
+            recordingsCount={recordingsCount}
+            milestone={milestone}
+          />
         </div>
       </div>
     </div>
