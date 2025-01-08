@@ -57,9 +57,9 @@ const CoachNotes = () => {
           isLoading={isLoading}
         />
 
-        <div className="p-4">
+        <div className="px-2 sm:px-6 lg:px-8">
           <ScrollArea className="rounded-lg">
-            <div className="space-y-4 pr-4">
+            <div className="space-y-4 px-4">
               {notes?.map((note) => (
                 <Card 
                   key={note.id}
