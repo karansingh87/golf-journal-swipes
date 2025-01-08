@@ -19,7 +19,7 @@ const CoachNotesHeader = ({ lastUpdateTime, onRefresh, isLoading }: CoachNotesHe
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="px-4 py-3">
+      <div className="px-5 py-3">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
