@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import TrendsContent from "@/components/trends/TrendsContent";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
-import { RefreshCw } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import TrendsHeader from "@/components/trends/TrendsHeader";
+import { useTrendsInfo } from "@/hooks/useTrendsInfo";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +14,7 @@ const Trends = () => {
   const [recordingsCount, setRecordingsCount] = useState<number>(0);
   const [milestone, setMilestone] = useState<string | null>(null);
   const [lastUpdateTime, setLastUpdateTime] = useState<Date | null>(null);
-  const [newRecordingsCount, setNewRecordingsCount] = useState<number>(0);
+  const { data: trendsInfo } = useTrendsInfo();
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const Trends = () => {
       try {
         const { data: trends, error } = await supabase
           .from('trends')
-          .select('trends_output, milestone_type, last_analysis_at, analyzed_recordings')
+          .select('trends_output, milestone_type, last_analysis_at')
           .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
@@ -54,15 +54,6 @@ const Trends = () => {
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
             setLastUpdateTime(new Date(trends.last_analysis_at));
-
-            // Check for new recordings since last analysis
-            const { count: newCount } = await supabase
-              .from('recordings')
-              .select('*', { count: 'exact', head: true })
-              .eq('user_id', session.user.id)
-              .gt('created_at', trends.last_analysis_at);
-
-            setNewRecordingsCount(newCount || 0);
           } catch (error) {
             console.error('Error parsing trends data:', error);
           }
@@ -78,10 +69,10 @@ const Trends = () => {
 
   // Auto-refresh when there are 3 or more new recordings
   useEffect(() => {
-    if (newRecordingsCount >= 3 && !isLoading) {
+    if (trendsInfo?.newRecordingsCount >= 3 && !isLoading) {
       generateTrends();
     }
-  }, [newRecordingsCount]);
+  }, [trendsInfo?.newRecordingsCount]);
 
   const generateTrends = async () => {
     try {
@@ -91,11 +82,6 @@ const Trends = () => {
       });
       
       if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Trends generation started. Please wait a moment.",
-      });
 
       // Fetch the latest trends after a short delay
       setTimeout(async () => {
@@ -116,7 +102,6 @@ const Trends = () => {
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
             setLastUpdateTime(new Date(trends.last_analysis_at));
-            setNewRecordingsCount(0); // Reset the counter after generating new trends
           } catch (error) {
             console.error('Error parsing trends data:', error);
           }
@@ -138,21 +123,11 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto pt-14">
         <PageBreadcrumb currentPage="Trends" />
-        <div className="px-6 py-2 pt-2 flex items-center justify-between">
-          <span className="text-xs font-light text-zinc-300">
-            {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
-          </span>
-          <button
-            onClick={generateTrends}
-            disabled={isLoading}
-            className="text-zinc-300 hover:text-foreground transition-colors"
-          >
-            <RefreshCw 
-              className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
-              strokeWidth={2}
-            />
-          </button>
-        </div>
+        <TrendsHeader
+          lastUpdateTime={lastUpdateTime}
+          isLoading={isLoading}
+          onRefresh={generateTrends}
+        />
         <div className="px-2 sm:px-6 lg:px-8 pt-4">
           <TrendsContent
             trendsData={trendsData}
