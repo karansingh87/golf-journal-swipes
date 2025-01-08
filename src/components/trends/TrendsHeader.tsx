@@ -23,16 +23,16 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
             className="h-9 w-9 -ml-3 hover:bg-zinc-50"
             onClick={() => navigate('/playbook')}
           >
-            <ArrowLeft className="h-5 w-5 text-zinc-900" />
+            <ArrowLeft className="h-5 w-5 text-zinc-600" />
           </Button>
-          <h1 className="font-inter text-lg font-semibold tracking-tight bg-zinc-900 text-white px-3 py-1 rounded">
+          <h1 className="font-inter text-lg font-semibold tracking-tight bg-zinc-700/90 text-zinc-50 px-3 py-1 rounded">
             TRENDS
           </h1>
         </div>
         
         {lastUpdateTime && (
           <div className="flex items-center gap-1.5 ml-7 -mt-0.5">
-            <span className="text-xs text-zinc-500 font-medium">
+            <span className="text-xs text-zinc-400 font-medium">
               Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
             </span>
             <Button
@@ -42,7 +42,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
               onClick={onRefresh}
               disabled={isLoading}
             >
-              <RefreshCw className={`h-3.5 w-3.5 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`h-3.5 w-3.5 text-zinc-500 ${isLoading ? 'animate-spin' : ''}`} />
             </Button>
           </div>
         )}
