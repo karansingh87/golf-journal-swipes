@@ -25,7 +25,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
           >
             <ArrowLeft className="h-5 w-5 text-zinc-900" />
           </Button>
-          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
+          <h1 className="font-inter text-lg font-semibold tracking-tight bg-zinc-900 text-white px-3 py-1 rounded">
             TRENDS
           </h1>
         </div>
