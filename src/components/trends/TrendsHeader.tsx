@@ -14,43 +14,39 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   const navigate = useNavigate();
   
   return (
-    <div>
-      <div className="border-b border-zinc-100">
-        <div className="flex flex-col px-4 py-2.5">
-          <div className="flex items-center justify-center relative">
-            <div className="absolute left-0">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-5 w-5 -ml-1 rounded-full bg-zinc-900 hover:bg-zinc-800"
-                onClick={() => navigate('/playbook')}
-              >
-                <ArrowLeft className="h-3 w-3 text-white" />
-              </Button>
-            </div>
-            <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
-              TRENDS
-            </h1>
-          </div>
-        </div>
-      </div>
-      
-      {lastUpdateTime && (
-        <div className="flex items-center justify-end gap-1.5 px-4 py-2">
-          <span className="text-xs text-zinc-500 font-medium">
-            Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
-          </span>
+    <div className="border-b border-zinc-100">
+      <div className="flex flex-col px-4 py-2.5">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon"
-            className="h-5 w-5 hover:bg-zinc-50"
-            onClick={onRefresh}
-            disabled={isLoading}
+            className="h-9 w-9 -ml-3 hover:bg-zinc-50"
+            onClick={() => navigate('/playbook')}
           >
-            <RefreshCw className={`h-3.5 w-3.5 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
+            <ArrowLeft className="h-5 w-5 text-zinc-900" />
           </Button>
+          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
+            TRENDS
+          </h1>
         </div>
-      )}
+        
+        {lastUpdateTime && (
+          <div className="flex items-center gap-1.5 ml-7 -mt-0.5">
+            <span className="text-xs text-zinc-500 font-medium">
+              Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-5 w-5 hover:bg-zinc-50"
+              onClick={onRefresh}
+              disabled={isLoading}
+            >
+              <RefreshCw className={`h-3.5 w-3.5 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
