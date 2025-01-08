@@ -139,23 +139,17 @@ const Trends = () => {
       <div className="max-w-7xl mx-auto pt-14">
         <PageBreadcrumb currentPage="Trends" />
         <div className="px-6 py-2 pt-2 flex items-center justify-between">
-          <span className="text-xs font-light">
-            {newRecordingsCount >= 3 ? (
-              <span className="text-destructive">New trends are ready! Click refresh to see them.</span>
-            ) : (
-              <span className="text-zinc-300">
-                {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
-              </span>
-            )}
+          <span className="text-xs font-light text-zinc-300">
+            {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
           </span>
           <button
             onClick={generateTrends}
             disabled={isLoading}
-            className={`hover:text-foreground transition-colors ${newRecordingsCount >= 3 ? 'text-destructive' : 'text-zinc-300'}`}
+            className="text-zinc-300 hover:text-foreground transition-colors"
           >
             <RefreshCw 
               className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
-              strokeWidth={newRecordingsCount >= 3 ? 2.5 : 2}
+              strokeWidth={2}
             />
           </button>
         </div>
