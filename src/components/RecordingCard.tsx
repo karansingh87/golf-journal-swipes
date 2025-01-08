@@ -37,7 +37,6 @@ const RecordingCard = ({
     if (!analysis) return "";
     
     try {
-      // First try to parse as JSON
       const cleanAnalysis = analysis.replace(/```json\n|\n```/g, '');
       const parsedAnalysis = JSON.parse(cleanAnalysis);
       
@@ -49,17 +48,19 @@ const RecordingCard = ({
         return headlineSection.content;
       }
       
-      // If no headline section found but it's valid JSON, return empty string
       return "";
     } catch (error) {
-      // If JSON parsing fails, try to extract first meaningful line
       const lines = analysis.split('\n').filter(line => line.trim());
       if (lines.length > 0) {
-        // Remove markdown headers and clean the line
         return lines[0].replace(/^#+\s*/, '').trim();
       }
       return "";
     }
+  };
+
+  const sessionTypeStyles = {
+    course: "bg-[#F2FCE2] text-[#3D691D] border border-[#3D691D]/10",
+    practice: "bg-[#D3E4FD] text-[#1D4ED8]/80 border border-[#1D4ED8]/10",
   };
 
   return (
@@ -81,7 +82,10 @@ const RecordingCard = ({
               {format(new Date(recording.created_at), "h:mm a")}
             </div>
           </div>
-          <span className="px-3 py-1.5 rounded-full text-xs font-medium bg-[#F1F1F1] text-zinc-600 shadow-sm hover:bg-[#E8E8E8] transition-colors">
+          <span className={cn(
+            "px-3 py-1.5 rounded-full text-xs font-medium transition-colors",
+            sessionTypeStyles[recording.session_type]
+          )}>
             {recording.session_type.charAt(0).toUpperCase() + recording.session_type.slice(1)}
           </span>
         </div>
