@@ -18,22 +18,24 @@ const CoachNotesHeader = ({ lastUpdateTime, onRefresh, isLoading }: CoachNotesHe
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="px-7 py-4">
+      <div className="px-4 py-3">
         <Breadcrumb>
-          <BreadcrumbItem>
-            <BreadcrumbLink 
-              onClick={() => navigate('/playbook')}
-              className="text-base font-medium text-zinc-500 hover:text-zinc-900 cursor-pointer"
-            >
-              Playbook
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage className="text-base font-medium text-zinc-900">
-              Coach Notes
-            </BreadcrumbPage>
-          </BreadcrumbItem>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink 
+                onClick={() => navigate('/playbook')}
+                className="text-sm font-medium cursor-pointer"
+              >
+                Playbook
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="text-sm">
+                Coach Notes
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
         </Breadcrumb>
       </div>
     </div>
