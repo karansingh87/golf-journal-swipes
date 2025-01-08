@@ -23,7 +23,7 @@ const CoachNotesHeader = ({ lastUpdateTime, onRefresh, isLoading }: CoachNotesHe
           >
             <ArrowLeft className="h-5 w-5 text-zinc-900" />
           </Button>
-          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
+          <h1 className="font-sans text-lg font-semibold tracking-tight text-zinc-700">
             COACH NOTES
           </h1>
         </div>
