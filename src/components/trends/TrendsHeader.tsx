@@ -15,37 +15,41 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="flex flex-col px-4 py-2.5">
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 -ml-3 hover:bg-zinc-50"
-            onClick={() => navigate('/playbook')}
-          >
-            <ArrowLeft className="h-5 w-5 text-zinc-600" />
-          </Button>
-          <h1 className="font-inter text-lg font-semibold tracking-tight bg-zinc-700/90 text-zinc-50 px-3 py-1 rounded">
-            TRENDS
-          </h1>
-        </div>
-        
-        {lastUpdateTime && (
-          <div className="flex items-center gap-1.5 ml-7 -mt-0.5">
-            <span className="text-xs text-zinc-400 font-medium">
-              Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
-            </span>
+      <div className="px-6 py-4 flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="icon"
-              className="h-5 w-5 hover:bg-zinc-50"
-              onClick={onRefresh}
-              disabled={isLoading}
+              className="h-8 w-8 hover:bg-zinc-50"
+              onClick={() => navigate('/playbook')}
             >
-              <RefreshCw className={`h-3.5 w-3.5 text-zinc-500 ${isLoading ? 'animate-spin' : ''}`} />
+              <ArrowLeft className="h-4 w-4 text-zinc-500" />
             </Button>
+            <div className="flex items-center gap-2">
+              <h1 className="font-inter text-base font-semibold bg-zinc-800/95 text-zinc-100 px-2.5 py-1 rounded-md">
+                TRENDS
+              </h1>
+            </div>
           </div>
-        )}
+          
+          {lastUpdateTime && (
+            <div className="flex items-center gap-2 text-xs text-zinc-400">
+              <span className="font-medium">
+                Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 hover:bg-zinc-50"
+                onClick={onRefresh}
+                disabled={isLoading}
+              >
+                <RefreshCw className={`h-3 w-3 text-zinc-400 ${isLoading ? 'animate-spin' : ''}`} />
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
