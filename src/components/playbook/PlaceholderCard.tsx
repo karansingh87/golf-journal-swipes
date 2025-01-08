@@ -16,7 +16,7 @@ const PlaceholderCard = () => {
         <NotebookPen className="w-5 h-5 text-zinc-950" />
       </div>
       <div className="text-left">
-        <h3 className="font-semibold text-base leading-none mb-2">View Notes</h3>
+        <h3 className="font-semibold text-base leading-none mb-2">Notes</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
           Browse your practice notes
         </p>
