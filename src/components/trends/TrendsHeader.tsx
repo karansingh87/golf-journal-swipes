@@ -16,15 +16,17 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   return (
     <div className="border-b border-zinc-100">
       <div className="flex flex-col px-4 py-2.5">
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-5 w-5 -ml-1 rounded-full bg-zinc-900 hover:bg-zinc-800"
-            onClick={() => navigate('/playbook')}
-          >
-            <ArrowLeft className="h-3 w-3 text-white" />
-          </Button>
+        <div className="flex items-center justify-center relative">
+          <div className="absolute left-0">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-5 w-5 -ml-1 rounded-full bg-zinc-900 hover:bg-zinc-800"
+              onClick={() => navigate('/playbook')}
+            >
+              <ArrowLeft className="h-3 w-3 text-white" />
+            </Button>
+          </div>
           <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
             TRENDS
           </h1>
