@@ -15,34 +15,34 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="flex flex-col px-5 py-6 space-y-2">
-        <div className="flex items-center">
+      <div className="flex flex-col px-4 py-2.5">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 -ml-1.5 hover:bg-zinc-50"
+            className="h-9 w-9 -ml-3 hover:bg-zinc-50"
             onClick={() => navigate('/playbook')}
           >
-            <ArrowLeft className="h-[18px] w-[18px] text-zinc-900" />
+            <ArrowLeft className="h-5 w-5 text-zinc-900" />
           </Button>
-          <h1 className="font-inter text-[22px] font-semibold tracking-tight text-zinc-900 ml-3">
+          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
             TRENDS
           </h1>
         </div>
         
         {lastUpdateTime && (
-          <div className="flex items-center gap-2 ml-9">
-            <span className="text-[15px] text-zinc-500">
+          <div className="flex items-center gap-1.5 ml-7 -mt-0.5">
+            <span className="text-xs text-zinc-500 font-medium">
               Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
             </span>
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 hover:bg-zinc-50"
+              className="h-5 w-5 hover:bg-zinc-50"
               onClick={onRefresh}
               disabled={isLoading}
             >
-              <RefreshCw className={`h-4 w-4 text-zinc-600 ${isLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw className={`h-3.5 w-3.5 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
             </Button>
           </div>
         )}
