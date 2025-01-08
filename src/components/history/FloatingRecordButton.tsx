@@ -6,7 +6,7 @@ const FloatingRecordButton = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-4 right-8 z-50">
       <div className="relative">
         {/* Enhanced blur/glow effect */}
         <div className="absolute inset-0 bg-zinc-950/20 rounded-full blur-xl transform scale-110" />
