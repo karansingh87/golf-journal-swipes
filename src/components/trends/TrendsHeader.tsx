@@ -15,8 +15,8 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   
   return (
     <div>
-      <div className="border-b border-zinc-100">
-        <div className="flex items-center justify-between py-4 px-2">
+      <div className="h-14 backdrop-blur-sm border-b border-zinc-800/10 bg-white/80">
+        <div className="h-full px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -26,7 +26,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
-            <h1 className="font-inter text-lg font-semibold uppercase tracking-wider text-zinc-600">
+            <h1 className="font-inter text-lg font-semibold uppercase tracking-wider text-zinc-900">
               Trends
             </h1>
           </div>
@@ -42,7 +42,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
         </div>
       </div>
       {lastUpdateTime && (
-        <div className="px-2 py-2 bg-zinc-50/50">
+        <div className="px-6 py-2 bg-zinc-50/80 border-b border-zinc-100">
           <span className="text-xs text-zinc-500">
             Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
           </span>
