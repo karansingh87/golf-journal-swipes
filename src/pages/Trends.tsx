@@ -7,6 +7,7 @@ import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
 import { RefreshCw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +15,7 @@ const Trends = () => {
   const [recordingsCount, setRecordingsCount] = useState<number>(0);
   const [milestone, setMilestone] = useState<string | null>(null);
   const [lastUpdateTime, setLastUpdateTime] = useState<Date | null>(null);
+  const [newRecordingsCount, setNewRecordingsCount] = useState<number>(0);
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const Trends = () => {
       try {
         const { data: trends, error } = await supabase
           .from('trends')
-          .select('trends_output, milestone_type, last_analysis_at')
+          .select('trends_output, milestone_type, last_analysis_at, analyzed_recordings')
           .eq('user_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(1)
@@ -53,6 +55,15 @@ const Trends = () => {
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
             setLastUpdateTime(new Date(trends.last_analysis_at));
+
+            // Check for new recordings since last analysis
+            const { count: newCount } = await supabase
+              .from('recordings')
+              .select('*', { count: 'exact', head: true })
+              .eq('user_id', session.user.id)
+              .gt('created_at', trends.last_analysis_at);
+
+            setNewRecordingsCount(newCount || 0);
           } catch (error) {
             console.error('Error parsing trends data:', error);
           }
@@ -99,6 +110,7 @@ const Trends = () => {
             setTrendsData(parsedTrends);
             setMilestone(trends.milestone_type);
             setLastUpdateTime(new Date(trends.last_analysis_at));
+            setNewRecordingsCount(0); // Reset the counter after generating new trends
           } catch (error) {
             console.error('Error parsing trends data:', error);
           }
@@ -135,6 +147,13 @@ const Trends = () => {
           </button>
         </div>
         <div className="px-2 sm:px-6 lg:px-8 pt-4">
+          {newRecordingsCount >= 3 && (
+            <Alert className="mb-4">
+              <AlertDescription>
+                You have {newRecordingsCount} new recordings since your last analysis. Click the refresh button to update your trends.
+              </AlertDescription>
+            </Alert>
+          )}
           <TrendsContent
             trendsData={trendsData}
             recordingsCount={recordingsCount}
