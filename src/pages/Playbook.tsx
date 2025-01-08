@@ -70,15 +70,17 @@ const Playbook = () => {
   const displayName = userProfile?.display_name || 'Golfer';
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-background">
-      {/* Header is fixed, so we need padding to offset content */}
-      <div className="h-14" /> {/* Offset for fixed header */}
+    <div className="flex flex-col min-h-[100dvh] bg-background">
+      {/* Header offset for fixed navigation */}
+      <div className="h-14" />
       
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col w-full">
-        <div className="max-w-7xl mx-auto w-full px-10 sm:px-14 lg:px-20">
+      {/* Main content area with dynamic height */}
+      <div className="flex-1 flex flex-col w-full px-6 sm:px-10 lg:px-20 max-w-7xl mx-auto">
+        <div className="flex-1 flex flex-col h-[calc(100dvh-3.5rem)] pt-6">
           <PlaybookHeader displayName={displayName} />
-          <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
+          <div className="flex-1 flex flex-col justify-center">
+            <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
+          </div>
         </div>
       </div>
 
