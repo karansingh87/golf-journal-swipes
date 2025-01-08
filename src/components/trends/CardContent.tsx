@@ -23,7 +23,7 @@ export const CardContent = ({
       {/* Watermark */}
       <div className="absolute bottom-3 right-6 opacity-10">
         <span className="font-logo text-sm tracking-[-0.03em]">
-          golflog
+          golflog.ai
         </span>
       </div>
       
