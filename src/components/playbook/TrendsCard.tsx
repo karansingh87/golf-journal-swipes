@@ -23,7 +23,10 @@ const TrendsCard = () => {
       <div className="text-left">
         <h3 className="font-semibold text-base leading-none mb-2">View Trends</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
-          Analyze patterns and progress over time
+          {showNotification 
+            ? "Your new trends are ready!"
+            : "Analyze patterns and progress over time"
+          }
         </p>
       </div>
       <TrendsNotification show={showNotification} />
