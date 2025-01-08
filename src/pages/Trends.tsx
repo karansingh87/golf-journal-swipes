@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import TrendsContent from "@/components/trends/TrendsContent";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
+import { RefreshCw } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -118,6 +120,20 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto pt-14">
         <PageBreadcrumb currentPage="Trends" />
+        <div className="px-6 py-2 border-b border-zinc-100 flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
+            {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
+          </span>
+          <button
+            onClick={generateTrends}
+            disabled={isLoading}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <RefreshCw 
+              className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
+            />
+          </button>
+        </div>
         <div className="px-2 sm:px-6 lg:px-8 pt-4">
           <TrendsContent
             trendsData={trendsData}
