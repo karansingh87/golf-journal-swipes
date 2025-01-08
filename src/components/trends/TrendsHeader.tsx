@@ -25,9 +25,11 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex flex-col">
-          <h1 className="font-inter text-lg font-semibold uppercase tracking-wide text-zinc-600">
-            Trends
-          </h1>
+          <div className="flex items-center">
+            <h1 className="font-inter text-lg font-semibold uppercase tracking-wide text-zinc-600">
+              Trends
+            </h1>
+          </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {lastUpdateTime && (
               <span>
