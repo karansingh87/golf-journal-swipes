@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import TrendsRefreshBar from "@/components/trends/TrendsRefreshBar";
 import TrendsContent from "@/components/trends/TrendsContent";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
@@ -120,13 +119,6 @@ const Trends = () => {
       <div className="max-w-7xl mx-auto">
         <div className="px-4 sm:px-6 lg:px-8 pt-16">
           <PageBreadcrumb currentPage="Trends" />
-          <TrendsRefreshBar
-            lastUpdateTime={lastUpdateTime}
-            onRefresh={generateTrends}
-            isLoading={isLoading}
-            recordingsCount={recordingsCount}
-          />
-          
           <div className="mt-6">
             <TrendsContent
               trendsData={trendsData}
