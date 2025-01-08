@@ -120,7 +120,7 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto pt-14">
         <PageBreadcrumb currentPage="Trends" />
-        <div className="px-6 py-2 flex items-center justify-between">
+        <div className="px-6 py-2 pt-2 flex items-center justify-between">
           <span className="text-xs font-light text-zinc-300">
             {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
           </span>
