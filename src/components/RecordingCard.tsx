@@ -68,7 +68,7 @@ const RecordingCard = ({
       className={cn(
         "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer relative",
         "rounded-2xl border border-border/50 backdrop-blur-sm active:scale-[0.99]",
-        "bg-white/80 p-5"
+        "bg-white/80 p-5 px-6"
       )}
     >
       <div className="flex flex-col">
