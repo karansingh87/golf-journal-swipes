@@ -15,7 +15,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="flex items-center justify-between h-14 px-4">
+      <div className="flex flex-col px-4 py-2.5">
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -31,7 +31,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
         </div>
         
         {lastUpdateTime && (
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 ml-6 -mt-0.5">
             <span className="text-xs text-zinc-500 font-medium">
               Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
             </span>
