@@ -18,7 +18,7 @@ const AnalysisCard = ({
   content,
   isOverview = false,
   index,
-  defaultExpanded = false,
+  defaultExpanded = true, // Changed default value to true
   onExpand,
   summary,
 }: AnalysisCardProps) => {
