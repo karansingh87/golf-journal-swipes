@@ -7,7 +7,6 @@ import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
 import { RefreshCw } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -133,13 +132,19 @@ const Trends = () => {
       <div className="max-w-7xl mx-auto pt-14">
         <PageBreadcrumb currentPage="Trends" />
         <div className="px-6 py-2 pt-2 flex items-center justify-between">
-          <span className="text-xs font-light text-zinc-300">
-            {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
+          <span className="text-xs font-light">
+            {newRecordingsCount >= 3 ? (
+              <span className="text-[#8B5CF6]">New trends are ready! Click refresh to see them.</span>
+            ) : (
+              <span className="text-zinc-300">
+                {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
+              </span>
+            )}
           </span>
           <button
             onClick={generateTrends}
             disabled={isLoading}
-            className="text-zinc-300 hover:text-foreground transition-colors"
+            className={`hover:text-foreground transition-colors ${newRecordingsCount >= 3 ? 'text-[#8B5CF6]' : 'text-zinc-300'}`}
           >
             <RefreshCw 
               className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
@@ -147,13 +152,6 @@ const Trends = () => {
           </button>
         </div>
         <div className="px-2 sm:px-6 lg:px-8 pt-4">
-          {newRecordingsCount >= 3 && (
-            <Alert className="mb-4">
-              <AlertDescription>
-                You have {newRecordingsCount} new recordings since your last analysis. Click the refresh button to update your trends.
-              </AlertDescription>
-            </Alert>
-          )}
           <TrendsContent
             trendsData={trendsData}
             recordingsCount={recordingsCount}
