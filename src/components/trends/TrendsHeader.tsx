@@ -20,10 +20,10 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6 -ml-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800"
+            className="h-5 w-5 -ml-1 rounded-full bg-zinc-900 hover:bg-zinc-800"
             onClick={() => navigate('/playbook')}
           >
-            <ArrowLeft className="h-3.5 w-3.5 text-white" />
+            <ArrowLeft className="h-3 w-3 text-white" />
           </Button>
           <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
             TRENDS
