@@ -15,8 +15,8 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   
   return (
     <div>
-      <div className="border-b border-zinc-100">
-        <div className="flex items-center justify-between py-4 px-2">
+      <div className="border-b border-zinc-800/10">
+        <div className="h-14 px-6 flex items-center">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -30,15 +30,17 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
               Trends
             </h1>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 hover:bg-zinc-50"
-            onClick={onRefresh}
-            disabled={isLoading}
-          >
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-          </Button>
+          <div className="flex-1 flex justify-end">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 hover:bg-zinc-50"
+              onClick={onRefresh}
+              disabled={isLoading}
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
         </div>
       </div>
       {lastUpdateTime && (
