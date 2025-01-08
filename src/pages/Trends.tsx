@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import TrendsRefreshBar from "@/components/trends/TrendsRefreshBar";
 import TrendsContent from "@/components/trends/TrendsContent";
-import TrendsHeader from "@/components/trends/TrendsHeader";
+import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
 
 const Trends = () => {
@@ -119,11 +119,7 @@ const Trends = () => {
     <div className="min-h-[100dvh] bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="px-4 sm:px-6 lg:px-8 pt-16">
-          <TrendsHeader 
-            lastUpdateTime={lastUpdateTime}
-            onRefresh={generateTrends}
-            isLoading={isLoading}
-          />
+          <PageBreadcrumb currentPage="Trends" />
           <TrendsRefreshBar
             lastUpdateTime={lastUpdateTime}
             onRefresh={generateTrends}
