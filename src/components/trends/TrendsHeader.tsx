@@ -16,7 +16,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   return (
     <div className="border-b border-zinc-100">
       <div className="flex flex-col px-4 py-2.5">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <Button
             variant="ghost"
             size="icon"
@@ -25,7 +25,7 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
           >
             <ArrowLeft className="h-5 w-5 text-zinc-900" />
           </Button>
-          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
+          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700 -ml-1">
             TRENDS
           </h1>
         </div>
