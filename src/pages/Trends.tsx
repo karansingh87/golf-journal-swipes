@@ -134,7 +134,7 @@ const Trends = () => {
         <div className="px-6 py-2 pt-2 flex items-center justify-between">
           <span className="text-xs font-light">
             {newRecordingsCount >= 3 ? (
-              <span className="text-[#8B5CF6]">New trends are ready! Click refresh to see them.</span>
+              <span className="text-[#0EA5E9]">New trends are ready! Click refresh to see them.</span>
             ) : (
               <span className="text-zinc-300">
                 {lastUpdateTime ? `Updated ${formatDistanceToNow(lastUpdateTime)} ago` : 'No updates yet'}
@@ -144,7 +144,7 @@ const Trends = () => {
           <button
             onClick={generateTrends}
             disabled={isLoading}
-            className={`hover:text-foreground transition-colors ${newRecordingsCount >= 3 ? 'text-[#8B5CF6]' : 'text-zinc-300'}`}
+            className={`hover:text-foreground transition-colors ${newRecordingsCount >= 3 ? 'text-[#0EA5E9]' : 'text-zinc-300'}`}
           >
             <RefreshCw 
               className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`}
