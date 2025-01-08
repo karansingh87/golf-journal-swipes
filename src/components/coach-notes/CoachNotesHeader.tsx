@@ -32,7 +32,7 @@ const CoachNotesHeader = ({ lastUpdateTime, onRefresh, isLoading }: CoachNotesHe
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-sm font-semibold">
+              <BreadcrumbPage className="text-sm">
                 Coach Notes
               </BreadcrumbPage>
             </BreadcrumbItem>
