@@ -14,38 +14,36 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   const navigate = useNavigate();
   
   return (
-    <div className="space-y-1 pt-3">
-      <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 p-0"
-          onClick={() => navigate('/playbook')}
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div className="flex flex-col">
-          <div className="flex items-center">
-            <h1 className="font-inter text-lg font-semibold uppercase tracking-wide text-zinc-600">
-              Trends
-            </h1>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            {lastUpdateTime && (
-              <span>
-                Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
-              </span>
-            )}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={onRefresh}
-              disabled={isLoading}
-            >
-              <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-            </Button>
-          </div>
+    <div className="border-b">
+      <div className="flex items-center justify-between py-3 px-1">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 p-0"
+            onClick={() => navigate('/playbook')}
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="font-inter text-lg font-semibold uppercase tracking-wide text-zinc-600">
+            Trends
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          {lastUpdateTime && (
+            <span>
+              Updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
+            </span>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={onRefresh}
+            disabled={isLoading}
+          >
+            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+          </Button>
         </div>
       </div>
     </div>
