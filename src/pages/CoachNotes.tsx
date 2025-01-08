@@ -57,7 +57,7 @@ const CoachNotes = () => {
           isLoading={isLoading}
         />
 
-        <div className="px-2 sm:px-6 lg:px-8">
+        <div className="px-2 sm:px-6 lg:px-8 pt-6">
           <ScrollArea className="rounded-lg">
             <div className="space-y-4 px-4">
               {notes?.map((note) => (
