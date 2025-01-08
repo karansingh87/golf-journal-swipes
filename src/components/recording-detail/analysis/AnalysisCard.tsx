@@ -34,7 +34,7 @@ const AnalysisCard = ({
       return (
         <ul className="list-disc list-inside space-y-2">
           {content.map((item, idx) => (
-            <li key={idx} className="leading-normal">
+            <li key={idx} className="text-sm leading-normal font-sans">
               {item}
             </li>
           ))}
@@ -42,7 +42,7 @@ const AnalysisCard = ({
       );
     }
 
-    return <p className="leading-normal">{content}</p>;
+    return <p className="text-sm leading-normal font-sans">{content}</p>;
   };
 
   return (
@@ -71,7 +71,11 @@ const AnalysisCard = ({
           )}
         >
           <div className="text-golf-gray-text-secondary">
-            {isExpanded ? renderContent() : summary || (Array.isArray(content) ? content[0] : content)}
+            {isExpanded ? renderContent() : (
+              <p className="text-sm leading-normal font-sans">
+                {summary || (Array.isArray(content) ? content[0] : content)}
+              </p>
+            )}
           </div>
         </div>
       </CardContent>
