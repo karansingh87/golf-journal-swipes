@@ -49,7 +49,7 @@ const AnalysisCard = ({
     <Card
       className={cn(
         "transition-all duration-300 hover:shadow-lg cursor-pointer relative",
-        isOverview ? "bg-[#FAF5FF]" : "bg-white border"
+        isOverview ? "bg-[#FAF5FF] border-[#FAF5FF]" : "bg-white border"
       )}
       onClick={handleToggle}
     >
