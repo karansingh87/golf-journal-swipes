@@ -11,7 +11,7 @@ const CoachNotesHeader = ({ onRefresh, isLoading }: CoachNotesHeaderProps) => {
   const navigate = useNavigate();
   
   return (
-    <div className="space-y-1.5 pt-2">
+    <div className="border-b border-zinc-100">
       <div className="flex flex-col px-4 py-2.5">
         <div className="flex items-center gap-1">
           <Button
