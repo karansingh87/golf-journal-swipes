@@ -12,9 +12,9 @@ const NewPlaceholderCard = () => {
         <Plus className="w-5 h-5 text-zinc-950" />
       </div>
       <div className="text-left">
-        <h3 className="font-semibold text-base leading-none mb-2">Coming Soon</h3>
+        <h3 className="font-semibold text-base leading-none mb-2">Pep Talk</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
-          New feature coming soon
+          See everything that's clicking in your game before your next round
         </p>
       </div>
     </button>
