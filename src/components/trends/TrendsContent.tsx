@@ -1,5 +1,5 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import PatternCard from "./PatternCard";
 import {
   Carousel,
@@ -13,9 +13,28 @@ interface TrendsContentProps {
   trendsData: any | null;
   recordingsCount: number;
   milestone: string | null;
+  isLoading: boolean;
+  hasNewRecordings?: boolean;
 }
 
-const TrendsContent = ({ trendsData, recordingsCount, milestone }: TrendsContentProps) => {
+const TrendsContent = ({ 
+  trendsData, 
+  recordingsCount, 
+  milestone, 
+  isLoading,
+  hasNewRecordings 
+}: TrendsContentProps) => {
+  if (isLoading && hasNewRecordings) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+        <RefreshCw className="w-8 h-8 text-muted-foreground animate-spin" />
+        <p className="text-muted-foreground text-center">
+          Just a moment, your latest trends are on the way!
+        </p>
+      </div>
+    );
+  }
+
   if (recordingsCount < 3) {
     return (
       <Alert variant="destructive">

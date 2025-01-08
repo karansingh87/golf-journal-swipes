@@ -133,6 +133,8 @@ const Trends = () => {
             trendsData={trendsData}
             recordingsCount={recordingsCount}
             milestone={milestone}
+            isLoading={isLoading}
+            hasNewRecordings={trendsInfo?.newRecordingsCount >= 3}
           />
         </div>
       </div>
