@@ -16,34 +16,34 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   return (
     <div>
       <div className="border-b border-zinc-100">
-        <div className="flex items-center justify-between py-4 px-2">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between h-16 px-4">
+          <div className="flex items-center gap-6">
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 p-0 hover:bg-zinc-50"
+              className="h-10 w-10 -ml-2 hover:bg-zinc-50"
               onClick={() => navigate('/playbook')}
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-5 w-5 text-zinc-900" />
             </Button>
-            <h1 className="font-inter text-lg font-semibold uppercase tracking-wider text-zinc-600">
-              Trends
+            <h1 className="font-inter text-[22px] font-semibold tracking-tight text-zinc-900">
+              TRENDS
             </h1>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 hover:bg-zinc-50"
+            className="h-10 w-10 hover:bg-zinc-50"
             onClick={onRefresh}
             disabled={isLoading}
           >
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-5 w-5 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
           </Button>
         </div>
       </div>
       {lastUpdateTime && (
-        <div className="px-2 py-2 bg-zinc-50/50">
-          <span className="text-xs text-zinc-500">
+        <div className="px-4 py-3 bg-zinc-50/50">
+          <span className="text-sm text-zinc-500 font-medium">
             Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
           </span>
         </div>
