@@ -15,30 +15,30 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
   
   return (
     <div className="border-b border-zinc-100">
-      <div className="flex flex-col px-6 py-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col px-4 py-2.5">
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="icon"
-            className="h-9 w-9 -ml-2 hover:bg-zinc-50"
+            className="h-9 w-9 -ml-3 hover:bg-zinc-50"
             onClick={() => navigate('/playbook')}
           >
             <ArrowLeft className="h-5 w-5 text-zinc-900" />
           </Button>
-          <h1 className="font-inter text-xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="font-inter text-lg font-semibold tracking-tight text-zinc-700">
             TRENDS
           </h1>
         </div>
         
         {lastUpdateTime && (
-          <div className="flex items-center gap-1.5 ml-10 mt-1">
-            <span className="text-sm text-zinc-500 font-medium">
+          <div className="flex items-center gap-1.5 ml-7 -mt-0.5">
+            <span className="text-xs text-zinc-500 font-medium">
               Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
             </span>
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 hover:bg-zinc-50"
+              className="h-5 w-5 hover:bg-zinc-50"
               onClick={onRefresh}
               disabled={isLoading}
             >
