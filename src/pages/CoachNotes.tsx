@@ -58,7 +58,7 @@ const CoachNotes = () => {
         />
 
         <div className="p-4">
-          <ScrollArea className="h-[calc(100vh-12rem)] rounded-lg">
+          <ScrollArea className="rounded-lg">
             <div className="space-y-4 pr-4">
               {notes?.map((note) => (
                 <Card 
