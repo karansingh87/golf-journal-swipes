@@ -76,6 +76,13 @@ const Trends = () => {
     fetchLatestTrends();
   }, [session.user.id]);
 
+  // Auto-refresh when there are 3 or more new recordings
+  useEffect(() => {
+    if (newRecordingsCount >= 3 && !isLoading) {
+      generateTrends();
+    }
+  }, [newRecordingsCount]);
+
   const generateTrends = async () => {
     try {
       setIsLoading(true);
