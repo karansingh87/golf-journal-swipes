@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PlaybookHeader from "@/components/playbook/PlaybookHeader";
 import PlaybookActions from "@/components/playbook/PlaybookActions";
 import PlaybookModals from "@/components/playbook/PlaybookModals";
+import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 import { useCoachingNotes } from "@/hooks/useCoachingNotes";
 import { useState } from "react";
 
@@ -93,6 +94,9 @@ const Playbook = () => {
         isActionModalOpen={isActionModalOpen}
         setIsActionModalOpen={setIsActionModalOpen}
       />
+
+      {/* Floating Record Button */}
+      <FloatingRecordButton />
     </div>
   );
 };
