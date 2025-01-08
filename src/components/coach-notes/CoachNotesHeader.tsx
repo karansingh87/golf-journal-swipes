@@ -5,6 +5,7 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
+  BreadcrumbList,
 } from "@/components/ui/breadcrumb";
 
 interface CoachNotesHeaderProps {
