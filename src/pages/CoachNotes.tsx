@@ -40,15 +40,16 @@ const CoachNotes = () => {
     );
   }
 
-  const handleRefresh = async () => {
-    await refetch();
-  };
+  const lastUpdateTime = notes && notes.length > 0 
+    ? new Date(notes[0].created_at) 
+    : null;
 
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto pt-16">
         <CoachNotesHeader
-          onRefresh={handleRefresh}
+          lastUpdateTime={lastUpdateTime}
+          onRefresh={() => refetch()}
           isLoading={isLoading}
         />
 
