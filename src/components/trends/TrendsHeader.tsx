@@ -30,22 +30,24 @@ const TrendsHeader = ({ lastUpdateTime, onRefresh, isLoading }: TrendsHeaderProp
               TRENDS
             </h1>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-10 w-10 hover:bg-zinc-50"
-            onClick={onRefresh}
-            disabled={isLoading}
-          >
-            <RefreshCw className={`h-5 w-5 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
-          </Button>
         </div>
       </div>
       {lastUpdateTime && (
         <div className="px-4 py-3 bg-zinc-50/50">
-          <span className="text-sm text-zinc-500 font-medium">
-            Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-zinc-500 font-medium">
+              Last updated {formatDistanceToNow(lastUpdateTime, { addSuffix: true })}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 hover:bg-zinc-50"
+              onClick={onRefresh}
+              disabled={isLoading}
+            >
+              <RefreshCw className={`h-4 w-4 text-zinc-700 ${isLoading ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
         </div>
       )}
     </div>
