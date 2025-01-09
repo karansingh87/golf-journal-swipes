@@ -1,97 +1,54 @@
 import { Json } from './json';
-import { PepTalkContent } from './pep-talk';
-import { SessionType, HandicapRange, CoachingFrequency, TrackingHabit } from './enums';
+import { PepTalk } from './pep-talk';
+import { Tables } from './tables';
 
-export interface Database {
+export type Database = {
   public: {
-    Tables: {
-      pep_talk: {
+    Tables: Tables;
+    Views: {
+      admin_status: {
         Row: {
-          id: string;
-          user_id: string;
-          content: PepTalkContent;
-          recording_ids: string[];
-          created_at: string | null;
-          updated_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          content: PepTalkContent;
-          recording_ids: string[];
-          created_at?: string | null;
-          updated_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          content?: PepTalkContent;
-          recording_ids?: string[];
-          created_at?: string | null;
-          updated_at?: string | null;
-        };
-      };
-      recordings: {
-        Row: {
-          id: string;
-          user_id: string;
-          audio_url: string | null;
-          transcription: string | null;
-          duration: number | null;
-          created_at: string | null;
-          analysis: string | null;
-          session_type: SessionType;
-          insights: string | null;
-          is_public: boolean | null;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          audio_url?: string | null;
-          transcription?: string | null;
-          duration?: number | null;
-          created_at?: string | null;
-          analysis?: string | null;
-          session_type: SessionType;
-          insights?: string | null;
-          is_public?: boolean | null;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          audio_url?: string | null;
-          transcription?: string | null;
-          duration?: number | null;
-          created_at?: string | null;
-          analysis?: string | null;
-          session_type?: SessionType;
-          insights?: string | null;
-          is_public?: boolean | null;
-        };
-      };
-      profiles: {
-        Row: {
-          id: string;
-          age: number | null;
-          location: string | null;
-          email: string | null;
-          updated_at: string | null;
+          id: string | null;
           is_admin: boolean | null;
-          display_name: string | null;
-          handicap_range: HandicapRange | null;
-          tracking_habit: TrackingHabit | null;
-          coaching_frequency: CoachingFrequency | null;
-          onboarding_completed: boolean | null;
-          onboarding_skipped: boolean | null;
-          onboarding_last_step: number | null;
         };
       };
     };
+    Functions: Record<string, never>;
     Enums: {
-      session_type: SessionType;
-      handicap_range: HandicapRange;
-      coaching_frequency: CoachingFrequency;
-      tracking_habit: TrackingHabit;
+      achievement_type:
+        | "power_moves"
+        | "mental_edge"
+        | "breakthroughs"
+        | "smart_plays"
+        | "progress_zone";
+      coaching_frequency:
+        | "regularly"
+        | "occasionally"
+        | "past_experience"
+        | "never";
+      handicap_range:
+        | "scratch_or_better"
+        | "1_5"
+        | "6_10"
+        | "11_15"
+        | "16_20"
+        | "21_25"
+        | "26_plus"
+        | "new_to_golf";
+      pep_talk_section_type:
+        | "hot_right_now"
+        | "working_well"
+        | "go_to_shots"
+        | "scoring_zones"
+        | "confidence_builders";
+      session_type: "course" | "practice";
+      tracking_habit:
+        | "no_tracking"
+        | "mental_notes"
+        | "phone_notes"
+        | "dedicated_journal";
     };
   };
-}
+};
+
+export type { Json, PepTalk };
