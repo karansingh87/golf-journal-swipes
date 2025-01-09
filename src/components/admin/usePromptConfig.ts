@@ -6,6 +6,7 @@ export const usePromptConfig = () => {
   const [analysisPrompt, setAnalysisPrompt] = useState("");
   const [trendsPrompt, setTrendsPrompt] = useState("");
   const [coachingPrompt, setCoachingPrompt] = useState("");
+  const [pepTalkPrompt, setPepTalkPrompt] = useState("");
   const [modelProvider, setModelProvider] = useState("anthropic");
   const [modelName, setModelName] = useState("claude-3-5-sonnet-20241022");
   const [promptHistory, setPromptHistory] = useState([]);
@@ -17,7 +18,7 @@ export const usePromptConfig = () => {
       console.log('Fetching prompt configuration...');
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt, trends_prompt, coaching_prompt, model_provider, model_name')
+        .select('prompt, trends_prompt, coaching_prompt, pep_talk_prompt, model_provider, model_name')
         .single();
 
       if (error) {
@@ -35,12 +36,14 @@ export const usePromptConfig = () => {
           analysisPromptLength: data.prompt?.length,
           trendsPromptLength: data.trends_prompt?.length,
           coachingPromptLength: data.coaching_prompt?.length,
+          pepTalkPromptLength: data.pep_talk_prompt?.length,
           modelProvider: data.model_provider,
           modelName: data.model_name,
         });
         setAnalysisPrompt(data.prompt);
         setTrendsPrompt(data.trends_prompt || '');
         setCoachingPrompt(data.coaching_prompt || '');
+        setPepTalkPrompt(data.pep_talk_prompt || '');
         setModelProvider(data.model_provider);
         setModelName(data.model_name);
       }
@@ -73,7 +76,7 @@ export const usePromptConfig = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async (type: 'analysis' | 'trends' | 'model' | 'coaching') => {
+  const handleSave = async (type: 'analysis' | 'trends' | 'model' | 'coaching' | 'pep_talk') => {
     console.log(`Saving ${type}...`);
     setIsLoading(true);
     try {
@@ -97,6 +100,9 @@ export const usePromptConfig = () => {
           break;
         case 'coaching':
           updateData = { coaching_prompt: coachingPrompt };
+          break;
+        case 'pep_talk':
+          updateData = { pep_talk_prompt: pepTalkPrompt };
           break;
         case 'model':
           updateData = { model_provider: modelProvider, model_name: modelName };
@@ -144,6 +150,7 @@ export const usePromptConfig = () => {
     analysisPrompt,
     trendsPrompt,
     coachingPrompt,
+    pepTalkPrompt,
     modelProvider,
     modelName,
     promptHistory,
@@ -151,6 +158,7 @@ export const usePromptConfig = () => {
     setAnalysisPrompt,
     setTrendsPrompt,
     setCoachingPrompt,
+    setPepTalkPrompt,
     setModelProvider,
     setModelName,
     handleSave,
