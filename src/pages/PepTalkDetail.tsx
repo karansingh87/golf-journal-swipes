@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Trash2 } from "lucide-react";
-import { PepTalkContent } from "@/integrations/supabase/types";
+import { PepTalkContent } from "@/integrations/supabase/types/pep-talk";
 import PepTalkDisplay from "@/components/playbook/PepTalkDisplay";
 
 const PepTalkDetail = () => {
