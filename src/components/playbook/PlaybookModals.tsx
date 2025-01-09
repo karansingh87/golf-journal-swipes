@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
+import PepTalkModal from "./PepTalkModal";
 
 interface PlaybookModalsProps {
   recordings?: any[];
@@ -66,6 +67,13 @@ const PlaybookModals = ({
     setIsSelectionModalOpen(false);
   };
 
+  const handlePepTalkGenerate = async () => {
+    // TODO: Implement pep talk generation
+    console.log("Generating pep talk for recordings:", selectedRecordings);
+    setSelectedRecordings([]);
+    setIsPepTalkModalOpen(false);
+  };
+
   return (
     <>
       <CoachingActionModal
@@ -85,6 +93,19 @@ const PlaybookModals = ({
         selectedRecordings={selectedRecordings}
         onSelect={handleRecordingSelect}
         onGenerate={handleGenerate}
+        isGenerating={isGenerating}
+      />
+
+      <PepTalkModal
+        isOpen={isPepTalkModalOpen}
+        onClose={() => {
+          setIsPepTalkModalOpen(false);
+          setSelectedRecordings([]);
+        }}
+        recordings={recordings || []}
+        selectedRecordings={selectedRecordings}
+        onSelect={handleRecordingSelect}
+        onGenerate={handlePepTalkGenerate}
         isGenerating={isGenerating}
       />
     </>
