@@ -4,11 +4,11 @@ interface KeyThoughts {
 }
 
 interface KeyRemindersSectionProps {
-  items: KeyThoughts;
+  items: KeyThoughts | undefined;
 }
 
 const KeyRemindersSection = ({ items }: KeyRemindersSectionProps) => {
-  if (!items || !items.content) {
+  if (!items?.content) {
     return null;
   }
 

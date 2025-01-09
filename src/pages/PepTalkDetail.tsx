@@ -104,23 +104,23 @@ const PepTalkDetail = () => {
         <ScrollArea className="w-full">
           <div className="space-y-4">
             <PepTalkSection title="Game Strengths">
-              <FeelingGoodSection items={findSection("game_strengths")} />
+              <FeelingGoodSection items={findSection("game_strengths") as { type: "game_strengths"; content: string[] }} />
             </PepTalkSection>
 
             <PepTalkSection title="Key Thoughts">
-              <KeyRemindersSection items={findSection("key_thoughts")} />
+              <KeyRemindersSection items={findSection("key_thoughts") as { type: "key_thoughts"; content: string[] }} />
             </PepTalkSection>
 
             <PepTalkSection title="Go-To Shots">
-              <RecentWinsSection items={findSection("go_to_shots")} />
+              <RecentWinsSection items={findSection("go_to_shots") as { type: "go_to_shots"; content: string[] }} />
             </PepTalkSection>
 
             <PepTalkSection title="Scoring Zones">
-              <RecentWinsSection items={findSection("scoring_zones")} />
+              <RecentWinsSection items={findSection("scoring_zones") as { type: "scoring_zones"; content: string[] }} />
             </PepTalkSection>
 
             <PepTalkSection title="Confidence Moments">
-              <RecentWinsSection items={findSection("confidence_moments")} />
+              <RecentWinsSection items={findSection("confidence_moments") as { type: "confidence_moments"; content: string[] }} />
             </PepTalkSection>
           </div>
         </ScrollArea>

@@ -4,11 +4,11 @@ interface RecentWins {
 }
 
 interface RecentWinsSectionProps {
-  items: RecentWins;
+  items: RecentWins | undefined;
 }
 
 const RecentWinsSection = ({ items }: RecentWinsSectionProps) => {
-  if (!items || !items.content) {
+  if (!items?.content) {
     return null;
   }
 

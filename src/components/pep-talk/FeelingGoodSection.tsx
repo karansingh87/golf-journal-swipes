@@ -4,11 +4,11 @@ interface FeelingGoodSection {
 }
 
 interface FeelingGoodSectionProps {
-  items: FeelingGoodSection;
+  items: FeelingGoodSection | undefined;
 }
 
 const FeelingGoodSection = ({ items }: FeelingGoodSectionProps) => {
-  if (!items || !items.content) {
+  if (!items?.content) {
     return null;
   }
 
