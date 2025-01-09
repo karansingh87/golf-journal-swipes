@@ -13,6 +13,11 @@ interface PlaybookModalsProps {
   onClose: () => void;
   selectedAction: "coaching" | "pep_talk" | null;
   selectedRecordings: string[];
+  recordings: {
+    id: string;
+    transcription: string;
+    created_at: string;
+  }[];
 }
 
 const PlaybookModals = ({
@@ -20,11 +25,13 @@ const PlaybookModals = ({
   onClose,
   selectedAction,
   selectedRecordings,
+  recordings = [],
 }: PlaybookModalsProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const session = useSession();
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>(selectedRecordings);
 
   const handleGeneratePepTalk = async () => {
     if (!session?.user?.id) {
@@ -45,7 +52,7 @@ const PlaybookModals = ({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          recording_ids: selectedRecordings,
+          recording_ids: selectedIds,
         }),
       });
 
@@ -59,7 +66,7 @@ const PlaybookModals = ({
         .from('pep_talk')
         .insert({
           content: JSON.stringify(pepTalkContent),
-          recording_ids: selectedRecordings,
+          recording_ids: selectedIds,
           user_id: session.user.id
         })
         .select()
@@ -73,7 +80,6 @@ const PlaybookModals = ({
       });
 
       onClose();
-      // Ensure we have a valid ID before navigating
       if (pepTalk?.id) {
         navigate(`/pep_talk/${pepTalk.id}`);
       } else {
@@ -94,6 +100,14 @@ const PlaybookModals = ({
 
   const handleGenerateCoachingNote = async () => {
     // Implementation for generating coaching note
+  };
+
+  const handleRecordingSelect = (id: string) => {
+    setSelectedIds(prev => 
+      prev.includes(id) 
+        ? prev.filter(recordingId => recordingId !== id)
+        : [...prev, id]
+    );
   };
 
   return (
@@ -120,11 +134,11 @@ const PlaybookModals = ({
               <RecordingSelectionModal
                 isOpen={isOpen}
                 onClose={onClose}
-                selectedRecordings={selectedRecordings}
-                onSelect={() => {}}
+                selectedRecordings={selectedIds}
+                onSelect={handleRecordingSelect}
                 onGenerate={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
                 isGenerating={isGeneratingPepTalk}
-                recordings={[]}
+                recordings={recordings}
               />
 
               <div className="flex justify-end space-x-2">
@@ -137,7 +151,7 @@ const PlaybookModals = ({
                 </Button>
                 <Button
                   onClick={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
-                  disabled={selectedRecordings.length === 0 || isGeneratingPepTalk}
+                  disabled={selectedIds.length === 0 || isGeneratingPepTalk}
                 >
                   Generate
                 </Button>

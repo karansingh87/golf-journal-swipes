@@ -13,8 +13,9 @@ const Playbook = () => {
   const session = useSession();
   const navigate = useNavigate();
   const { isGenerating, generateNotes } = useCoachingNotes();
+  const [selectedAction, setSelectedAction] = useState<"coaching" | "pep_talk" | null>(null);
+  const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
-  const [isPepTalkModalOpen, setIsPepTalkModalOpen] = useState(false);
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -31,7 +32,7 @@ const Playbook = () => {
     enabled: !!session?.user?.id,
   });
 
-  const { data: recordings } = useQuery({
+  const { data: recordings = [] } = useQuery({
     queryKey: ['recordings'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -69,43 +70,42 @@ const Playbook = () => {
     }
   };
 
-  const handlePepTalkClick = () => {
-    setIsPepTalkModalOpen(true);
-  };
-
   const displayName = userProfile?.display_name || 'Golfer';
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
-      {/* Header offset for fixed navigation */}
       <div className="h-14" />
       
-      {/* Main content area with dynamic height */}
       <div className="flex-1 flex flex-col w-full px-6 sm:px-10 lg:px-20 max-w-7xl mx-auto">
         <div className="flex-1 flex flex-col h-[calc(100dvh-3.5rem)] pt-6">
           <PlaybookHeader displayName={displayName} />
           <div className="flex-1 flex flex-col justify-center">
             <PlaybookActions 
-              onGenerateClick={() => setIsActionModalOpen(true)}
-              onPepTalkClick={handlePepTalkClick}
+              onGenerateClick={() => {
+                setSelectedAction("coaching");
+                setIsActionModalOpen(true);
+              }}
+              onPepTalkClick={() => {
+                setSelectedAction("pep_talk");
+                setIsActionModalOpen(true);
+              }}
             />
           </div>
         </div>
       </div>
 
-      {/* Modals */}
       <PlaybookModals
+        isOpen={isActionModalOpen}
+        onClose={() => {
+          setIsActionModalOpen(false);
+          setSelectedAction(null);
+          setSelectedRecordings([]);
+        }}
+        selectedAction={selectedAction}
+        selectedRecordings={selectedRecordings}
         recordings={recordings}
-        latestNoteId={latestNote?.id}
-        isGenerating={isGenerating}
-        onGenerateNotes={handleGenerateNotes}
-        isActionModalOpen={isActionModalOpen}
-        setIsActionModalOpen={setIsActionModalOpen}
-        isPepTalkModalOpen={isPepTalkModalOpen}
-        setIsPepTalkModalOpen={setIsPepTalkModalOpen}
       />
 
-      {/* Floating Record Button */}
       <FloatingRecordButton />
     </div>
   );
