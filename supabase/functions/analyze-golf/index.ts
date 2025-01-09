@@ -34,10 +34,12 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the analysis prompt
+    // Fetch the analysis prompt from the new prompt_configurations table
     const { data: promptData, error: promptError } = await supabase
-      .from('prompt_config')
-      .select('prompt')
+      .from('prompt_configurations')
+      .select('content')
+      .eq('type', 'analysis')
+      .eq('is_latest', true)
       .single()
 
     if (promptError) {
@@ -45,7 +47,7 @@ serve(async (req) => {
       throw promptError
     }
 
-    const analysisPrompt = promptData.prompt
+    const analysisPrompt = promptData.content
 
     // Get analysis from Anthropic using Claude
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
