@@ -14,6 +14,7 @@ import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
 import Settings from "./pages/Settings";
 import RecordingDetail from "./pages/RecordingDetail";
+import SharedRecording from "./pages/SharedRecording";
 import Playbook from "./pages/Playbook";
 import CoachNotes from "./pages/CoachNotes";
 import CoachNoteDetail from "./pages/CoachNoteDetail";
@@ -41,6 +42,7 @@ const App = () => (
             {/* Public routes */}
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/shared/:id" element={<SharedRecording />} />
             
             {/* App routes */}
             <Route path="/record" element={<VoiceRecorderContainer />} />
