@@ -136,9 +136,11 @@ const PepTalkDetail = () => {
                 <div className="space-y-4">
                   {parsedContent.feeling_good.map((item, index) => (
                     <div key={index} className="space-y-2">
-                      <h3 className="font-medium text-foreground">{item.aspect}</h3>
-                      <p className="text-sm text-muted-foreground">{item.why}</p>
-                      <p className="text-sm italic text-muted-foreground">Example: {item.proof}</p>
+                      <h3 className="text-sm font-medium text-foreground">{item.aspect}</h3>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li className="text-sm text-muted-foreground">{item.why}</li>
+                        <li className="text-sm italic text-muted-foreground ml-4">Example: {item.proof}</li>
+                      </ul>
                     </div>
                   ))}
                 </div>
@@ -153,9 +155,9 @@ const PepTalkDetail = () => {
               <CardContent>
                 <div className="space-y-4">
                   {parsedContent.key_reminders.map((item, index) => (
-                    <div key={index} className="space-y-2">
-                      <h3 className="font-medium text-foreground">{item.thought}</h3>
-                      <p className="text-sm text-muted-foreground">{item.why_it_works}</p>
+                    <div key={index} className="space-y-1">
+                      <h3 className="text-sm font-medium text-foreground">{item.thought}</h3>
+                      <p className="text-sm text-muted-foreground ml-4">{item.why_it_works}</p>
                     </div>
                   ))}
                 </div>
@@ -170,9 +172,9 @@ const PepTalkDetail = () => {
               <CardContent>
                 <div className="space-y-4">
                   {parsedContent.recent_wins.map((item, index) => (
-                    <div key={index} className="space-y-2">
-                      <h3 className="font-medium text-foreground">{item.moment}</h3>
-                      <p className="text-sm text-muted-foreground">{item.take_forward}</p>
+                    <div key={index} className="space-y-1">
+                      <h3 className="text-sm font-medium text-foreground">{item.moment}</h3>
+                      <p className="text-sm text-muted-foreground ml-4">{item.take_forward}</p>
                     </div>
                   ))}
                 </div>
