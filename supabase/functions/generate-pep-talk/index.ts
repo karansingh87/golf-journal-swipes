@@ -14,6 +14,10 @@ serve(async (req) => {
     const { recording_ids, userId } = await req.json()
     console.log('Processing recording IDs:', recording_ids)
 
+    if (!recording_ids || !userId) {
+      throw new Error('Missing required parameters')
+    }
+
     // Initialize Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -30,6 +34,10 @@ serve(async (req) => {
     if (recordingsError) {
       console.error('Error fetching recordings:', recordingsError)
       throw new Error('Failed to fetch recordings')
+    }
+
+    if (!recordings || recordings.length === 0) {
+      throw new Error('No recordings found')
     }
 
     // Fetch the pep talk prompt from prompt_config
@@ -98,11 +106,15 @@ serve(async (req) => {
 
     if (!response.ok) {
       console.error('Error from Claude API:', await response.text())
-      throw new Error('Failed to generate pep talk')
+      throw new Error('Failed to generate pep talk from Claude API')
     }
 
     const aiResponse = await response.json()
     console.log('Claude API response:', aiResponse)
+
+    if (!aiResponse.content || !aiResponse.content[0] || !aiResponse.content[0].text) {
+      throw new Error('Invalid response format from Claude API')
+    }
 
     const content = JSON.parse(aiResponse.content[0].text)
 
@@ -127,13 +139,21 @@ serve(async (req) => {
     // Return the generated pep talk
     return new Response(
       JSON.stringify({ content, id: pepTalk.id }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { 
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        } 
+      }
     )
 
   } catch (error) {
     console.error('Error in generate-pep-talk function:', error)
     return new Response(
-      JSON.stringify({ error: 'Failed to generate pep talk' }),
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : 'Failed to generate pep talk',
+        details: error instanceof Error ? error.stack : undefined
+      }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
