@@ -9,7 +9,7 @@ import { isPepTalkContent } from "@/types/pep-talk";
 const PepTalkDetail = () => {
   const { id } = useParams();
 
-  const { data: pepTalk, isLoading } = useQuery<PepTalk>({
+  const { data: pepTalk, isLoading } = useQuery<PepTalk & { parsedContent: PepTalkContent }>({
     queryKey: ['pep_talk', id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -20,14 +20,19 @@ const PepTalkDetail = () => {
 
       if (error) throw error;
       
-      if (!data || !isPepTalkContent(data.content)) {
-        throw new Error('Invalid pep talk data');
+      if (!data) {
+        throw new Error('Pep talk not found');
+      }
+
+      const parsedContent = JSON.parse(data.content);
+      if (!isPepTalkContent(parsedContent)) {
+        throw new Error('Invalid pep talk content structure');
       }
 
       return {
         ...data,
-        content: data.content as PepTalkContent
-      } as PepTalk;
+        parsedContent
+      };
     },
     enabled: !!id,
   });
@@ -68,11 +73,11 @@ const PepTalkDetail = () => {
 
         <Card className="mt-6">
           <CardContent className="p-6">
-            {renderSection("🔥 Hot Right Now", pepTalk.content.hot_right_now, ['aspect', 'detail', 'proof'])}
-            {renderSection("✨ Working Well", pepTalk.content.working_well, ['type', 'what', 'when'])}
-            {renderSection("🎯 Go-To Shots", pepTalk.content.go_to_shots, ['situation', 'your_move', 'last_success'])}
-            {renderSection("📍 Scoring Zones", pepTalk.content.scoring_zones, ['distance', 'club', 'pattern'])}
-            {renderSection("💪 Confidence Builders", pepTalk.content.confidence_builders, ['moment', 'why_special', 'repeatable_element'])}
+            {renderSection("🔥 Hot Right Now", pepTalk.parsedContent.hot_right_now, ['aspect', 'detail', 'proof'])}
+            {renderSection("✨ Working Well", pepTalk.parsedContent.working_well, ['type', 'what', 'when'])}
+            {renderSection("🎯 Go-To Shots", pepTalk.parsedContent.go_to_shots, ['situation', 'your_move', 'last_success'])}
+            {renderSection("📍 Scoring Zones", pepTalk.parsedContent.scoring_zones, ['distance', 'club', 'pattern'])}
+            {renderSection("💪 Confidence Builders", pepTalk.parsedContent.confidence_builders, ['moment', 'why_special', 'repeatable_element'])}
           </CardContent>
         </Card>
       </div>

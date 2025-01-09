@@ -30,16 +30,16 @@ export interface PepTalkContent {
 export interface PepTalk {
   id: string;
   user_id: string;
-  content: PepTalkContent;
+  content: string;
   recording_ids: string[];
   created_at: string | null;
   updated_at: string | null;
 }
 
-// Type guard to check if Json is PepTalkContent
-export function isPepTalkContent(json: Json): json is PepTalkContent {
+export function isPepTalkContent(json: unknown): json is PepTalkContent {
   if (typeof json !== 'object' || json === null) return false;
   
+  const content = json as Record<string, unknown>;
   const requiredKeys = [
     'hot_right_now',
     'working_well',
@@ -49,6 +49,6 @@ export function isPepTalkContent(json: Json): json is PepTalkContent {
   ];
   
   return requiredKeys.every(key => 
-    Array.isArray((json as any)[key])
+    Array.isArray(content[key])
   );
 }

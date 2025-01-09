@@ -66,6 +66,19 @@ const PlaybookModals = ({
 
       if (error) throw error;
 
+      // Store the pep talk content as a string
+      const { data: savedPepTalk, error: saveError } = await supabase
+        .from('pep_talk')
+        .insert({
+          content: JSON.stringify(pepTalk.content),
+          recording_ids: lastThreeRecordings.map(r => r.id),
+          user_id: (await supabase.auth.getUser()).data.user?.id
+        })
+        .select()
+        .single();
+
+      if (saveError) throw saveError;
+
       toast({
         title: "Success!",
         description: "Your pep talk has been generated.",
@@ -73,7 +86,7 @@ const PlaybookModals = ({
 
       // Close the modal and navigate to the pep talk detail page
       setIsPepTalkModalOpen(false);
-      navigate(`/pep_talk/${pepTalk.id}`);
+      navigate(`/pep_talk/${savedPepTalk.id}`);
 
     } catch (error) {
       console.error("Error generating pep talk:", error);
