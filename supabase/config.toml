@@ -8,6 +8,3 @@ verify_jwt = false
 
 [functions.list-users]
 verify_jwt = false
-
-[functions.generate-pep-talk]
-verify_jwt = false

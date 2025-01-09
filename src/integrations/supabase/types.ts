@@ -69,33 +69,6 @@ export type Database = {
         }
         Relationships: []
       }
-      pep_talk: {
-        Row: {
-          content: Json
-          created_at: string | null
-          id: string
-          recording_ids: string[]
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          content: Json
-          created_at?: string | null
-          id?: string
-          recording_ids: string[]
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          content?: Json
-          created_at?: string | null
-          id?: string
-          recording_ids?: string[]
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           age: number | null
@@ -321,12 +294,6 @@ export type Database = {
         | "21_25"
         | "26_plus"
         | "new_to_golf"
-      pep_talk_section_type:
-        | "hot_right_now"
-        | "working_well"
-        | "go_to_shots"
-        | "scoring_zones"
-        | "confidence_builders"
       session_type: "course" | "practice"
       tracking_habit:
         | "no_tracking"
