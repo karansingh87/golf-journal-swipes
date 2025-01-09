@@ -11,7 +11,7 @@ import FeelingGoodSection from "@/components/pep-talk/FeelingGoodSection";
 import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
 
-interface PepTalkSectionData {
+interface PepTalkSection {
   type: string;
   content: string[];
 }
@@ -83,14 +83,35 @@ const PepTalkDetail = () => {
     );
   }
 
-  // Parse the content and handle the new structure
-  const content = JSON.parse(pepTalk.content);
-  const sections = {
-    game_strengths: content.game_strengths || { content: [] },
-    key_thoughts: content.key_thoughts || { content: [] },
-    go_to_shots: content.go_to_shots || { content: [] },
-    scoring_zones: content.scoring_zones || { content: [] },
-    confidence_moments: content.confidence_moments || { content: [] }
+  // Parse the content
+  const parsedContent = JSON.parse(pepTalk.content);
+  
+  // Helper function to get section title
+  const getSectionTitle = (type: string) => {
+    const titles: { [key: string]: string } = {
+      game_strengths: "What's Clicking",
+      key_thoughts: "Key Reminders",
+      go_to_shots: "Go-To Shots",
+      scoring_zones: "Scoring Zones",
+      confidence_moments: "Confidence Moments"
+    };
+    return titles[type] || type;
+  };
+
+  // Helper function to get the appropriate component for each section type
+  const renderSectionContent = (type: string, content: string[]) => {
+    switch (type) {
+      case 'game_strengths':
+        return <FeelingGoodSection content={content} />;
+      case 'key_thoughts':
+        return <KeyRemindersSection content={content} />;
+      case 'go_to_shots':
+      case 'scoring_zones':
+      case 'confidence_moments':
+        return <RecentWinsSection type={type as any} content={content} />;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -104,34 +125,11 @@ const PepTalkDetail = () => {
 
         <ScrollArea className="w-full">
           <div className="space-y-4">
-            <PepTalkSection title="What's Clicking">
-              <FeelingGoodSection content={sections.game_strengths.content} />
-            </PepTalkSection>
-
-            <PepTalkSection title="Key Reminders">
-              <KeyRemindersSection content={sections.key_thoughts.content} />
-            </PepTalkSection>
-
-            <PepTalkSection title="Go-To Shots">
-              <RecentWinsSection 
-                type="go_to_shots"
-                content={sections.go_to_shots.content} 
-              />
-            </PepTalkSection>
-
-            <PepTalkSection title="Scoring Zones">
-              <RecentWinsSection 
-                type="scoring_zones"
-                content={sections.scoring_zones.content} 
-              />
-            </PepTalkSection>
-
-            <PepTalkSection title="Confidence Moments">
-              <RecentWinsSection 
-                type="confidence_moments"
-                content={sections.confidence_moments.content} 
-              />
-            </PepTalkSection>
+            {Object.entries(parsedContent).map(([type, section]: [string, any]) => (
+              <PepTalkSection key={type} title={getSectionTitle(type)}>
+                {renderSectionContent(type, section.content)}
+              </PepTalkSection>
+            ))}
           </div>
         </ScrollArea>
       </div>
