@@ -71,11 +71,9 @@ const PlaybookModals = ({
         description: "Your pep talk has been generated.",
       });
 
-      // Close the modal and show the pep talk
+      // Close the modal and navigate to the pep talk detail page
       setIsPepTalkModalOpen(false);
-      
-      // TODO: Navigate to pep talk view or show in a new modal
-      console.log('Generated pep talk:', pepTalk);
+      navigate(`/pep_talk/${pepTalk.id}`);
 
     } catch (error) {
       console.error("Error generating pep talk:", error);
