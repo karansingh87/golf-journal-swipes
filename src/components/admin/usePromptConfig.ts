@@ -38,7 +38,7 @@ export const usePromptConfig = () => {
           return acc;
         }, {});
 
-        console.log('Prompts fetched successfully:', latestPrompts);
+        console.log('Latest prompts fetched:', latestPrompts);
 
         setAnalysisPrompt(latestPrompts.analysis?.content || '');
         setTrendsPrompt(latestPrompts.trends?.content || '');
@@ -72,7 +72,7 @@ export const usePromptConfig = () => {
       }
 
       if (data) {
-        console.log('Prompt history fetched successfully:', data.length, 'entries');
+        console.log('Prompt history fetched:', data.length, 'entries');
         setPromptHistory(data);
       }
     };
@@ -84,6 +84,7 @@ export const usePromptConfig = () => {
   const handleSave = async (type: PromptType) => {
     console.log(`Saving ${type} prompt...`);
     setIsLoading(true);
+    
     try {
       let content = '';
       switch (type) {
@@ -101,7 +102,7 @@ export const usePromptConfig = () => {
           break;
       }
 
-      // First, set all existing prompts of this type to not latest
+      // First, set is_latest to false for all prompts of this type
       const { error: updateError } = await supabase
         .from('prompt_configurations')
         .update({ is_latest: false })
@@ -111,6 +112,9 @@ export const usePromptConfig = () => {
         console.error(`Error updating existing ${type} prompts:`, updateError);
         throw updateError;
       }
+
+      // Wait a moment to ensure the update has completed
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       // Then insert the new prompt
       const { error: insertError } = await supabase
@@ -128,7 +132,7 @@ export const usePromptConfig = () => {
         throw insertError;
       }
 
-      // Refresh prompt history after saving
+      // Refresh prompt history
       const { data: newHistory, error: historyError } = await supabase
         .from('prompt_history')
         .select('*')
@@ -138,7 +142,7 @@ export const usePromptConfig = () => {
         setPromptHistory(newHistory);
       }
 
-      console.log(`${type} updated successfully`);
+      console.log(`${type} prompt updated successfully`);
       toast({
         title: "Success",
         description: `${type.charAt(0).toUpperCase() + type.slice(1)} configuration has been updated.`,
