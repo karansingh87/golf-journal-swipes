@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { recording_ids } = await req.json()
+    const { recording_ids, userId } = await req.json()
     console.log('Processing recording IDs:', recording_ids)
 
     // Initialize Supabase client
@@ -93,9 +93,27 @@ serve(async (req) => {
 
     const content = JSON.parse(aiResponse.content[0].text)
 
+    // Store the pep talk in the database
+    const { data: pepTalk, error: pepTalkError } = await supabaseClient
+      .from('pep_talk')
+      .insert([
+        {
+          user_id: userId,
+          recording_ids,
+          content: JSON.stringify(content)
+        }
+      ])
+      .select()
+      .single()
+
+    if (pepTalkError) {
+      console.error('Error storing pep talk:', pepTalkError)
+      throw new Error('Failed to store pep talk')
+    }
+
     // Return the generated pep talk
     return new Response(
-      JSON.stringify({ content }),
+      JSON.stringify({ content, id: pepTalk.id }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
 
