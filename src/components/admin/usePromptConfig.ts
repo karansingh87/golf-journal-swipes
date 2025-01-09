@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { PromptType, PromptConfiguration } from "@/types/prompt";
 
 export const usePromptConfig = () => {
   const [analysisPrompt, setAnalysisPrompt] = useState("");
@@ -15,39 +16,46 @@ export const usePromptConfig = () => {
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      console.log('Fetching prompt configuration...');
+      console.log('Fetching prompt configurations...');
       const { data, error } = await supabase
-        .from('prompt_config')
-        .select('prompt, trends_prompt, coaching_prompt, pep_talk_prompt, model_provider, model_name, created_at')
-        .order('created_at', { ascending: false })
-        .limit(1);
+        .from('prompt_configurations')
+        .select('*')
+        .eq('is_latest', true);
 
       if (error) {
         console.error('Error fetching prompts:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load the prompt configuration.",
+          description: "Failed to load the prompt configurations.",
         });
         return;
       }
 
-      if (data && data.length > 0) {
-        const config = data[0];
-        console.log('Prompts and model config fetched successfully:', {
-          analysisPromptLength: config.prompt?.length,
-          trendsPromptLength: config.trends_prompt?.length,
-          coachingPromptLength: config.coaching_prompt?.length,
-          pepTalkPromptLength: config.pep_talk_prompt?.length,
-          modelProvider: config.model_provider,
-          modelName: config.model_name,
+      if (data) {
+        const latestPrompts = data.reduce((acc: Record<string, PromptConfiguration>, config) => {
+          acc[config.type] = config;
+          return acc;
+        }, {});
+
+        console.log('Prompts fetched successfully:', {
+          analysisPrompt: latestPrompts.analysis?.content,
+          trendsPrompt: latestPrompts.trends?.content,
+          coachingPrompt: latestPrompts.coaching?.content,
+          pepTalkPrompt: latestPrompts.pep_talk?.content,
         });
-        setAnalysisPrompt(config.prompt || '');
-        setTrendsPrompt(config.trends_prompt || '');
-        setCoachingPrompt(config.coaching_prompt || '');
-        setPepTalkPrompt(config.pep_talk_prompt || '');
-        setModelProvider(config.model_provider);
-        setModelName(config.model_name);
+
+        setAnalysisPrompt(latestPrompts.analysis?.content || '');
+        setTrendsPrompt(latestPrompts.trends?.content || '');
+        setCoachingPrompt(latestPrompts.coaching?.content || '');
+        setPepTalkPrompt(latestPrompts.pep_talk?.content || '');
+        
+        // Use the model settings from any of the configurations since they should be the same
+        const anyConfig = Object.values(latestPrompts)[0];
+        if (anyConfig) {
+          setModelProvider(anyConfig.model_provider);
+          setModelName(anyConfig.model_name);
+        }
       }
     };
 
@@ -78,49 +86,34 @@ export const usePromptConfig = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async (type: 'analysis' | 'trends' | 'model' | 'coaching' | 'pep_talk') => {
-    console.log(`Saving ${type}...`);
+  const handleSave = async (type: PromptType) => {
+    console.log(`Saving ${type} prompt...`);
     setIsLoading(true);
     try {
-      // Get the most recent config
-      const { data: configData, error: configError } = await supabase
-        .from('prompt_config')
-        .select('id')
-        .order('created_at', { ascending: false })
-        .limit(1);
-
-      if (configError) {
-        console.error('Error fetching config ID:', configError);
-        throw configError;
-      }
-
-      if (!configData || configData.length === 0) {
-        throw new Error('No prompt configuration found');
-      }
-
-      let updateData = {};
+      let content = '';
       switch (type) {
         case 'analysis':
-          updateData = { prompt: analysisPrompt };
+          content = analysisPrompt;
           break;
         case 'trends':
-          updateData = { trends_prompt: trendsPrompt };
+          content = trendsPrompt;
           break;
         case 'coaching':
-          updateData = { coaching_prompt: coachingPrompt };
+          content = coachingPrompt;
           break;
         case 'pep_talk':
-          updateData = { pep_talk_prompt: pepTalkPrompt };
-          break;
-        case 'model':
-          updateData = { model_provider: modelProvider, model_name: modelName };
+          content = pepTalkPrompt;
           break;
       }
 
       const { error } = await supabase
-        .from('prompt_config')
-        .update(updateData)
-        .eq('id', configData[0].id);
+        .from('prompt_configurations')
+        .insert({
+          type,
+          content,
+          model_provider: modelProvider,
+          model_name: modelName
+        });
 
       if (error) {
         console.error(`Error updating ${type}:`, error);
