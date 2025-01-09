@@ -7,32 +7,14 @@ import {
   Crosshair, 
   Trophy 
 } from "lucide-react";
-
-interface PepTalkSection {
-  aspect?: string;
-  detail?: string;
-  proof?: string;
-  type?: string;
-  what?: string;
-  when?: string;
-  situation?: string;
-  your_move?: string;
-  last_success?: string;
-  distance?: string;
-  club?: string;
-  pattern?: string;
-  moment?: string;
-  why_special?: string;
-  repeatable_element?: string;
-}
-
-interface PepTalkContent {
-  hot_right_now: PepTalkSection[];
-  working_well: PepTalkSection[];
-  go_to_shots: PepTalkSection[];
-  scoring_zones: PepTalkSection[];
-  confidence_builders: PepTalkSection[];
-}
+import {
+  PepTalkContent,
+  PepTalkHotSection,
+  PepTalkWorkingSection,
+  PepTalkShotSection,
+  PepTalkScoringSection,
+  PepTalkConfidenceSection
+} from "@/integrations/supabase/types/pep-talk";
 
 interface PepTalkDisplayProps {
   content: PepTalkContent;
@@ -44,7 +26,7 @@ const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
       key: 'hot_right_now',
       title: "What's Hot Right Now",
       icon: Flame,
-      renderItem: (item: PepTalkSection) => (
+      renderItem: (item: PepTalkHotSection) => (
         <>
           <h4 className="font-medium text-sm">{item.aspect}</h4>
           <p className="text-sm text-muted-foreground mt-1">{item.detail}</p>
@@ -58,7 +40,7 @@ const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
       key: 'working_well',
       title: "Working Well",
       icon: CheckCircle2,
-      renderItem: (item: PepTalkSection) => (
+      renderItem: (item: PepTalkWorkingSection) => (
         <>
           <h4 className="font-medium text-sm">{item.type}</h4>
           <p className="text-sm text-muted-foreground mt-1">{item.what}</p>
@@ -72,7 +54,7 @@ const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
       key: 'go_to_shots',
       title: "Go-To Shots",
       icon: Target,
-      renderItem: (item: PepTalkSection) => (
+      renderItem: (item: PepTalkShotSection) => (
         <>
           <h4 className="font-medium text-sm">{item.situation}</h4>
           <p className="text-sm text-muted-foreground mt-1">{item.your_move}</p>
@@ -86,7 +68,7 @@ const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
       key: 'scoring_zones',
       title: "Scoring Zones",
       icon: Crosshair,
-      renderItem: (item: PepTalkSection) => (
+      renderItem: (item: PepTalkScoringSection) => (
         <>
           <h4 className="font-medium text-sm">{item.distance}</h4>
           <p className="text-sm text-muted-foreground mt-1">{item.club}</p>
@@ -100,7 +82,7 @@ const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
       key: 'confidence_builders',
       title: "Confidence Builders",
       icon: Trophy,
-      renderItem: (item: PepTalkSection) => (
+      renderItem: (item: PepTalkConfidenceSection) => (
         <>
           <h4 className="font-medium text-sm">{item.moment}</h4>
           <p className="text-sm text-muted-foreground mt-1">{item.why_special}</p>
