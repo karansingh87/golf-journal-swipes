@@ -1,82 +1,54 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import CoachingActionModal from "./CoachingActionModal";
-import PepTalkModal from "./PepTalkModal";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import RecordingSelectionModal from "./RecordingSelectionModal";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PlaybookModalsProps {
-  recordings?: any[];
-  latestNoteId?: string;
-  isGenerating: boolean;
-  onGenerateNotes: (selectedRecordings: string[]) => Promise<void>;
-  isActionModalOpen: boolean;
-  setIsActionModalOpen: (open: boolean) => void;
-  isPepTalkModalOpen: boolean;
-  setIsPepTalkModalOpen: (open: boolean) => void;
+  isOpen: boolean;
+  onClose: () => void;
+  selectedAction: "coaching" | "pep_talk" | null;
+  selectedRecordings: string[];
 }
 
-const PlaybookModals = ({ 
-  recordings, 
-  latestNoteId, 
-  isGenerating, 
-  onGenerateNotes,
-  isActionModalOpen,
-  setIsActionModalOpen,
-  isPepTalkModalOpen,
-  setIsPepTalkModalOpen
+const PlaybookModals = ({
+  isOpen,
+  onClose,
+  selectedAction,
+  selectedRecordings,
 }: PlaybookModalsProps) => {
-  const navigate = useNavigate();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
 
-  const handleViewLatest = () => {
-    if (latestNoteId) {
-      navigate(`/coach_notes/${latestNoteId}`);
-    } else {
-      toast({
-        title: "No Notes Found",
-        description: "You haven't generated any coaching notes yet.",
-        variant: "destructive",
-      });
-    }
-    setIsActionModalOpen(false);
-  };
-
-  const handleCreateNew = () => {
-    setIsActionModalOpen(false);
-    const lastThreeRecordings = recordings?.slice(0, 3).map(r => r.id) || [];
-    onGenerateNotes(lastThreeRecordings);
-  };
-
-  const handlePepTalkGenerate = async () => {
+  const handleGeneratePepTalk = async () => {
     try {
       setIsGeneratingPepTalk(true);
-      const lastThreeRecordings = recordings?.slice(0, 3) || [];
       
-      if (lastThreeRecordings.length === 0) {
-        toast({
-          title: "No Recordings Found",
-          description: "You need at least one recording to generate a pep talk.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const { data: pepTalk, error } = await supabase.functions.invoke('generate-pep-talk', {
-        body: { recordings: lastThreeRecordings }
+      const response = await fetch('/api/generate-pep-talk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recording_ids: selectedRecordings,
+        }),
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error('Failed to generate pep talk');
+      }
 
-      const { data: savedPepTalk, error: saveError } = await supabase
+      const pepTalkContent = await response.json();
+
+      const { data: pepTalk, error: saveError } = await supabase
         .from('pep_talk')
         .insert({
-          content: JSON.stringify(pepTalk.content),
-          recording_ids: lastThreeRecordings.map(r => r.id),
-          user_id: (await supabase.auth.getUser()).data.user?.id
+          content: JSON.stringify(pepTalkContent),
+          recording_ids: selectedRecordings,
         })
         .select()
         .single();
@@ -84,51 +56,75 @@ const PlaybookModals = ({
       if (saveError) throw saveError;
 
       toast({
-        title: "Success!",
-        description: "Your pep talk has been generated.",
+        title: "Success",
+        description: "Pep talk generated successfully",
       });
 
-      // Close the modal and navigate to the pep talk detail page
-      setIsPepTalkModalOpen(false);
-      navigate(`/pep_talk/${savedPepTalk.id}`);
+      onClose();
+      // Ensure we have a valid ID before navigating
+      if (pepTalk?.id) {
+        navigate(`/pep_talk/${pepTalk.id}`);
+      } else {
+        throw new Error('No pep talk ID returned from database');
+      }
 
     } catch (error) {
-      console.error("Error generating pep talk:", error);
+      console.error('Error generating pep talk:', error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to generate pep talk. Please try again.",
+        description: "Failed to generate pep talk",
       });
     } finally {
       setIsGeneratingPepTalk(false);
     }
   };
 
+  const handleGenerateCoachingNote = async () => {
+    // Implementation for generating coaching note
+  };
+
   return (
     <>
-      <CoachingActionModal
-        isOpen={isActionModalOpen}
-        onClose={() => setIsActionModalOpen(false)}
-        onViewLatest={handleViewLatest}
-        onCreateNew={handleCreateNew}
-      />
+      <Dialog open={isOpen} onOpenChange={() => !isGeneratingPepTalk && onClose()}>
+        <DialogContent className="sm:max-w-md">
+          <div className="relative">
+            {isGeneratingPepTalk && (
+              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+                <div className="text-center">
+                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Generating your pep talk...
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold">
+                {selectedAction === "coaching" ? "Generate Coaching Note" : "Generate Pep Talk"}
+              </h2>
+              
+              <RecordingSelectionModal
+                selectedRecordings={selectedRecordings}
+              />
 
-      <PepTalkModal
-        isOpen={isPepTalkModalOpen}
-        onClose={() => setIsPepTalkModalOpen(false)}
-        isGenerating={isGeneratingPepTalk}
-        onGenerate={handlePepTalkGenerate}
-      />
-
-      {/* Loading overlay */}
-      <Dialog open={isGeneratingPepTalk} onOpenChange={() => {}}>
-        <DialogContent className="sm:max-w-[425px] text-center py-12">
-          <div className="flex flex-col items-center gap-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <h3 className="font-medium text-lg">Generating Your Pep Talk</h3>
-            <p className="text-sm text-muted-foreground">
-              Analyzing your recordings and crafting personalized motivation...
-            </p>
+              <div className="flex justify-end space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={onClose}
+                  disabled={isGeneratingPepTalk}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
+                  disabled={selectedRecordings.length === 0 || isGeneratingPepTalk}
+                >
+                  Generate
+                </Button>
+              </div>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

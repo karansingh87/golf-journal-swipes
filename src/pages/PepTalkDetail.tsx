@@ -1,36 +1,30 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
+import { Loader2, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { format } from "date-fns";
 import type { PepTalk, PepTalkContent } from "@/types/pep-talk";
 import { isPepTalkContent } from "@/types/pep-talk";
 
 const PepTalkDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-  const { data: pepTalk, isLoading, error } = useQuery({
+  const { data: pepTalk, isLoading } = useQuery({
     queryKey: ['pep_talk', id],
     queryFn: async () => {
       if (!id) throw new Error('No pep talk ID provided');
 
-      // Validate UUID format using regex
-      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-      if (!uuidRegex.test(id)) {
-        throw new Error('Invalid pep talk ID format');
-      }
-
       const { data, error } = await supabase
         .from('pep_talk')
-        .select('*')
+        .select()
         .eq('id', id)
-        .maybeSingle();
+        .single();
 
       if (error) throw error;
-      
-      if (!data) {
-        throw new Error('Pep talk not found');
-      }
+      if (!data) throw new Error('Pep talk not found');
 
       try {
         const parsedContent = JSON.parse(data.content);
@@ -51,22 +45,23 @@ const PepTalkDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
-        <div className="h-14" />
-        <div className="p-8 flex items-center justify-center">
-          Loading...
-        </div>
+      <div className="flex justify-center items-center min-h-screen pt-16">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
-  if (error || !pepTalk) {
+  if (!pepTalk) {
     return (
-      <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
-        <div className="h-14" />
-        <div className="p-8">
-          {error ? `Error: ${error.message}` : 'Pep talk not found'}
-        </div>
+      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
+        <p className="text-lg text-muted-foreground">Pep talk not found</p>
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/playbook')}
+          className="mt-4"
+        >
+          Go back to playbook
+        </Button>
       </div>
     );
   }
@@ -92,12 +87,28 @@ const PepTalkDetail = () => {
   );
 
   return (
-    <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
-      <div className="h-14" /> {/* Navigation offset */}
-      <div className="p-6 max-w-4xl mx-auto">
-        <PageBreadcrumb currentPage="Pep Talk" />
+    <div className="min-h-screen bg-background pt-16">
+      <div className="max-w-3xl mx-auto p-4">
+        <div className="flex items-center gap-3 mb-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 p-0"
+            onClick={() => navigate('/playbook')}
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-semibold text-golf-gray-text-primary">
+              Pep Talk
+            </h1>
+            <p className="text-sm text-golf-gray-text-secondary">
+              {format(new Date(pepTalk.created_at), "MMMM d, yyyy")} • {format(new Date(pepTalk.created_at), "h:mm a")} • Based on {pepTalk.recording_ids.length} recording{pepTalk.recording_ids.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+        </div>
 
-        <Card className="mt-6">
+        <Card>
           <CardContent className="p-6">
             {renderSection("🔥 Hot Right Now", pepTalk.parsedContent.hot_right_now, ['aspect', 'detail', 'proof'])}
             {renderSection("✨ Working Well", pepTalk.parsedContent.working_well, ['type', 'what', 'when'])}
