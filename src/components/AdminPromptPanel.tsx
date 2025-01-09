@@ -6,7 +6,6 @@ const AdminPromptPanel = () => {
     analysisPrompt,
     trendsPrompt,
     coachingPrompt,
-    pepTalkPrompt,
     modelProvider,
     modelName,
     promptHistory,
@@ -14,7 +13,6 @@ const AdminPromptPanel = () => {
     setAnalysisPrompt,
     setTrendsPrompt,
     setCoachingPrompt,
-    setPepTalkPrompt,
     setModelProvider,
     setModelName,
     handleSave,
@@ -28,7 +26,6 @@ const AdminPromptPanel = () => {
         analysisPrompt={analysisPrompt}
         trendsPrompt={trendsPrompt}
         coachingPrompt={coachingPrompt}
-        pepTalkPrompt={pepTalkPrompt}
         modelProvider={modelProvider}
         modelName={modelName}
         promptHistory={promptHistory}
@@ -36,7 +33,6 @@ const AdminPromptPanel = () => {
         onAnalysisPromptChange={setAnalysisPrompt}
         onTrendsPromptChange={setTrendsPrompt}
         onCoachingPromptChange={setCoachingPrompt}
-        onPepTalkPromptChange={setPepTalkPrompt}
         onModelProviderChange={setModelProvider}
         onModelNameChange={setModelName}
         onSave={handleSave}
