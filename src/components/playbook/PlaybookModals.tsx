@@ -68,26 +68,23 @@ const PlaybookModals = ({
 
   const handleGeneratePepTalk = async () => {
     try {
-      const response = await fetch('/api/generate-pep-talk', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await supabase.functions.invoke('generate-pep-talk', {
+        body: {
           recording_ids: selectedRecordings,
-        }),
+          userId: (await supabase.auth.getUser()).data.user?.id
+        },
       });
 
-      if (!response.ok) {
+      if (!response.data) {
         throw new Error('Failed to generate pep talk');
       }
 
-      const data = await response.json();
-      console.log('Pep talk generated:', data);
-      
       // Clear selection and close modal
       setSelectedRecordings([]);
       setIsPepTalkModalOpen(false);
+      
+      // Navigate to the new pep talk detail page
+      navigate(`/pep_talk/${response.data.id}`);
       
       // Show success toast
       toast({
