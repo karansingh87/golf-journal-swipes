@@ -57,7 +57,7 @@ const PepTalkDetail = () => {
         title: "Success",
         description: "Pep talk deleted successfully",
       });
-      navigate('/playbook');
+      navigate('/pep_talks');
     } catch (error) {
       console.error("Error deleting pep talk:", error);
       toast({
@@ -82,10 +82,10 @@ const PepTalkDetail = () => {
         <p className="text-lg text-muted-foreground">Pep talk not found</p>
         <Button
           variant="ghost"
-          onClick={() => navigate('/playbook')}
+          onClick={() => navigate('/pep_talks')}
           className="mt-4"
         >
-          Go back to playbook
+          Go back to pep talks
         </Button>
       </div>
     );
@@ -102,7 +102,7 @@ const PepTalkDetail = () => {
               variant="ghost"
               size="icon"
               className="h-8 w-8 p-0"
-              onClick={() => navigate('/playbook')}
+              onClick={() => navigate('/pep_talks')}
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
