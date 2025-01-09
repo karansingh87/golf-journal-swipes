@@ -155,6 +155,7 @@ export type Database = {
           coaching_prompt: string | null
           created_at: string | null
           id: string
+          is_latest: boolean | null
           model_name: string
           model_provider: string
           pep_talk_prompt: string | null
@@ -166,6 +167,7 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
+          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
           pep_talk_prompt?: string | null
@@ -177,6 +179,7 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
+          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
           pep_talk_prompt?: string | null
