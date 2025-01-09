@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Trash2 } from "lucide-react";
-import { PepTalkContent } from "@/integrations/supabase/types/pep-talk";
+import { PepTalkContent } from "@/integrations/supabase/types";
 import PepTalkDisplay from "@/components/playbook/PepTalkDisplay";
 
 const PepTalkDetail = () => {
@@ -77,6 +77,9 @@ const PepTalkDetail = () => {
     );
   }
 
+  // Cast the content to PepTalkContent type since we know its structure
+  const content = pepTalk.content as PepTalkContent;
+
   return (
     <div className="min-h-screen bg-background pt-14">
       <div className="max-w-4xl mx-auto px-6 py-8">
@@ -100,7 +103,7 @@ const PepTalkDetail = () => {
           </Button>
         </div>
 
-        <PepTalkDisplay content={pepTalk.content as PepTalkContent} />
+        <PepTalkDisplay content={content} />
       </div>
     </div>
   );

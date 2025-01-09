@@ -1,13 +1,6 @@
+import { Json } from './json';
 import { PepTalkContent } from './pep-talk';
 import { SessionType, HandicapRange, CoachingFrequency, TrackingHabit } from './enums';
-
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
 
 export interface Database {
   public: {
