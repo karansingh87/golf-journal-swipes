@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import RecordingSelectionModal from "./RecordingSelectionModal";
+import { useToast } from "@/components/ui/use-toast";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkModal from "./PepTalkModal";
 
@@ -26,8 +24,6 @@ const PlaybookModals = ({
   isPepTalkModalOpen,
   setIsPepTalkModalOpen
 }: PlaybookModalsProps) => {
-  const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
-  const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -46,32 +42,36 @@ const PlaybookModals = ({
 
   const handleCreateNew = () => {
     setIsActionModalOpen(false);
-    setIsSelectionModalOpen(true);
-  };
-
-  const handleRecordingSelect = (id: string) => {
-    setSelectedRecordings(prev => {
-      if (prev.includes(id)) {
-        return prev.filter(recordingId => recordingId !== id);
-      }
-      if (prev.length < 3) {
-        return [...prev, id];
-      }
-      return prev;
-    });
-  };
-
-  const handleGenerate = async () => {
-    await onGenerateNotes(selectedRecordings);
-    setSelectedRecordings([]);
-    setIsSelectionModalOpen(false);
+    // Get the last 3 recordings
+    const lastThreeRecordings = recordings?.slice(0, 3).map(r => r.id) || [];
+    onGenerateNotes(lastThreeRecordings);
   };
 
   const handlePepTalkGenerate = async () => {
-    // TODO: Implement pep talk generation
-    console.log("Generating pep talk for recordings:", selectedRecordings);
-    setSelectedRecordings([]);
-    setIsPepTalkModalOpen(false);
+    try {
+      // Get the last 3 recordings
+      const lastThreeRecordings = recordings?.slice(0, 3).map(r => r.id) || [];
+      
+      if (lastThreeRecordings.length === 0) {
+        toast({
+          title: "No Recordings Found",
+          description: "You need at least one recording to generate a pep talk.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // TODO: Implement pep talk generation with the last 3 recordings
+      console.log("Generating pep talk for recordings:", lastThreeRecordings);
+      setIsPepTalkModalOpen(false);
+    } catch (error) {
+      console.error("Error generating pep talk:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to generate pep talk. Please try again.",
+      });
+    }
   };
 
   return (
@@ -83,30 +83,11 @@ const PlaybookModals = ({
         onCreateNew={handleCreateNew}
       />
 
-      <RecordingSelectionModal
-        isOpen={isSelectionModalOpen}
-        onClose={() => {
-          setIsSelectionModalOpen(false);
-          setSelectedRecordings([]);
-        }}
-        recordings={recordings || []}
-        selectedRecordings={selectedRecordings}
-        onSelect={handleRecordingSelect}
-        onGenerate={handleGenerate}
-        isGenerating={isGenerating}
-      />
-
       <PepTalkModal
         isOpen={isPepTalkModalOpen}
-        onClose={() => {
-          setIsPepTalkModalOpen(false);
-          setSelectedRecordings([]);
-        }}
-        recordings={recordings || []}
-        selectedRecordings={selectedRecordings}
-        onSelect={handleRecordingSelect}
-        onGenerate={handlePepTalkGenerate}
+        onClose={() => setIsPepTalkModalOpen(false)}
         isGenerating={isGenerating}
+        onGenerate={handlePepTalkGenerate}
       />
     </>
   );
