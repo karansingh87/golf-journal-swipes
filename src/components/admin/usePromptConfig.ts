@@ -102,7 +102,7 @@ export const usePromptConfig = () => {
           break;
       }
 
-      // Start a transaction to handle both operations atomically
+      // Call the stored procedure to update the prompt configuration
       const { error } = await supabase.rpc('update_prompt_configuration', {
         p_type: type,
         p_content: content,

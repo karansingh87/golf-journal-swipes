@@ -340,7 +340,15 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      update_prompt_configuration: {
+        Args: {
+          p_type: Database["public"]["Enums"]["prompt_type"]
+          p_content: string
+          p_model_provider: string
+          p_model_name: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       achievement_type:
