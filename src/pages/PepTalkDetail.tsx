@@ -3,7 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
-import type { PepTalk, isPepTalkContent } from "@/types/pep-talk";
+import type { PepTalk } from "@/types/pep-talk";
+import { isPepTalkContent } from "@/types/pep-talk";
 
 const PepTalkDetail = () => {
   const { id } = useParams();
