@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
 import PepTalkDisplay from "@/components/playbook/PepTalkDisplay";
+import { PepTalkContent } from "@/integrations/supabase/types";
 
 const PepTalkDetail = () => {
   const { id } = useParams();
@@ -74,6 +75,9 @@ const PepTalkDetail = () => {
     );
   }
 
+  // Parse the content as PepTalkContent type
+  const parsedContent = pepTalk.content as PepTalkContent;
+
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
@@ -107,7 +111,7 @@ const PepTalkDetail = () => {
         </div>
 
         <div className="rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden bg-white/80">
-          <PepTalkDisplay content={pepTalk.content} />
+          <PepTalkDisplay content={parsedContent} />
         </div>
       </div>
     </div>
