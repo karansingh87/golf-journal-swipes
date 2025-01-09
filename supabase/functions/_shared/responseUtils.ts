@@ -4,9 +4,21 @@ export function cleanAndValidateJSON(response: string): string {
     JSON.parse(response);
     return response;
   } catch (error) {
-    // If parsing fails, try to clean up markdown and try again
     console.log('Initial JSON parsing failed, attempting to clean response');
-    const cleanResponse = response.replace(/```json\n|\n```/g, '').trim();
+    
+    // Remove any markdown code block syntax
+    let cleanResponse = response.replace(/```json\n|\n```/g, '').trim();
+    
+    // Remove any leading/trailing whitespace and newlines
+    cleanResponse = cleanResponse.trim();
+    
+    // Remove any potential text before or after the JSON object
+    const jsonStart = cleanResponse.indexOf('{');
+    const jsonEnd = cleanResponse.lastIndexOf('}') + 1;
+    
+    if (jsonStart >= 0 && jsonEnd > jsonStart) {
+      cleanResponse = cleanResponse.slice(jsonStart, jsonEnd);
+    }
     
     try {
       JSON.parse(cleanResponse);

@@ -54,25 +54,25 @@ serve(async (req) => {
 
     const prompt = promptConfig.pep_talk_prompt || `Review recent rounds and create a quick pre-round boost. Focus on what's clicking right now and key reminders that will help them play with confidence.
 
-    Return as JSON:
+    Return a JSON object with this exact structure:
     {
       "feeling_good": [
         {
-          "aspect": string,  // part of game that's clicking
-          "why": string,     // specific detail of what's working
-          "proof": string    // recent success example
+          "aspect": "string",
+          "why": "string",
+          "proof": "string"
         }
       ],
       "key_reminders": [
         {
-          "thought": string,  // specific swing thought or strategy
-          "why_it_works": string  // why this is working for you
+          "thought": "string",
+          "why_it_works": "string"
         }
       ],
       "recent_wins": [
         {
-          "moment": string,  // specific success
-          "take_forward": string  // what to remember about this
+          "moment": "string",
+          "take_forward": "string"
         }
       ]
     }
@@ -99,7 +99,7 @@ serve(async (req) => {
 
             Here are the recordings to analyze: ${JSON.stringify(recordings)}
 
-            Return only the populated JSON object without any additional text or explanation.`,
+            Return ONLY the JSON object with the exact structure specified, no additional text or explanation.`,
           },
         ],
       }),
@@ -120,6 +120,11 @@ serve(async (req) => {
     // Clean and validate the JSON response
     const cleanedResponse = cleanAndValidateJSON(aiResponse.content[0].text)
     const content = JSON.parse(cleanedResponse)
+
+    // Validate the content structure
+    if (!content.feeling_good || !content.key_reminders || !content.recent_wins) {
+      throw new Error('Invalid content structure in response')
+    }
 
     // Store the pep talk in the database
     const { data: pepTalk, error: pepTalkError } = await supabaseClient
