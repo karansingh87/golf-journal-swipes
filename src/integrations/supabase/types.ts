@@ -157,7 +157,6 @@ export type Database = {
           id: string
           model_name: string
           model_provider: string
-          pep_talk_prompt: string | null
           prompt: string
           trends_prompt: string | null
           updated_at: string | null
@@ -168,7 +167,6 @@ export type Database = {
           id?: string
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt: string
           trends_prompt?: string | null
           updated_at?: string | null
@@ -179,7 +177,6 @@ export type Database = {
           id?: string
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt?: string
           trends_prompt?: string | null
           updated_at?: string | null

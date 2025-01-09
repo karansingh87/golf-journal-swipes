@@ -1,25 +1,22 @@
-interface RecentWins {
-  type: "go_to_shots" | "scoring_zones" | "confidence_moments";
-  content: string[];
+interface RecentWin {
+  moment: string;
+  take_forward: string;
 }
 
 interface RecentWinsSectionProps {
-  items: RecentWins | undefined;
+  items: RecentWin[];
 }
 
 const RecentWinsSection = ({ items }: RecentWinsSectionProps) => {
-  if (!items?.content) {
-    return null;
-  }
-
   return (
-    <div className="space-y-4">
-      {items.content.map((content, index) => (
-        <div key={index} className="space-y-2">
-          <p className="text-sm text-muted-foreground">{content}</p>
+    <>
+      {items.map((item, index) => (
+        <div key={index} className="space-y-1">
+          <h3 className="text-sm font-medium text-foreground">{item.moment}</h3>
+          <p className="text-sm text-muted-foreground ml-4">{item.take_forward}</p>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

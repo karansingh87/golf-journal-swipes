@@ -1,25 +1,26 @@
-interface FeelingGoodSection {
-  type: "game_strengths";
-  content: string[];
+interface FeelingGoodItem {
+  aspect: string;
+  why: string;
+  proof: string;
 }
 
 interface FeelingGoodSectionProps {
-  items: FeelingGoodSection | undefined;
+  items: FeelingGoodItem[];
 }
 
 const FeelingGoodSection = ({ items }: FeelingGoodSectionProps) => {
-  if (!items?.content) {
-    return null;
-  }
-
   return (
-    <div className="space-y-4">
-      {items.content.map((content, index) => (
+    <>
+      {items.map((item, index) => (
         <div key={index} className="space-y-2">
-          <p className="text-sm text-muted-foreground">{content}</p>
+          <h3 className="text-sm font-medium text-foreground">{item.aspect}</h3>
+          <ul className="list-disc list-inside space-y-1">
+            <li className="text-sm text-muted-foreground">{item.why}</li>
+            <li className="text-sm italic text-muted-foreground ml-4">Example: {item.proof}</li>
+          </ul>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

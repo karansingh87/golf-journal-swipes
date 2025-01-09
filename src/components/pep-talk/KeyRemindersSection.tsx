@@ -1,25 +1,22 @@
-interface KeyThoughts {
-  type: "key_thoughts";
-  content: string[];
+interface KeyReminder {
+  thought: string;
+  why_it_works: string;
 }
 
 interface KeyRemindersSectionProps {
-  items: KeyThoughts | undefined;
+  items: KeyReminder[];
 }
 
 const KeyRemindersSection = ({ items }: KeyRemindersSectionProps) => {
-  if (!items?.content) {
-    return null;
-  }
-
   return (
-    <div className="space-y-4">
-      {items.content.map((content, index) => (
-        <div key={index} className="space-y-2">
-          <p className="text-sm text-muted-foreground">{content}</p>
+    <>
+      {items.map((item, index) => (
+        <div key={index} className="space-y-1">
+          <h3 className="text-sm font-medium text-foreground">{item.thought}</h3>
+          <p className="text-sm text-muted-foreground ml-4">{item.why_it_works}</p>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 
