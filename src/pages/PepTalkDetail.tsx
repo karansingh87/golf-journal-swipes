@@ -9,12 +9,12 @@ import { isPepTalkContent } from "@/types/pep-talk";
 const PepTalkDetail = () => {
   const { id } = useParams();
 
-  const { data: pepTalk, isLoading } = useQuery<PepTalk & { parsedContent: PepTalkContent }>({
+  const { data: pepTalk, isLoading } = useQuery({
     queryKey: ['pep_talk', id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('pep_talk')
-        .select('*')
+        .select()
         .eq('id', id)
         .single();
 
