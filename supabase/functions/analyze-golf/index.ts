@@ -34,15 +34,21 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the analysis prompt
+    // Fetch the analysis prompt using maybeSingle() instead of single()
     const { data: promptData, error: promptError } = await supabase
       .from('prompt_config')
       .select('prompt')
-      .single()
+      .eq('is_latest', true)
+      .maybeSingle()
 
     if (promptError) {
       console.error('Error fetching prompt:', promptError)
       throw promptError
+    }
+
+    if (!promptData) {
+      console.error('No prompt configuration found')
+      throw new Error('No prompt configuration found')
     }
 
     const analysisPrompt = promptData.prompt
