@@ -55,7 +55,7 @@ const PepTalkDetail = () => {
     <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
       <div className="h-14" /> {/* Navigation offset */}
       <div className="p-6 max-w-4xl mx-auto">
-        <PageBreadcrumb
+        <PageBreadcrumb 
           items={[
             { label: "Playbook", href: "/playbook" },
             { label: "Pep Talk", href: "#" },
