@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { corsHeaders } from '../_shared/cors.ts'
+import { cleanAndValidateJSON } from '../_shared/responseUtils.ts'
 
 const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')
 
@@ -116,7 +117,9 @@ serve(async (req) => {
       throw new Error('Invalid response format from Claude API')
     }
 
-    const content = JSON.parse(aiResponse.content[0].text)
+    // Clean and validate the JSON response
+    const cleanedResponse = cleanAndValidateJSON(aiResponse.content[0].text)
+    const content = JSON.parse(cleanedResponse)
 
     // Store the pep talk in the database
     const { data: pepTalk, error: pepTalkError } = await supabaseClient
