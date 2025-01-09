@@ -1,19 +1,18 @@
-interface RecentWin {
-  moment: string;
-  take_forward: string;
+interface ConfidenceMoments {
+  type: "confidence_moments";
+  content: string[];
 }
 
 interface RecentWinsSectionProps {
-  items: RecentWin[];
+  items: ConfidenceMoments;
 }
 
 const RecentWinsSection = ({ items }: RecentWinsSectionProps) => {
   return (
     <>
-      {items.map((item, index) => (
+      {items.content.map((content, index) => (
         <div key={index} className="space-y-1">
-          <h3 className="text-sm font-medium text-foreground">{item.moment}</h3>
-          <p className="text-sm text-muted-foreground ml-4">{item.take_forward}</p>
+          <p className="text-sm text-muted-foreground">{content}</p>
         </div>
       ))}
     </>

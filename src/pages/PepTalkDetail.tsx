@@ -12,19 +12,26 @@ import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
 
 interface PepTalkContent {
-  feeling_good: Array<{
-    aspect: string;
-    why: string;
-    proof: string;
-  }>;
-  key_reminders: Array<{
-    thought: string;
-    why_it_works: string;
-  }>;
-  recent_wins: Array<{
-    moment: string;
-    take_forward: string;
-  }>;
+  game_strengths: {
+    type: "game_strengths";
+    content: string[];
+  };
+  key_thoughts: {
+    type: "key_thoughts";
+    content: string[];
+  };
+  go_to_shots: {
+    type: "go_to_shots";
+    content: string[];
+  };
+  scoring_zones: {
+    type: "scoring_zones";
+    content: string[];
+  };
+  confidence_moments: {
+    type: "confidence_moments";
+    content: string[];
+  };
 }
 
 const PepTalkDetail = () => {
@@ -107,16 +114,24 @@ const PepTalkDetail = () => {
 
         <ScrollArea className="w-full">
           <div className="space-y-4">
-            <PepTalkSection title="What's Clicking">
-              <FeelingGoodSection items={parsedContent.feeling_good} />
+            <PepTalkSection title="Game Strengths">
+              <FeelingGoodSection items={parsedContent.game_strengths} />
             </PepTalkSection>
 
-            <PepTalkSection title="Key Reminders">
-              <KeyRemindersSection items={parsedContent.key_reminders} />
+            <PepTalkSection title="Key Thoughts">
+              <KeyRemindersSection items={parsedContent.key_thoughts} />
             </PepTalkSection>
 
-            <PepTalkSection title="Recent Wins">
-              <RecentWinsSection items={parsedContent.recent_wins} />
+            <PepTalkSection title="Go-To Shots">
+              <KeyRemindersSection items={parsedContent.go_to_shots} />
+            </PepTalkSection>
+
+            <PepTalkSection title="Scoring Zones">
+              <KeyRemindersSection items={parsedContent.scoring_zones} />
+            </PepTalkSection>
+
+            <PepTalkSection title="Confidence Moments">
+              <RecentWinsSection items={parsedContent.confidence_moments} />
             </PepTalkSection>
           </div>
         </ScrollArea>
