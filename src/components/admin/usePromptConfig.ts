@@ -102,21 +102,8 @@ export const usePromptConfig = () => {
           break;
       }
 
-      // First, set is_latest to false for all prompts of this type
-      const { error: updateError } = await supabase
-        .from('prompt_configurations')
-        .update({ is_latest: false })
-        .eq('type', type);
-
-      if (updateError) {
-        console.error(`Error updating existing ${type} prompts:`, updateError);
-        throw updateError;
-      }
-
-      // Wait a moment to ensure the update has completed
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Then insert the new prompt
+      // Insert the new prompt with is_latest = true
+      // The database trigger will handle setting other prompts to is_latest = false
       const { error: insertError } = await supabase
         .from('prompt_configurations')
         .insert({
