@@ -46,26 +46,33 @@ Generate an encouraging and motivational pep talk that:
 
 Keep the response concise but impactful, around 200 words.`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
-        'Content-Type': 'application/json',
+        'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'claude-3-5-sonnet-20241022',
         messages: [
-          { 
-            role: 'system', 
-            content: 'You are an encouraging golf coach who specializes in providing motivational pep talks based on practice session analyses.'
+          {
+            role: 'user',
+            content: prompt,
           },
-          { role: 'user', content: prompt }
         ],
+        max_tokens: 4096,
       }),
     });
 
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('Anthropic API error:', error);
+      throw new Error(`Anthropic API error: ${error}`);
+    }
+
     const data = await response.json();
-    const pepTalk = data.choices[0].message.content;
+    const pepTalk = data.content[0].text;
 
     // Save the pep talk to the database
     const { data: savedPepTalk, error: saveError } = await supabaseClient
