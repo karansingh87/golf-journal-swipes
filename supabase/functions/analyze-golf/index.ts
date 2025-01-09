@@ -15,12 +15,11 @@ serve(async (req) => {
 
   try {
     const { transcription } = await req.json()
+    console.log('Analyzing transcription:', { length: transcription.length })
 
     if (!transcription) {
       throw new Error('No transcription provided')
     }
-
-    console.log('Analyzing transcription:', { length: transcription.length })
 
     // Get the Supabase URL and ensure it's properly formatted
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
@@ -62,7 +61,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-sonnet-20240229',
         max_tokens: 4096,
         messages: [
           {
