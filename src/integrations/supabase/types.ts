@@ -69,33 +69,6 @@ export type Database = {
         }
         Relationships: []
       }
-      pep_talk: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          recording_ids: string[]
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          recording_ids: string[]
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          recording_ids?: string[]
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           age: number | null
@@ -155,10 +128,8 @@ export type Database = {
           coaching_prompt: string | null
           created_at: string | null
           id: string
-          is_latest: boolean | null
           model_name: string
           model_provider: string
-          pep_talk_prompt: string | null
           prompt: string
           trends_prompt: string | null
           updated_at: string | null
@@ -167,10 +138,8 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
-          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt: string
           trends_prompt?: string | null
           updated_at?: string | null
@@ -179,10 +148,8 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
-          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt?: string
           trends_prompt?: string | null
           updated_at?: string | null
@@ -327,13 +294,6 @@ export type Database = {
         | "21_25"
         | "26_plus"
         | "new_to_golf"
-      pep_talk_section_type:
-        | "hot_right_now"
-        | "working_well"
-        | "go_to_shots"
-        | "scoring_zones"
-        | "confidence_builders"
-      prompt_type: "analysis" | "trends" | "coaching" | "pep_talk"
       session_type: "course" | "practice"
       tracking_habit:
         | "no_tracking"

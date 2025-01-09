@@ -34,11 +34,10 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the analysis prompt from the prompt_config table
+    // Fetch the analysis prompt
     const { data: promptData, error: promptError } = await supabase
       .from('prompt_config')
       .select('prompt')
-      .eq('is_latest', true)
       .single()
 
     if (promptError) {
