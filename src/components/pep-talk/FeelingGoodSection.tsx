@@ -8,7 +8,7 @@ interface FeelingGoodSectionProps {
   items: FeelingGoodItem[];
 }
 
-const FeelingGoodSection = ({ items }: FeelingGoodSectionProps) => {
+const FeelingGoodSection = ({ items = [] }: FeelingGoodSectionProps) => {
   return (
     <>
       {items.map((item, index) => (

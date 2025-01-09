@@ -11,20 +11,13 @@ import FeelingGoodSection from "@/components/pep-talk/FeelingGoodSection";
 import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
 
+interface PepTalkSection {
+  type: "game_strengths" | "key_thoughts" | "go_to_shots" | "scoring_zones" | "confidence_moments";
+  content: any[];
+}
+
 interface PepTalkContent {
-  feeling_good: Array<{
-    aspect: string;
-    why: string;
-    proof: string;
-  }>;
-  key_reminders: Array<{
-    thought: string;
-    why_it_works: string;
-  }>;
-  recent_wins: Array<{
-    moment: string;
-    take_forward: string;
-  }>;
+  sections: PepTalkSection[];
 }
 
 const PepTalkDetail = () => {
@@ -94,7 +87,9 @@ const PepTalkDetail = () => {
     );
   }
 
-  const parsedContent = JSON.parse(pepTalk.content) as PepTalkContent;
+  const content: PepTalkContent = JSON.parse(pepTalk.content);
+  const findSection = (type: PepTalkSection['type']) => 
+    content.sections.find(section => section.type === type);
 
   return (
     <div className="min-h-screen bg-background pt-16">
@@ -108,15 +103,32 @@ const PepTalkDetail = () => {
         <ScrollArea className="w-full">
           <div className="space-y-4">
             <PepTalkSection title="What's Clicking">
-              <FeelingGoodSection items={parsedContent.feeling_good} />
+              <FeelingGoodSection items={findSection("game_strengths")?.content || []} />
             </PepTalkSection>
 
             <PepTalkSection title="Key Reminders">
-              <KeyRemindersSection items={parsedContent.key_reminders} />
+              <KeyRemindersSection items={findSection("key_thoughts")?.content || []} />
             </PepTalkSection>
 
-            <PepTalkSection title="Recent Wins">
-              <RecentWinsSection items={parsedContent.recent_wins} />
+            <PepTalkSection title="Go-To Shots">
+              <RecentWinsSection 
+                type="go_to_shots"
+                items={findSection("go_to_shots")?.content || []} 
+              />
+            </PepTalkSection>
+
+            <PepTalkSection title="Scoring Zones">
+              <RecentWinsSection 
+                type="scoring_zones"
+                items={findSection("scoring_zones")?.content || []} 
+              />
+            </PepTalkSection>
+
+            <PepTalkSection title="Confidence Moments">
+              <RecentWinsSection 
+                type="confidence_moments"
+                items={findSection("confidence_moments")?.content || []} 
+              />
             </PepTalkSection>
           </div>
         </ScrollArea>

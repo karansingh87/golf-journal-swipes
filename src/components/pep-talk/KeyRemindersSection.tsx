@@ -7,7 +7,7 @@ interface KeyRemindersSectionProps {
   items: KeyReminder[];
 }
 
-const KeyRemindersSection = ({ items }: KeyRemindersSectionProps) => {
+const KeyRemindersSection = ({ items = [] }: KeyRemindersSectionProps) => {
   return (
     <>
       {items.map((item, index) => (
