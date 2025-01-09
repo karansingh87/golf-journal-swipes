@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
@@ -64,4 +64,8 @@ const router = createBrowserRouter([
   },
 ]);
 
-export default router;
+const App = () => {
+  return <RouterProvider router={router} />;
+};
+
+export default App;

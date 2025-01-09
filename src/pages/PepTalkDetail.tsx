@@ -74,7 +74,7 @@ const PepTalkDetail = () => {
     );
   }
 
-  const parsedContent = JSON.parse(pepTalk.content);
+  const parsedContent = pepTalk.content.text || '';
 
   return (
     <div className="min-h-screen bg-background pt-16">

@@ -47,7 +47,7 @@ const PlaybookModals = ({
     onGenerateNotes(lastThreeRecordings);
   };
 
-  const handlePepTalkGenerate = async () => {
+  const handlePepTalkGenerate = async (): Promise<string | undefined> => {
     try {
       const lastThreeRecordings = recordings?.slice(0, 3) || [];
       
@@ -70,12 +70,8 @@ const PlaybookModals = ({
         title: "Success!",
         description: "Your pep talk has been generated.",
       });
-
-      // Close the modal and show the pep talk
-      setIsPepTalkModalOpen(false);
       
-      // TODO: Navigate to pep talk view or show in a new modal
-      console.log('Generated pep talk:', pepTalk);
+      return pepTalk.id;
 
     } catch (error) {
       console.error("Error generating pep talk:", error);
