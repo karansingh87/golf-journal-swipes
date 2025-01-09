@@ -8,12 +8,15 @@ import PlaybookModals from "@/components/playbook/PlaybookModals";
 import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 import { useCoachingNotes } from "@/hooks/useCoachingNotes";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Playbook = () => {
   const session = useSession();
   const navigate = useNavigate();
   const { isGenerating, generateNotes } = useCoachingNotes();
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isPepTalkModalOpen, setIsPepTalkModalOpen] = useState(false);
+  const { toast } = useToast();
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -68,6 +71,18 @@ const Playbook = () => {
     }
   };
 
+  const handlePepTalkClick = () => {
+    if (!recordings?.length) {
+      toast({
+        title: "No recordings found",
+        description: "Record some swings first to generate a pep talk",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsPepTalkModalOpen(true);
+  };
+
   const displayName = userProfile?.display_name || 'Golfer';
 
   return (
@@ -80,7 +95,10 @@ const Playbook = () => {
         <div className="flex-1 flex flex-col h-[calc(100dvh-3.5rem)] pt-6">
           <PlaybookHeader displayName={displayName} />
           <div className="flex-1 flex flex-col justify-center">
-            <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
+            <PlaybookActions 
+              onGenerateClick={() => setIsActionModalOpen(true)}
+              onPepTalkClick={handlePepTalkClick}
+            />
           </div>
         </div>
       </div>
@@ -93,6 +111,8 @@ const Playbook = () => {
         onGenerateNotes={handleGenerateNotes}
         isActionModalOpen={isActionModalOpen}
         setIsActionModalOpen={setIsActionModalOpen}
+        isPepTalkModalOpen={isPepTalkModalOpen}
+        setIsPepTalkModalOpen={setIsPepTalkModalOpen}
       />
 
       {/* Floating Record Button */}

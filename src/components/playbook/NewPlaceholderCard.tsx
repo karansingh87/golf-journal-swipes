@@ -1,8 +1,14 @@
 import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const NewPlaceholderCard = () => {
+interface NewPlaceholderCardProps {
+  onClick: () => void;
+}
+
+const NewPlaceholderCard = ({ onClick }: NewPlaceholderCardProps) => {
   return (
     <button
+      onClick={onClick}
       className="w-full py-6 px-6 bg-gradient-to-br from-blue-50/80 to-cyan-100/80
         backdrop-blur-sm hover:from-blue-100 hover:to-cyan-200 rounded-2xl 
         shadow-sm transition-all duration-200
