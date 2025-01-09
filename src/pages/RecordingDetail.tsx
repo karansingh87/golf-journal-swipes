@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Share2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,7 +11,6 @@ import AnalysisTab from "@/components/recording-detail/AnalysisTab";
 import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
 import RecordingHeader from "@/components/recording-detail/RecordingHeader";
 import { useSession } from "@supabase/auth-helpers-react";
-import { Switch } from "@/components/ui/switch";
 
 interface AnalysisSection {
   type: string;
@@ -40,17 +39,13 @@ const RecordingDetail = () => {
   const { data: recording, isLoading } = useQuery({
     queryKey: ['recording', id],
     queryFn: async () => {
-      console.log('Fetching recording with ID:', id);
       const { data, error } = await supabase
         .from('recordings')
         .select('*')
         .eq('id', id)
         .single();
 
-      if (error) {
-        console.error('Error fetching recording:', error);
-        throw error;
-      }
+      if (error) throw error;
       
       let parsedAnalysis: Analysis | null = null;
       if (data.analysis) {
@@ -160,54 +155,25 @@ const RecordingDetail = () => {
     );
   }
 
-  const headerProps = {
-    id: recording.id,
-    created_at: recording.created_at,
-    is_public: recording.is_public,
-    analysis: recording.analysis
-  };
-
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
-        <RecordingHeader recording={headerProps} onDelete={handleDelete} />
-
-        <div className="flex items-center justify-between mb-4 px-2">
-          <div className="flex items-center gap-2">
-            <Switch
-              checked={recording.is_public}
-              onCheckedChange={handleTogglePublic}
-            />
-            <span className="text-sm text-muted-foreground">
-              {recording.is_public ? "Public" : "Private"}
-            </span>
-          </div>
-          {recording.is_public && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCopyShareLink}
-              className="gap-2"
-            >
-              <Share2 className="h-4 w-4" />
-              Share
-            </Button>
-          )}
-        </div>
+        <RecordingHeader 
+          recording={recording} 
+          onDelete={handleDelete}
+          onTogglePublic={handleTogglePublic}
+          onShare={handleCopyShareLink}
+        />
 
         <div className={cn(
-          "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden",
+          "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden mt-6",
           "transition-all duration-300",
           isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
         )}>
           <Tabs defaultValue="analysis" className="w-full">
             <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="analysis">
-                Analysis
-              </TabsTrigger>
-              <TabsTrigger value="transcription">
-                Transcript
-              </TabsTrigger>
+              <TabsTrigger value="analysis">Analysis</TabsTrigger>
+              <TabsTrigger value="transcription">Transcript</TabsTrigger>
             </TabsList>
 
             <TabsContent value="analysis" className="mt-0">
