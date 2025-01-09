@@ -46,36 +46,71 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `Review recent rounds and create a quick pre-round boost. Focus on what's clicking right now and key reminders that will help them play with confidence.
+            content: `Review recent rounds and create a confidence-building pre-round reminder. Make it feel like getting advice from someone who really knows your game.
 
             Here are the recordings to analyze: ${JSON.stringify(recordings)}
 
             Return as JSON:
             {
-              "feeling_good": [
-                {
-                  "aspect": string,  // part of game that's clicking
-                  "why": string,     // specific detail of what's working
-                  "proof": string    // recent success example
-                }
-              ],
-              "key_reminders": [
-                {
-                  "thought": string,  // specific swing thought or strategy
-                  "why_it_works": string  // why this is working for you
-                }
-              ],
-              "recent_wins": [
-                {
-                  "moment": string,  // specific success
-                  "take_forward": string  // what to remember about this
-                }
+              "type": "game_strengths",
+              "content": [
+                "What's genuinely clicking right now in their game, supported by recent specific examples",
+                "Parts of their game they can lean on today with confidence",
+                "Current reliable patterns that are showing up consistently"
+              ]
+            },
+            {
+              "type": "key_thoughts",
+              "content": [
+                "The 2-3 most important swing thoughts/feels that are actually working",
+                "Clear cause-effect relationships from recent success",
+                "Simple reminders that connect to recent good shots"
+              ]
+            },
+            {
+              "type": "go_to_shots",
+              "content": [
+                "Their current reliable shots for specific situations",
+                "Shot shapes or types they can trust under pressure",
+                "Smart plays that have been working consistently"
+              ]
+            },
+            {
+              "type": "scoring_zones",
+              "content": [
+                "Specific distances or situations where they're particularly sharp",
+                "Areas of the course where they're creating opportunities",
+                "Patterns in where they're saving strokes"
+              ]
+            },
+            {
+              "type": "confidence_moments",
+              "content": [
+                "Recent specific success moments they can draw on",
+                "Pressure situations they handled well",
+                "Evidence their practice is paying off in real play"
               ]
             }
 
-            Make it feel like a friend saying: "Hey, remember your driving is really clicking with that new grip thought" or "That par save on 18 yesterday was clutch - you're putting great when you trust your line."
+            Each insight must:
+            - Reference specific recent successes
+            - Avoid repeating information across categories
+            - Focus on what's genuinely working now
+            - Use natural, encouraging language
+            - Connect to today's round
 
-            Keep it specific to their game but make it encouraging and confidence-building. Max 2-3 items per category. No technical overload, just clear reminders of what's working.
+            Style guide:
+            ✓ "Your high soft shots around the green are automatic right now"
+            ✓ "That new grip is giving you all the confidence off the tee"
+            ✗ "Implementation of modified technique has improved performance metrics"
+            ✗ "You should try to..."
+
+            Make every insight:
+            - Specific but not technical
+            - Confidence-building but honest
+            - Based on actual recent success
+            - Ready to use today
+            - Natural and encouraging
 
             Return only the populated JSON object without any additional text or explanation.`,
           },
@@ -120,7 +155,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in generate-pep-talk function:', error)
     return new Response(
-      JSON.stringify({ error: 'Failed to generate pep talk' }),
+      JSON.stringify({ error: 'Failed to generate pep talk', details: error.toString() }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
