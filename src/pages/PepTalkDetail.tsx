@@ -9,14 +9,16 @@ import { isPepTalkContent } from "@/types/pep-talk";
 const PepTalkDetail = () => {
   const { id } = useParams();
 
-  const { data: pepTalk, isLoading } = useQuery({
+  const { data: pepTalk, isLoading, error } = useQuery({
     queryKey: ['pep_talk', id],
     queryFn: async () => {
+      if (!id) throw new Error('No pep talk ID provided');
+
       const { data, error } = await supabase
         .from('pep_talk')
         .select()
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       
@@ -24,25 +26,43 @@ const PepTalkDetail = () => {
         throw new Error('Pep talk not found');
       }
 
-      const parsedContent = JSON.parse(data.content);
-      if (!isPepTalkContent(parsedContent)) {
-        throw new Error('Invalid pep talk content structure');
-      }
+      try {
+        const parsedContent = JSON.parse(data.content);
+        if (!isPepTalkContent(parsedContent)) {
+          throw new Error('Invalid pep talk content structure');
+        }
 
-      return {
-        ...data,
-        parsedContent
-      };
+        return {
+          ...data,
+          parsedContent
+        };
+      } catch (e) {
+        throw new Error('Failed to parse pep talk content');
+      }
     },
     enabled: !!id,
   });
 
   if (isLoading) {
-    return <div className="p-8">Loading...</div>;
+    return (
+      <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
+        <div className="h-14" />
+        <div className="p-8 flex items-center justify-center">
+          Loading...
+        </div>
+      </div>
+    );
   }
 
-  if (!pepTalk) {
-    return <div className="p-8">Pep talk not found</div>;
+  if (error || !pepTalk) {
+    return (
+      <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
+        <div className="h-14" />
+        <div className="p-8">
+          {error ? `Error: ${error.message}` : 'Pep talk not found'}
+        </div>
+      </div>
+    );
   }
 
   const renderSection = (title: string, items: any[], keys: string[]) => (
