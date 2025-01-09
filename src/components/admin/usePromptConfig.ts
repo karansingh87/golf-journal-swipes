@@ -18,8 +18,9 @@ export const usePromptConfig = () => {
       console.log('Fetching prompt configuration...');
       const { data, error } = await supabase
         .from('prompt_config')
-        .select('prompt, trends_prompt, coaching_prompt, pep_talk_prompt, model_provider, model_name')
-        .single();
+        .select('prompt, trends_prompt, coaching_prompt, pep_talk_prompt, model_provider, model_name, created_at')
+        .order('created_at', { ascending: false })
+        .limit(1);
 
       if (error) {
         console.error('Error fetching prompts:', error);
@@ -31,21 +32,22 @@ export const usePromptConfig = () => {
         return;
       }
 
-      if (data) {
+      if (data && data.length > 0) {
+        const config = data[0];
         console.log('Prompts and model config fetched successfully:', {
-          analysisPromptLength: data.prompt?.length,
-          trendsPromptLength: data.trends_prompt?.length,
-          coachingPromptLength: data.coaching_prompt?.length,
-          pepTalkPromptLength: data.pep_talk_prompt?.length,
-          modelProvider: data.model_provider,
-          modelName: data.model_name,
+          analysisPromptLength: config.prompt?.length,
+          trendsPromptLength: config.trends_prompt?.length,
+          coachingPromptLength: config.coaching_prompt?.length,
+          pepTalkPromptLength: config.pep_talk_prompt?.length,
+          modelProvider: config.model_provider,
+          modelName: config.model_name,
         });
-        setAnalysisPrompt(data.prompt);
-        setTrendsPrompt(data.trends_prompt || '');
-        setCoachingPrompt(data.coaching_prompt || '');
-        setPepTalkPrompt(data.pep_talk_prompt || '');
-        setModelProvider(data.model_provider);
-        setModelName(data.model_name);
+        setAnalysisPrompt(config.prompt || '');
+        setTrendsPrompt(config.trends_prompt || '');
+        setCoachingPrompt(config.coaching_prompt || '');
+        setPepTalkPrompt(config.pep_talk_prompt || '');
+        setModelProvider(config.model_provider);
+        setModelName(config.model_name);
       }
     };
 
@@ -80,14 +82,20 @@ export const usePromptConfig = () => {
     console.log(`Saving ${type}...`);
     setIsLoading(true);
     try {
+      // Get the most recent config
       const { data: configData, error: configError } = await supabase
         .from('prompt_config')
         .select('id')
-        .single();
+        .order('created_at', { ascending: false })
+        .limit(1);
 
       if (configError) {
         console.error('Error fetching config ID:', configError);
         throw configError;
+      }
+
+      if (!configData || configData.length === 0) {
+        throw new Error('No prompt configuration found');
       }
 
       let updateData = {};
@@ -112,7 +120,7 @@ export const usePromptConfig = () => {
       const { error } = await supabase
         .from('prompt_config')
         .update(updateData)
-        .eq('id', configData.id);
+        .eq('id', configData[0].id);
 
       if (error) {
         console.error(`Error updating ${type}:`, error);
