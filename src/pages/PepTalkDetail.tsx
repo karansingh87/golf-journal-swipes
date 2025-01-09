@@ -10,30 +10,21 @@ import PepTalkSection from "@/components/pep-talk/PepTalkSection";
 import FeelingGoodSection from "@/components/pep-talk/FeelingGoodSection";
 import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
-import GoToShotsSection from "@/components/pep-talk/GoToShotsSection";
-import ScoringZonesSection from "@/components/pep-talk/ScoringZonesSection";
 
 interface PepTalkContent {
-  game_strengths: {
-    type: "game_strengths";
-    content: string[];
-  };
-  key_thoughts: {
-    type: "key_thoughts";
-    content: string[];
-  };
-  go_to_shots: {
-    type: "go_to_shots";
-    content: string[];
-  };
-  scoring_zones: {
-    type: "scoring_zones";
-    content: string[];
-  };
-  confidence_moments: {
-    type: "confidence_moments";
-    content: string[];
-  };
+  feeling_good: Array<{
+    aspect: string;
+    why: string;
+    proof: string;
+  }>;
+  key_reminders: Array<{
+    thought: string;
+    why_it_works: string;
+  }>;
+  recent_wins: Array<{
+    moment: string;
+    take_forward: string;
+  }>;
 }
 
 const PepTalkDetail = () => {
@@ -116,24 +107,16 @@ const PepTalkDetail = () => {
 
         <ScrollArea className="w-full">
           <div className="space-y-4">
-            <PepTalkSection title="Game Strengths">
-              <FeelingGoodSection items={parsedContent.game_strengths} />
+            <PepTalkSection title="What's Clicking">
+              <FeelingGoodSection items={parsedContent.feeling_good} />
             </PepTalkSection>
 
-            <PepTalkSection title="Key Thoughts">
-              <KeyRemindersSection items={parsedContent.key_thoughts} />
+            <PepTalkSection title="Key Reminders">
+              <KeyRemindersSection items={parsedContent.key_reminders} />
             </PepTalkSection>
 
-            <PepTalkSection title="Go-To Shots">
-              <GoToShotsSection items={parsedContent.go_to_shots} />
-            </PepTalkSection>
-
-            <PepTalkSection title="Scoring Zones">
-              <ScoringZonesSection items={parsedContent.scoring_zones} />
-            </PepTalkSection>
-
-            <PepTalkSection title="Confidence Moments">
-              <RecentWinsSection items={parsedContent.confidence_moments} />
+            <PepTalkSection title="Recent Wins">
+              <RecentWinsSection items={parsedContent.recent_wins} />
             </PepTalkSection>
           </div>
         </ScrollArea>
