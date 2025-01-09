@@ -31,14 +31,12 @@ serve(async (req) => {
 
     // Get the trends prompt and model configuration
     const { data: promptData, error: promptError } = await supabaseClient
-      .from('prompt_configurations')
-      .select('content, model_provider, model_name')
-      .eq('type', 'trends')
-      .eq('is_latest', true)
+      .from('prompt_config')
+      .select('trends_prompt, model_provider, model_name')
       .single()
 
     if (promptError) throw promptError
-    if (!promptData?.content) throw new Error('No trends prompt configured')
+    if (!promptData.trends_prompt) throw new Error('No trends prompt configured')
 
     // Get user's recordings
     const { data: recordings, error: recordingsError } = await supabaseClient
@@ -55,7 +53,7 @@ serve(async (req) => {
     console.log('Sending request to AI with data length:', JSON.stringify(recordingsData).length)
 
     // Get AI response using the configured provider
-    const aiResponse = await callAnthropic(promptData.content, recordingsData)
+    const aiResponse = await callAnthropic(promptData.trends_prompt, recordingsData)
     const cleanResponse = cleanAndValidateJSON(aiResponse.content)
 
     // Update trends table

@@ -47,18 +47,6 @@ serve(async (req) => {
       throw recordingsError;
     }
 
-    // Get the latest pep talk prompt from prompt_config
-    const { data: promptConfig, error: promptError } = await supabaseClient
-      .from('prompt_config')
-      .select('pep_talk_prompt')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-
-    if (promptError) {
-      throw promptError;
-    }
-
     // Combine transcriptions and analyses
     const combinedContent = recordings.map(recording => ({
       transcription: recording.transcription,
@@ -66,8 +54,7 @@ serve(async (req) => {
       date: recording.created_at,
     }));
 
-    // Use the saved prompt if available, otherwise fall back to the default
-    const prompt = promptConfig?.pep_talk_prompt || `Analyze these golf transcripts:
+    const prompt = `Analyze these golf transcripts:
 ${combinedContent.map((content, index) => 
   `Recording ${index + 1} (${new Date(content.date).toLocaleDateString()}):
   Transcription: ${content.transcription}
@@ -112,7 +99,22 @@ Return as JSON with max 2-3 items per category:
       "repeatable_element": string  // exact keys to reproduce success, max 10 words
     }
   ]
-}`;
+}
+Each item must:
+- Include specific technical details (grip pressure, setup, motion)
+- Show clear cause-effect relationships
+- Reference actual shots/moments from recent rounds
+- Connect practice changes to real results
+- Explain why things are working, not just what's working
+- Be quickly readable while maintaining depth
+- Use precise golf language without being technical jargon
+Important:
+- No general swing tips
+- No future suggestions
+- No vague patterns
+- Focus on specific, working details
+- Include context of success (pressure, conditions, etc.)
+- Link practice breakthroughs to real results`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',

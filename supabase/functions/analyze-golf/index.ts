@@ -8,6 +8,7 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -21,22 +22,22 @@ serve(async (req) => {
 
     console.log('Analyzing transcription:', { length: transcription.length })
 
+    // Get the Supabase URL and ensure it's properly formatted
     const supabaseUrl = Deno.env.get('SUPABASE_URL')
     if (!supabaseUrl) {
       throw new Error('SUPABASE_URL environment variable is not set')
     }
 
+    // Create Supabase client
     const supabase = createClient(
       supabaseUrl,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the latest analysis prompt configuration
+    // Fetch the analysis prompt
     const { data: promptData, error: promptError } = await supabase
-      .from('prompt_configurations')
-      .select('content, model_provider, model_name')
-      .eq('type', 'analysis')
-      .eq('is_latest', true)
+      .from('prompt_config')
+      .select('prompt')
       .single()
 
     if (promptError) {
@@ -44,10 +45,7 @@ serve(async (req) => {
       throw promptError
     }
 
-    if (!promptData?.content) {
-      console.error('No analysis prompt configured')
-      throw new Error('No analysis prompt configured')
-    }
+    const analysisPrompt = promptData.prompt
 
     // Get analysis from Anthropic using Claude
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
@@ -58,12 +56,12 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: promptData.model_name || 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 4096,
         messages: [
           {
             role: 'user',
-            content: `${promptData.content}\n\nHere is the transcription to analyze:\n${transcription}`
+            content: `${analysisPrompt}\n\nHere is the transcription to analyze:\n${transcription}`
           }
         ]
       }),

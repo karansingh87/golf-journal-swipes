@@ -150,15 +150,13 @@ export type Database = {
         }
         Relationships: []
       }
-      prompt_config_old: {
+      prompt_config: {
         Row: {
           coaching_prompt: string | null
           created_at: string | null
           id: string
-          is_latest: boolean | null
           model_name: string
           model_provider: string
-          pep_talk_prompt: string | null
           prompt: string
           trends_prompt: string | null
           updated_at: string | null
@@ -167,10 +165,8 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
-          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt: string
           trends_prompt?: string | null
           updated_at?: string | null
@@ -179,48 +175,10 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
-          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt?: string
           trends_prompt?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      prompt_configurations: {
-        Row: {
-          content: string
-          created_at: string | null
-          created_by: string | null
-          id: string
-          is_latest: boolean | null
-          model_name: string
-          model_provider: string
-          type: Database["public"]["Enums"]["prompt_type"]
-          updated_at: string | null
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          is_latest?: boolean | null
-          model_name?: string
-          model_provider?: string
-          type: Database["public"]["Enums"]["prompt_type"]
-          updated_at?: string | null
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          created_by?: string | null
-          id?: string
-          is_latest?: boolean | null
-          model_name?: string
-          model_provider?: string
-          type?: Database["public"]["Enums"]["prompt_type"]
           updated_at?: string | null
         }
         Relationships: []
@@ -255,7 +213,7 @@ export type Database = {
             foreignKeyName: "prompt_history_prompt_config_id_fkey"
             columns: ["prompt_config_id"]
             isOneToOne: false
-            referencedRelation: "prompt_config_old"
+            referencedRelation: "prompt_config"
             referencedColumns: ["id"]
           },
         ]
@@ -340,15 +298,7 @@ export type Database = {
       }
     }
     Functions: {
-      update_prompt_configuration: {
-        Args: {
-          p_type: Database["public"]["Enums"]["prompt_type"]
-          p_content: string
-          p_model_provider: string
-          p_model_name: string
-        }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       achievement_type:
@@ -377,7 +327,6 @@ export type Database = {
         | "go_to_shots"
         | "scoring_zones"
         | "confidence_builders"
-      prompt_type: "analysis" | "trends" | "coaching" | "pep_talk"
       session_type: "course" | "practice"
       tracking_habit:
         | "no_tracking"

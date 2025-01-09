@@ -9,7 +9,6 @@ interface AdminTabsProps {
   analysisPrompt: string;
   trendsPrompt: string;
   coachingPrompt: string;
-  pepTalkPrompt: string;
   promptHistory: any[];
   isLoading: boolean;
   modelProvider: string;
@@ -17,8 +16,7 @@ interface AdminTabsProps {
   onAnalysisPromptChange: (value: string) => void;
   onTrendsPromptChange: (value: string) => void;
   onCoachingPromptChange: (value: string) => void;
-  onPepTalkPromptChange: (value: string) => void;
-  onSave: (type: 'analysis' | 'trends' | 'model' | 'coaching' | 'pep_talk') => void;
+  onSave: (type: 'analysis' | 'trends' | 'model' | 'coaching') => void;
   onModelProviderChange: (value: string) => void;
   onModelNameChange: (value: string) => void;
 }
@@ -27,7 +25,6 @@ const AdminTabs = ({
   analysisPrompt,
   trendsPrompt,
   coachingPrompt,
-  pepTalkPrompt,
   promptHistory,
   isLoading,
   modelProvider,
@@ -35,7 +32,6 @@ const AdminTabs = ({
   onAnalysisPromptChange,
   onTrendsPromptChange,
   onCoachingPromptChange,
-  onPepTalkPromptChange,
   onSave,
   onModelProviderChange,
   onModelNameChange,
@@ -51,9 +47,6 @@ const AdminTabs = ({
         </TabsTrigger>
         <TabsTrigger value="coaching" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Coaching Prompt
-        </TabsTrigger>
-        <TabsTrigger value="pep_talk" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
-          Pep Talk Prompt
         </TabsTrigger>
         <TabsTrigger value="model" className="flex-1 sm:flex-none data-[state=active]:border-b-2">
           Model Config
@@ -97,16 +90,6 @@ const AdminTabs = ({
             onSave={() => onSave('coaching')}
             isLoading={isLoading}
             type="coaching"
-          />
-        </TabsContent>
-
-        <TabsContent value="pep_talk">
-          <PromptEditor
-            value={pepTalkPrompt}
-            onChange={onPepTalkPromptChange}
-            onSave={() => onSave('pep_talk')}
-            isLoading={isLoading}
-            type="pep_talk"
           />
         </TabsContent>
 

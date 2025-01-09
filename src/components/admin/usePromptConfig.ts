@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { PromptType, PromptConfiguration } from "@/types/prompt";
 
 export const usePromptConfig = () => {
   const [analysisPrompt, setAnalysisPrompt] = useState("");
   const [trendsPrompt, setTrendsPrompt] = useState("");
   const [coachingPrompt, setCoachingPrompt] = useState("");
-  const [pepTalkPrompt, setPepTalkPrompt] = useState("");
   const [modelProvider, setModelProvider] = useState("anthropic");
   const [modelName, setModelName] = useState("claude-3-5-sonnet-20241022");
   const [promptHistory, setPromptHistory] = useState([]);
@@ -16,41 +14,35 @@ export const usePromptConfig = () => {
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      console.log('Fetching prompt configurations...');
+      console.log('Fetching prompt configuration...');
       const { data, error } = await supabase
-        .from('prompt_configurations')
-        .select('*')
-        .eq('is_latest', true);
+        .from('prompt_config')
+        .select('prompt, trends_prompt, coaching_prompt, model_provider, model_name')
+        .single();
 
       if (error) {
         console.error('Error fetching prompts:', error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to load the prompt configurations.",
+          description: "Failed to load the prompt configuration.",
         });
         return;
       }
 
       if (data) {
-        const latestPrompts = data.reduce((acc: Record<string, PromptConfiguration>, config) => {
-          acc[config.type] = config;
-          return acc;
-        }, {});
-
-        console.log('Latest prompts fetched:', latestPrompts);
-
-        setAnalysisPrompt(latestPrompts.analysis?.content || '');
-        setTrendsPrompt(latestPrompts.trends?.content || '');
-        setCoachingPrompt(latestPrompts.coaching?.content || '');
-        setPepTalkPrompt(latestPrompts.pep_talk?.content || '');
-        
-        // Use the model settings from any of the configurations since they should be the same
-        const anyConfig = Object.values(latestPrompts)[0];
-        if (anyConfig) {
-          setModelProvider(anyConfig.model_provider);
-          setModelName(anyConfig.model_name);
-        }
+        console.log('Prompts and model config fetched successfully:', {
+          analysisPromptLength: data.prompt?.length,
+          trendsPromptLength: data.trends_prompt?.length,
+          coachingPromptLength: data.coaching_prompt?.length,
+          modelProvider: data.model_provider,
+          modelName: data.model_name,
+        });
+        setAnalysisPrompt(data.prompt);
+        setTrendsPrompt(data.trends_prompt || '');
+        setCoachingPrompt(data.coaching_prompt || '');
+        setModelProvider(data.model_provider);
+        setModelName(data.model_name);
       }
     };
 
@@ -72,7 +64,7 @@ export const usePromptConfig = () => {
       }
 
       if (data) {
-        console.log('Prompt history fetched:', data.length, 'entries');
+        console.log('Prompt history fetched successfully:', data.length, 'entries');
         setPromptHistory(data);
       }
     };
@@ -81,41 +73,47 @@ export const usePromptConfig = () => {
     fetchPromptHistory();
   }, []);
 
-  const handleSave = async (type: PromptType) => {
-    console.log(`Saving ${type} prompt...`);
+  const handleSave = async (type: 'analysis' | 'trends' | 'model' | 'coaching') => {
+    console.log(`Saving ${type}...`);
     setIsLoading(true);
-    
     try {
-      let content = '';
+      const { data: configData, error: configError } = await supabase
+        .from('prompt_config')
+        .select('id')
+        .single();
+
+      if (configError) {
+        console.error('Error fetching config ID:', configError);
+        throw configError;
+      }
+
+      let updateData = {};
       switch (type) {
         case 'analysis':
-          content = analysisPrompt;
+          updateData = { prompt: analysisPrompt };
           break;
         case 'trends':
-          content = trendsPrompt;
+          updateData = { trends_prompt: trendsPrompt };
           break;
         case 'coaching':
-          content = coachingPrompt;
+          updateData = { coaching_prompt: coachingPrompt };
           break;
-        case 'pep_talk':
-          content = pepTalkPrompt;
+        case 'model':
+          updateData = { model_provider: modelProvider, model_name: modelName };
           break;
       }
 
-      // Call the stored procedure to update the prompt configuration
-      const { error } = await supabase.rpc('update_prompt_configuration', {
-        p_type: type,
-        p_content: content,
-        p_model_provider: modelProvider,
-        p_model_name: modelName
-      });
+      const { error } = await supabase
+        .from('prompt_config')
+        .update(updateData)
+        .eq('id', configData.id);
 
       if (error) {
-        console.error(`Error updating ${type} prompt:`, error);
+        console.error(`Error updating ${type}:`, error);
         throw error;
       }
 
-      // Refresh prompt history
+      // Refresh prompt history after saving
       const { data: newHistory, error: historyError } = await supabase
         .from('prompt_history')
         .select('*')
@@ -125,7 +123,7 @@ export const usePromptConfig = () => {
         setPromptHistory(newHistory);
       }
 
-      console.log(`${type} prompt updated successfully`);
+      console.log(`${type} updated successfully`);
       toast({
         title: "Success",
         description: `${type.charAt(0).toUpperCase() + type.slice(1)} configuration has been updated.`,
@@ -146,7 +144,6 @@ export const usePromptConfig = () => {
     analysisPrompt,
     trendsPrompt,
     coachingPrompt,
-    pepTalkPrompt,
     modelProvider,
     modelName,
     promptHistory,
@@ -154,7 +151,6 @@ export const usePromptConfig = () => {
     setAnalysisPrompt,
     setTrendsPrompt,
     setCoachingPrompt,
-    setPepTalkPrompt,
     setModelProvider,
     setModelName,
     handleSave,
