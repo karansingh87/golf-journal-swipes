@@ -32,6 +32,46 @@ serve(async (req) => {
       throw new Error('Failed to fetch recordings')
     }
 
+    // Fetch the pep talk prompt from prompt_config
+    const { data: promptConfig, error: promptError } = await supabaseClient
+      .from('prompt_config')
+      .select('pep_talk_prompt')
+      .single()
+
+    if (promptError) {
+      console.error('Error fetching prompt:', promptError)
+      throw new Error('Failed to fetch prompt configuration')
+    }
+
+    const prompt = promptConfig.pep_talk_prompt || `Review recent rounds and create a quick pre-round boost. Focus on what's clicking right now and key reminders that will help them play with confidence.
+
+    Return as JSON:
+    {
+      "feeling_good": [
+        {
+          "aspect": string,  // part of game that's clicking
+          "why": string,     // specific detail of what's working
+          "proof": string    // recent success example
+        }
+      ],
+      "key_reminders": [
+        {
+          "thought": string,  // specific swing thought or strategy
+          "why_it_works": string  // why this is working for you
+        }
+      ],
+      "recent_wins": [
+        {
+          "moment": string,  // specific success
+          "take_forward": string  // what to remember about this
+        }
+      ]
+    }
+
+    Make it feel like a friend saying: "Hey, remember your driving is really clicking with that new grip thought" or "That par save on 18 yesterday was clutch - you're putting great when you trust your line."
+
+    Keep it specific to their game but make it encouraging and confidence-building. Max 2-3 items per category. No technical overload, just clear reminders of what's working.`
+
     // Call Claude API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -46,36 +86,9 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `Review recent rounds and create a quick pre-round boost. Focus on what's clicking right now and key reminders that will help them play with confidence.
+            content: `${prompt}
 
             Here are the recordings to analyze: ${JSON.stringify(recordings)}
-
-            Return as JSON:
-            {
-              "feeling_good": [
-                {
-                  "aspect": string,  // part of game that's clicking
-                  "why": string,     // specific detail of what's working
-                  "proof": string    // recent success example
-                }
-              ],
-              "key_reminders": [
-                {
-                  "thought": string,  // specific swing thought or strategy
-                  "why_it_works": string  // why this is working for you
-                }
-              ],
-              "recent_wins": [
-                {
-                  "moment": string,  // specific success
-                  "take_forward": string  // what to remember about this
-                }
-              ]
-            }
-
-            Make it feel like a friend saying: "Hey, remember your driving is really clicking with that new grip thought" or "That par save on 18 yesterday was clutch - you're putting great when you trust your line."
-
-            Keep it specific to their game but make it encouraging and confidence-building. Max 2-3 items per category. No technical overload, just clear reminders of what's working.
 
             Return only the populated JSON object without any additional text or explanation.`,
           },
