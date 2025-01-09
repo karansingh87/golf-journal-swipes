@@ -49,6 +49,7 @@ const PlaybookModals = ({
       const { data: pepTalk, error } = await supabase.functions.invoke('generate-pep-talk', {
         body: {
           recording_ids: selectedIds,
+          user_id: session.user.id
         },
       });
 
