@@ -19,6 +19,8 @@ interface RecordingSelectionModalProps {
   onSelect: (id: string) => void;
   onGenerate: () => void;
   isGenerating: boolean;
+  modalTitle?: string;
+  generateButtonText?: string;
 }
 
 const RECORDINGS_PER_PAGE = 5;
@@ -31,6 +33,8 @@ const RecordingSelectionModal = ({
   onSelect,
   onGenerate,
   isGenerating,
+  modalTitle = "Select Recordings",
+  generateButtonText = "Generate Notes"
 }: RecordingSelectionModalProps) => {
   const [displayCount, setDisplayCount] = useState(RECORDINGS_PER_PAGE);
 
@@ -42,7 +46,7 @@ const RecordingSelectionModal = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[360px] p-0 gap-0 bg-white rounded-xl">
         <DialogHeader className="p-3 pb-2 border-b">
-          <DialogTitle className="text-sm font-medium">Select Recordings</DialogTitle>
+          <DialogTitle className="text-sm font-medium">{modalTitle}</DialogTitle>
         </DialogHeader>
         
         <ScrollArea className="max-h-[400px] px-3">
@@ -110,7 +114,7 @@ const RecordingSelectionModal = ({
                   Generating...
                 </>
               ) : (
-                "Generate Notes"
+                generateButtonText
               )}
             </Button>
           </div>

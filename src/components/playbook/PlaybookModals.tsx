@@ -11,6 +11,8 @@ interface PlaybookModalsProps {
   onGenerateNotes: (selectedRecordings: string[]) => Promise<void>;
   isActionModalOpen: boolean;
   setIsActionModalOpen: (open: boolean) => void;
+  isPepTalkModalOpen: boolean;
+  setIsPepTalkModalOpen: (open: boolean) => void;
 }
 
 const PlaybookModals = ({ 
@@ -19,7 +21,9 @@ const PlaybookModals = ({
   isGenerating, 
   onGenerateNotes,
   isActionModalOpen,
-  setIsActionModalOpen
+  setIsActionModalOpen,
+  isPepTalkModalOpen,
+  setIsPepTalkModalOpen
 }: PlaybookModalsProps) => {
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
@@ -62,6 +66,45 @@ const PlaybookModals = ({
     setIsSelectionModalOpen(false);
   };
 
+  const handleGeneratePepTalk = async () => {
+    try {
+      const response = await fetch('/api/generate-pep-talk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          recording_ids: selectedRecordings,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate pep talk');
+      }
+
+      const data = await response.json();
+      console.log('Pep talk generated:', data);
+      
+      // Clear selection and close modal
+      setSelectedRecordings([]);
+      setIsPepTalkModalOpen(false);
+      
+      // Show success toast
+      toast({
+        title: "Pep Talk Generated",
+        description: "Your personalized pep talk is ready!",
+      });
+      
+    } catch (error) {
+      console.error('Error generating pep talk:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate pep talk. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <CoachingActionModal
@@ -72,16 +115,19 @@ const PlaybookModals = ({
       />
 
       <RecordingSelectionModal
-        isOpen={isSelectionModalOpen}
+        isOpen={isSelectionModalOpen || isPepTalkModalOpen}
         onClose={() => {
           setIsSelectionModalOpen(false);
+          setIsPepTalkModalOpen(false);
           setSelectedRecordings([]);
         }}
         recordings={recordings || []}
         selectedRecordings={selectedRecordings}
         onSelect={handleRecordingSelect}
-        onGenerate={handleGenerate}
+        onGenerate={isPepTalkModalOpen ? handleGeneratePepTalk : handleGenerate}
         isGenerating={isGenerating}
+        modalTitle={isPepTalkModalOpen ? "Generate Pep Talk" : "Select Recordings"}
+        generateButtonText={isPepTalkModalOpen ? "Generate Pep Talk" : "Generate Notes"}
       />
     </>
   );
