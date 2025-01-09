@@ -3,11 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
+import type { PepTalk } from "@/types/pep-talk";
 
 const PepTalkDetail = () => {
   const { id } = useParams();
 
-  const { data: pepTalk, isLoading } = useQuery({
+  const { data: pepTalk, isLoading } = useQuery<PepTalk>({
     queryKey: ['pep_talk', id],
     queryFn: async () => {
       const { data, error } = await supabase
