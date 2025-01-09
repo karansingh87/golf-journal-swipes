@@ -31,21 +31,31 @@ serve(async (req) => {
       throw new Error("Unauthorized");
     }
 
-    const { recordings } = await req.json();
+    const { recording_ids } = await req.json();
     
-    if (!recordings || recordings.length === 0) {
+    if (!recording_ids || recording_ids.length === 0) {
       throw new Error("No recordings provided");
     }
 
+    // Get the recordings data
+    const { data: recordings, error: recordingsError } = await supabaseClient
+      .from('recordings')
+      .select('*')
+      .in('id', recording_ids);
+
+    if (recordingsError) {
+      throw recordingsError;
+    }
+
     // Combine transcriptions and analyses
-    const combinedContent = recordings.map((recording: any) => ({
+    const combinedContent = recordings.map(recording => ({
       transcription: recording.transcription,
       analysis: recording.analysis,
       date: recording.created_at,
     }));
 
     const prompt = `Analyze these golf transcripts:
-${combinedContent.map((content: any, index: number) => 
+${combinedContent.map((content, index) => 
   `Recording ${index + 1} (${new Date(content.date).toLocaleDateString()}):
   Transcription: ${content.transcription}
   Analysis: ${content.analysis}`
@@ -139,7 +149,7 @@ Important:
       .from('pep_talk')
       .insert({
         content: pepTalkContent,
-        recording_ids: recordings.map((r: any) => r.id),
+        recording_ids: recording_ids,
         user_id: user.id
       })
       .select()

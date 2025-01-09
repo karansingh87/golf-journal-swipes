@@ -46,33 +46,13 @@ const PlaybookModals = ({
     try {
       setIsGeneratingPepTalk(true);
       
-      const response = await fetch('/api/generate-pep-talk', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data: pepTalk, error } = await supabase.functions.invoke('generate-pep-talk', {
+        body: {
           recording_ids: selectedIds,
-        }),
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to generate pep talk');
-      }
-
-      const pepTalkContent = await response.json();
-
-      const { data: pepTalk, error: saveError } = await supabase
-        .from('pep_talk')
-        .insert({
-          content: JSON.stringify(pepTalkContent),
-          recording_ids: selectedIds,
-          user_id: session.user.id
-        })
-        .select()
-        .single();
-
-      if (saveError) throw saveError;
+      if (error) throw error;
 
       toast({
         title: "Success",
@@ -111,56 +91,54 @@ const PlaybookModals = ({
   };
 
   return (
-    <>
-      <Dialog open={isOpen} onOpenChange={() => !isGeneratingPepTalk && onClose()}>
-        <DialogContent className="sm:max-w-md">
-          <div className="relative">
-            {isGeneratingPepTalk && (
-              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
-                <div className="text-center">
-                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground">
-                    Generating your pep talk...
-                  </p>
-                </div>
-              </div>
-            )}
-            
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold">
-                {selectedAction === "coaching" ? "Generate Coaching Note" : "Generate Pep Talk"}
-              </h2>
-              
-              <RecordingSelectionModal
-                isOpen={isOpen}
-                onClose={onClose}
-                selectedRecordings={selectedIds}
-                onSelect={handleRecordingSelect}
-                onGenerate={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
-                isGenerating={isGeneratingPepTalk}
-                recordings={recordings}
-              />
-
-              <div className="flex justify-end space-x-2">
-                <Button
-                  variant="outline"
-                  onClick={onClose}
-                  disabled={isGeneratingPepTalk}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
-                  disabled={selectedIds.length === 0 || isGeneratingPepTalk}
-                >
-                  Generate
-                </Button>
+    <Dialog open={isOpen} onOpenChange={() => !isGeneratingPepTalk && onClose()}>
+      <DialogContent className="sm:max-w-md">
+        <div className="relative">
+          {isGeneratingPepTalk && (
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="text-center">
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">
+                  Generating your pep talk...
+                </p>
               </div>
             </div>
+          )}
+          
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">
+              {selectedAction === "coaching" ? "Generate Coaching Note" : "Generate Pep Talk"}
+            </h2>
+            
+            <RecordingSelectionModal
+              isOpen={isOpen}
+              onClose={onClose}
+              selectedRecordings={selectedIds}
+              onSelect={handleRecordingSelect}
+              onGenerate={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
+              isGenerating={isGeneratingPepTalk}
+              recordings={recordings}
+            />
+
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={onClose}
+                disabled={isGeneratingPepTalk}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
+                disabled={selectedIds.length === 0 || isGeneratingPepTalk}
+              >
+                Generate
+              </Button>
+            </div>
           </div>
-        </DialogContent>
-      </Dialog>
-    </>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
