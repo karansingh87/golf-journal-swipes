@@ -34,15 +34,22 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the analysis prompt
+    // Fetch the analysis prompt using maybeSingle() instead of single()
     const { data: promptData, error: promptError } = await supabase
       .from('prompt_config')
-      .select('prompt')
-      .single()
+      .select('prompt, model_provider, model_name')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
     if (promptError) {
       console.error('Error fetching prompt:', promptError)
       throw promptError
+    }
+
+    if (!promptData?.prompt) {
+      console.error('No analysis prompt configured')
+      throw new Error('No analysis prompt configured')
     }
 
     const analysisPrompt = promptData.prompt
@@ -56,7 +63,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: promptData.model_name || 'claude-3-5-sonnet-20241022',
         max_tokens: 4096,
         messages: [
           {
