@@ -83,10 +83,15 @@ const PepTalkDetail = () => {
     );
   }
 
-  const parsedContent = JSON.parse(pepTalk.content) as PepTalkSectionData[];
-  const sections = Object.fromEntries(
-    parsedContent.map(section => [section.type, section])
-  );
+  // Parse the content and handle the new structure
+  const content = JSON.parse(pepTalk.content);
+  const sections = {
+    game_strengths: content.game_strengths || { content: [] },
+    key_thoughts: content.key_thoughts || { content: [] },
+    go_to_shots: content.go_to_shots || { content: [] },
+    scoring_zones: content.scoring_zones || { content: [] },
+    confidence_moments: content.confidence_moments || { content: [] }
+  };
 
   return (
     <div className="min-h-screen bg-background pt-16">
@@ -100,31 +105,31 @@ const PepTalkDetail = () => {
         <ScrollArea className="w-full">
           <div className="space-y-4">
             <PepTalkSection title="What's Clicking">
-              <FeelingGoodSection content={sections.game_strengths?.content || []} />
+              <FeelingGoodSection content={sections.game_strengths.content} />
             </PepTalkSection>
 
             <PepTalkSection title="Key Reminders">
-              <KeyRemindersSection content={sections.key_thoughts?.content || []} />
+              <KeyRemindersSection content={sections.key_thoughts.content} />
             </PepTalkSection>
 
             <PepTalkSection title="Go-To Shots">
               <RecentWinsSection 
                 type="go_to_shots"
-                content={sections.go_to_shots?.content || []} 
+                content={sections.go_to_shots.content} 
               />
             </PepTalkSection>
 
             <PepTalkSection title="Scoring Zones">
               <RecentWinsSection 
                 type="scoring_zones"
-                content={sections.scoring_zones?.content || []} 
+                content={sections.scoring_zones.content} 
               />
             </PepTalkSection>
 
             <PepTalkSection title="Confidence Moments">
               <RecentWinsSection 
                 type="confidence_moments"
-                content={sections.confidence_moments?.content || []} 
+                content={sections.confidence_moments.content} 
               />
             </PepTalkSection>
           </div>
