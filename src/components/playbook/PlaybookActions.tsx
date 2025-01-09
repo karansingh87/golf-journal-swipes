@@ -14,8 +14,8 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     <div className="grid grid-cols-1 gap-3">
       <PlaceholderCard />
       <TrendsCard />
-      <GenerateNotesCard onClick={onGenerateClick} />
       <NewPlaceholderCard onClick={onPepTalkClick} />
+      <GenerateNotesCard onClick={onGenerateClick} />
     </div>
   );
 };
