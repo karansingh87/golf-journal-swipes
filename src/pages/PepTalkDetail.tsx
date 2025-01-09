@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
+import { Database } from "@/integrations/supabase/types";
+
+type PepTalk = Database['public']['Tables']['pep_talk']['Row'];
 
 const PepTalkDetail = () => {
   const { id } = useParams();
@@ -22,7 +25,7 @@ const PepTalkDetail = () => {
         .maybeSingle();
       
       if (error) throw error;
-      return data;
+      return data as PepTalk;
     },
     enabled: !!id,
   });
@@ -74,8 +77,6 @@ const PepTalkDetail = () => {
     );
   }
 
-  const parsedContent = pepTalk.content.text || '';
-
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
@@ -113,7 +114,7 @@ const PepTalkDetail = () => {
             <CardContent className="p-6">
               <div className="prose prose-zinc max-w-none">
                 <div className="whitespace-pre-line text-[15px] leading-relaxed">
-                  {parsedContent}
+                  {pepTalk.content.text}
                 </div>
               </div>
             </CardContent>
