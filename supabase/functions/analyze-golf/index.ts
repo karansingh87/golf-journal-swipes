@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
+import { cleanAndValidateJSON } from '../_shared/responseUtils.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -49,9 +50,9 @@ serve(async (req) => {
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
-        'anthropic-version': '2023-06-01',
         'Content-Type': 'application/json',
+        'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
         model: 'claude-3-sonnet-20240229',
@@ -72,12 +73,15 @@ serve(async (req) => {
     }
 
     const analysisData = await anthropicResponse.json()
-    const analysis = analysisData.content[0].text
-
-    console.log('Analysis completed successfully')
+    const rawAnalysis = analysisData.content[0].text
+    
+    // Clean and validate the JSON response
+    console.log('Raw analysis response:', rawAnalysis)
+    const cleanedAnalysis = cleanAndValidateJSON(rawAnalysis)
+    console.log('Cleaned analysis:', cleanedAnalysis)
 
     return new Response(
-      JSON.stringify({ analysis }),
+      JSON.stringify({ analysis: cleanedAnalysis }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
