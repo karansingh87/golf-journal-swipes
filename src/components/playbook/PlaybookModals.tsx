@@ -11,6 +11,8 @@ interface PlaybookModalsProps {
   onGenerateNotes: (selectedRecordings: string[]) => Promise<void>;
   isActionModalOpen: boolean;
   setIsActionModalOpen: (open: boolean) => void;
+  isPepTalkModalOpen: boolean;
+  setIsPepTalkModalOpen: (open: boolean) => void;
 }
 
 const PlaybookModals = ({ 
@@ -19,7 +21,9 @@ const PlaybookModals = ({
   isGenerating, 
   onGenerateNotes,
   isActionModalOpen,
-  setIsActionModalOpen
+  setIsActionModalOpen,
+  isPepTalkModalOpen,
+  setIsPepTalkModalOpen
 }: PlaybookModalsProps) => {
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
