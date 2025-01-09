@@ -1,12 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 interface PepTalkModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onGenerate: () => Promise<string | undefined>;
+  onGenerate: () => void;
   isGenerating: boolean;
 }
 
@@ -16,16 +15,6 @@ const PepTalkModal = ({
   onGenerate,
   isGenerating,
 }: PepTalkModalProps) => {
-  const navigate = useNavigate();
-
-  const handleGenerate = async () => {
-    const pepTalkId = await onGenerate();
-    if (pepTalkId) {
-      onClose();
-      navigate(`/pep_talk/${pepTalkId}`);
-    }
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[360px] p-0 gap-0 bg-white rounded-xl">
@@ -48,7 +37,7 @@ const PepTalkModal = ({
             Cancel
           </Button>
           <Button
-            onClick={handleGenerate}
+            onClick={onGenerate}
             disabled={isGenerating}
             className="h-8 text-xs px-3"
           >

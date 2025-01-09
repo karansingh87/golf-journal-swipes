@@ -1,71 +1,64 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Landing from "@/pages/Landing";
-import Login from "@/pages/Login";
-import Signup from "@/pages/Signup";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import Notes from "@/pages/Notes";
-import RecordingDetail from "@/pages/RecordingDetail";
-import Playbook from "@/pages/Playbook";
-import CoachNoteDetail from "@/pages/CoachNoteDetail";
-import PepTalkDetail from "@/pages/PepTalkDetail";
-import Trends from "@/pages/Trends";
-import Onboarding from "@/pages/Onboarding";
-import Settings from "@/pages/Settings";
-import Admin from "@/pages/Admin";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { supabase } from "./integrations/supabase/client";
+import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
+import NavigationBar from "./components/NavigationBar";
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import Notes from "./pages/Notes";
+import Trends from "./pages/Trends";
+import Admin from "./pages/Admin";
+import Settings from "./pages/Settings";
+import RecordingDetail from "./pages/RecordingDetail";
+import Playbook from "./pages/Playbook";
+import CoachNotes from "./pages/CoachNotes";
+import CoachNoteDetail from "./pages/CoachNoteDetail";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Landing />,
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/notes",
-    element: <ProtectedRoute><Notes /></ProtectedRoute>,
-  },
-  {
-    path: "/notes/:id",
-    element: <ProtectedRoute><RecordingDetail /></ProtectedRoute>,
-  },
-  {
-    path: "/playbook",
-    element: <ProtectedRoute><Playbook /></ProtectedRoute>,
-  },
-  {
-    path: "/coach_notes/:id",
-    element: <ProtectedRoute><CoachNoteDetail /></ProtectedRoute>,
-  },
-  {
-    path: "/pep_talk/:id",
-    element: <ProtectedRoute><PepTalkDetail /></ProtectedRoute>,
-  },
-  {
-    path: "/trends",
-    element: <ProtectedRoute><Trends /></ProtectedRoute>,
-  },
-  {
-    path: "/onboarding",
-    element: <ProtectedRoute><Onboarding /></ProtectedRoute>,
-  },
-  {
-    path: "/settings",
-    element: <ProtectedRoute><Settings /></ProtectedRoute>,
-  },
-  {
-    path: "/admin",
-    element: <ProtectedRoute><Admin /></ProtectedRoute>,
-  },
-]);
+});
 
-const App = () => {
-  return <RouterProvider router={router} />;
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <SessionContextProvider supabaseClient={supabase}>
+      <TooltipProvider>
+        <BrowserRouter>
+          <NavigationBar />
+          <Toaster />
+          <Sonner />
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            
+            {/* App routes */}
+            <Route path="/record" element={<VoiceRecorderContainer />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/playbook" element={<Playbook />} />
+            <Route path="/recording/:id" element={<RecordingDetail />} />
+            <Route path="/coach_notes" element={<CoachNotes />} />
+            <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/settings" element={<Settings />} />
+            
+            {/* Redirects */}
+            <Route path="/history" element={<Navigate to="/notes" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </SessionContextProvider>
+  </QueryClientProvider>
+);
 
 export default App;

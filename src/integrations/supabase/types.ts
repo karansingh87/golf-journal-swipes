@@ -71,7 +71,7 @@ export type Database = {
       }
       pep_talk: {
         Row: {
-          content: { text: string }
+          content: Json
           created_at: string | null
           id: string
           recording_ids: string[]
@@ -79,7 +79,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          content: { text: string }
+          content: Json
           created_at?: string | null
           id?: string
           recording_ids: string[]
@@ -87,7 +87,7 @@ export type Database = {
           user_id: string
         }
         Update: {
-          content?: { text: string }
+          content?: Json
           created_at?: string | null
           id?: string
           recording_ids?: string[]

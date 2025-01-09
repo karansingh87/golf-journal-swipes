@@ -1,16 +1,20 @@
 import { useSession } from "@supabase/auth-helpers-react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import PlaybookHeader from "@/components/playbook/PlaybookHeader";
 import PlaybookActions from "@/components/playbook/PlaybookActions";
 import PlaybookModals from "@/components/playbook/PlaybookModals";
+import FloatingRecordButton from "@/components/history/FloatingRecordButton";
+import { useCoachingNotes } from "@/hooks/useCoachingNotes";
+import { useState } from "react";
 
 const Playbook = () => {
   const session = useSession();
+  const navigate = useNavigate();
+  const { isGenerating, generateNotes } = useCoachingNotes();
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [isPepTalkModalOpen, setIsPepTalkModalOpen] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -59,19 +63,14 @@ const Playbook = () => {
   });
 
   const handleGenerateNotes = async (selectedRecordings: string[]) => {
-    setIsGenerating(true);
-    try {
-      const { data: noteData, error } = await supabase.functions.invoke('generate-coaching-notes', {
-        body: { recording_ids: selectedRecordings }
-      });
-
-      if (error) throw error;
-      setIsGenerating(false);
-      return noteData;
-    } catch (error) {
-      console.error('Error generating notes:', error);
-      setIsGenerating(false);
+    const noteData = await generateNotes(selectedRecordings, recordings || []);
+    if (noteData) {
+      navigate(`/coach_notes/${noteData.id}`);
     }
+  };
+
+  const handlePepTalkClick = () => {
+    setIsPepTalkModalOpen(true);
   };
 
   const displayName = userProfile?.display_name || 'Golfer';
@@ -88,7 +87,7 @@ const Playbook = () => {
           <div className="flex-1 flex flex-col justify-center">
             <PlaybookActions 
               onGenerateClick={() => setIsActionModalOpen(true)}
-              onPepTalkClick={() => setIsPepTalkModalOpen(true)}
+              onPepTalkClick={handlePepTalkClick}
             />
           </div>
         </div>
@@ -105,6 +104,9 @@ const Playbook = () => {
         isPepTalkModalOpen={isPepTalkModalOpen}
         setIsPepTalkModalOpen={setIsPepTalkModalOpen}
       />
+
+      {/* Floating Record Button */}
+      <FloatingRecordButton />
     </div>
   );
 };
