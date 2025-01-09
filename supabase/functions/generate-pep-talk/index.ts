@@ -46,39 +46,77 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `Review recent rounds and create a quick pre-round boost. Focus on what's clicking right now and key reminders that will help them play with confidence.
+            content: `Review recent rounds and create a confidence-building pre-round reminder. Make it feel like getting advice from someone who really knows your game.
 
-            Here are the recordings to analyze: ${JSON.stringify(recordings)}
+Here are the recordings to analyze: ${JSON.stringify(recordings)}
 
-            Return as JSON:
-            {
-              "feeling_good": [
-                {
-                  "aspect": string,  // part of game that's clicking
-                  "why": string,     // specific detail of what's working
-                  "proof": string    // recent success example
-                }
-              ],
-              "key_reminders": [
-                {
-                  "thought": string,  // specific swing thought or strategy
-                  "why_it_works": string  // why this is working for you
-                }
-              ],
-              "recent_wins": [
-                {
-                  "moment": string,  // specific success
-                  "take_forward": string  // what to remember about this
-                }
-              ]
-            }
+Return as JSON:
+{
+  "sections": [
+    {
+      "type": "game_strengths",
+      "content": [
+        {
+          "aspect": string,  // What's genuinely clicking right now in their game
+          "why": string,     // Parts of their game they can lean on today
+          "proof": string    // Current reliable patterns showing up
+        }
+      ]
+    },
+    {
+      "type": "key_thoughts",
+      "content": [
+        {
+          "thought": string,     // Important swing thoughts/feels that are working
+          "why_it_works": string // Clear cause-effect from recent success
+        }
+      ]
+    },
+    {
+      "type": "go_to_shots",
+      "content": [
+        {
+          "shot": string,  // Current reliable shots for specific situations
+          "why": string   // Why they can trust this shot under pressure
+        }
+      ]
+    },
+    {
+      "type": "scoring_zones",
+      "content": [
+        {
+          "zone": string,     // Specific distances/situations where they're sharp
+          "strategy": string  // How they're creating opportunities here
+        }
+      ]
+    },
+    {
+      "type": "confidence_moments",
+      "content": [
+        {
+          "moment": string,      // Recent specific success moments
+          "take_forward": string // What to remember about this success
+        }
+      ]
+    }
+  ]
+}
 
-            Make it feel like a friend saying: "Hey, remember your driving is really clicking with that new grip thought" or "That par save on 18 yesterday was clutch - you're putting great when you trust your line."
+Style guide:
+✓ "Your high soft shots around the green are automatic right now"
+✓ "That new grip is giving you all the confidence off the tee"
+✗ "Implementation of modified technique has improved performance metrics"
+✗ "You should try to..."
 
-            Keep it specific to their game but make it encouraging and confidence-building. Max 2-3 items per category. No technical overload, just clear reminders of what's working.
+Make every insight:
+- Specific but not technical
+- Confidence-building but honest
+- Based on actual recent success
+- Ready to use today
+- Natural and encouraging
 
-            Return only the populated JSON object without any additional text or explanation.`,
-          },
+Each section should have 2-3 items maximum. Return only the populated JSON object without any additional text or explanation.`
+          }
         ],
       }),
     })
@@ -91,7 +129,13 @@ serve(async (req) => {
     const aiResponse = await response.json()
     console.log('Claude API response:', aiResponse)
 
-    const content = JSON.parse(aiResponse.content[0].text)
+    let content
+    try {
+      content = JSON.parse(aiResponse.content[0].text)
+    } catch (error) {
+      console.error('Error parsing AI response:', error)
+      throw new Error('Failed to parse AI response')
+    }
 
     // Store the pep talk in the database
     const { data: pepTalk, error: pepTalkError } = await supabaseClient
@@ -120,7 +164,10 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in generate-pep-talk function:', error)
     return new Response(
-      JSON.stringify({ error: 'Failed to generate pep talk' }),
+      JSON.stringify({ 
+        error: 'Failed to generate pep talk',
+        details: error.message 
+      }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
