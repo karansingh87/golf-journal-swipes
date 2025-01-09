@@ -38,12 +38,7 @@ export const usePromptConfig = () => {
           return acc;
         }, {});
 
-        console.log('Prompts fetched successfully:', {
-          analysisPrompt: latestPrompts.analysis?.content,
-          trendsPrompt: latestPrompts.trends?.content,
-          coachingPrompt: latestPrompts.coaching?.content,
-          pepTalkPrompt: latestPrompts.pep_talk?.content,
-        });
+        console.log('Prompts fetched successfully:', latestPrompts);
 
         setAnalysisPrompt(latestPrompts.analysis?.content || '');
         setTrendsPrompt(latestPrompts.trends?.content || '');
@@ -106,18 +101,31 @@ export const usePromptConfig = () => {
           break;
       }
 
-      const { error } = await supabase
+      // First, set all existing prompts of this type to not latest
+      const { error: updateError } = await supabase
+        .from('prompt_configurations')
+        .update({ is_latest: false })
+        .eq('type', type);
+
+      if (updateError) {
+        console.error(`Error updating existing ${type} prompts:`, updateError);
+        throw updateError;
+      }
+
+      // Then insert the new prompt
+      const { error: insertError } = await supabase
         .from('prompt_configurations')
         .insert({
           type,
           content,
           model_provider: modelProvider,
-          model_name: modelName
+          model_name: modelName,
+          is_latest: true
         });
 
-      if (error) {
-        console.error(`Error updating ${type}:`, error);
-        throw error;
+      if (insertError) {
+        console.error(`Error inserting new ${type} prompt:`, insertError);
+        throw insertError;
       }
 
       // Refresh prompt history after saving
