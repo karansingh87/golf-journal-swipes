@@ -16,7 +16,7 @@ serve(async (req) => {
     // Create a Supabase client with the service role key to bypass RLS
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''  // Use service role key instead of anon key
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
     // Get the user from the request authorization header
@@ -44,20 +44,67 @@ serve(async (req) => {
       date: recording.created_at,
     }));
 
-    const prompt = `Based on these golf practice recordings:
+    const prompt = `Analyze these golf transcripts:
 ${combinedContent.map((content: any, index: number) => 
   `Recording ${index + 1} (${new Date(content.date).toLocaleDateString()}):
   Transcription: ${content.transcription}
   Analysis: ${content.analysis}`
 ).join('\n\n')}
 
-Generate an encouraging and motivational pep talk that:
-1. Highlights specific improvements and progress noticed across these sessions
-2. Acknowledges challenges but frames them positively
-3. Provides specific, actionable encouragement for future practice
-4. Keeps a warm, supportive tone throughout
-
-Keep the response concise but impactful, around 200 words.`;
+Analyze these golf transcripts. Return only what's working right now, with specific technical details and clear cause-effect relationships. Output should be brief but deep, like a knowledgeable friend reminding you of exactly why things are working.
+Return as JSON with max 2-3 items per category:
+{
+  "hot_right_now": [
+    {
+      "aspect": string,  // specific part of game including technical detail
+      "detail": string,  // exact what's working and why, max 12 words
+      "proof": string    // specific recent result/outcome, max 10 words
+    }
+  ],
+  "working_well": [
+    {
+      "type": string,    // "setup", "technique", "strategy", "feel"
+      "what": string,    // specific technical detail that's working, max 12 words
+      "when": string,    // concrete recent example with result, max 10 words
+    }
+  ],
+  "go_to_shots": [
+    {
+      "situation": string,  // specific pressure or challenging scenario
+      "your_move": string,  // exact technique/feel that's reliable, includes setup details
+      "last_success": string  // recent example with outcome, max 10 words
+    }
+  ],
+  "scoring_zones": [
+    {
+      "distance": string,  // specific yardage or situation
+      "club": string,     // club choice with any relevant setup/technique notes
+      "pattern": string   // why it's working, including technique details, max 12 words
+    }
+  ],
+  "confidence_builders": [
+    {
+      "moment": string,  // specific breakthrough or success
+      "why_special": string,  // technical detail of why it worked, max 10 words
+      "repeatable_element": string  // exact keys to reproduce success, max 10 words
+    }
+  ]
+}
+Each item must:
+- Include specific technical details (grip pressure, setup, motion)
+- Show clear cause-effect relationships
+- Reference actual shots/moments from recent rounds
+- Connect practice changes to real results
+- Explain why things are working, not just what's working
+- Be quickly readable while maintaining depth
+- Use precise golf language without being technical jargon
+Important:
+- No general swing tips
+- No future suggestions
+- No vague patterns
+- Focus on specific, working details
+- Include context of success (pressure, conditions, etc.)
+- Link practice breakthroughs to real results`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -85,15 +132,15 @@ Keep the response concise but impactful, around 200 words.`;
     }
 
     const data = await response.json();
-    const pepTalk = data.content[0].text;
+    const pepTalkContent = JSON.parse(data.content[0].text);
 
     // Save the pep talk to the database with the user's ID
     const { data: savedPepTalk, error: saveError } = await supabaseClient
       .from('pep_talk')
       .insert({
-        content: { text: pepTalk },
+        content: pepTalkContent,
         recording_ids: recordings.map((r: any) => r.id),
-        user_id: user.id  // Set the user_id to the authenticated user's ID
+        user_id: user.id
       })
       .select()
       .single();
@@ -104,7 +151,7 @@ Keep the response concise but impactful, around 200 words.`;
     }
 
     return new Response(
-      JSON.stringify({ pepTalk: savedPepTalk }),
+      JSON.stringify(savedPepTalk),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
