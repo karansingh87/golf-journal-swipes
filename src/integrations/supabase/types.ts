@@ -69,33 +69,6 @@ export type Database = {
         }
         Relationships: []
       }
-      pep_talk: {
-        Row: {
-          content: string
-          created_at: string | null
-          id: string
-          recording_ids: string[]
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          content: string
-          created_at?: string | null
-          id?: string
-          recording_ids: string[]
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          content?: string
-          created_at?: string | null
-          id?: string
-          recording_ids?: string[]
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           age: number | null
@@ -155,10 +128,8 @@ export type Database = {
           coaching_prompt: string | null
           created_at: string | null
           id: string
-          is_latest: boolean | null
           model_name: string
           model_provider: string
-          pep_talk_prompt: string | null
           prompt: string
           trends_prompt: string | null
           updated_at: string | null
@@ -167,10 +138,8 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
-          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt: string
           trends_prompt?: string | null
           updated_at?: string | null
@@ -179,10 +148,8 @@ export type Database = {
           coaching_prompt?: string | null
           created_at?: string | null
           id?: string
-          is_latest?: boolean | null
           model_name?: string
           model_provider?: string
-          pep_talk_prompt?: string | null
           prompt?: string
           trends_prompt?: string | null
           updated_at?: string | null
