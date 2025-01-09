@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
-import type { PepTalk, PepTalkContent } from "@/types/pep-talk";
+import type { PepTalk, isPepTalkContent } from "@/types/pep-talk";
 
 const PepTalkDetail = () => {
   const { id } = useParams();
@@ -18,6 +18,11 @@ const PepTalkDetail = () => {
         .single();
 
       if (error) throw error;
+      
+      if (!data || !isPepTalkContent(data.content)) {
+        throw new Error('Invalid pep talk data');
+      }
+
       return data as PepTalk;
     },
     enabled: !!id,
@@ -55,12 +60,7 @@ const PepTalkDetail = () => {
     <div className="min-h-[calc(100dvh-3.5rem)] bg-background">
       <div className="h-14" /> {/* Navigation offset */}
       <div className="p-6 max-w-4xl mx-auto">
-        <PageBreadcrumb 
-          items={[
-            { label: "Playbook", href: "/playbook" },
-            { label: "Pep Talk", href: "#" },
-          ]}
-        />
+        <PageBreadcrumb currentPage="Pep Talk" />
 
         <Card className="mt-6">
           <CardContent className="p-6">

@@ -1,3 +1,5 @@
+import type { Json } from "@/integrations/supabase/types";
+
 interface PepTalkItem {
   aspect?: string;
   detail?: string;
@@ -31,4 +33,21 @@ export interface PepTalk {
   recording_ids: string[];
   created_at: string | null;
   updated_at: string | null;
+}
+
+// Type guard to check if Json is PepTalkContent
+export function isPepTalkContent(json: Json): json is PepTalkContent {
+  if (typeof json !== 'object' || json === null) return false;
+  
+  const requiredKeys = [
+    'hot_right_now',
+    'working_well',
+    'go_to_shots',
+    'scoring_zones',
+    'confidence_builders'
+  ];
+  
+  return requiredKeys.every(key => 
+    Array.isArray((json as any)[key])
+  );
 }
