@@ -33,10 +33,12 @@ serve(async (req) => {
     const { data: promptData, error: promptError } = await supabaseClient
       .from('prompt_config')
       .select('trends_prompt, model_provider, model_name')
-      .single()
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
 
     if (promptError) throw promptError
-    if (!promptData.trends_prompt) throw new Error('No trends prompt configured')
+    if (!promptData?.trends_prompt) throw new Error('No trends prompt configured')
 
     // Get user's recordings
     const { data: recordings, error: recordingsError } = await supabaseClient
