@@ -102,21 +102,17 @@ export const usePromptConfig = () => {
           break;
       }
 
-      // Insert the new prompt with is_latest = true
-      // The database trigger will handle setting other prompts to is_latest = false
-      const { error: insertError } = await supabase
-        .from('prompt_configurations')
-        .insert({
-          type,
-          content,
-          model_provider: modelProvider,
-          model_name: modelName,
-          is_latest: true
-        });
+      // Start a transaction to handle both operations atomically
+      const { error } = await supabase.rpc('update_prompt_configuration', {
+        p_type: type,
+        p_content: content,
+        p_model_provider: modelProvider,
+        p_model_name: modelName
+      });
 
-      if (insertError) {
-        console.error(`Error inserting new ${type} prompt:`, insertError);
-        throw insertError;
+      if (error) {
+        console.error(`Error updating ${type} prompt:`, error);
+        throw error;
       }
 
       // Refresh prompt history
