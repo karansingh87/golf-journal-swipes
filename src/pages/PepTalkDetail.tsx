@@ -10,6 +10,8 @@ import PepTalkSection from "@/components/pep-talk/PepTalkSection";
 import FeelingGoodSection from "@/components/pep-talk/FeelingGoodSection";
 import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
+import GoToShotsSection from "@/components/pep-talk/GoToShotsSection";
+import ScoringZonesSection from "@/components/pep-talk/ScoringZonesSection";
 
 interface PepTalkContent {
   game_strengths: {
@@ -123,11 +125,11 @@ const PepTalkDetail = () => {
             </PepTalkSection>
 
             <PepTalkSection title="Go-To Shots">
-              <KeyRemindersSection items={parsedContent.go_to_shots} />
+              <GoToShotsSection items={parsedContent.go_to_shots} />
             </PepTalkSection>
 
             <PepTalkSection title="Scoring Zones">
-              <KeyRemindersSection items={parsedContent.scoring_zones} />
+              <ScoringZonesSection items={parsedContent.scoring_zones} />
             </PepTalkSection>
 
             <PepTalkSection title="Confidence Moments">
