@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Trash2 } from "lucide-react";
-import { PepTalkContent } from "@/integrations/supabase/types/pep-talk/content";
+import { PepTalkContent } from "@/integrations/supabase/types/pep-talk";
 import PepTalkDisplay from "@/components/playbook/PepTalkDisplay";
 
 const PepTalkDetail = () => {
@@ -77,8 +77,32 @@ const PepTalkDetail = () => {
     );
   }
 
-  // Cast the content to PepTalkContent type since we know its structure
-  const content = pepTalk.content as PepTalkContent;
+  // Validate the content structure before casting
+  const validatePepTalkContent = (content: unknown): content is PepTalkContent => {
+    const c = content as PepTalkContent;
+    return (
+      Array.isArray(c?.hot_right_now) &&
+      Array.isArray(c?.working_well) &&
+      Array.isArray(c?.go_to_shots) &&
+      Array.isArray(c?.scoring_zones) &&
+      Array.isArray(c?.confidence_builders)
+    );
+  };
+
+  // Safely cast the content with validation
+  const content = validatePepTalkContent(pepTalk.content) 
+    ? pepTalk.content as PepTalkContent
+    : null;
+
+  if (!content) {
+    return (
+      <div className="min-h-screen bg-background pt-14">
+        <div className="max-w-4xl mx-auto px-6 py-8">
+          <p className="text-muted-foreground">Invalid pep talk content structure.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background pt-14">

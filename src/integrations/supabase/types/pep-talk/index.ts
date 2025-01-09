@@ -1,6 +1,5 @@
 export * from './content';
 export * from './section-types';
-export * from './model';
 
 export interface PepTalk {
   id: string;
