@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
 
@@ -68,26 +69,27 @@ const PlaybookModals = ({
 
   const handleGeneratePepTalk = async () => {
     try {
-      const response = await fetch('/api/generate-pep-talk', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('generate-pep-talk', {
+        body: {
           recording_ids: selectedRecordings,
-        }),
+          userId: (await supabase.auth.getUser()).data.user?.id
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to generate pep talk');
+      if (error) {
+        throw error;
       }
 
-      const data = await response.json();
       console.log('Pep talk generated:', data);
       
       // Clear selection and close modal
       setSelectedRecordings([]);
       setIsPepTalkModalOpen(false);
+      
+      // Navigate to the pep talk detail page
+      if (data?.id) {
+        navigate(`/pep_talk/${data.id}`);
+      }
       
       // Show success toast
       toast({
