@@ -11,9 +11,22 @@ import FeelingGoodSection from "@/components/pep-talk/FeelingGoodSection";
 import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
 
-interface PepTalkSection {
-  type: string;
-  content: string[];
+interface PepTalkContent {
+  sections: Array<{
+    type: string;
+    content: Array<{
+      aspect?: string;
+      why?: string;
+      proof?: string;
+      thought?: string;
+      why_it_works?: string;
+      shot?: string;
+      zone?: string;
+      strategy?: string;
+      moment?: string;
+      take_forward?: string;
+    }>;
+  }>;
 }
 
 const PepTalkDetail = () => {
@@ -84,7 +97,8 @@ const PepTalkDetail = () => {
   }
 
   // Parse the content
-  const parsedContent = JSON.parse(pepTalk.content);
+  const parsedContent: PepTalkContent = JSON.parse(pepTalk.content);
+  console.log('Parsed content:', parsedContent); // Debug log
   
   // Helper function to get section title
   const getSectionTitle = (type: string) => {
@@ -98,17 +112,31 @@ const PepTalkDetail = () => {
     return titles[type] || type;
   };
 
+  // Helper function to format section content
+  const formatSectionContent = (content: any[]): string[] => {
+    return content.map(item => {
+      if (item.aspect) return `${item.aspect}: ${item.why} (${item.proof})`;
+      if (item.thought) return `${item.thought}: ${item.why_it_works}`;
+      if (item.shot) return `${item.shot}: ${item.why}`;
+      if (item.zone) return `${item.zone}: ${item.strategy}`;
+      if (item.moment) return `${item.moment}: ${item.take_forward}`;
+      return '';
+    }).filter(Boolean);
+  };
+
   // Helper function to get the appropriate component for each section type
-  const renderSectionContent = (type: string, content: string[]) => {
+  const renderSectionContent = (type: string, content: any[]) => {
+    const formattedContent = formatSectionContent(content);
+    
     switch (type) {
       case 'game_strengths':
-        return <FeelingGoodSection content={content} />;
+        return <FeelingGoodSection content={formattedContent} />;
       case 'key_thoughts':
-        return <KeyRemindersSection content={content} />;
+        return <KeyRemindersSection content={formattedContent} />;
       case 'go_to_shots':
       case 'scoring_zones':
       case 'confidence_moments':
-        return <RecentWinsSection type={type as any} content={content} />;
+        return <RecentWinsSection type={type as any} content={formattedContent} />;
       default:
         return null;
     }
@@ -125,9 +153,9 @@ const PepTalkDetail = () => {
 
         <ScrollArea className="w-full">
           <div className="space-y-4">
-            {Object.entries(parsedContent).map(([type, section]: [string, any]) => (
-              <PepTalkSection key={type} title={getSectionTitle(type)}>
-                {renderSectionContent(type, section.content)}
+            {parsedContent.sections.map((section) => (
+              <PepTalkSection key={section.type} title={getSectionTitle(section.type)}>
+                {renderSectionContent(section.type, section.content)}
               </PepTalkSection>
             ))}
           </div>
