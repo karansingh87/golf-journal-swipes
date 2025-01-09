@@ -2,18 +2,21 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import PlaybookHeader from "@/components/playbook/PlaybookHeader";
 import PlaybookActions from "@/components/playbook/PlaybookActions";
 import PlaybookModals from "@/components/playbook/PlaybookModals";
 import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 import { useCoachingNotes } from "@/hooks/useCoachingNotes";
-import { useState } from "react";
 
 const Playbook = () => {
   const session = useSession();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { isGenerating, generateNotes } = useCoachingNotes();
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isPepTalkModalOpen, setIsPepTalkModalOpen] = useState(false);
 
   const { data: userProfile } = useQuery({
     queryKey: ['profile'],
@@ -68,24 +71,36 @@ const Playbook = () => {
     }
   };
 
+  const handlePepTalkClick = () => {
+    if (!recordings?.length) {
+      toast({
+        title: "No Recordings Found",
+        description: "Record some swings first to get a personalized pep talk!",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsPepTalkModalOpen(true);
+  };
+
   const displayName = userProfile?.display_name || 'Golfer';
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
-      {/* Header offset for fixed navigation */}
       <div className="h-14" />
       
-      {/* Main content area with dynamic height */}
       <div className="flex-1 flex flex-col w-full px-6 sm:px-10 lg:px-20 max-w-7xl mx-auto">
         <div className="flex-1 flex flex-col h-[calc(100dvh-3.5rem)] pt-6">
           <PlaybookHeader displayName={displayName} />
           <div className="flex-1 flex flex-col justify-center">
-            <PlaybookActions onGenerateClick={() => setIsActionModalOpen(true)} />
+            <PlaybookActions 
+              onGenerateClick={() => setIsActionModalOpen(true)}
+              onPepTalkClick={handlePepTalkClick}
+            />
           </div>
         </div>
       </div>
 
-      {/* Modals */}
       <PlaybookModals
         recordings={recordings}
         latestNoteId={latestNote?.id}
@@ -93,9 +108,10 @@ const Playbook = () => {
         onGenerateNotes={handleGenerateNotes}
         isActionModalOpen={isActionModalOpen}
         setIsActionModalOpen={setIsActionModalOpen}
+        isPepTalkModalOpen={isPepTalkModalOpen}
+        setIsPepTalkModalOpen={setIsPepTalkModalOpen}
       />
 
-      {/* Floating Record Button */}
       <FloatingRecordButton />
     </div>
   );
