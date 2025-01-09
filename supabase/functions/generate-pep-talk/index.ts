@@ -50,45 +50,49 @@ serve(async (req) => {
 
             Here are the recordings to analyze: ${JSON.stringify(recordings)}
 
-            Return as JSON:
+            Return a single JSON object with this structure:
             {
-              "type": "game_strengths",
-              "content": [
-                "What's genuinely clicking right now in their game, supported by recent specific examples",
-                "Parts of their game they can lean on today with confidence",
-                "Current reliable patterns that are showing up consistently"
-              ]
-            },
-            {
-              "type": "key_thoughts",
-              "content": [
-                "The 2-3 most important swing thoughts/feels that are actually working",
-                "Clear cause-effect relationships from recent success",
-                "Simple reminders that connect to recent good shots"
-              ]
-            },
-            {
-              "type": "go_to_shots",
-              "content": [
-                "Their current reliable shots for specific situations",
-                "Shot shapes or types they can trust under pressure",
-                "Smart plays that have been working consistently"
-              ]
-            },
-            {
-              "type": "scoring_zones",
-              "content": [
-                "Specific distances or situations where they're particularly sharp",
-                "Areas of the course where they're creating opportunities",
-                "Patterns in where they're saving strokes"
-              ]
-            },
-            {
-              "type": "confidence_moments",
-              "content": [
-                "Recent specific success moments they can draw on",
-                "Pressure situations they handled well",
-                "Evidence their practice is paying off in real play"
+              "sections": [
+                {
+                  "type": "game_strengths",
+                  "content": [
+                    "What's genuinely clicking right now in their game, supported by recent specific examples",
+                    "Parts of their game they can lean on today with confidence",
+                    "Current reliable patterns that are showing up consistently"
+                  ]
+                },
+                {
+                  "type": "key_thoughts",
+                  "content": [
+                    "The 2-3 most important swing thoughts/feels that are actually working",
+                    "Clear cause-effect relationships from recent success",
+                    "Simple reminders that connect to recent good shots"
+                  ]
+                },
+                {
+                  "type": "go_to_shots",
+                  "content": [
+                    "Their current reliable shots for specific situations",
+                    "Shot shapes or types they can trust under pressure",
+                    "Smart plays that have been working consistently"
+                  ]
+                },
+                {
+                  "type": "scoring_zones",
+                  "content": [
+                    "Specific distances or situations where they're particularly sharp",
+                    "Areas of the course where they're creating opportunities",
+                    "Patterns in where they're saving strokes"
+                  ]
+                },
+                {
+                  "type": "confidence_moments",
+                  "content": [
+                    "Recent specific success moments they can draw on",
+                    "Pressure situations they handled well",
+                    "Evidence their practice is paying off in real play"
+                  ]
+                }
               ]
             }
 
