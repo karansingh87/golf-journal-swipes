@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import RecordingSelectionModal from "./RecordingSelectionModal";
 import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@supabase/auth-helpers-react";
 
 interface PlaybookModalsProps {
   isOpen: boolean;
@@ -22,9 +23,19 @@ const PlaybookModals = ({
 }: PlaybookModalsProps) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const session = useSession();
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
 
   const handleGeneratePepTalk = async () => {
+    if (!session?.user?.id) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "You must be logged in to generate a pep talk",
+      });
+      return;
+    }
+
     try {
       setIsGeneratingPepTalk(true);
       
@@ -49,6 +60,7 @@ const PlaybookModals = ({
         .insert({
           content: JSON.stringify(pepTalkContent),
           recording_ids: selectedRecordings,
+          user_id: session.user.id
         })
         .select()
         .single();
@@ -106,7 +118,13 @@ const PlaybookModals = ({
               </h2>
               
               <RecordingSelectionModal
+                isOpen={isOpen}
+                onClose={onClose}
                 selectedRecordings={selectedRecordings}
+                onSelect={() => {}}
+                onGenerate={selectedAction === "coaching" ? handleGenerateCoachingNote : handleGeneratePepTalk}
+                isGenerating={isGeneratingPepTalk}
+                recordings={[]}
               />
 
               <div className="flex justify-end space-x-2">
