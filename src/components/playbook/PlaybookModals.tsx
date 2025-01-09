@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import PepTalkDisplay from "./PepTalkDisplay";
-import { supabase } from "@/integrations/supabase/client";
 
 interface PlaybookModalsProps {
   recordings?: any[];
@@ -14,8 +11,6 @@ interface PlaybookModalsProps {
   onGenerateNotes: (selectedRecordings: string[]) => Promise<void>;
   isActionModalOpen: boolean;
   setIsActionModalOpen: (open: boolean) => void;
-  isPepTalkModalOpen: boolean;
-  setIsPepTalkModalOpen: (open: boolean) => void;
 }
 
 const PlaybookModals = ({ 
@@ -24,15 +19,10 @@ const PlaybookModals = ({
   isGenerating, 
   onGenerateNotes,
   isActionModalOpen,
-  setIsActionModalOpen,
-  isPepTalkModalOpen,
-  setIsPepTalkModalOpen
+  setIsActionModalOpen
 }: PlaybookModalsProps) => {
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
-  const [pepTalkContent, setPepTalkContent] = useState<any>(null);
-  const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
-  const [isPepTalkSelectionOpen, setIsPepTalkSelectionOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -72,31 +62,6 @@ const PlaybookModals = ({
     setIsSelectionModalOpen(false);
   };
 
-  const handleGeneratePepTalk = async () => {
-    try {
-      setIsGeneratingPepTalk(true);
-      const { data, error } = await supabase.functions.invoke('generate-pep-talk', {
-        body: { recording_ids: selectedRecordings }
-      });
-
-      if (error) throw error;
-
-      setPepTalkContent(data.content);
-      setSelectedRecordings([]);
-      setIsPepTalkSelectionOpen(false);
-      setIsPepTalkModalOpen(true);
-    } catch (error) {
-      console.error('Error generating pep talk:', error);
-      toast({
-        title: "Error",
-        description: "Failed to generate pep talk. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsGeneratingPepTalk(false);
-    }
-  };
-
   return (
     <>
       <CoachingActionModal
@@ -118,25 +83,6 @@ const PlaybookModals = ({
         onGenerate={handleGenerate}
         isGenerating={isGenerating}
       />
-
-      <RecordingSelectionModal
-        isOpen={isPepTalkSelectionOpen}
-        onClose={() => {
-          setIsPepTalkSelectionOpen(false);
-          setSelectedRecordings([]);
-        }}
-        recordings={recordings || []}
-        selectedRecordings={selectedRecordings}
-        onSelect={handleRecordingSelect}
-        onGenerate={handleGeneratePepTalk}
-        isGenerating={isGeneratingPepTalk}
-      />
-
-      <Dialog open={isPepTalkModalOpen} onOpenChange={setIsPepTalkModalOpen}>
-        <DialogContent className="max-w-2xl">
-          {pepTalkContent && <PepTalkDisplay content={pepTalkContent} />}
-        </DialogContent>
-      </Dialog>
     </>
   );
 };
