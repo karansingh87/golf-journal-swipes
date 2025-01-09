@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkModal from "./PepTalkModal";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
 
 interface PlaybookModalsProps {
   recordings?: any[];
@@ -27,6 +30,7 @@ const PlaybookModals = ({
 }: PlaybookModalsProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
 
   const handleViewLatest = () => {
     if (latestNoteId) {
@@ -49,6 +53,7 @@ const PlaybookModals = ({
 
   const handlePepTalkGenerate = async () => {
     try {
+      setIsGeneratingPepTalk(true);
       const lastThreeRecordings = recordings?.slice(0, 3) || [];
       
       if (lastThreeRecordings.length === 0) {
@@ -66,7 +71,6 @@ const PlaybookModals = ({
 
       if (error) throw error;
 
-      // Store the pep talk content as a string
       const { data: savedPepTalk, error: saveError } = await supabase
         .from('pep_talk')
         .insert({
@@ -95,6 +99,8 @@ const PlaybookModals = ({
         title: "Error",
         description: "Failed to generate pep talk. Please try again.",
       });
+    } finally {
+      setIsGeneratingPepTalk(false);
     }
   };
 
@@ -110,9 +116,22 @@ const PlaybookModals = ({
       <PepTalkModal
         isOpen={isPepTalkModalOpen}
         onClose={() => setIsPepTalkModalOpen(false)}
-        isGenerating={isGenerating}
+        isGenerating={isGeneratingPepTalk}
         onGenerate={handlePepTalkGenerate}
       />
+
+      {/* Loading overlay */}
+      <Dialog open={isGeneratingPepTalk} onOpenChange={() => {}}>
+        <DialogContent className="sm:max-w-[425px] text-center py-12">
+          <div className="flex flex-col items-center gap-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <h3 className="font-medium text-lg">Generating Your Pep Talk</h3>
+            <p className="text-sm text-muted-foreground">
+              Analyzing your recordings and crafting personalized motivation...
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
