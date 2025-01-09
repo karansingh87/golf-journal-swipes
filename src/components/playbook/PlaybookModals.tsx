@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
+import PepTalkActionModal from "./PepTalkActionModal";
 
 interface PlaybookModalsProps {
   recordings?: any[];
@@ -28,6 +29,7 @@ const PlaybookModals = ({
 }: PlaybookModalsProps) => {
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
+  const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -68,6 +70,7 @@ const PlaybookModals = ({
   };
 
   const handleGeneratePepTalk = async () => {
+    setIsGeneratingPepTalk(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-pep-talk', {
         body: {
@@ -104,7 +107,19 @@ const PlaybookModals = ({
         description: "Failed to generate pep talk. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsGeneratingPepTalk(false);
     }
+  };
+
+  const handleViewPastPepTalks = () => {
+    setIsPepTalkModalOpen(false);
+    navigate('/pep_talks');
+  };
+
+  const handleCreateNewPepTalk = () => {
+    setIsPepTalkModalOpen(false);
+    setIsSelectionModalOpen(true);
   };
 
   return (
@@ -116,20 +131,26 @@ const PlaybookModals = ({
         onCreateNew={handleCreateNew}
       />
 
+      <PepTalkActionModal
+        isOpen={isPepTalkModalOpen}
+        onClose={() => setIsPepTalkModalOpen(false)}
+        onViewPast={handleViewPastPepTalks}
+        onCreateNew={handleCreateNewPepTalk}
+      />
+
       <RecordingSelectionModal
-        isOpen={isSelectionModalOpen || isPepTalkModalOpen}
+        isOpen={isSelectionModalOpen}
         onClose={() => {
           setIsSelectionModalOpen(false);
-          setIsPepTalkModalOpen(false);
           setSelectedRecordings([]);
         }}
         recordings={recordings || []}
         selectedRecordings={selectedRecordings}
         onSelect={handleRecordingSelect}
-        onGenerate={isPepTalkModalOpen ? handleGeneratePepTalk : handleGenerate}
-        isGenerating={isGenerating}
-        modalTitle={isPepTalkModalOpen ? "Generate Pep Talk" : "Select Recordings"}
-        generateButtonText={isPepTalkModalOpen ? "Generate Pep Talk" : "Generate Notes"}
+        onGenerate={handleGeneratePepTalk}
+        isGenerating={isGeneratingPepTalk}
+        modalTitle="Generate Pep Talk"
+        generateButtonText="Generate Pep Talk"
       />
     </>
   );

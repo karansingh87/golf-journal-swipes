@@ -1,5 +1,4 @@
 import { Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 interface NewPlaceholderCardProps {
   onClick: () => void;
@@ -20,7 +19,7 @@ const NewPlaceholderCard = ({ onClick }: NewPlaceholderCardProps) => {
       <div className="text-left">
         <h3 className="font-semibold text-base leading-none mb-2">Pep Talk</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
-          See everything that's clicking in your game before your next round
+          Get a confidence boost before your next round
         </p>
       </div>
     </button>
