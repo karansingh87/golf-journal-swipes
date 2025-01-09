@@ -22,6 +22,12 @@ interface PepTalkDisplayProps {
   content: PepTalkContent;
 }
 
+type DisplayItem = {
+  primary: string;
+  secondary: string;
+  detail?: string;
+};
+
 const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
   const sections = [
     {
@@ -64,7 +70,7 @@ const PepTalkDisplay = ({ content }: PepTalkDisplayProps) => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {section.items.map((item, index) => (
+                {section.items.map((item: DisplayItem, index) => (
                   <div key={index} className="space-y-1">
                     <p className="text-sm font-medium">{item.primary}</p>
                     <p className="text-sm text-muted-foreground">{item.secondary}</p>
