@@ -24,7 +24,10 @@ const PepTalkDetail = () => {
         throw new Error('Invalid pep talk data');
       }
 
-      return data as PepTalk;
+      return {
+        ...data,
+        content: data.content as PepTalkContent
+      } as PepTalk;
     },
     enabled: !!id,
   });

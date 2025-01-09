@@ -24,6 +24,7 @@ export interface PepTalkContent {
   go_to_shots: PepTalkItem[];
   scoring_zones: PepTalkItem[];
   confidence_builders: PepTalkItem[];
+  [key: string]: PepTalkItem[] | undefined;
 }
 
 export interface PepTalk {
