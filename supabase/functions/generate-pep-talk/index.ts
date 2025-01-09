@@ -1,10 +1,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import "https://deno.land/x/xhr@0.1.0/mod.ts"
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { corsHeaders } from '../_shared/cors.ts'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY')
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -13,18 +11,38 @@ serve(async (req) => {
   }
 
   try {
-    const { recordings } = await req.json()
-    console.log('Received recordings for pep talk:', recordings)
+    const { recording_ids } = await req.json()
+    console.log('Processing recording IDs:', recording_ids)
 
+    // Initialize Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+
+    // Fetch recordings data
+    const { data: recordings, error: recordingsError } = await supabaseClient
+      .from('recordings')
+      .select('transcription, analysis')
+      .in('id', recording_ids)
+      .order('created_at', { ascending: false })
+
+    if (recordingsError) {
+      console.error('Error fetching recordings:', recordingsError)
+      throw new Error('Failed to fetch recordings')
+    }
+
+    // Call Claude API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
+        'Content-Type': 'application/json',
+        'x-api-key': anthropicApiKey!,
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-sonnet-20240229',
+        max_tokens: 1000,
         messages: [
           {
             role: 'user',
@@ -62,38 +80,32 @@ serve(async (req) => {
             Return only the populated JSON object without any additional text or explanation.`,
           },
         ],
-        max_tokens: 4096,
       }),
     })
 
     if (!response.ok) {
-      const error = await response.text()
-      console.error('Anthropic API error:', error)
-      throw new Error(`Anthropic API error: ${error}`)
+      console.error('Error from Claude API:', await response.text())
+      throw new Error('Failed to generate pep talk')
     }
 
-    const data = await response.json()
-    const analysis = data.content[0].text
+    const aiResponse = await response.json()
+    console.log('Claude API response:', aiResponse)
 
-    // Parse and validate the response
-    try {
-      const parsedAnalysis = JSON.parse(analysis)
-      console.log('Successfully parsed pep talk:', parsedAnalysis)
-      
-      return new Response(JSON.stringify({ analysis: parsedAnalysis }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
-    } catch (error) {
-      console.error('Error parsing pep talk:', error)
-      throw new Error('Failed to parse AI response as JSON')
-    }
+    const content = JSON.parse(aiResponse.content[0].text)
+
+    // Return the generated pep talk
+    return new Response(
+      JSON.stringify({ content }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    )
+
   } catch (error) {
     console.error('Error in generate-pep-talk function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: 'Failed to generate pep talk' }),
       { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     )
   }
