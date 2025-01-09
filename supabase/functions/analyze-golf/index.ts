@@ -21,19 +21,13 @@ serve(async (req) => {
       throw new Error('No transcription provided')
     }
 
-    // Get the Supabase URL and ensure it's properly formatted
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')
-    if (!supabaseUrl) {
-      throw new Error('SUPABASE_URL environment variable is not set')
-    }
-
-    // Create Supabase client
+    // Initialize Supabase client
     const supabase = createClient(
-      supabaseUrl,
+      Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the analysis prompt
+    // Fetch the analysis prompt - there should only be one row in prompt_config
     const { data: promptData, error: promptError } = await supabase
       .from('prompt_config')
       .select('prompt')
@@ -44,12 +38,12 @@ serve(async (req) => {
       throw promptError
     }
 
-    if (!promptData) {
+    if (!promptData?.prompt) {
       console.error('No prompt configuration found')
       throw new Error('No prompt configuration found')
     }
 
-    const analysisPrompt = promptData.prompt
+    console.log('Using prompt configuration:', { promptLength: promptData.prompt.length })
 
     // Get analysis from Anthropic using Claude
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
@@ -65,7 +59,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `${analysisPrompt}\n\nHere is the transcription to analyze:\n${transcription}`
+            content: `${promptData.prompt}\n\nHere is the transcription to analyze:\n${transcription}`
           }
         ]
       }),
