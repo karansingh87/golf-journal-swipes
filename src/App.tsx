@@ -10,13 +10,12 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
-        <Routes>
-          <Route path="/" element={<Playbook />} />
-          <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
-          <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
-        </Routes>
-      </ToastProvider>
+      <ToastProvider />
+      <Routes>
+        <Route path="/" element={<Playbook />} />
+        <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
+        <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
+      </Routes>
     </QueryClientProvider>
   );
 };

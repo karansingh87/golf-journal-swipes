@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, ArrowLeft, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -75,7 +75,7 @@ const PepTalkDetail = () => {
     );
   }
 
-  const parsedContent = JSON.parse(pepTalk.content);
+  const parsedContent = JSON.parse(pepTalk.content) as Record<string, string | string[]>;
 
   return (
     <div className="min-h-screen bg-background pt-16">
