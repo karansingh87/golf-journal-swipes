@@ -7,16 +7,22 @@ import type { PepTalk, PepTalkContent } from "@/types/pep-talk";
 import { isPepTalkContent } from "@/types/pep-talk";
 
 const PepTalkDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   const { data: pepTalk, isLoading, error } = useQuery({
     queryKey: ['pep_talk', id],
     queryFn: async () => {
       if (!id) throw new Error('No pep talk ID provided');
 
+      // Validate UUID format using regex
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(id)) {
+        throw new Error('Invalid pep talk ID format');
+      }
+
       const { data, error } = await supabase
         .from('pep_talk')
-        .select()
+        .select('*')
         .eq('id', id)
         .maybeSingle();
 
