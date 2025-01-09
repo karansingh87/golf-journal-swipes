@@ -32,6 +32,7 @@ const PlaybookModals = ({
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [pepTalkContent, setPepTalkContent] = useState<any>(null);
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
+  const [isPepTalkSelectionOpen, setIsPepTalkSelectionOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -82,7 +83,7 @@ const PlaybookModals = ({
 
       setPepTalkContent(data.content);
       setSelectedRecordings([]);
-      setIsSelectionModalOpen(false);
+      setIsPepTalkSelectionOpen(false);
       setIsPepTalkModalOpen(true);
     } catch (error) {
       console.error('Error generating pep talk:', error);
@@ -116,6 +117,19 @@ const PlaybookModals = ({
         onSelect={handleRecordingSelect}
         onGenerate={handleGenerate}
         isGenerating={isGenerating}
+      />
+
+      <RecordingSelectionModal
+        isOpen={isPepTalkSelectionOpen}
+        onClose={() => {
+          setIsPepTalkSelectionOpen(false);
+          setSelectedRecordings([]);
+        }}
+        recordings={recordings || []}
+        selectedRecordings={selectedRecordings}
+        onSelect={handleRecordingSelect}
+        onGenerate={handleGeneratePepTalk}
+        isGenerating={isGeneratingPepTalk}
       />
 
       <Dialog open={isPepTalkModalOpen} onOpenChange={setIsPepTalkModalOpen}>

@@ -4,9 +4,10 @@ import { Sparkles } from "lucide-react";
 
 interface PepTalkCardProps {
   onClick: () => void;
+  isLoading?: boolean;
 }
 
-const PepTalkCard = ({ onClick }: PepTalkCardProps) => {
+const PepTalkCard = ({ onClick, isLoading }: PepTalkCardProps) => {
   return (
     <Card className="group relative overflow-hidden transition-all duration-200 hover:shadow-lg">
       <CardHeader className="flex flex-row items-center gap-2 space-y-0 pb-2">
@@ -20,8 +21,9 @@ const PepTalkCard = ({ onClick }: PepTalkCardProps) => {
         <Button 
           onClick={onClick}
           className="w-full"
+          disabled={isLoading}
         >
-          Generate Pep Talk
+          {isLoading ? "Generating..." : "Generate Pep Talk"}
         </Button>
       </CardContent>
     </Card>
