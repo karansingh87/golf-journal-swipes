@@ -17,6 +17,7 @@ import RecordingDetail from "./pages/RecordingDetail";
 import Playbook from "./pages/Playbook";
 import CoachNotes from "./pages/CoachNotes";
 import CoachNoteDetail from "./pages/CoachNoteDetail";
+import PepTalkDetail from "./pages/PepTalkDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/recording/:id" element={<RecordingDetail />} />
             <Route path="/coach_notes" element={<CoachNotes />} />
             <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
+            <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />
             
