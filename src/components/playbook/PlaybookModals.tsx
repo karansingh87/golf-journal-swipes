@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkModal from "./PepTalkModal";
 
@@ -42,15 +43,13 @@ const PlaybookModals = ({
 
   const handleCreateNew = () => {
     setIsActionModalOpen(false);
-    // Get the last 3 recordings
     const lastThreeRecordings = recordings?.slice(0, 3).map(r => r.id) || [];
     onGenerateNotes(lastThreeRecordings);
   };
 
   const handlePepTalkGenerate = async () => {
     try {
-      // Get the last 3 recordings
-      const lastThreeRecordings = recordings?.slice(0, 3).map(r => r.id) || [];
+      const lastThreeRecordings = recordings?.slice(0, 3) || [];
       
       if (lastThreeRecordings.length === 0) {
         toast({
@@ -61,9 +60,23 @@ const PlaybookModals = ({
         return;
       }
 
-      // TODO: Implement pep talk generation with the last 3 recordings
-      console.log("Generating pep talk for recordings:", lastThreeRecordings);
+      const { data: pepTalk, error } = await supabase.functions.invoke('generate-pep-talk', {
+        body: { recordings: lastThreeRecordings }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Your pep talk has been generated.",
+      });
+
+      // Close the modal and show the pep talk
       setIsPepTalkModalOpen(false);
+      
+      // TODO: Navigate to pep talk view or show in a new modal
+      console.log('Generated pep talk:', pepTalk);
+
     } catch (error) {
       console.error("Error generating pep talk:", error);
       toast({
