@@ -18,6 +18,18 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     );
 
+    // Get the user from the request authorization header
+    const authHeader = req.headers.get('authorization')?.split(' ')[1];
+    if (!authHeader) {
+      throw new Error("No authorization header");
+    }
+
+    // Get the user's ID from the session
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(authHeader);
+    if (userError || !user) {
+      throw new Error("Unauthorized");
+    }
+
     const { recordings } = await req.json();
     
     if (!recordings || recordings.length === 0) {
@@ -74,17 +86,21 @@ Keep the response concise but impactful, around 200 words.`;
     const data = await response.json();
     const pepTalk = data.content[0].text;
 
-    // Save the pep talk to the database
+    // Save the pep talk to the database with the user's ID
     const { data: savedPepTalk, error: saveError } = await supabaseClient
       .from('pep_talk')
       .insert({
         content: { text: pepTalk },
-        recording_ids: recordings.map((r: any) => r.id)
+        recording_ids: recordings.map((r: any) => r.id),
+        user_id: user.id  // Set the user_id to the authenticated user's ID
       })
       .select()
       .single();
 
-    if (saveError) throw saveError;
+    if (saveError) {
+      console.error('Error saving pep talk:', saveError);
+      throw saveError;
+    }
 
     return new Response(
       JSON.stringify({ pepTalk: savedPepTalk }),
