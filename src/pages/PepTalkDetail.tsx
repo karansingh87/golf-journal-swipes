@@ -11,7 +11,7 @@ import FeelingGoodSection from "@/components/pep-talk/FeelingGoodSection";
 import KeyRemindersSection from "@/components/pep-talk/KeyRemindersSection";
 import RecentWinsSection from "@/components/pep-talk/RecentWinsSection";
 
-interface PepTalkContent {
+interface PepTalkSectionData {
   type: string;
   content: string[];
 }
@@ -83,7 +83,10 @@ const PepTalkDetail = () => {
     );
   }
 
-  const content = JSON.parse(pepTalk.content);
+  const parsedContent = JSON.parse(pepTalk.content) as PepTalkSectionData[];
+  const sections = Object.fromEntries(
+    parsedContent.map(section => [section.type, section])
+  );
 
   return (
     <div className="min-h-screen bg-background pt-16">
@@ -97,31 +100,31 @@ const PepTalkDetail = () => {
         <ScrollArea className="w-full">
           <div className="space-y-4">
             <PepTalkSection title="What's Clicking">
-              <FeelingGoodSection content={content.game_strengths?.content || []} />
+              <FeelingGoodSection content={sections.game_strengths?.content || []} />
             </PepTalkSection>
 
             <PepTalkSection title="Key Reminders">
-              <KeyRemindersSection content={content.key_thoughts?.content || []} />
+              <KeyRemindersSection content={sections.key_thoughts?.content || []} />
             </PepTalkSection>
 
             <PepTalkSection title="Go-To Shots">
               <RecentWinsSection 
                 type="go_to_shots"
-                content={content.go_to_shots?.content || []} 
+                content={sections.go_to_shots?.content || []} 
               />
             </PepTalkSection>
 
             <PepTalkSection title="Scoring Zones">
               <RecentWinsSection 
                 type="scoring_zones"
-                content={content.scoring_zones?.content || []} 
+                content={sections.scoring_zones?.content || []} 
               />
             </PepTalkSection>
 
             <PepTalkSection title="Confidence Moments">
               <RecentWinsSection 
                 type="confidence_moments"
-                content={content.confidence_moments?.content || []} 
+                content={sections.confidence_moments?.content || []} 
               />
             </PepTalkSection>
           </div>
