@@ -5,13 +5,13 @@ interface RecentWinsSectionProps {
 
 const RecentWinsSection = ({ content = [], type }: RecentWinsSectionProps) => {
   return (
-    <div className="space-y-3">
+    <ul className="list-disc list-inside space-y-2 pl-2">
       {content.map((item, index) => (
-        <p key={index} className="text-sm text-muted-foreground">
+        <li key={index} className="text-sm text-muted-foreground">
           {item}
-        </p>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
