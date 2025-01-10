@@ -96,7 +96,7 @@ const SharedRecording = () => {
             </TabsList>
 
             <TabsContent value="analysis" className="mt-0">
-              <AnalysisTab analysis={parsedAnalysis} />
+              <AnalysisTab analysis={parsedAnalysis} isPublicView={true} />
             </TabsContent>
             <TabsContent value="transcription" className="mt-0">
               <TranscriptionTab transcription={recording.transcription} />

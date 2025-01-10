@@ -14,6 +14,7 @@ interface AnalysisData {
 
 interface AnalysisTabProps {
   analysis: AnalysisData | null;
+  isPublicView?: boolean;
 }
 
 const getTitleFromType = (type: string): string => {
@@ -36,7 +37,7 @@ const getSummaryFromContent = (content: string | string[]): string => {
   return content.substring(0, 100) + (content.length > 100 ? '...' : '');
 };
 
-const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
+const AnalysisTab = ({ analysis, isPublicView = false }: AnalysisTabProps) => {
   const [expandedSection, setExpandedSection] = useState<string>("session_story");
 
   if (!analysis) {
@@ -96,6 +97,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
                   }
                 }}
                 summary={section.type !== 'session_story' ? getSummaryFromContent(section.content) : undefined}
+                isPublicView={isPublicView}
               />
             </div>
           ))}

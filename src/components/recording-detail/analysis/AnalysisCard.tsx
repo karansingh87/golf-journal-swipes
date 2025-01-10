@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@supabase/auth-helpers-react";
 
 interface AnalysisCardProps {
   title: string;
@@ -14,6 +14,7 @@ interface AnalysisCardProps {
   defaultExpanded?: boolean;
   onExpand?: (isExpanded: boolean) => void;
   summary?: string;
+  isPublicView?: boolean;
 }
 
 const AnalysisCard = ({
@@ -24,10 +25,11 @@ const AnalysisCard = ({
   defaultExpanded = true,
   onExpand,
   summary,
+  isPublicView = false,
 }: AnalysisCardProps) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const navigate = useNavigate();
-  const [session] = useState(async () => await supabase.auth.getSession());
+  const session = useSession();
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
@@ -49,7 +51,7 @@ const AnalysisCard = ({
 
   const renderContent = () => {
     if (Array.isArray(content)) {
-      const displayContent = isOverview || session ? content : content.slice(0, 2);
+      const displayContent = !isPublicView || isOverview || session ? content : content.slice(0, 2);
       return (
         <ul className="list-disc list-inside space-y-2">
           {displayContent.map((item, idx) => (
@@ -61,12 +63,12 @@ const AnalysisCard = ({
       );
     }
 
-    const displayText = isOverview || session ? content : truncateContent(content);
+    const displayText = !isPublicView || isOverview || session ? content : truncateContent(content);
     return <p className="text-sm leading-normal font-sans text-muted-foreground">{displayText}</p>;
   };
 
   const renderSignUpPrompt = () => {
-    if (isOverview || session) return null;
+    if (!isPublicView || isOverview || session) return null;
 
     return (
       <div className="mt-4 space-y-2">
