@@ -52,44 +52,43 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-semibold text-golf-gray-text-primary">
+            <h1 className="text-xl font-semibold text-golf-gray-text-primary">
               {getHeadline()}
             </h1>
             <p className="text-sm text-golf-gray-text-secondary">
               {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
             </p>
+            <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-1.5">
+                <Switch
+                  checked={recording.is_public}
+                  onCheckedChange={onTogglePublic}
+                  className="h-5 w-9"
+                />
+                <span className="text-xs text-muted-foreground">
+                  {recording.is_public ? "Public" : "Private"}
+                </span>
+              </div>
+              {recording.is_public && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onShare}
+                  className="h-7"
+                >
+                  <Share2 className="h-3.5 w-3.5" />
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onDelete}
+                className="h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </Button>
+            </div>
           </div>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          {recording.is_public && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onShare}
-              className="h-8"
-            >
-              <Share2 className="h-4 w-4" />
-            </Button>
-          )}
-          <div className="flex items-center gap-1.5">
-            <Switch
-              checked={recording.is_public}
-              onCheckedChange={onTogglePublic}
-              className="h-5 w-9"
-            />
-            <span className="text-xs text-muted-foreground">
-              {recording.is_public ? "Public" : "Private"}
-            </span>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onDelete}
-            className="h-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
         </div>
       </div>
     </div>
