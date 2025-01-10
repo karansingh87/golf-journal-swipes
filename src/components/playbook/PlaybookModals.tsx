@@ -30,6 +30,7 @@ const PlaybookModals = ({
   const [isSelectionModalOpen, setIsSelectionModalOpen] = useState(false);
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
+  const [isGeneratingNotes, setIsGeneratingNotes] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -49,6 +50,8 @@ const PlaybookModals = ({
   const handleCreateNew = () => {
     setIsActionModalOpen(false);
     setIsSelectionModalOpen(true);
+    // Reset selected recordings when opening modal
+    setSelectedRecordings([]);
   };
 
   const handleRecordingSelect = (id: string) => {
@@ -64,9 +67,21 @@ const PlaybookModals = ({
   };
 
   const handleGenerate = async () => {
-    await onGenerateNotes(selectedRecordings);
-    setSelectedRecordings([]);
-    setIsSelectionModalOpen(false);
+    setIsGeneratingNotes(true);
+    try {
+      await onGenerateNotes(selectedRecordings);
+      setSelectedRecordings([]);
+      setIsSelectionModalOpen(false);
+    } catch (error) {
+      console.error('Error generating notes:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate notes. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingNotes(false);
+    }
   };
 
   const handleGeneratePepTalk = async () => {
@@ -120,6 +135,8 @@ const PlaybookModals = ({
   const handleCreateNewPepTalk = () => {
     setIsPepTalkModalOpen(false);
     setIsSelectionModalOpen(true);
+    // Reset selected recordings when opening modal
+    setSelectedRecordings([]);
   };
 
   return (
@@ -147,10 +164,10 @@ const PlaybookModals = ({
         recordings={recordings || []}
         selectedRecordings={selectedRecordings}
         onSelect={handleRecordingSelect}
-        onGenerate={handleGeneratePepTalk}
-        isGenerating={isGeneratingPepTalk}
-        modalTitle="Generate Pep Talk"
-        generateButtonText="Generate Pep Talk"
+        onGenerate={isActionModalOpen ? handleGenerate : handleGeneratePepTalk}
+        isGenerating={isActionModalOpen ? isGeneratingNotes : isGeneratingPepTalk}
+        modalTitle="Select Recordings"
+        generateButtonText={isActionModalOpen ? "Generate Notes" : "Generate Pep Talk"}
       />
     </>
   );
