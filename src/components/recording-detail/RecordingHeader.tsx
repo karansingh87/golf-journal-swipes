@@ -46,7 +46,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 p-0"
             onClick={() => navigate('/notes')}
           >
             <ArrowLeft className="h-4 w-4" />
