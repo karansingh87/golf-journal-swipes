@@ -20,7 +20,7 @@ const GenerateNotesCard: FC<GenerateNotesCardProps> = ({ onClick }) => {
       <div className="text-left">
         <h3 className="font-semibold text-base leading-none mb-2">Lesson Prep</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
-          Get a clear discussion plan for your next lesson
+          Summarize your progress for your next coaching session
         </p>
       </div>
     </button>
