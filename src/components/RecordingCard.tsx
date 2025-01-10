@@ -12,20 +12,25 @@ interface RecordingCardProps {
     duration: number;
     created_at: string;
     session_type: "course" | "practice";
+    user?: {
+      display_name?: string | null;
+    };
   };
-  onEdit: (recording: any) => void;
-  onDelete: (id: string) => void;
-  isEditing: boolean;
-  editedTranscription: string;
-  onEditChange: (value: string) => void;
-  onSave: (id: string) => Promise<void>;
-  onCancelEdit: () => void;
-  defaultExpanded: boolean;
+  onEdit?: (recording: any) => void;
+  onDelete?: (id: string) => void;
+  isEditing?: boolean;
+  editedTranscription?: string;
+  onEditChange?: (value: string) => void;
+  onSave?: (id: string) => Promise<void>;
+  onCancelEdit?: () => void;
+  defaultExpanded?: boolean;
+  isPublicView?: boolean;
 }
 
 const RecordingCard = ({
   recording,
   defaultExpanded,
+  isPublicView = false,
 }: RecordingCardProps) => {
   const navigate = useNavigate();
 
@@ -65,18 +70,29 @@ const RecordingCard = ({
 
   return (
     <Card 
-      onClick={handleCardClick}
+      onClick={isPublicView ? undefined : handleCardClick}
       className={cn(
-        "mb-1 transition-all duration-300 hover:shadow-lg cursor-pointer relative",
-        "rounded-2xl border border-border/50 backdrop-blur-sm active:scale-[0.99]",
+        "mb-1 transition-all duration-300 hover:shadow-lg relative",
+        "rounded-2xl border border-border/50 backdrop-blur-sm",
+        !isPublicView && "cursor-pointer active:scale-[0.99]",
         "bg-white/80 p-4"
       )}
     >
       <div className="flex flex-col space-y-2">
         <div className="flex items-center justify-between">
           <div className="flex flex-col space-y-0.5">
-            <div className="text-sm font-medium">
-              {format(new Date(recording.created_at), "MMM d, yyyy")}
+            <div className="flex items-center gap-2 text-sm">
+              <span className="font-medium">
+                {format(new Date(recording.created_at), "MMM d, yyyy")}
+              </span>
+              {isPublicView && recording.user?.display_name && (
+                <>
+                  <span className="text-zinc-400">•</span>
+                  <span className="text-zinc-500">
+                    Shared by {recording.user.display_name}
+                  </span>
+                </>
+              )}
             </div>
             <div className="text-xs text-muted-foreground">
               {format(new Date(recording.created_at), "h:mm a")}
