@@ -36,22 +36,29 @@ const AnalysisCard = ({
     onExpand?.(!isExpanded);
   };
 
-  const truncateContent = (text: string) => {
-    const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
-    return sentences.slice(0, 2).join(' ');
+  const truncateContent = (text: string): string => {
+    const words = text.split(' ');
+    if (words.length <= 25) return text;
+    return words.slice(0, 25).join(' ') + '...';
   };
 
   const getRemainingContentEstimate = () => {
     if (Array.isArray(content)) {
-      return `${content.length - 2} more points`;
+      const totalWords = content.join(' ').split(' ').length;
+      const remainingWords = totalWords - 25;
+      return remainingWords > 0 ? `${remainingWords} more words` : '';
     }
-    const sentences = (content.match(/[^.!?]+[.!?]+/g) || []).length;
-    return `${sentences - 2} more sentences`;
+    const totalWords = content.split(' ').length;
+    const remainingWords = totalWords - 25;
+    return remainingWords > 0 ? `${remainingWords} more words` : '';
   };
 
   const renderContent = () => {
     if (Array.isArray(content)) {
-      const displayContent = !isPublicView || isOverview || session ? content : content.slice(0, 2);
+      const displayContent = !isPublicView || isOverview || session 
+        ? content 
+        : [truncateContent(content.join(' '))];
+      
       return (
         <ul className="list-disc list-inside space-y-2">
           {displayContent.map((item, idx) => (
@@ -63,18 +70,23 @@ const AnalysisCard = ({
       );
     }
 
-    const displayText = !isPublicView || isOverview || session ? content : truncateContent(content);
+    const displayText = !isPublicView || isOverview || session 
+      ? content 
+      : truncateContent(content);
     return <p className="text-sm leading-normal font-sans text-muted-foreground">{displayText}</p>;
   };
 
   const renderSignUpPrompt = () => {
     if (!isPublicView || isOverview || session) return null;
-
+    const estimate = getRemainingContentEstimate();
+    
     return (
       <div className="mt-4 space-y-2">
-        <p className="text-sm text-muted-foreground italic">
-          {getRemainingContentEstimate()} available after sign up
-        </p>
+        {estimate && (
+          <p className="text-sm text-muted-foreground italic">
+            {estimate} available after sign up
+          </p>
+        )}
         <Button 
           onClick={() => navigate('/signup')}
           className="w-full bg-golf-green text-white hover:bg-golf-green/90"
@@ -112,7 +124,9 @@ const AnalysisCard = ({
           <div>
             {isExpanded ? renderContent() : (
               <p className="text-sm leading-normal font-sans text-muted-foreground">
-                {summary || (Array.isArray(content) ? content[0] : content)}
+                {summary || (Array.isArray(content) 
+                  ? truncateContent(content[0]) 
+                  : truncateContent(content))}
               </p>
             )}
           </div>
