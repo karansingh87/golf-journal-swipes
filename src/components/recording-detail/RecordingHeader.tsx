@@ -63,43 +63,45 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-2 pl-11">
-        <div className="flex items-center gap-1.5 bg-secondary/50 rounded-full px-2 py-0.5">
-          <Switch
-            checked={recording.is_public}
-            onCheckedChange={onTogglePublic}
-            className="h-4 w-7"
-          />
-          <span className="text-xs text-muted-foreground flex items-center gap-1">
-            {recording.is_public ? (
-              <>
-                <Unlock className="h-3 w-3" />
-                Public
-              </>
-            ) : (
-              <>
-                <Lock className="h-3 w-3" />
-                Private
-              </>
-            )}
-          </span>
+      <div className="flex items-center justify-between pl-11">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 bg-secondary/50 rounded-full px-2 py-0.5">
+            <Switch
+              checked={recording.is_public}
+              onCheckedChange={onTogglePublic}
+              className="h-4 w-7"
+            />
+            <span className="text-xs text-muted-foreground flex items-center gap-1">
+              {recording.is_public ? (
+                <>
+                  <Unlock className="h-3 w-3" />
+                  Public
+                </>
+              ) : (
+                <>
+                  <Lock className="h-3 w-3" />
+                  Private
+                </>
+              )}
+            </span>
+          </div>
+          {recording.is_public && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onShare}
+              className="h-6 px-2 gap-1"
+            >
+              <Share2 className="h-3 w-3" />
+              <span className="text-xs">Share</span>
+            </Button>
+          )}
         </div>
-        {recording.is_public && (
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onShare}
-            className="h-6 px-2 gap-1"
-          >
-            <Share2 className="h-3 w-3" />
-            <span className="text-xs">Share</span>
-          </Button>
-        )}
         <Button
           variant="ghost"
           size="sm"
           onClick={onDelete}
-          className="h-6 px-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+          className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
         >
           <Trash2 className="h-3 w-3" />
         </Button>
