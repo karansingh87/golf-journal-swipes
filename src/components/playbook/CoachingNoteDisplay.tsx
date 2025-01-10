@@ -24,7 +24,7 @@ const CoachingNoteDisplay = ({ note, isPublicView = false }: CoachingNoteDisplay
     {
       title: "Technical Observations",
       data: note.technical_observations,
-      alwaysVisible: true, // This section will always be fully visible
+      alwaysVisible: true,
     },
     {
       title: "Key Situations",
@@ -67,14 +67,15 @@ const CoachingNoteDisplay = ({ note, isPublicView = false }: CoachingNoteDisplay
 
     return (
       <div className="relative">
-        <div className="text-muted-foreground/50">
+        <div className="max-h-[100px] overflow-hidden relative">
           <ul className="list-disc list-inside space-y-2">
             {section.data.map((item, index) => (
-              <li key={index} className="text-sm">
+              <li key={index} className="text-sm text-muted-foreground">
                 {item}
               </li>
             ))}
           </ul>
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white via-white/80 to-transparent" />
         </div>
         
         {/* Sign up button overlay */}
