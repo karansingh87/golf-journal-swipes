@@ -24,7 +24,7 @@ const CoachingNoteDisplay = ({ note, isPublicView = false }: CoachingNoteDisplay
     {
       title: "Technical Observations",
       data: note.technical_observations,
-      alwaysVisible: true,
+      alwaysVisible: true, // This section will always be fully visible
     },
     {
       title: "Key Situations",
@@ -67,16 +67,19 @@ const CoachingNoteDisplay = ({ note, isPublicView = false }: CoachingNoteDisplay
 
     return (
       <div className="relative">
-        <ul className="list-disc list-inside space-y-2">
-          {section.data.map((item, index) => (
-            <li key={index} className="text-sm text-muted-foreground">
-              {item}
-            </li>
-          ))}
-        </ul>
+        {/* Blurred content with reduced blur and adjusted opacity */}
+        <div className="blur-[6px] opacity-70">
+          <ul className="list-disc list-inside space-y-2">
+            {section.data.map((item, index) => (
+              <li key={index} className="text-sm text-muted-foreground">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
         
         {/* Sign up button overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+        <div className="absolute inset-0 flex items-center justify-center">
           <Button
             onClick={handleSignUpClick}
             className="bg-primary hover:bg-primary/90 text-white font-medium"
