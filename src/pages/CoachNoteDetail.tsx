@@ -132,7 +132,11 @@ const CoachNoteDetail = () => {
                   Coaching Note
                 </h1>
                 <p className="text-sm text-golf-gray-text-secondary">
-                  {format(new Date(note.created_at), "MMMM d, yyyy")} • {format(new Date(note.created_at), "h:mm a")} • Based on {note.recording_ids.length} recording{note.recording_ids.length !== 1 ? 's' : ''}
+                  {format(new Date(note.created_at), "MMMM d, yyyy")}
+                  <span className="mx-1.5 text-[10px]">•</span>
+                  {format(new Date(note.created_at), "h:mm a")}
+                  <span className="mx-1.5 text-[10px]">•</span>
+                  Based on {note.recording_ids.length} recording{note.recording_ids.length !== 1 ? 's' : ''}
                 </p>
               </div>
             </div>
