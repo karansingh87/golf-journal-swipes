@@ -60,9 +60,11 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `${promptData.prompt}\n\nPlease analyze this transcription and return ONLY a valid JSON object without any additional text or formatting. The response should be parseable by JSON.parse().\n\nTranscription to analyze:\n${transcription}`
+            content: `${promptData.prompt}\n\nYou MUST respond with a valid JSON object. Do not include any markdown formatting, code blocks, or explanatory text. The response must be directly parseable by JSON.parse().\n\nHere is the transcription to analyze:\n${transcription}\n\nRemember: Your entire response must be a single, valid JSON object.`
           }
-        ]
+        ],
+        temperature: 0.7,
+        system: "You are an expert golf analysis AI. You must always respond with valid JSON that can be parsed by JSON.parse(). Never include explanations or markdown - only pure JSON."
       }),
     })
 
@@ -78,14 +80,25 @@ serve(async (req) => {
     // Log the raw response for debugging
     console.log('Raw analysis response:', rawAnalysis)
     
-    // Clean and validate the JSON response
-    const cleanedAnalysis = cleanAndValidateJSON(rawAnalysis)
-    console.log('Cleaned analysis:', cleanedAnalysis)
+    try {
+      // First try parsing the raw response
+      JSON.parse(rawAnalysis)
+      console.log('Raw response is valid JSON')
+      return new Response(
+        JSON.stringify({ analysis: rawAnalysis }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    } catch (error) {
+      console.log('Raw response is not valid JSON, attempting cleanup')
+      // If direct parsing fails, try cleaning the response
+      const cleanedAnalysis = cleanAndValidateJSON(rawAnalysis)
+      console.log('Cleaned analysis:', cleanedAnalysis)
 
-    return new Response(
-      JSON.stringify({ analysis: cleanedAnalysis }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+      return new Response(
+        JSON.stringify({ analysis: cleanedAnalysis }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
   } catch (error) {
     console.error('Error in analyze-golf function:', error)
     return new Response(
