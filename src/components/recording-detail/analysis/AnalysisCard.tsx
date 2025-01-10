@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,6 @@ const AnalysisCard = ({
   index,
   defaultExpanded = true,
   onExpand,
-  summary,
   isPublicView = false,
 }: AnalysisCardProps) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
@@ -36,33 +35,11 @@ const AnalysisCard = ({
     onExpand?.(!isExpanded);
   };
 
-  const truncateContent = (text: string): string => {
-    const words = text.split(' ');
-    const maxWords = Math.min(10, Math.max(5, words.length));
-    if (words.length <= maxWords) return text;
-    return words.slice(0, maxWords).join(' ') + '...';
-  };
-
-  const getRemainingContentEstimate = () => {
-    if (Array.isArray(content)) {
-      const totalWords = content.join(' ').split(' ').length;
-      const remainingWords = totalWords - 10;
-      return remainingWords > 0 ? `${remainingWords} more words` : '';
-    }
-    const totalWords = content.split(' ').length;
-    const remainingWords = totalWords - 10;
-    return remainingWords > 0 ? `${remainingWords} more words` : '';
-  };
-
   const renderContent = () => {
     if (Array.isArray(content)) {
-      const displayContent = !isPublicView || isOverview || session 
-        ? content 
-        : [truncateContent(content.join(' '))];
-      
       return (
         <ul className="list-disc list-inside space-y-2">
-          {displayContent.map((item, idx) => (
+          {content.map((item, idx) => (
             <li key={idx} className="text-sm leading-normal font-sans text-muted-foreground">
               {item}
             </li>
@@ -70,30 +47,40 @@ const AnalysisCard = ({
         </ul>
       );
     }
-
-    const displayText = !isPublicView || isOverview || session 
-      ? content 
-      : truncateContent(content);
-    return <p className="text-sm leading-normal font-sans text-muted-foreground">{displayText}</p>;
+    return <p className="text-sm leading-normal font-sans text-muted-foreground">{content}</p>;
   };
 
   const renderSignUpPrompt = () => {
     if (!isPublicView || isOverview || session) return null;
-    const estimate = getRemainingContentEstimate();
     
     return (
-      <div className="mt-4 space-y-2">
-        {estimate && (
-          <p className="text-sm text-muted-foreground italic">
-            {estimate} available after sign up
-          </p>
-        )}
+      <div className="mt-4">
         <Button 
           onClick={() => navigate('/signup')}
           className="w-full bg-golf-green text-white hover:bg-golf-green/90"
         >
           Sign up to view more
         </Button>
+      </div>
+    );
+  };
+
+  const renderContentWithFade = () => {
+    if (!isPublicView || isOverview || session) {
+      return renderContent();
+    }
+
+    return (
+      <div className="relative">
+        <div className="max-h-24 overflow-hidden">
+          {renderContent()}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white pointer-events-none" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+            <div className="bg-white rounded-full p-2 shadow-md">
+              <Lock className="w-4 h-4 text-golf-gray-light" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -122,15 +109,7 @@ const AnalysisCard = ({
             isExpanded ? "max-h-[1000px] opacity-100" : "max-h-16 opacity-80"
           )}
         >
-          <div>
-            {isExpanded ? renderContent() : (
-              <p className="text-sm leading-normal font-sans text-muted-foreground">
-                {summary || (Array.isArray(content) 
-                  ? truncateContent(content[0]) 
-                  : truncateContent(content))}
-              </p>
-            )}
-          </div>
+          {renderContentWithFade()}
         </div>
         {isExpanded && renderSignUpPrompt()}
       </CardContent>
