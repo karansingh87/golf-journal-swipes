@@ -89,7 +89,7 @@ const AnalysisTab = ({ analysis }: AnalysisTabProps) => {
                 content={section.content}
                 isOverview={section.type === 'session_story'}
                 index={index}
-                defaultExpanded={true} // Changed to true for all cards
+                defaultExpanded={true}
                 onExpand={(isExpanded) => {
                   if (isExpanded) {
                     setExpandedSection(section.type);

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AnalysisCardProps {
   title: string;
@@ -23,17 +26,33 @@ const AnalysisCard = ({
   summary,
 }: AnalysisCardProps) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const navigate = useNavigate();
+  const [session] = useState(async () => await supabase.auth.getSession());
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
     onExpand?.(!isExpanded);
   };
 
+  const truncateContent = (text: string) => {
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || [];
+    return sentences.slice(0, 2).join(' ');
+  };
+
+  const getRemainingContentEstimate = () => {
+    if (Array.isArray(content)) {
+      return `${content.length - 2} more points`;
+    }
+    const sentences = (content.match(/[^.!?]+[.!?]+/g) || []).length;
+    return `${sentences - 2} more sentences`;
+  };
+
   const renderContent = () => {
     if (Array.isArray(content)) {
+      const displayContent = isOverview || session ? content : content.slice(0, 2);
       return (
         <ul className="list-disc list-inside space-y-2">
-          {content.map((item, idx) => (
+          {displayContent.map((item, idx) => (
             <li key={idx} className="text-sm leading-normal font-sans text-muted-foreground">
               {item}
             </li>
@@ -42,7 +61,26 @@ const AnalysisCard = ({
       );
     }
 
-    return <p className="text-sm leading-normal font-sans text-muted-foreground">{content}</p>;
+    const displayText = isOverview || session ? content : truncateContent(content);
+    return <p className="text-sm leading-normal font-sans text-muted-foreground">{displayText}</p>;
+  };
+
+  const renderSignUpPrompt = () => {
+    if (isOverview || session) return null;
+
+    return (
+      <div className="mt-4 space-y-2">
+        <p className="text-sm text-muted-foreground italic">
+          {getRemainingContentEstimate()} available after sign up
+        </p>
+        <Button 
+          onClick={() => navigate('/signup')}
+          className="w-full bg-golf-green text-white hover:bg-golf-green/90"
+        >
+          Sign up to view more
+        </Button>
+      </div>
+    );
   };
 
   return (
@@ -77,6 +115,7 @@ const AnalysisCard = ({
             )}
           </div>
         </div>
+        {isExpanded && renderSignUpPrompt()}
       </CardContent>
     </Card>
   );
