@@ -77,49 +77,77 @@ export const usePromptConfig = () => {
     console.log(`Saving ${type}...`);
     setIsLoading(true);
     try {
+      // First, get the current config
       const { data: configData, error: configError } = await supabase
         .from('prompt_config')
-        .select('id')
+        .select('*')
         .single();
 
       if (configError) {
-        console.error('Error fetching config ID:', configError);
+        console.error('Error fetching config:', configError);
         throw configError;
       }
 
+      // Prepare update data and old value for history
       let updateData = {};
+      let oldValue = '';
+      let promptType = '';
+
       switch (type) {
         case 'analysis':
           updateData = { prompt: analysisPrompt };
+          oldValue = configData.prompt;
+          promptType = 'analysis';
           break;
         case 'trends':
           updateData = { trends_prompt: trendsPrompt };
+          oldValue = configData.trends_prompt;
+          promptType = 'trends';
           break;
         case 'coaching':
           updateData = { coaching_prompt: coachingPrompt };
+          oldValue = configData.coaching_prompt;
+          promptType = 'coaching';
           break;
         case 'model':
           updateData = { model_provider: modelProvider, model_name: modelName };
+          oldValue = JSON.stringify({ provider: configData.model_provider, name: configData.model_name });
+          promptType = 'model';
           break;
       }
 
-      const { error } = await supabase
+      // Insert the old value into prompt_history
+      const { error: historyError } = await supabase
+        .from('prompt_history')
+        .insert({
+          prompt_config_id: configData.id,
+          prompt_type: promptType,
+          old_value: oldValue,
+        });
+
+      if (historyError) {
+        console.error('Error creating history record:', historyError);
+        throw historyError;
+      }
+
+      // Update the prompt config
+      const { error: updateError } = await supabase
         .from('prompt_config')
         .update(updateData)
         .eq('id', configData.id);
 
-      if (error) {
-        console.error(`Error updating ${type}:`, error);
-        throw error;
+      if (updateError) {
+        console.error(`Error updating ${type}:`, updateError);
+        throw updateError;
       }
 
-      // Refresh prompt history after saving
-      const { data: newHistory, error: historyError } = await supabase
+      // Refresh prompt history
+      const { data: newHistory, error: refreshError } = await supabase
         .from('prompt_history')
         .select('*')
         .order('changed_at', { ascending: false });
 
-      if (!historyError && newHistory) {
+      if (!refreshError && newHistory) {
         setPromptHistory(newHistory);
       }
 
