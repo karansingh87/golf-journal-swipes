@@ -16,10 +16,8 @@ const SharedRecording = () => {
         .from('recordings')
         .select(`
           *,
-          user:user_id (
-            profiles:profiles (
-              display_name
-            )
+          profiles (
+            display_name
           )
         `)
         .eq('id', id)
@@ -30,7 +28,7 @@ const SharedRecording = () => {
 
       return {
         ...data,
-        user: data.user?.profiles || { display_name: null }
+        user: data.profiles || { display_name: null }
       };
     },
   });
