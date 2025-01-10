@@ -19,6 +19,9 @@ interface Recording {
   session_type: 'course' | 'practice';
   insights: string | null;
   is_public: boolean;
+  profiles: {
+    display_name: string | null;
+  };
 }
 
 interface AnalysisSection {
@@ -40,7 +43,12 @@ const SharedRecording = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('recordings')
-        .select('*')
+        .select(`
+          *,
+          profiles (
+            display_name
+          )
+        `)
         .eq('id', id)
         .eq('is_public', true)
         .single();
@@ -75,9 +83,16 @@ const SharedRecording = () => {
           <h1 className="text-2xl font-semibold text-foreground mb-2">
             Golf Session
           </h1>
-          <p className="text-sm text-muted-foreground">
-            {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
-          </p>
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm text-muted-foreground">
+              {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
+            </p>
+            {recording.profiles.display_name && (
+              <p className="text-sm text-muted-foreground">
+                Shared by {recording.profiles.display_name}
+              </p>
+            )}
+          </div>
         </div>
 
         <div className={cn(
