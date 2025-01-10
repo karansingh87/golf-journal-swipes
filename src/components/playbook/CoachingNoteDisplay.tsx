@@ -67,8 +67,8 @@ const CoachingNoteDisplay = ({ note, isPublicView = false }: CoachingNoteDisplay
 
     return (
       <div className="relative">
-        {/* Blurred content */}
-        <div className="blur-md opacity-50">
+        {/* Blurred content with reduced blur and adjusted opacity */}
+        <div className="blur-[6px] opacity-70">
           <ul className="list-disc list-inside space-y-2">
             {section.data.map((item, index) => (
               <li key={index} className="text-sm text-muted-foreground">
