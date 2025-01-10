@@ -18,7 +18,7 @@ const PlaceholderCard = () => {
       <div className="text-left">
         <h3 className="font-semibold text-base leading-none mb-2">Notes</h3>
         <p className="text-sm text-muted-foreground/80 leading-tight">
-          Your complete golf journal, automatically organized
+          Browse your recorded notes and transcripts
         </p>
       </div>
     </button>
