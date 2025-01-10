@@ -16,8 +16,10 @@ const SharedRecording = () => {
         .from('recordings')
         .select(`
           *,
-          user:profiles!recordings_user_id_fkey (
-            display_name
+          user:user_id (
+            profiles (
+              display_name
+            )
           )
         `)
         .eq('id', id)
@@ -25,7 +27,12 @@ const SharedRecording = () => {
         .single();
 
       if (error) throw error;
-      return data;
+
+      // Transform the data to match the expected type
+      return {
+        ...data,
+        user: data.user?.profiles?.[0] || { display_name: null }
+      };
     },
   });
 
