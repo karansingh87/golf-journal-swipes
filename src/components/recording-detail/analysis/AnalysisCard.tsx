@@ -38,18 +38,19 @@ const AnalysisCard = ({
 
   const truncateContent = (text: string): string => {
     const words = text.split(' ');
-    if (words.length <= 25) return text;
-    return words.slice(0, 25).join(' ') + '...';
+    const maxWords = Math.min(10, Math.max(5, words.length));
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(' ') + '...';
   };
 
   const getRemainingContentEstimate = () => {
     if (Array.isArray(content)) {
       const totalWords = content.join(' ').split(' ').length;
-      const remainingWords = totalWords - 25;
+      const remainingWords = totalWords - 10;
       return remainingWords > 0 ? `${remainingWords} more words` : '';
     }
     const totalWords = content.split(' ').length;
-    const remainingWords = totalWords - 25;
+    const remainingWords = totalWords - 10;
     return remainingWords > 0 ? `${remainingWords} more words` : '';
   };
 
