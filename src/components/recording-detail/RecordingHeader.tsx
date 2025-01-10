@@ -63,7 +63,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between pl-10">
+      <div className="flex items-center justify-between pl-11">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-3.5 bg-secondary/50 rounded-full px-2 py-0.5">
             <Switch
