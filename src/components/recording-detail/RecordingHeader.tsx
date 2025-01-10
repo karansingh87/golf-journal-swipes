@@ -40,7 +40,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -55,7 +55,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
             <h1 className="text-lg font-semibold text-golf-gray-text-primary">
               {getHeadline()}
             </h1>
-            <p className="text-sm text-golf-gray-text-secondary mt-0.5">
+            <p className="text-sm text-golf-gray-text-secondary mt-1">
               {format(new Date(recording.created_at), "MMMM d, yyyy")} 
               <span className="mx-1.5 text-[10px]">•</span> 
               {format(new Date(recording.created_at), "h:mm a")}
@@ -64,14 +64,14 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
         </div>
       </div>
       <div className="flex items-center justify-between pl-10">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 bg-secondary/50 rounded-full px-3 py-1">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2.5 bg-secondary/50 rounded-full px-4 py-1.5">
             <Switch
               checked={recording.is_public}
               onCheckedChange={onTogglePublic}
               className="h-4 w-7"
             />
-            <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+            <span className="text-xs text-muted-foreground flex items-center gap-2">
               {recording.is_public ? (
                 <>
                   <Unlock className="h-3 w-3" />
@@ -90,7 +90,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
               variant="secondary"
               size="sm"
               onClick={onShare}
-              className="h-7 px-3 gap-1.5"
+              className="h-8 px-4 gap-2"
             >
               <Share2 className="h-3 w-3" />
               <span className="text-xs">Share</span>
@@ -101,7 +101,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
           variant="ghost"
           size="sm"
           onClick={onDelete}
-          className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
         >
           <Trash2 className="h-3.5 w-3.5" />
         </Button>
