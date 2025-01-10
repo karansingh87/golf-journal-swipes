@@ -6,6 +6,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
+type RecordingWithProfile = {
+  id: string;
+  audio_url: string | null;
+  transcription: string | null;
+  analysis: string | null;
+  duration: number | null;
+  created_at: string | null;
+  session_type: "course" | "practice";
+  is_public: boolean | null;
+  profiles: {
+    display_name: string | null;
+  } | null;
+}
+
 const SharedRecording = () => {
   const { id } = useParams<{ id: string }>();
 
@@ -16,7 +30,7 @@ const SharedRecording = () => {
         .from('recordings')
         .select(`
           *,
-          profiles!recordings_user_id_fkey (
+          profiles (
             display_name
           )
         `)
@@ -26,10 +40,12 @@ const SharedRecording = () => {
 
       if (error) throw error;
 
+      const typedData = data as RecordingWithProfile;
+      
       return {
-        ...data,
+        ...typedData,
         user: { 
-          display_name: data.profiles?.display_name 
+          display_name: typedData.profiles?.display_name 
         }
       };
     },
