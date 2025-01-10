@@ -56,7 +56,9 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
               {getHeadline()}
             </h1>
             <p className="text-sm text-golf-gray-text-secondary">
-              {format(new Date(recording.created_at), "MMMM d, yyyy")} • {format(new Date(recording.created_at), "h:mm a")}
+              {format(new Date(recording.created_at), "MMMM d, yyyy")} 
+              <span className="mx-1.5 text-[10px]">•</span> 
+              {format(new Date(recording.created_at), "h:mm a")}
             </p>
             <div className="flex items-center gap-2 mt-2">
               <div className="flex items-center gap-1.5">
