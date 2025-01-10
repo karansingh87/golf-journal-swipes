@@ -81,7 +81,7 @@ const SharedCoachNote = () => {
         </div>
 
         <div className="mt-6 rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden bg-white/80">
-          <CoachingNoteDisplay note={parsedNotes} />
+          <CoachingNoteDisplay note={parsedNotes} isPublicView={true} />
         </div>
       </div>
     </div>
