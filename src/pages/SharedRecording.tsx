@@ -16,7 +16,7 @@ const SharedRecording = () => {
         .from('recordings')
         .select(`
           *,
-          user:user_id (
+          user:profiles!recordings_user_id_fkey (
             display_name
           )
         `)
