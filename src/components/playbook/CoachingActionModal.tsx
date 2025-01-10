@@ -14,7 +14,7 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
       <DialogContent className="w-full max-w-sm p-4 bg-white rounded-[16px] shadow-lg animate-scale-in">
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-semibold text-center text-zinc-950">
-            Coaching Notes
+            Lesson Prep
           </h2>
           
           <div className="flex flex-col gap-2">
