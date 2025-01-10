@@ -31,6 +31,7 @@ const PlaybookModals = ({
   const [selectedRecordings, setSelectedRecordings] = useState<string[]>([]);
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
   const [isGeneratingNotes, setIsGeneratingNotes] = useState(false);
+  const [currentFlow, setCurrentFlow] = useState<'notes' | 'pepTalk'>('notes');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -48,9 +49,9 @@ const PlaybookModals = ({
   };
 
   const handleCreateNew = () => {
+    setCurrentFlow('notes');
     setIsActionModalOpen(false);
     setIsSelectionModalOpen(true);
-    // Reset selected recordings when opening modal
     setSelectedRecordings([]);
   };
 
@@ -100,16 +101,13 @@ const PlaybookModals = ({
 
       console.log('Pep talk generated:', data);
       
-      // Clear selection and close modal
       setSelectedRecordings([]);
-      setIsPepTalkModalOpen(false);
+      setIsSelectionModalOpen(false);
       
-      // Navigate to the pep talk detail page
       if (data?.id) {
         navigate(`/pep_talk/${data.id}`);
       }
       
-      // Show success toast
       toast({
         title: "Pep Talk Generated",
         description: "Your personalized pep talk is ready!",
@@ -133,9 +131,9 @@ const PlaybookModals = ({
   };
 
   const handleCreateNewPepTalk = () => {
+    setCurrentFlow('pepTalk');
     setIsPepTalkModalOpen(false);
     setIsSelectionModalOpen(true);
-    // Reset selected recordings when opening modal
     setSelectedRecordings([]);
   };
 
@@ -164,10 +162,10 @@ const PlaybookModals = ({
         recordings={recordings || []}
         selectedRecordings={selectedRecordings}
         onSelect={handleRecordingSelect}
-        onGenerate={isActionModalOpen ? handleGenerate : handleGeneratePepTalk}
-        isGenerating={isActionModalOpen ? isGeneratingNotes : isGeneratingPepTalk}
+        onGenerate={currentFlow === 'notes' ? handleGenerate : handleGeneratePepTalk}
+        isGenerating={currentFlow === 'notes' ? isGeneratingNotes : isGeneratingPepTalk}
         modalTitle="Select Recordings"
-        generateButtonText={isActionModalOpen ? "Generate Notes" : "Generate Pep Talk"}
+        generateButtonText={currentFlow === 'notes' ? "Generate Notes" : "Generate Pep Talk"}
       />
     </>
   );
