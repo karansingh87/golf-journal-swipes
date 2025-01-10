@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronDown, Lock } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ interface AnalysisCardProps {
   index: number;
   defaultExpanded?: boolean;
   onExpand?: (isExpanded: boolean) => void;
-  summary?: string;
   isPublicView?: boolean;
 }
 
@@ -75,11 +74,6 @@ const AnalysisCard = ({
         <div className="max-h-24 overflow-hidden">
           {renderContent()}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white pointer-events-none" />
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-            <div className="bg-white rounded-full p-2 shadow-md">
-              <Lock className="w-4 h-4 text-golf-gray-light" />
-            </div>
-          </div>
         </div>
       </div>
     );
