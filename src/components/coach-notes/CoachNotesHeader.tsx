@@ -8,7 +8,7 @@ interface CoachNotesHeaderProps {
 }
 
 const CoachNotesHeader = ({ lastUpdateTime, onRefresh, isLoading }: CoachNotesHeaderProps) => {
-  return <PageBreadcrumb currentPage="Coach Notes" />;
+  return <PageBreadcrumb currentPage="Lesson Prep" />;
 };
 
 export default CoachNotesHeader;
