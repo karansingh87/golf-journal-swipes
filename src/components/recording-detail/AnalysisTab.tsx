@@ -30,13 +30,6 @@ const getTitleFromType = (type: string): string => {
   return titles[type] || type;
 };
 
-const getSummaryFromContent = (content: string | string[]): string => {
-  if (Array.isArray(content)) {
-    return content[0].substring(0, 100) + (content[0].length > 100 ? '...' : '');
-  }
-  return content.substring(0, 100) + (content.length > 100 ? '...' : '');
-};
-
 const AnalysisTab = ({ analysis, isPublicView = false }: AnalysisTabProps) => {
   const [expandedSection, setExpandedSection] = useState<string>("session_story");
 
@@ -96,7 +89,6 @@ const AnalysisTab = ({ analysis, isPublicView = false }: AnalysisTabProps) => {
                     setExpandedSection(section.type);
                   }
                 }}
-                summary={section.type !== 'session_story' ? getSummaryFromContent(section.content) : undefined}
                 isPublicView={isPublicView}
               />
             </div>
