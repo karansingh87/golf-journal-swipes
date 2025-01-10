@@ -164,7 +164,7 @@ const PlaybookModals = ({
         onSelect={handleRecordingSelect}
         onGenerate={currentFlow === 'notes' ? handleGenerate : handleGeneratePepTalk}
         isGenerating={currentFlow === 'notes' ? isGeneratingNotes : isGeneratingPepTalk}
-        modalTitle="Select Recordings"
+        modalTitle={currentFlow === 'notes' ? "Generate Lesson Prep" : "Generate Pep Talk"}
         generateButtonText={currentFlow === 'notes' ? "Generate Notes" : "Generate Pep Talk"}
       />
     </>
