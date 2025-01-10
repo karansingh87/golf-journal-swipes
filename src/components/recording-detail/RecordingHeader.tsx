@@ -65,21 +65,21 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
       </div>
       <div className="flex items-center justify-between pl-11">
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-3.5 bg-[#1A1F2C]/90 backdrop-blur-sm rounded-full px-3 py-1 border border-[#9b87f5]/20 shadow-sm">
+          <div className="flex items-center gap-3.5 bg-secondary/50 rounded-full px-2 py-0.5">
             <Switch
               checked={recording.is_public}
               onCheckedChange={onTogglePublic}
-              className="h-3.5 w-6 data-[state=checked]:bg-[#9b87f5]"
+              className="h-4 w-7"
             />
-            <span className="text-[11px] text-[#E5DEFF] flex items-center gap-1.5">
+            <span className="text-xs text-muted-foreground flex items-center gap-1.5">
               {recording.is_public ? (
                 <>
-                  <Unlock className="h-2.5 w-2.5" />
+                  <Unlock className="h-3 w-3" />
                   Public
                 </>
               ) : (
                 <>
-                  <Lock className="h-2.5 w-2.5" />
+                  <Lock className="h-3 w-3" />
                   Private
                 </>
               )}
