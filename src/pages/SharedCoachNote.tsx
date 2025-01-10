@@ -66,7 +66,7 @@ const SharedCoachNote = () => {
               </Button>
               <div>
                 <h1 className="text-lg font-semibold text-golf-gray-text-primary">
-                  Coaching Note
+                  Lesson Prep Notes
                 </h1>
                 <p className="text-sm text-golf-gray-text-secondary">
                   {format(new Date(note.created_at), "MMMM d, yyyy")}
