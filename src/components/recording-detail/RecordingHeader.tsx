@@ -69,7 +69,6 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
             <Switch
               checked={recording.is_public}
               onCheckedChange={onTogglePublic}
-              className="h-4 w-7"
             />
             <span className="text-xs text-muted-foreground flex items-center gap-1.5">
               {recording.is_public ? (
