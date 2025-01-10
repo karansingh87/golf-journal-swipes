@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -43,17 +43,6 @@ const AnalysisCard = ({
     return words.slice(0, maxWords).join(' ') + '...';
   };
 
-  const getRemainingContentEstimate = () => {
-    if (Array.isArray(content)) {
-      const totalWords = content.join(' ').split(' ').length;
-      const remainingWords = totalWords - 10;
-      return remainingWords > 0 ? `${remainingWords} more words` : '';
-    }
-    const totalWords = content.split(' ').length;
-    const remainingWords = totalWords - 10;
-    return remainingWords > 0 ? `${remainingWords} more words` : '';
-  };
-
   const renderContent = () => {
     if (Array.isArray(content)) {
       const displayContent = !isPublicView || isOverview || session 
@@ -79,21 +68,23 @@ const AnalysisCard = ({
 
   const renderSignUpPrompt = () => {
     if (!isPublicView || isOverview || session) return null;
-    const estimate = getRemainingContentEstimate();
     
     return (
-      <div className="mt-4 space-y-2">
-        {estimate && (
-          <p className="text-sm text-muted-foreground italic">
-            {estimate} available after sign up
-          </p>
-        )}
-        <Button 
-          onClick={() => navigate('/signup')}
-          className="w-full bg-golf-green text-white hover:bg-golf-green/90"
-        >
-          Sign up to view more
-        </Button>
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/70 to-white pointer-events-none" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="w-8 h-8 mx-auto mb-2 opacity-30">
+              <Lock className="w-full h-full text-golf-gray-light" />
+            </div>
+            <Button 
+              onClick={() => navigate('/signup')}
+              className="bg-golf-green text-white hover:bg-golf-green/90"
+            >
+              Sign up to view more
+            </Button>
+          </div>
+        </div>
       </div>
     );
   };
@@ -101,7 +92,7 @@ const AnalysisCard = ({
   return (
     <Card
       className={cn(
-        "transition-all duration-300 hover:shadow-lg cursor-pointer relative",
+        "transition-all duration-300 hover:shadow-lg cursor-pointer relative overflow-hidden",
         isOverview ? "bg-[#FAF5FF] border-[#FAF5FF]" : "bg-white border"
       )}
       onClick={handleToggle}
@@ -122,17 +113,11 @@ const AnalysisCard = ({
             isExpanded ? "max-h-[1000px] opacity-100" : "max-h-16 opacity-80"
           )}
         >
-          <div>
-            {isExpanded ? renderContent() : (
-              <p className="text-sm leading-normal font-sans text-muted-foreground">
-                {summary || (Array.isArray(content) 
-                  ? truncateContent(content[0]) 
-                  : truncateContent(content))}
-              </p>
-            )}
+          <div className="relative">
+            {renderContent()}
+            {isExpanded && renderSignUpPrompt()}
           </div>
         </div>
-        {isExpanded && renderSignUpPrompt()}
       </CardContent>
     </Card>
   );
