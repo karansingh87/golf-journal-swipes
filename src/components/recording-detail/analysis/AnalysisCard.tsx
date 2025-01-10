@@ -43,18 +43,24 @@ const AnalysisCard = ({
 
   const getRemainingContentEstimate = () => {
     if (Array.isArray(content)) {
-      const sentences = content.join(' ').match(/[^.!?]+[.!?]+/g) || [];
-      return `${Math.max(0, sentences.length - 2)} more sentences`;
+      return `${content.length - 2} more points`;
     }
     const sentences = (content.match(/[^.!?]+[.!?]+/g) || []).length;
-    return `${Math.max(0, sentences.length - 2)} more sentences`;
+    return `${sentences - 2} more sentences`;
   };
 
   const renderContent = () => {
     if (Array.isArray(content)) {
-      const combinedText = content.join('. ');
-      const displayText = !isPublicView || isOverview || session ? combinedText : truncateContent(combinedText);
-      return <p className="text-sm leading-normal font-sans text-muted-foreground">{displayText}</p>;
+      const displayContent = !isPublicView || isOverview || session ? content : content.slice(0, 2);
+      return (
+        <ul className="list-disc list-inside space-y-2">
+          {displayContent.map((item, idx) => (
+            <li key={idx} className="text-sm leading-normal font-sans text-muted-foreground">
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
     }
 
     const displayText = !isPublicView || isOverview || session ? content : truncateContent(content);
@@ -106,7 +112,7 @@ const AnalysisCard = ({
           <div>
             {isExpanded ? renderContent() : (
               <p className="text-sm leading-normal font-sans text-muted-foreground">
-                {summary || (Array.isArray(content) ? content[0] : truncateContent(content))}
+                {summary || (Array.isArray(content) ? content[0] : content)}
               </p>
             )}
           </div>
