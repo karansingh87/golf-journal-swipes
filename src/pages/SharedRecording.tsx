@@ -21,6 +21,15 @@ interface Recording {
   is_public: boolean;
 }
 
+interface AnalysisSection {
+  type: string;
+  content: string | string[];
+}
+
+interface AnalysisData {
+  sections: AnalysisSection[];
+}
+
 const SharedRecording = () => {
   const { id } = useParams();
   const { theme } = useTheme();
@@ -57,6 +66,8 @@ const SharedRecording = () => {
     );
   }
 
+  const parsedAnalysis: AnalysisData | null = recording.analysis ? JSON.parse(recording.analysis) : null;
+
   return (
     <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
@@ -85,7 +96,7 @@ const SharedRecording = () => {
             </TabsList>
 
             <TabsContent value="analysis" className="mt-0">
-              <AnalysisTab analysis={recording.analysis} />
+              <AnalysisTab analysis={parsedAnalysis} />
             </TabsContent>
             <TabsContent value="transcription" className="mt-0">
               <TranscriptionTab transcription={recording.transcription} />
