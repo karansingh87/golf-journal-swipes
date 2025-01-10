@@ -44,7 +44,15 @@ const SharedRecording = () => {
       const { data, error } = await supabase
         .from('recordings')
         .select(`
-          *,
+          id,
+          audio_url,
+          transcription,
+          duration,
+          created_at,
+          analysis,
+          session_type,
+          insights,
+          is_public,
           profiles (
             display_name
           )
