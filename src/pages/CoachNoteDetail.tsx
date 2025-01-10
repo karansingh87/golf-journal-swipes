@@ -140,14 +140,6 @@ const CoachNoteDetail = () => {
                 </p>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-              onClick={handleDelete}
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
           </div>
 
           <div className="flex items-center justify-between pl-11">
@@ -155,7 +147,7 @@ const CoachNoteDetail = () => {
               <div className="flex items-center gap-3.5 bg-secondary/50 rounded-full px-2 py-0.5">
                 <Switch
                   checked={note.is_public}
-                  onCheckedChange={togglePublicMutation.mutate}
+                  onCheckedChange={(checked) => togglePublicMutation.mutate()}
                 />
                 <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                   {note.is_public ? (
@@ -171,17 +163,27 @@ const CoachNoteDetail = () => {
                   )}
                 </span>
               </div>
-              {note.is_public && (
+              <div className="flex items-center gap-2">
+                {note.is_public && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleShare}
+                    className="h-6 px-2 gap-1"
+                  >
+                    <Share2 className="h-3 w-3" />
+                    <span className="text-xs">Share</span>
+                  </Button>
+                )}
                 <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleShare}
-                  className="h-6 px-2 gap-1"
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  onClick={handleDelete}
                 >
-                  <Share2 className="h-3 w-3" />
-                  <span className="text-xs">Share</span>
+                  <Trash2 className="h-4 w-4" />
                 </Button>
-              )}
+              </div>
             </div>
           </div>
         </div>
