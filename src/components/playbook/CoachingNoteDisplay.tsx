@@ -67,19 +67,16 @@ const CoachingNoteDisplay = ({ note, isPublicView = false }: CoachingNoteDisplay
 
     return (
       <div className="relative">
-        <div className="max-h-[60px] overflow-hidden relative">
-          <ul className="list-disc list-inside space-y-2">
-            {section.data.map((item, index) => (
-              <li key={index} className="text-sm text-muted-foreground">
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white via-white/80 to-transparent" />
-        </div>
+        <ul className="list-disc list-inside space-y-2">
+          {section.data.map((item, index) => (
+            <li key={index} className="text-sm text-muted-foreground">
+              {item}
+            </li>
+          ))}
+        </ul>
         
         {/* Sign up button overlay */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80">
           <Button
             onClick={handleSignUpClick}
             className="bg-primary hover:bg-primary/90 text-white font-medium"
