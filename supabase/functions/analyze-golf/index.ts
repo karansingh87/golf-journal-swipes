@@ -28,7 +28,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Fetch the analysis prompt - there should only be one row in prompt_config
+    // Fetch the analysis prompt
     const { data: promptData, error: promptError } = await supabase
       .from('prompt_config')
       .select('prompt')
@@ -60,7 +60,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'user',
-            content: `${promptData.prompt}\n\nHere is the transcription to analyze:\n${transcription}`
+            content: `${promptData.prompt}\n\nPlease analyze this transcription and return ONLY a valid JSON object without any additional text or formatting. The response should be parseable by JSON.parse().\n\nTranscription to analyze:\n${transcription}`
           }
         ]
       }),
@@ -75,8 +75,10 @@ serve(async (req) => {
     const analysisData = await anthropicResponse.json()
     const rawAnalysis = analysisData.content[0].text
     
-    // Clean and validate the JSON response
+    // Log the raw response for debugging
     console.log('Raw analysis response:', rawAnalysis)
+    
+    // Clean and validate the JSON response
     const cleanedAnalysis = cleanAndValidateJSON(rawAnalysis)
     console.log('Cleaned analysis:', cleanedAnalysis)
 
