@@ -9,6 +9,18 @@ import AnalysisTab from "@/components/recording-detail/AnalysisTab";
 import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
 import { format } from "date-fns";
 
+interface Recording {
+  id: string;
+  audio_url: string | null;
+  transcription: string | null;
+  duration: number | null;
+  created_at: string;
+  analysis: string | null;
+  session_type: 'course' | 'practice';
+  insights: string | null;
+  is_public: boolean;
+}
+
 const SharedRecording = () => {
   const { id } = useParams();
   const { theme } = useTheme();
@@ -21,29 +33,17 @@ const SharedRecording = () => {
         .from('recordings')
         .select('*')
         .eq('id', id)
+        .eq('is_public', true)
         .single();
 
       if (error) throw error;
-      
-      let parsedAnalysis = null;
-      if (data.analysis) {
-        try {
-          parsedAnalysis = JSON.parse(data.analysis);
-        } catch (e) {
-          console.error('Error parsing analysis:', e);
-        }
-      }
-
-      return {
-        ...data,
-        analysis: parsedAnalysis
-      };
+      return data as Recording;
     },
   });
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen pt-16">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -51,14 +51,14 @@ const SharedRecording = () => {
 
   if (!recording || !recording.is_public) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
         <p className="text-lg text-muted-foreground">Recording not found or is private</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16">
       <div className="max-w-3xl mx-auto p-4">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-foreground mb-2">
