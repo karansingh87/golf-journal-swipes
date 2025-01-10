@@ -54,22 +54,28 @@ const SharedCoachNote = () => {
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto p-4 pt-20">
         <div className="space-y-3">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 p-0"
-              onClick={() => window.history.back()}
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-semibold text-golf-gray-text-primary mb-2">
-                Shared Coaching Note
-              </h1>
-              <p className="text-sm text-golf-gray-text-secondary">
-                {format(new Date(note.created_at), "MMMM d, yyyy")} • {format(new Date(note.created_at), "h:mm a")} • Based on {note.recording_ids.length} recording{note.recording_ids.length !== 1 ? 's' : ''}
-              </p>
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 p-0"
+                onClick={() => window.history.back()}
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div>
+                <h1 className="text-lg font-semibold text-golf-gray-text-primary">
+                  Coaching Note
+                </h1>
+                <p className="text-sm text-golf-gray-text-secondary">
+                  {format(new Date(note.created_at), "MMMM d, yyyy")}
+                  <span className="mx-1.5 text-[10px]">•</span>
+                  {format(new Date(note.created_at), "h:mm a")}
+                  <span className="mx-1.5 text-[10px]">•</span>
+                  Based on {note.recording_ids.length} recording{note.recording_ids.length !== 1 ? 's' : ''}
+                </p>
+              </div>
             </div>
           </div>
         </div>
