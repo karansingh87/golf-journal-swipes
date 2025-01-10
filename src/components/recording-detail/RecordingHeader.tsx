@@ -55,37 +55,42 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
             <h1 className="text-xl font-semibold text-golf-gray-text-primary">
               {getHeadline()}
             </h1>
-            <p className="text-sm text-golf-gray-text-secondary">
-              {format(new Date(recording.created_at), "MMMM d, yyyy")} 
-              <span className="mx-1.5 text-[10px]">•</span> 
-              {format(new Date(recording.created_at), "h:mm a")}
-            </p>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 mt-1">
+              <span className="text-sm text-golf-gray-text-secondary">
+                {format(new Date(recording.created_at), "MMMM d, yyyy")}
+              </span>
+              <span className="text-[10px] mx-1.5 text-golf-gray-text-secondary">•</span>
+              <span className="text-sm text-golf-gray-text-secondary">
+                {format(new Date(recording.created_at), "h:mm a")}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 mt-3">
+              <div className="flex items-center gap-1.5 bg-golf-gray-text-secondary/5 px-2.5 py-1.5 rounded-full">
                 <Switch
                   checked={recording.is_public}
                   onCheckedChange={onTogglePublic}
-                  className="h-5 w-9"
+                  className="h-4 w-7"
                 />
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs font-medium text-golf-gray-text-secondary">
                   {recording.is_public ? "Public" : "Private"}
                 </span>
               </div>
               {recording.is_public && (
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={onShare}
-                  className="h-7"
+                  className="h-7 px-2.5 bg-golf-gray-text-secondary/5"
                 >
                   <Share2 className="h-3.5 w-3.5" />
+                  <span className="text-xs font-medium">Share</span>
                 </Button>
               )}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onDelete}
-                className="h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                className="h-7 px-2 ml-auto text-golf-gray-text-secondary/70 hover:text-destructive hover:bg-destructive/10"
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </Button>
