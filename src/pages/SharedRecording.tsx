@@ -15,6 +15,7 @@ type RecordingWithProfile = {
   created_at: string | null;
   session_type: "course" | "practice";
   is_public: boolean | null;
+  user_id: string;
   profiles: {
     display_name: string | null;
   } | null;
@@ -29,7 +30,15 @@ const SharedRecording = () => {
       const { data, error } = await supabase
         .from('recordings')
         .select(`
-          *,
+          id,
+          audio_url,
+          transcription,
+          analysis,
+          duration,
+          created_at,
+          session_type,
+          is_public,
+          user_id,
           profiles (
             display_name
           )
@@ -39,8 +48,9 @@ const SharedRecording = () => {
         .single();
 
       if (error) throw error;
-
-      const typedData = data as RecordingWithProfile;
+      
+      // First cast to unknown, then to our type to avoid direct type mismatch
+      const typedData = data as unknown as RecordingWithProfile;
       
       return {
         ...typedData,
