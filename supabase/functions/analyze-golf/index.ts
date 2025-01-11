@@ -1,12 +1,24 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
+import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-Deno.serve(async (req) => {
+function cleanMarkdownFormatting(text: string): string {
+  // Remove markdown code block syntax
+  let cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+  // Trim any whitespace
+  cleaned = cleaned.trim();
+  // If the response starts with a newline, remove it
+  cleaned = cleaned.replace(/^\n+/, '');
+  // If there are any trailing newlines, remove them
+  cleaned = cleaned.replace(/\n+$/, '');
+  return cleaned;
+}
+
+serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -19,30 +31,6 @@ Deno.serve(async (req) => {
     if (!transcription) {
       throw new Error('No transcription provided');
     }
-
-    // Initialize Supabase client
-    const supabase = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    // Fetch the analysis prompt
-    const { data: promptData, error: promptError } = await supabase
-      .from('prompt_config')
-      .select('prompt')
-      .single();
-
-    if (promptError) {
-      console.error('Error fetching prompt:', promptError);
-      throw promptError;
-    }
-
-    if (!promptData?.prompt) {
-      console.error('No prompt configuration found');
-      throw new Error('No prompt configuration found');
-    }
-
-    console.log('Using prompt configuration:', { promptLength: promptData.prompt.length });
 
     // Get analysis from Anthropic using Claude
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
@@ -83,11 +71,14 @@ Deno.serve(async (req) => {
     console.log('Received raw analysis, attempting to parse...');
     
     try {
-      // First, try to parse the raw response to validate it's JSON
-      const parsedAnalysis = JSON.parse(rawAnalysis);
+      // Clean the response before parsing
+      const cleanedResponse = cleanMarkdownFormatting(rawAnalysis);
+      console.log('Cleaned response:', cleanedResponse.substring(0, 200) + '...');
+      
+      // Parse the cleaned response
+      const parsedAnalysis = JSON.parse(cleanedResponse);
       console.log('Successfully parsed analysis as JSON');
       
-      // Return the validated JSON response
       return new Response(
         JSON.stringify({ analysis: JSON.stringify(parsedAnalysis) }),
         {
@@ -97,7 +88,7 @@ Deno.serve(async (req) => {
       );
     } catch (error) {
       console.error('Error parsing analysis as JSON:', error);
-      console.log('Raw response that failed to parse:', rawAnalysis);
+      console.log('Raw response that failed to parse:', rawAnalysis.substring(0, 200) + '...');
       return new Response(
         JSON.stringify({ 
           error: 'Invalid JSON response from analysis',
