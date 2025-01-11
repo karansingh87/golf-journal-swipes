@@ -19,7 +19,7 @@ const Settings = () => {
   const session = useSession();
   const navigate = useNavigate();
 
-  const { data: profile } = useQuery({
+  const { data: profile, isError } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
       if (!session?.user?.id) return null;
@@ -27,7 +27,7 @@ const Settings = () => {
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching profile:', error);
@@ -40,17 +40,28 @@ const Settings = () => {
   });
 
   const [formData, setFormData] = useState({
-    display_name: profile?.display_name || '',
-    location: profile?.location || '',
-    handicap_range: profile?.handicap_range as HandicapRange || 'new_to_golf',
+    display_name: '',
+    location: '',
+    handicap_range: 'new_to_golf' as HandicapRange,
   });
 
   const updateProfile = async () => {
     try {
+      if (!session?.user?.id) {
+        toast({
+          title: "Error",
+          description: "You must be logged in to update your profile",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from('profiles')
-        .update(formData)
-        .eq('id', session?.user?.id);
+        .upsert({
+          id: session.user.id,
+          ...formData
+        });
 
       if (error) throw error;
 
@@ -105,6 +116,18 @@ const Settings = () => {
       });
     }
   }, [profile]);
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-white pt-20">
+        <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+          <Card className="p-6">
+            <p className="text-red-500">Error loading profile. Please try again later.</p>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white pt-20">
