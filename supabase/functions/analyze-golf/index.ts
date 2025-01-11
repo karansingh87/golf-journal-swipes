@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
 import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const corsHeaders = {
@@ -31,6 +32,30 @@ serve(async (req) => {
     if (!transcription) {
       throw new Error('No transcription provided');
     }
+
+    // Initialize Supabase client
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // Fetch the analysis prompt
+    const { data: promptData, error: promptError } = await supabase
+      .from('prompt_config')
+      .select('prompt')
+      .single();
+
+    if (promptError) {
+      console.error('Error fetching prompt:', promptError);
+      throw promptError;
+    }
+
+    if (!promptData?.prompt) {
+      console.error('No prompt configuration found');
+      throw new Error('No prompt configuration found');
+    }
+
+    console.log('Using prompt configuration:', { promptLength: promptData.prompt.length });
 
     // Get analysis from Anthropic using Claude
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
