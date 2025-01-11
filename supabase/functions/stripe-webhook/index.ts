@@ -27,14 +27,15 @@ serve(async (req) => {
     // Get the raw body
     const body = await req.text()
 
-    // Verify the webhook signature
+    // Verify the webhook signature using the async method
     let event
     try {
-      event = stripe.webhooks.constructEvent(
+      event = await stripe.webhooks.constructEventAsync(
         body,
         signature,
         Deno.env.get('STRIPE_WEBHOOK_SECRET') || ''
       )
+      console.log('Webhook signature verified successfully')
     } catch (err) {
       console.error(`⚠️  Webhook signature verification failed.`, err.message)
       return new Response(JSON.stringify({ error: 'Invalid signature' }), {
@@ -49,12 +50,16 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
+    console.log('Processing webhook event:', event.type)
+
     // Handle the event
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
         const subscription = event.data.object
         const customerId = subscription.customer as string
+        
+        console.log('Processing subscription event for customer:', customerId)
         
         // Get the user with this stripe_customer_id
         const { data: profiles, error: profileError } = await supabaseClient
@@ -67,6 +72,8 @@ serve(async (req) => {
           console.error('Error finding user:', profileError)
           throw new Error('User not found')
         }
+
+        console.log('Found user profile:', profiles.id)
 
         // Update the user's subscription status
         const { error: updateError } = await supabaseClient
@@ -82,11 +89,15 @@ serve(async (req) => {
           console.error('Error updating user:', updateError)
           throw new Error('Failed to update user')
         }
+
+        console.log('Successfully updated user subscription status')
         break
 
       case 'customer.subscription.deleted':
         const deletedSubscription = event.data.object
         const deletedCustomerId = deletedSubscription.customer as string
+
+        console.log('Processing subscription deletion for customer:', deletedCustomerId)
 
         // Get the user with this stripe_customer_id
         const { data: deletedProfile, error: deletedProfileError } = await supabaseClient
@@ -99,6 +110,8 @@ serve(async (req) => {
           console.error('Error finding user:', deletedProfileError)
           throw new Error('User not found')
         }
+
+        console.log('Found user profile for deletion:', deletedProfile.id)
 
         // Reset the user's subscription status
         const { error: resetError } = await supabaseClient
@@ -114,6 +127,8 @@ serve(async (req) => {
           console.error('Error resetting user:', resetError)
           throw new Error('Failed to reset user')
         }
+
+        console.log('Successfully reset user subscription status')
         break
 
       default:
