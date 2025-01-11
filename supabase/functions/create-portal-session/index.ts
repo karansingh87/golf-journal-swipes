@@ -1,6 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { corsHeaders } from 'https://raw.githubusercontent.com/supabase/functions/main/_shared/cors.ts';
-import { handleError, handleSuccess } from 'https://raw.githubusercontent.com/supabase/functions/main/_shared/responseUtils.ts';
+import { corsHeaders } from '../_shared/cors.ts';
+import { handleError, handleSuccess } from '../_shared/responseUtils.ts';
 import Stripe from 'https://esm.sh/stripe@14.12.0?target=deno';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
@@ -20,7 +20,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {

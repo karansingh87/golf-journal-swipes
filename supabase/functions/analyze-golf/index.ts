@@ -1,48 +1,45 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
+import { corsHeaders } from '../_shared/cors.ts';
+import { handleError, handleSuccess } from '../_shared/responseUtils.ts';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
-
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { transcription } = await req.json()
-    console.log('Analyzing transcription:', { length: transcription.length })
+    const { transcription } = await req.json();
+    console.log('Analyzing transcription:', { length: transcription.length });
 
     if (!transcription) {
-      throw new Error('No transcription provided')
+      throw new Error('No transcription provided');
     }
 
     // Initialize Supabase client
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    )
+    );
 
     // Fetch the analysis prompt
     const { data: promptData, error: promptError } = await supabase
       .from('prompt_config')
       .select('prompt')
-      .single()
+      .single();
 
     if (promptError) {
-      console.error('Error fetching prompt:', promptError)
-      throw promptError
+      console.error('Error fetching prompt:', promptError);
+      throw promptError;
     }
 
     if (!promptData?.prompt) {
-      console.error('No prompt configuration found')
-      throw new Error('No prompt configuration found')
+      console.error('No prompt configuration found');
+      throw new Error('No prompt configuration found');
     }
 
-    console.log('Using prompt configuration:', { promptLength: promptData.prompt.length })
+    console.log('Using prompt configuration:', { promptLength: promptData.prompt.length });
 
     // Get analysis from Anthropic using Claude
     const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
@@ -64,48 +61,31 @@ serve(async (req) => {
         temperature: 0.7,
         system: "You are an expert golf analysis AI. You must always respond with valid JSON that can be parsed by JSON.parse(). Never include explanations or markdown - only pure JSON."
       }),
-    })
+    });
 
     if (!anthropicResponse.ok) {
-      const error = await anthropicResponse.text()
-      console.error('Anthropic API error:', error)
-      throw new Error(`Anthropic API error: ${error}`)
+      const error = await anthropicResponse.text();
+      console.error('Anthropic API error:', error);
+      throw new Error(`Anthropic API error: ${error}`);
     }
 
-    const analysisData = await anthropicResponse.json()
-    const rawAnalysis = analysisData.content[0].text
+    const analysisData = await anthropicResponse.json();
+    const rawAnalysis = analysisData.content[0].text;
     
-    console.log('Raw analysis response:', rawAnalysis)
+    console.log('Raw analysis response:', rawAnalysis);
     
     try {
       // First try parsing the raw response
-      JSON.parse(rawAnalysis)
-      console.log('Raw response is valid JSON')
+      JSON.parse(rawAnalysis);
+      console.log('Raw response is valid JSON');
       
-      return new Response(
-        JSON.stringify({ analysis: rawAnalysis }),
-        { 
-          headers: { 
-            ...corsHeaders, 
-            'Content-Type': 'application/json' 
-          } 
-        }
-      )
+      return handleSuccess({ analysis: rawAnalysis });
     } catch (error) {
-      console.error('Error parsing analysis:', error)
-      throw new Error('Invalid JSON response from analysis')
+      console.error('Error parsing analysis:', error);
+      throw new Error('Invalid JSON response from analysis');
     }
   } catch (error) {
-    console.error('Error in analyze-golf function:', error)
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { 
-        status: 500,
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        }
-      }
-    )
+    console.error('Error in analyze-golf function:', error);
+    return handleError(error);
   }
-})
+});
