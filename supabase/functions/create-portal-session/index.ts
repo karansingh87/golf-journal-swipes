@@ -18,6 +18,7 @@ if (!supabaseUrl || !supabaseServiceKey) {
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 Deno.serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
@@ -49,6 +50,8 @@ Deno.serve(async (req) => {
       throw new Error('No Stripe customer found');
     }
 
+    console.log('Creating portal session for customer:', profile.stripe_customer_id);
+
     // Create the portal session
     const { url } = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
@@ -57,6 +60,7 @@ Deno.serve(async (req) => {
 
     return handleSuccess({ url });
   } catch (error) {
+    console.error('Error creating portal session:', error);
     return handleError(error);
   }
 });
