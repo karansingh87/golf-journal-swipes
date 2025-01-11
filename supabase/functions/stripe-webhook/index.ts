@@ -60,6 +60,7 @@ serve(async (req) => {
         const customerId = subscription.customer as string
         
         console.log('Processing subscription event for customer:', customerId)
+        console.log('Subscription status:', subscription.status)
         
         // Get the user with this stripe_customer_id
         const { data: profiles, error: profileError } = await supabaseClient
@@ -75,12 +76,19 @@ serve(async (req) => {
 
         console.log('Found user profile:', profiles.id)
 
+        // Map Stripe subscription status to our allowed values
+        const dbStatus = ['active', 'trialing'].includes(subscription.status) ? 'active' : 'inactive'
+        const subscriptionTier = dbStatus === 'active' ? 'pro' : 'starter'
+
+        console.log('Mapping status:', subscription.status, 'to:', dbStatus)
+        console.log('Setting subscription tier to:', subscriptionTier)
+
         // Update the user's subscription status
         const { error: updateError } = await supabaseClient
           .from('profiles')
           .update({
-            subscription_status: subscription.status,
-            subscription_tier: subscription.status === 'active' ? 'pro' : 'starter',
+            subscription_status: dbStatus,
+            subscription_tier: subscriptionTier,
             current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
           })
           .eq('id', profiles.id)
