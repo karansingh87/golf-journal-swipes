@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { SubscriptionSection } from "@/components/subscription/SubscriptionSection";
 
 type HandicapRange = "scratch_or_better" | "1_5" | "6_10" | "11_15" | "16_20" | "21_25" | "26_plus" | "new_to_golf";
 
@@ -107,12 +108,13 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-white pt-20">
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
         <Card className="p-6">
           <Tabs defaultValue="profile" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
+            <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="security">Security</TabsTrigger>
+              <TabsTrigger value="subscription">Subscription</TabsTrigger>
             </TabsList>
 
             <TabsContent value="profile" className="space-y-6">
@@ -197,21 +199,25 @@ const Settings = () => {
                 Update Password
               </Button>
             </TabsContent>
-          </Tabs>
 
-          {profile?.is_admin && (
-            <div className="mt-8 pt-8 border-t">
-              <h2 className="text-lg font-semibold mb-4">Admin Settings</h2>
-              <Button
-                variant="outline"
-                onClick={() => navigate('/admin')}
-                className="w-full sm:w-auto"
-              >
-                Go to Admin Panel
-              </Button>
-            </div>
-          )}
+            <TabsContent value="subscription">
+              <SubscriptionSection />
+            </TabsContent>
+          </Tabs>
         </Card>
+
+        {profile?.is_admin && (
+          <div className="mt-8 pt-8 border-t">
+            <h2 className="text-lg font-semibold mb-4">Admin Settings</h2>
+            <Button
+              variant="outline"
+              onClick={() => navigate('/admin')}
+              className="w-full sm:w-auto"
+            >
+              Go to Admin Panel
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
