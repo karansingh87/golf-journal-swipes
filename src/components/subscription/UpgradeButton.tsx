@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const UpgradeButton = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,18 +13,16 @@ export const UpgradeButton = () => {
   const handleUpgrade = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/functions/v1/create-checkout-session', {
-        method: 'POST',
+      
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         headers: {
-          'Authorization': `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.access_token}`,
         },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
+      if (error) {
+        throw error;
       }
-
-      const data = await response.json();
 
       if (!data.url) {
         throw new Error('No checkout URL received');
