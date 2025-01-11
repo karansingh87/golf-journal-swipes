@@ -1,7 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
-import { corsHeaders } from '../_shared/cors.ts';
-import { handleError, handleSuccess } from '../_shared/responseUtils.ts';
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
 
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
@@ -72,20 +75,39 @@ Deno.serve(async (req) => {
     const analysisData = await anthropicResponse.json();
     const rawAnalysis = analysisData.content[0].text;
     
-    console.log('Raw analysis response:', rawAnalysis);
+    console.log('Raw analysis response received');
     
     try {
-      // First try parsing the raw response
-      JSON.parse(rawAnalysis);
-      console.log('Raw response is valid JSON');
+      // Attempt to parse and validate the JSON
+      const parsedAnalysis = JSON.parse(rawAnalysis);
+      console.log('Successfully parsed analysis as JSON');
       
-      return handleSuccess({ analysis: rawAnalysis });
+      return new Response(
+        JSON.stringify({ analysis: JSON.stringify(parsedAnalysis) }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200,
+        }
+      );
     } catch (error) {
-      console.error('Error parsing analysis:', error);
-      throw new Error('Invalid JSON response from analysis');
+      console.error('Error parsing analysis as JSON:', error);
+      console.log('Raw response that failed to parse:', rawAnalysis);
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON response from analysis' }),
+        {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 400,
+        }
+      );
     }
   } catch (error) {
     console.error('Error in analyze-golf function:', error);
-    return handleError(error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400,
+      }
+    );
   }
 });
