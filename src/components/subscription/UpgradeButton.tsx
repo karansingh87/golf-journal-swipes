@@ -19,12 +19,17 @@ export const UpgradeButton = () => {
         },
       });
 
-      const { url, error } = await response.json();
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
 
-      if (error) throw new Error(error);
-      if (!url) throw new Error('No checkout URL received');
+      const data = await response.json();
 
-      window.location.href = url;
+      if (!data.url) {
+        throw new Error('No checkout URL received');
+      }
+
+      window.location.href = data.url;
     } catch (error) {
       console.error('Error creating checkout session:', error);
       toast({
