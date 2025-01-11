@@ -73,15 +73,21 @@ Deno.serve(async (req) => {
     }
 
     const analysisData = await anthropicResponse.json();
-    const rawAnalysis = analysisData.content[0].text;
     
-    console.log('Raw analysis response received');
+    if (!analysisData.content || !analysisData.content[0] || !analysisData.content[0].text) {
+      console.error('Unexpected Anthropic response structure:', analysisData);
+      throw new Error('Invalid response structure from Anthropic');
+    }
+    
+    const rawAnalysis = analysisData.content[0].text;
+    console.log('Received raw analysis, attempting to parse...');
     
     try {
-      // Attempt to parse and validate the JSON
+      // First, try to parse the raw response to validate it's JSON
       const parsedAnalysis = JSON.parse(rawAnalysis);
       console.log('Successfully parsed analysis as JSON');
       
+      // Return the validated JSON response
       return new Response(
         JSON.stringify({ analysis: JSON.stringify(parsedAnalysis) }),
         {
@@ -93,7 +99,11 @@ Deno.serve(async (req) => {
       console.error('Error parsing analysis as JSON:', error);
       console.log('Raw response that failed to parse:', rawAnalysis);
       return new Response(
-        JSON.stringify({ error: 'Invalid JSON response from analysis' }),
+        JSON.stringify({ 
+          error: 'Invalid JSON response from analysis',
+          details: error.message,
+          rawResponse: rawAnalysis.substring(0, 200) + '...' // Log first 200 chars for debugging
+        }),
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 400,
@@ -103,7 +113,10 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Error in analyze-golf function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        type: 'function_error'
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,
