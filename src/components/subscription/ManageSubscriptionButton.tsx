@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const ManageSubscriptionButton = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,17 +10,10 @@ export const ManageSubscriptionButton = () => {
   const handleManageSubscription = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-portal-session`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${(await import.meta.env.VITE_SUPABASE_ANON_KEY) || ''}`,
-          },
-        }
-      );
+      const { data, error } = await supabase.functions.invoke('create-portal-session', {
+        method: 'POST',
+      });
 
-      const { data, error } = await response.json();
       if (error) throw error;
 
       // Redirect to the portal
