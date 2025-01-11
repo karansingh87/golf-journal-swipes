@@ -41,7 +41,7 @@ serve(async (req) => {
 
     // Replace this with your actual Stripe Price ID for the Pro tier
     // This MUST be a recurring price ID from your Stripe dashboard
-    const price_id = "price_1QfyicLbszPXbxPVK37gfcQ4";
+    const price_id = "price_1QfzLJLbszPXbxPVWqN8ebFn";
 
     let customer_id = undefined;
     if (customers.data.length > 0) {
