@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeButton } from "./UpgradeButton";
+import { ManageSubscriptionButton } from "./ManageSubscriptionButton";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
@@ -49,7 +50,9 @@ export const SubscriptionSection = () => {
             </p>
           </div>
 
-          {!isProUser && (
+          {isProUser ? (
+            <ManageSubscriptionButton />
+          ) : (
             <>
               <div className="space-y-4">
                 <h4 className="font-medium">Pro Plan Benefits:</h4>
