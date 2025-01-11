@@ -105,15 +105,20 @@ export type Database = {
           coaching_frequency:
             | Database["public"]["Enums"]["coaching_frequency"]
             | null
+          current_period_end: string | null
           display_name: string | null
           email: string | null
           handicap_range: Database["public"]["Enums"]["handicap_range"] | null
           id: string
           is_admin: boolean | null
           location: string | null
+          monthly_recording_count: number | null
           onboarding_completed: boolean | null
           onboarding_last_step: number | null
           onboarding_skipped: boolean | null
+          stripe_customer_id: string | null
+          subscription_status: string | null
+          subscription_tier: string | null
           tracking_habit: Database["public"]["Enums"]["tracking_habit"] | null
           updated_at: string | null
         }
@@ -122,15 +127,20 @@ export type Database = {
           coaching_frequency?:
             | Database["public"]["Enums"]["coaching_frequency"]
             | null
+          current_period_end?: string | null
           display_name?: string | null
           email?: string | null
           handicap_range?: Database["public"]["Enums"]["handicap_range"] | null
           id: string
           is_admin?: boolean | null
           location?: string | null
+          monthly_recording_count?: number | null
           onboarding_completed?: boolean | null
           onboarding_last_step?: number | null
           onboarding_skipped?: boolean | null
+          stripe_customer_id?: string | null
+          subscription_status?: string | null
+          subscription_tier?: string | null
           tracking_habit?: Database["public"]["Enums"]["tracking_habit"] | null
           updated_at?: string | null
         }
@@ -139,15 +149,20 @@ export type Database = {
           coaching_frequency?:
             | Database["public"]["Enums"]["coaching_frequency"]
             | null
+          current_period_end?: string | null
           display_name?: string | null
           email?: string | null
           handicap_range?: Database["public"]["Enums"]["handicap_range"] | null
           id?: string
           is_admin?: boolean | null
           location?: string | null
+          monthly_recording_count?: number | null
           onboarding_completed?: boolean | null
           onboarding_last_step?: number | null
           onboarding_skipped?: boolean | null
+          stripe_customer_id?: string | null
+          subscription_status?: string | null
+          subscription_tier?: string | null
           tracking_habit?: Database["public"]["Enums"]["tracking_habit"] | null
           updated_at?: string | null
         }
@@ -304,7 +319,10 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      reset_monthly_recording_count: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       achievement_type:
