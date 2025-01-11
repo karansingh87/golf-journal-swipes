@@ -15,7 +15,7 @@ serve(async (req) => {
 
   const supabaseClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
   );
 
   try {
@@ -40,10 +40,9 @@ serve(async (req) => {
     });
 
     // Replace this with your actual Stripe Price ID for the Pro tier
-    // This MUST be a recurring price ID from your Stripe dashboard
     const price_id = "price_1QfzLJLbszPXbxPVWqN8ebFn";
 
-    let customer_id = undefined;
+    let customer_id;
     if (customers.data.length > 0) {
       customer_id = customers.data[0].id;
       // check if already subscribed to this price
@@ -57,12 +56,28 @@ serve(async (req) => {
       if (subscriptions.data.length > 0) {
         throw new Error("Customer already has an active subscription");
       }
+    } else {
+      // Create a new customer if one doesn't exist
+      const customer = await stripe.customers.create({
+        email: email,
+      });
+      customer_id = customer.id;
+    }
+
+    // Update the user's profile with the Stripe customer ID
+    const { error: updateError } = await supabaseClient
+      .from('profiles')
+      .update({ stripe_customer_id: customer_id })
+      .eq('id', user.id);
+
+    if (updateError) {
+      console.error('Error updating profile with customer ID:', updateError);
+      throw new Error('Failed to update profile with customer ID');
     }
 
     console.log('Creating checkout session...');
     const session = await stripe.checkout.sessions.create({
       customer: customer_id,
-      customer_email: customer_id ? undefined : email,
       line_items: [
         {
           price: price_id,
