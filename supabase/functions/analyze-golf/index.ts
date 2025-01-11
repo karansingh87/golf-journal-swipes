@@ -1,7 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import "https://deno.land/x/xhr@0.1.0/mod.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0'
-import { cleanAndValidateJSON } from '../_shared/responseUtils.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -77,27 +75,25 @@ serve(async (req) => {
     const analysisData = await anthropicResponse.json()
     const rawAnalysis = analysisData.content[0].text
     
-    // Log the raw response for debugging
     console.log('Raw analysis response:', rawAnalysis)
     
     try {
       // First try parsing the raw response
       JSON.parse(rawAnalysis)
       console.log('Raw response is valid JSON')
+      
       return new Response(
         JSON.stringify({ analysis: rawAnalysis }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json' 
+          } 
+        }
       )
     } catch (error) {
-      console.log('Raw response is not valid JSON, attempting cleanup')
-      // If direct parsing fails, try cleaning the response
-      const cleanedAnalysis = cleanAndValidateJSON(rawAnalysis)
-      console.log('Cleaned analysis:', cleanedAnalysis)
-
-      return new Response(
-        JSON.stringify({ analysis: cleanedAnalysis }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
+      console.error('Error parsing analysis:', error)
+      throw new Error('Invalid JSON response from analysis')
     }
   } catch (error) {
     console.error('Error in analyze-golf function:', error)
@@ -105,7 +101,10 @@ serve(async (req) => {
       JSON.stringify({ error: error.message }),
       { 
         status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        headers: { 
+          ...corsHeaders, 
+          'Content-Type': 'application/json' 
+        }
       }
     )
   }
