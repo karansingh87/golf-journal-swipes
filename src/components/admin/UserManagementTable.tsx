@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
-import DeleteUserButton from "./DeleteUserButton";
 import { User } from "@supabase/supabase-js";
 
 interface ExtendedUser {
@@ -88,7 +87,6 @@ const UserManagementTable = () => {
             <TableHead>Email</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Last Sign In</TableHead>
-            <TableHead className="w-[100px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -102,13 +100,6 @@ const UserManagementTable = () => {
                 {user.last_sign_in_at
                   ? format(new Date(user.last_sign_in_at), "MMM d, yyyy")
                   : "Never"}
-              </TableCell>
-              <TableCell>
-                <DeleteUserButton
-                  userId={user.id}
-                  userEmail={user.email}
-                  onDeleteSuccess={fetchUsers}
-                />
               </TableCell>
             </TableRow>
           ))}
