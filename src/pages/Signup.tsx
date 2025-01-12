@@ -31,7 +31,7 @@ const Signup = () => {
 
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signUp({
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -41,7 +41,37 @@ const Signup = () => {
         },
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
+
+      // If signup successful, create checkout session
+      if (authData?.session) {
+        try {
+          const { data: checkoutData, error: checkoutError } = await supabase.functions.invoke(
+            'create-checkout-session',
+            {
+              headers: {
+                Authorization: `Bearer ${authData.session.access_token}`,
+              },
+            }
+          );
+
+          if (checkoutError) throw checkoutError;
+
+          // Redirect to Stripe checkout
+          if (checkoutData?.url) {
+            window.location.href = checkoutData.url;
+            return;
+          }
+        } catch (checkoutError: any) {
+          console.error('Checkout error:', checkoutError);
+          // If checkout fails, still create account but show warning
+          toast({
+            variant: "destructive",
+            title: "Trial activation failed",
+            description: "Your account was created, but trial activation failed. Please try again from settings.",
+          });
+        }
+      }
 
       toast({
         title: "Success",
@@ -63,8 +93,8 @@ const Signup = () => {
   return (
     <AuthContainer>
       <AuthHeader 
-        title="Create an Account" 
-        subtitle="Join us to start your journey" 
+        title="Start Your 30-Day Free Trial" 
+        subtitle="No credit card required to get started" 
       />
 
       <AuthCard>
@@ -110,7 +140,7 @@ const Signup = () => {
             className="w-full"
             disabled={loading}
           >
-            {loading ? "Creating account..." : "Create Account"}
+            {loading ? "Creating account..." : "Start Free Trial"}
           </Button>
         </form>
 
