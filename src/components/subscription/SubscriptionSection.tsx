@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 export const SubscriptionSection = () => {
-  const { data: profile, isError } = useQuery({
+  const { data: profile } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -16,27 +16,15 @@ export const SubscriptionSection = () => {
         .from('profiles')
         .select('subscription_tier, subscription_status')
         .eq('id', session.user.id)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        console.error('Error fetching subscription:', error);
-        throw error;
-      }
-
+      if (error) throw error;
       return data;
     },
   });
 
   const isProUser = profile?.subscription_tier === 'pro' && 
                     profile?.subscription_status === 'active';
-
-  if (isError) {
-    return (
-      <Card className="p-6">
-        <p className="text-red-500">Error loading subscription information. Please try again later.</p>
-      </Card>
-    );
-  }
 
   return (
     <div className="space-y-6">
