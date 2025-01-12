@@ -21,23 +21,27 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_status, has_had_trial')
+        .select('subscription_tier')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return null;
+      }
       return data;
     },
     enabled: !!session?.user?.id,
   });
 
-  // If not logged in, show content
+  // If not logged in, redirect to login
   if (!session) {
-    return <>{children}</>;
+    navigate('/login');
+    return null;
   }
 
-  // If subscription is active, show content
-  if (profile?.subscription_status === 'active') {
+  // If subscription is pro, show content
+  if (profile?.subscription_tier === 'pro') {
     return <>{children}</>;
   }
 
@@ -61,7 +65,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
           
           <div className="pt-4">
             <UpgradeButton 
-              showTrial={!profile?.has_had_trial}
+              showTrial={false}
               className="w-full"
             />
           </div>
