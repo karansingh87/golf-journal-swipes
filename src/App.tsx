@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
+import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
@@ -48,18 +49,18 @@ const App = () => (
             <Route path="/shared/:id" element={<SharedRecording />} />
             <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
             
-            {/* App routes */}
-            <Route path="/record" element={<VoiceRecorderContainer />} />
-            <Route path="/notes" element={<Notes />} />
-            <Route path="/trends" element={<Trends />} />
-            <Route path="/playbook" element={<Playbook />} />
-            <Route path="/recording/:id" element={<RecordingDetail />} />
-            <Route path="/coach_notes" element={<CoachNotes />} />
-            <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
-            <Route path="/pep_talks" element={<PepTalks />} />
-            <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/settings" element={<Settings />} />
+            {/* Protected routes */}
+            <Route path="/record" element={<SubscriptionGuard><VoiceRecorderContainer /></SubscriptionGuard>} />
+            <Route path="/notes" element={<SubscriptionGuard><Notes /></SubscriptionGuard>} />
+            <Route path="/trends" element={<SubscriptionGuard><Trends /></SubscriptionGuard>} />
+            <Route path="/playbook" element={<SubscriptionGuard><Playbook /></SubscriptionGuard>} />
+            <Route path="/recording/:id" element={<SubscriptionGuard><RecordingDetail /></SubscriptionGuard>} />
+            <Route path="/coach_notes" element={<SubscriptionGuard><CoachNotes /></SubscriptionGuard>} />
+            <Route path="/coach_notes/:id" element={<SubscriptionGuard><CoachNoteDetail /></SubscriptionGuard>} />
+            <Route path="/pep_talks" element={<SubscriptionGuard><PepTalks /></SubscriptionGuard>} />
+            <Route path="/pep_talk/:id" element={<SubscriptionGuard><PepTalkDetail /></SubscriptionGuard>} />
+            <Route path="/admin" element={<SubscriptionGuard><Admin /></SubscriptionGuard>} />
+            <Route path="/settings" element={<SubscriptionGuard><Settings /></SubscriptionGuard>} />
             
             {/* Redirects */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
