@@ -64,7 +64,10 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
           </p>
           
           <div className="pt-4">
-            <UpgradeButton showTrial={!profile?.has_had_trial} />
+            <UpgradeButton 
+              showTrial={!profile?.has_had_trial} 
+              className="w-full"
+            />
           </div>
         </Card>
       </div>
