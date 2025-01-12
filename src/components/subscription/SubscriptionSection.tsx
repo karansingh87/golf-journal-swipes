@@ -15,7 +15,7 @@ export const SubscriptionSection = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status, current_period_end')
+        .select('subscription_tier, subscription_status, current_period_end, has_had_trial')
         .eq('id', session.user.id)
         .single();
 
@@ -103,7 +103,7 @@ export const SubscriptionSection = () => {
                 </ul>
               </div>
 
-              <UpgradeButton />
+              <UpgradeButton showTrial={!profile?.has_had_trial} />
             </>
           )}
         </div>

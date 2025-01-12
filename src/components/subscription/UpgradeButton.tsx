@@ -5,7 +5,11 @@ import { Loader2 } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 
-export const UpgradeButton = () => {
+interface UpgradeButtonProps {
+  showTrial?: boolean;
+}
+
+export const UpgradeButton = ({ showTrial = false }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -53,7 +57,7 @@ export const UpgradeButton = () => {
           Redirecting to checkout...
         </>
       ) : (
-        'Upgrade to Pro'
+        showTrial ? 'Start Free Trial' : 'Upgrade to Pro'
       )}
     </Button>
   );

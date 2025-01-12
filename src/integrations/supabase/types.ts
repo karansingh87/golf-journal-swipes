@@ -109,6 +109,7 @@ export type Database = {
           display_name: string | null
           email: string | null
           handicap_range: Database["public"]["Enums"]["handicap_range"] | null
+          has_had_trial: boolean | null
           id: string
           is_admin: boolean | null
           location: string | null
@@ -131,6 +132,7 @@ export type Database = {
           display_name?: string | null
           email?: string | null
           handicap_range?: Database["public"]["Enums"]["handicap_range"] | null
+          has_had_trial?: boolean | null
           id: string
           is_admin?: boolean | null
           location?: string | null
@@ -153,6 +155,7 @@ export type Database = {
           display_name?: string | null
           email?: string | null
           handicap_range?: Database["public"]["Enums"]["handicap_range"] | null
+          has_had_trial?: boolean | null
           id?: string
           is_admin?: boolean | null
           location?: string | null
