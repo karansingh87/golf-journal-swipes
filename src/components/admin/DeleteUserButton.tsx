@@ -35,7 +35,10 @@ const DeleteUserButton = ({ userId, userEmail, onDeleteSuccess }: DeleteUserButt
         throw new Error('No active session');
       }
 
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`, {
+      // Get the Supabase URL from the client configuration
+      const supabaseUrl = supabase.supabaseUrl;
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/delete-user`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,
