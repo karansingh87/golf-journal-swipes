@@ -5,6 +5,7 @@ import AuthContainer from "@/components/auth/AuthContainer";
 import AuthCard from "@/components/auth/AuthCard";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,24 +31,39 @@ const Login = () => {
 
   return (
     <AuthContainer>
-      <AuthCard>
-        <Auth
-          supabaseClient={supabase}
-          appearance={{
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: '#000000',
-                  brandAccent: '#333333',
+      <div className="space-y-6">
+        <AuthCard>
+          <Auth
+            supabaseClient={supabase}
+            appearance={{
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#000000',
+                    brandAccent: '#333333',
+                  }
                 }
               }
-            }
-          }}
-          theme="light"
-          providers={[]}
-        />
-      </AuthCard>
+            }}
+            theme="light"
+            providers={[]}
+            view="sign_in"
+            showLinks={false}
+          />
+        </AuthCard>
+        
+        <div className="text-center space-y-4">
+          <p className="text-sm text-zinc-600">Don't have an account?</p>
+          <Button
+            onClick={() => navigate('/signup')}
+            variant="outline"
+            className="w-full"
+          >
+            Start Free Trial
+          </Button>
+        </div>
+      </div>
     </AuthContainer>
   );
 };
