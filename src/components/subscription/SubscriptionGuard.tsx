@@ -11,13 +11,20 @@ interface SubscriptionGuardProps {
 }
 
 export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
+  console.log('SubscriptionGuard mounted');
   const session = useSession();
+  console.log('Session:', session);
   const navigate = useNavigate();
 
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      if (!session?.user?.id) return null;
+      console.log('Profile query running for user:', session?.user?.id);
+      
+      if (!session?.user?.id) {
+        console.log('No user ID available');
+        return null;
+      }
       
       const { data, error } = await supabase
         .from('profiles')
@@ -29,6 +36,8 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
         console.error('Error fetching profile:', error);
         return null;
       }
+      
+      console.log('Profile data received:', data);
       return data;
     },
     enabled: !!session?.user?.id,
@@ -36,21 +45,31 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
 
   // If not logged in, redirect to login
   if (!session) {
+    console.log('No session, redirecting to login');
     navigate('/login');
     return null;
   }
 
   // Show loading state
   if (isLoading) {
+    console.log('Loading profile data...');
     return <div>Loading...</div>;
   }
 
+  console.log('Final profile check:', {
+    profile,
+    subscriptionTier: profile?.subscription_tier,
+    isPro: profile?.subscription_tier === 'pro'
+  });
+
   // If subscription is pro, show content
   if (profile?.subscription_tier === 'pro') {
+    console.log('Pro user, showing content');
     return <>{children}</>;
   }
 
   // Otherwise show upgrade modal
+  console.log('Non-pro user, showing upgrade modal');
   return (
     <div className="relative min-h-screen">
       {children}
