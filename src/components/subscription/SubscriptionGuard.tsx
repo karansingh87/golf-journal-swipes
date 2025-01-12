@@ -21,7 +21,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status, current_period_end')
+        .select('subscription_tier, subscription_status, current_period_end, has_had_trial')
         .eq('id', session.user.id)
         .single();
 
@@ -64,10 +64,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
           </p>
           
           <div className="pt-4">
-            <UpgradeButton 
-              showTrial={!profile?.has_had_trial} 
-              className="w-full"
-            />
+            <UpgradeButton showTrial={!profile?.has_had_trial} />
           </div>
         </Card>
       </div>

@@ -7,9 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 interface UpgradeButtonProps {
   showTrial?: boolean;
+  className?: string;
 }
 
-export const UpgradeButton = ({ showTrial = false }: UpgradeButtonProps) => {
+export const UpgradeButton = ({ showTrial = false, className }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -49,7 +50,7 @@ export const UpgradeButton = ({ showTrial = false }: UpgradeButtonProps) => {
     <Button
       onClick={handleUpgrade}
       disabled={isLoading}
-      className="w-full sm:w-auto"
+      className={className}
     >
       {isLoading ? (
         <>
