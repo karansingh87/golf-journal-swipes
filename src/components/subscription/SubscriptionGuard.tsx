@@ -40,7 +40,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     },
     enabled: !!session?.user?.id,
     staleTime: 30000, // Consider data fresh for 30 seconds
-    cacheTime: 1000 * 60 * 5, // Keep in cache for 5 minutes
+    gcTime: 1000 * 60 * 5, // Keep in cache for 5 minutes (renamed from cacheTime)
     retry: 2,
   });
 
