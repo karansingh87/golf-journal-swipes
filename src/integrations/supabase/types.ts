@@ -313,6 +313,12 @@ export type Database = {
       }
     }
     Views: {
+      admin_cache: {
+        Row: {
+          id: string | null
+        }
+        Relationships: []
+      }
       admin_status: {
         Row: {
           id: string | null
