@@ -29,20 +29,38 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Create a Supabase client with the service role key
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    )
+
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     )
 
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) throw new Error('Missing authorization header')
 
+    // Verify that the requester is an admin
     await verifyAdmin(supabaseClient, authHeader.replace('Bearer ', ''))
 
     const { userId }: DeleteUserRequest = await req.json()
     if (!userId) throw new Error('User ID is required')
 
-    const { error: deleteError } = await supabaseClient.auth.admin.deleteUser(userId)
+    // Delete the user using the admin client
+    const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(
+      userId,
+      true // Set to true to delete user data as well
+    )
+    
     if (deleteError) throw deleteError
 
     return new Response(
