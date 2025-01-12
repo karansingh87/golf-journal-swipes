@@ -14,7 +14,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   const session = useSession();
   const navigate = useNavigate();
 
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       if (!session?.user?.id) return null;
@@ -38,6 +38,11 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   if (!session) {
     navigate('/login');
     return null;
+  }
+
+  // Show loading state
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   // If subscription is pro, show content
