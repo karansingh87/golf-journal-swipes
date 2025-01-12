@@ -85,8 +85,24 @@ serve(async (req) => {
         },
       ],
       mode: 'subscription',
+      subscription_data: {
+        trial_period_days: 30,
+        trial_settings: {
+          end_behavior: {
+            missing_payment_method: 'cancel',
+          },
+        },
+      },
+      payment_method_collection: 'if_required',
+      allow_promotion_codes: true,
+      billing_address_collection: 'auto',
       success_url: `${req.headers.get('origin')}/settings?success=true`,
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
+      custom_text: {
+        submit: {
+          message: 'Start your 30-day free trial - no credit card required',
+        },
+      },
     });
 
     console.log('Checkout session created:', session.id);
