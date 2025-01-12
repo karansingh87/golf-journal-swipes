@@ -21,7 +21,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status, current_period_end, has_had_trial')
+        .select('subscription_status, has_had_trial')
         .eq('id', session.user.id)
         .single();
 
@@ -31,21 +31,17 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     enabled: !!session?.user?.id,
   });
 
-  const isProUser = profile?.subscription_tier === 'pro' && 
-                    profile?.subscription_status === 'active';
-  
-  const isTrialUser = profile?.subscription_tier === 'trial' && 
-                     profile?.subscription_status === 'active' &&
-                     new Date(profile.current_period_end) > new Date();
-
+  // If not logged in, show content
   if (!session) {
     return <>{children}</>;
   }
 
-  if (isProUser || isTrialUser) {
+  // If subscription is active, show content
+  if (profile?.subscription_status === 'active') {
     return <>{children}</>;
   }
 
+  // Otherwise show upgrade modal
   return (
     <div className="relative min-h-screen">
       {children}
@@ -65,7 +61,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
           
           <div className="pt-4">
             <UpgradeButton 
-              showTrial={!profile?.has_had_trial} 
+              showTrial={!profile?.has_had_trial}
               className="w-full"
             />
           </div>
