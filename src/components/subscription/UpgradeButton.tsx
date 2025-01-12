@@ -50,7 +50,7 @@ export const UpgradeButton = () => {
       {isLoading ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Redirecting...
+          Redirecting to checkout...
         </>
       ) : (
         'Upgrade to Pro'

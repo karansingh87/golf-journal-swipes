@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { UpgradeButton } from "./UpgradeButton";
 import { ManageSubscriptionButton } from "./ManageSubscriptionButton";
 import { Card } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, AlertCircle } from "lucide-react";
+import { differenceInDays } from "date-fns";
 
 export const SubscriptionSection = () => {
   const { data: profile } = useQuery({
@@ -14,7 +15,7 @@ export const SubscriptionSection = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status')
+        .select('subscription_tier, subscription_status, current_period_end')
         .eq('id', session.user.id)
         .single();
 
@@ -25,6 +26,21 @@ export const SubscriptionSection = () => {
 
   const isProUser = profile?.subscription_tier === 'pro' && 
                     profile?.subscription_status === 'active';
+  
+  const isTrialUser = profile?.subscription_tier === 'trial' && 
+                     profile?.subscription_status === 'active';
+
+  const daysRemaining = profile?.current_period_end 
+    ? differenceInDays(new Date(profile.current_period_end), new Date())
+    : 0;
+
+  const getSubscriptionStatus = () => {
+    if (isProUser) return { label: "Pro", color: "text-green-600" };
+    if (isTrialUser) return { label: "Trial", color: "text-blue-600" };
+    return { label: "Expired", color: "text-red-600" };
+  };
+
+  const status = getSubscriptionStatus();
 
   return (
     <div className="space-y-6">
@@ -39,11 +55,25 @@ export const SubscriptionSection = () => {
 
       <Card className="p-6">
         <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium">
-              Current Plan: {isProUser ? 'Pro' : 'Starter'}
-            </h3>
-            <p className="text-sm text-muted-foreground mt-1">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-medium">
+                Current Plan: <span className={status.color}>{status.label}</span>
+              </h3>
+            </div>
+            
+            {isTrialUser && (
+              <div className="flex items-center gap-2 text-sm text-amber-600">
+                <AlertCircle className="h-4 w-4" />
+                <span>
+                  {daysRemaining > 0 
+                    ? `${daysRemaining} days remaining in your trial` 
+                    : "Your trial is ending soon"}
+                </span>
+              </div>
+            )}
+
+            <p className="text-sm text-muted-foreground">
               {isProUser 
                 ? 'You have access to all premium features'
                 : 'Upgrade to Pro for unlimited access'}
