@@ -40,7 +40,7 @@ serve(async (req) => {
     });
 
     // Replace this with your actual Stripe Price ID for the Pro tier
-    const price_id = "price_1QfzLJLbszPXbxPVWqN8ebFn";
+    const price_id = "price_1QgLHZLbszPXbxPVP8tJ794K";
 
     let customer_id;
     if (customers.data.length > 0) {
