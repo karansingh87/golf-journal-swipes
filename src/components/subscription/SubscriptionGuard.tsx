@@ -11,13 +11,11 @@ interface SubscriptionGuardProps {
 }
 
 export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
-  console.log('SubscriptionGuard mounted');
   const session = useSession();
-  console.log('Session:', session);
   const navigate = useNavigate();
 
   const { data: profile, isLoading } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
       console.log('Profile query running for user:', session?.user?.id);
       
@@ -34,13 +32,16 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
 
       if (error) {
         console.error('Error fetching profile:', error);
-        return null;
+        throw error;
       }
       
       console.log('Profile data received:', data);
       return data;
     },
     enabled: !!session?.user?.id,
+    staleTime: 30000, // Consider data fresh for 30 seconds
+    cacheTime: 1000 * 60 * 5, // Keep in cache for 5 minutes
+    retry: 2,
   });
 
   // If not logged in, redirect to login
@@ -56,14 +57,15 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     return <div>Loading...</div>;
   }
 
+  const isPro = profile?.subscription_tier === 'pro';
   console.log('Final profile check:', {
     profile,
     subscriptionTier: profile?.subscription_tier,
-    isPro: profile?.subscription_tier === 'pro'
+    isPro
   });
 
   // If subscription is pro, show content
-  if (profile?.subscription_tier === 'pro') {
+  if (isPro) {
     console.log('Pro user, showing content');
     return <>{children}</>;
   }
