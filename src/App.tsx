@@ -46,6 +46,7 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/shared/:id" element={<SharedRecording />} />
             <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
             
@@ -60,7 +61,6 @@ const App = () => (
             <Route path="/pep_talks" element={<SubscriptionGuard><PepTalks /></SubscriptionGuard>} />
             <Route path="/pep_talk/:id" element={<SubscriptionGuard><PepTalkDetail /></SubscriptionGuard>} />
             <Route path="/admin" element={<SubscriptionGuard><Admin /></SubscriptionGuard>} />
-            <Route path="/settings" element={<SubscriptionGuard><Settings /></SubscriptionGuard>} />
             
             {/* Redirects */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
