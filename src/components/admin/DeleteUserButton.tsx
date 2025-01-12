@@ -35,22 +35,12 @@ const DeleteUserButton = ({ userId, userEmail, onDeleteSuccess }: DeleteUserButt
         throw new Error('No active session');
       }
 
-      // Get the Supabase URL from the client configuration
-      const supabaseUrl = supabase.supabaseUrl;
-      
-      const response = await fetch(`${supabaseUrl}/functions/v1/delete-user`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
+      const { data, error } = await supabase.functions.invoke('delete-user', {
+        body: { userId },
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to delete user');
+      if (error) {
+        throw error;
       }
 
       toast({
