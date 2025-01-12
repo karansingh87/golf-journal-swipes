@@ -9,6 +9,7 @@ import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Notes from "./pages/Notes";
 import Trends from "./pages/Trends";
 import Admin from "./pages/Admin";
@@ -43,6 +44,7 @@ const App = () => (
             {/* Public routes */}
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/shared/:id" element={<SharedRecording />} />
             <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
             
