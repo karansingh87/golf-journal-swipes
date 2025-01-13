@@ -82,7 +82,9 @@ export const SubscriptionSection = () => {
             <p className="text-sm text-muted-foreground">
               {isProUser 
                 ? 'You have access to all premium features'
-                : 'Subscribe to unlock your personal golf improvement playbook'}
+                : isTrialUser
+                  ? 'Subscribe to keep your golf insights flowing'
+                  : 'Subscribe to unlock your personal golf improvement playbook'}
             </p>
           </div>
 
