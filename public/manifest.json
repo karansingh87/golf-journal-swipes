@@ -1,6 +1,6 @@
 {
-  "name": "GolfLog",
-  "short_name": "GolfLog",
+  "name": "golflog",
+  "short_name": "golflog",
   "description": "Your personal golf improvement companion",
   "start_url": "/",
   "display": "standalone",
