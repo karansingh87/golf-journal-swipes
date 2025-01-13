@@ -28,7 +28,7 @@ const NavigationBar = () => {
         .from('profiles')
         .select('is_admin, subscription_status')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching profile:', error);
