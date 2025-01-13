@@ -43,7 +43,7 @@ export const SubscriptionSection = () => {
     if (isTrialUser) return { label: "Trial", color: "text-blue-600" };
     if (profile?.subscription_status === 'canceled') return { label: "Canceled", color: "text-red-600" };
     if (profile?.subscription_status === 'past_due') return { label: "Past Due", color: "text-amber-600" };
-    return { label: "Free", color: "text-zinc-600" };
+    return { label: "Inactive", color: "text-zinc-600" };
   };
 
   const status = getSubscriptionStatus();
@@ -82,7 +82,7 @@ export const SubscriptionSection = () => {
             <p className="text-sm text-muted-foreground">
               {isProUser 
                 ? 'You have access to all premium features'
-                : 'Upgrade to Pro for unlimited access'}
+                : 'Subscribe to unlock your personal golf improvement playbook'}
             </p>
           </div>
 
@@ -91,13 +91,13 @@ export const SubscriptionSection = () => {
           ) : (
             <>
               <div className="space-y-4">
-                <h4 className="font-medium">Pro Plan Benefits:</h4>
                 <ul className="space-y-3">
                   {[
-                    'Unlimited voice recordings',
-                    'Advanced AI analysis',
-                    'Detailed performance insights',
-                    'Priority customer support',
+                    'Unlimited voice recordings & storage',
+                    'Advanced AI swing analysis & insights',
+                    'Personalized improvement recommendations',
+                    'Mental game coaching & pep talks',
+                    'Trend analysis & progress tracking',
                   ].map((benefit) => (
                     <li key={benefit} className="flex items-center gap-2">
                       <div className="rounded-full p-1 bg-zinc-900">
