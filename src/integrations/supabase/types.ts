@@ -313,12 +313,7 @@ export type Database = {
       }
     }
     Views: {
-      admin_cache: {
-        Row: {
-          id: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       [_ in never]: never
