@@ -49,9 +49,9 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/shared/:id" element={<SharedRecording />} />
             <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
+            <Route path="/record" element={<VoiceRecorderContainer />} />
             
             {/* Protected routes */}
-            <Route path="/record" element={<SubscriptionGuard><VoiceRecorderContainer /></SubscriptionGuard>} />
             <Route path="/notes" element={<SubscriptionGuard><Notes /></SubscriptionGuard>} />
             <Route path="/trends" element={<SubscriptionGuard><Trends /></SubscriptionGuard>} />
             <Route path="/playbook" element={<SubscriptionGuard><Playbook /></SubscriptionGuard>} />
