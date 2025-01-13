@@ -19,13 +19,32 @@ const Trends = () => {
   const session = useSession();
   const navigate = useNavigate();
 
-  // Redirect if not authenticated
-  if (!session) {
-    navigate('/login');
-    return null;
-  }
+  useEffect(() => {
+    const checkAccess = async () => {
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+
+      // Fetch user profile to check subscription
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('subscription_tier')
+        .eq('id', session.user.id)
+        .single();
+
+      if (!profile || profile.subscription_tier !== 'pro') {
+        navigate('/record');
+        return;
+      }
+    };
+
+    checkAccess();
+  }, [session, navigate]);
 
   useEffect(() => {
+    if (!session?.user?.id) return;
+
     const fetchRecordingsCount = async () => {
       const { count } = await supabase
         .from('recordings')
@@ -65,7 +84,7 @@ const Trends = () => {
 
     fetchRecordingsCount();
     fetchLatestTrends();
-  }, [session.user.id]);
+  }, [session?.user?.id]);
 
   // Auto-refresh when there are 3 or more new recordings
   useEffect(() => {
@@ -75,6 +94,8 @@ const Trends = () => {
   }, [trendsInfo?.newRecordingsCount]);
 
   const generateTrends = async () => {
+    if (!session?.user?.id) return;
+
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
@@ -118,6 +139,9 @@ const Trends = () => {
       setIsLoading(false);
     }
   };
+
+  // Don't render anything while checking access
+  if (!session) return null;
 
   return (
     <div className="min-h-[100dvh] bg-background">
