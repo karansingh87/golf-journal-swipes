@@ -18,13 +18,11 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   const { data: profile, isLoading } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      if (!session?.user?.id) {
-        return null;
-      }
+      if (!session?.user?.id) return null;
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('subscription_tier, subscription_status, trial_end')
         .eq('id', session.user.id)
         .maybeSingle();
 
@@ -54,9 +52,16 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     );
   }
 
-  const isPro = profile?.subscription_tier === 'pro';
+  const hasValidSubscription = profile?.subscription_status === 'active' || 
+                             profile?.subscription_status === 'trialing';
 
-  if (isPro) {
+  const isTrialing = profile?.subscription_status === 'trialing';
+  const trialEnd = profile?.trial_end ? new Date(profile.trial_end) : null;
+  const daysLeftInTrial = trialEnd 
+    ? Math.max(0, Math.ceil((trialEnd.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    : 0;
+
+  if (hasValidSubscription) {
     return <>{children}</>;
   }
 
@@ -86,11 +91,15 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
               <div className="p-2 bg-zinc-100 rounded-full">
                 <Crown className="h-5 w-5 text-zinc-800" />
               </div>
-              <h2 className="text-xl font-semibold text-zinc-800">Upgrade to Pro</h2>
+              <h2 className="text-xl font-semibold text-zinc-800">
+                {isTrialing ? 'Trial Expired' : 'Upgrade to Pro'}
+              </h2>
             </div>
             
             <p className="text-sm text-zinc-600 leading-relaxed">
-              Get unlimited access to all features and take your golf game to the next level with personalized insights and advanced analytics.
+              {isTrialing 
+                ? `Your trial has expired. Upgrade to Pro to continue accessing all features.`
+                : 'Get unlimited access to all features and take your golf game to the next level with personalized insights and advanced analytics.'}
             </p>
             
             <div className="pt-2">
