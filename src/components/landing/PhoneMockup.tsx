@@ -12,7 +12,7 @@ const screenshots: ScreenshotData[] = [
     title: "Press record and talk.",
   },
   {
-    image: "/lovable-uploads/6abde2cc-84c3-4f17-9be8-bc8c71484513.png",
+    image: "/lovable-uploads/d11356f6-f7f5-4bbb-a95a-2c79e28caaa3.png",
     title: "Watch your thoughts turn to text.",
   },
   {
@@ -20,7 +20,7 @@ const screenshots: ScreenshotData[] = [
     title: "Your story comes together.",
   },
   {
-    image: "/lovable-uploads/46fbee11-ffd8-4aa1-aa27-a6cd0cdd515f.png",
+    image: "/lovable-uploads/7c4e6f30-82be-4721-a3f9-a7b87858823a.png",
     title: "Get mindset and breakthrough insights.",
   },
   {
