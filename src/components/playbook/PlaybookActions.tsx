@@ -6,7 +6,6 @@ import GenerateNotesCard from './GenerateNotesCard';
 import TrendsCard from './TrendsCard';
 import PlaceholderCard from './PlaceholderCard';
 import NewPlaceholderCard from './NewPlaceholderCard';
-import JournalCard from './JournalCard';
 import { UpgradeModal } from '@/components/subscription/UpgradeModal';
 
 interface PlaybookActionsProps {
@@ -59,7 +58,6 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
   return (
     <>
       <div className="grid grid-cols-1 gap-3">
-        <JournalCard />
         <PlaceholderCard />
         <TrendsCard onClick={() => handleFeatureClick('trends')} />
         <NewPlaceholderCard onClick={() => handleFeatureClick('pep-talk')} />
