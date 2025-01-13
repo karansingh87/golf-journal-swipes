@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { UpgradeButton } from "@/components/subscription/UpgradeButton";
 
-type Feature = 'trends' | 'pep-talk' | 'lesson-prep' | 'recording';
+export type Feature = 'trends' | 'pep-talk' | 'lesson-prep' | 'recording';
 
 interface FeatureContent {
   title: string;
