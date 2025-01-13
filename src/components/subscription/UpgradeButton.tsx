@@ -7,9 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface UpgradeButtonProps {
   className?: string;
+  showTrial?: boolean;
 }
 
-export const UpgradeButton = ({ className }: UpgradeButtonProps) => {
+export const UpgradeButton = ({ className, showTrial = true }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -55,7 +56,7 @@ export const UpgradeButton = ({ className }: UpgradeButtonProps) => {
           Redirecting to checkout...
         </>
       ) : (
-        'Start Free Trial'
+        showTrial ? 'Start Free Trial' : 'Upgrade to Pro'
       )}
     </Button>
   );
