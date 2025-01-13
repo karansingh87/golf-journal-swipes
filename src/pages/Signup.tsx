@@ -43,36 +43,6 @@ const Signup = () => {
 
       if (signUpError) throw signUpError;
 
-      // If signup successful, create checkout session
-      if (authData?.session) {
-        try {
-          const { data: checkoutData, error: checkoutError } = await supabase.functions.invoke(
-            'create-checkout-session',
-            {
-              headers: {
-                Authorization: `Bearer ${authData.session.access_token}`,
-              },
-            }
-          );
-
-          if (checkoutError) throw checkoutError;
-
-          // Redirect to Stripe checkout
-          if (checkoutData?.url) {
-            window.location.href = checkoutData.url;
-            return;
-          }
-        } catch (checkoutError: any) {
-          console.error('Checkout error:', checkoutError);
-          // If checkout fails, still create account but show warning
-          toast({
-            variant: "destructive",
-            title: "Trial activation failed",
-            description: "Your account was created, but trial activation failed. Please try again from settings.",
-          });
-        }
-      }
-
       toast({
         title: "Success",
         description: "Please check your email to verify your account.",
@@ -93,8 +63,8 @@ const Signup = () => {
   return (
     <AuthContainer>
       <AuthHeader 
-        title="Start Your 30-Day Free Trial" 
-        subtitle="No credit card required to get started" 
+        title="Create Your Account" 
+        subtitle="Start improving your golf game today" 
       />
 
       <AuthCard>
@@ -140,7 +110,7 @@ const Signup = () => {
             className="w-full"
             disabled={loading}
           >
-            {loading ? "Creating account..." : "Start Free Trial"}
+            {loading ? "Creating account..." : "Create Account"}
           </Button>
         </form>
 
