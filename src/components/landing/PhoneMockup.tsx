@@ -20,7 +20,7 @@ const screenshots: ScreenshotData[] = [
     title: "Your story comes together.",
   },
   {
-    image: "/lovable-uploads/b3751cc2-1338-494e-8229-3e3820ad387e.png",
+    image: "/lovable-uploads/a7b1dcf1-33e5-490f-8346-7e1538067798.png",
     title: "Get mindset and breakthrough insights.",
   },
   {
