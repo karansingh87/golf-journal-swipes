@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkActionModal from "./PepTalkActionModal";
+import { useSession } from "@supabase/auth-helpers-react";
 
 interface PlaybookModalsProps {
   recordings?: any[];
@@ -34,6 +35,7 @@ const PlaybookModals = ({
   const [currentFlow, setCurrentFlow] = useState<'notes' | 'pepTalk'>('notes');
   const navigate = useNavigate();
   const { toast } = useToast();
+  const session = useSession();
 
   const handleViewLatest = () => {
     if (latestNoteId) {
@@ -91,7 +93,7 @@ const PlaybookModals = ({
       const { data, error } = await supabase.functions.invoke('generate-pep-talk', {
         body: {
           recording_ids: selectedRecordings,
-          userId: (await supabase.auth.getUser()).data.user?.id
+          userId: session?.user?.id
         }
       });
 
@@ -159,7 +161,7 @@ const PlaybookModals = ({
           setIsSelectionModalOpen(false);
           setSelectedRecordings([]);
         }}
-        recordings={recordings || []}
+        recordings={recordings?.filter(rec => rec.user_id === session?.user?.id) || []}
         selectedRecordings={selectedRecordings}
         onSelect={handleRecordingSelect}
         onGenerate={currentFlow === 'notes' ? handleGenerate : handleGeneratePepTalk}

@@ -322,6 +322,12 @@ export type Database = {
         }
         Returns: boolean
       }
+      set_app_context: {
+        Args: {
+          context: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       achievement_type:
