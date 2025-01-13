@@ -56,7 +56,7 @@ export const UpgradeButton = ({ className, showTrial = true }: UpgradeButtonProp
           Redirecting to checkout...
         </>
       ) : (
-        showTrial ? 'Start Free Trial' : 'Upgrade to Pro'
+        'Subscribe'
       )}
     </Button>
   );
