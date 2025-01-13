@@ -83,7 +83,8 @@ const Playbook = () => {
     setIsPepTalkModalOpen(true);
   };
 
-  const displayName = userProfile?.display_name || 'Golfer';
+  // Simplified display name handling
+  const displayName = userProfile?.display_name || '';
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
