@@ -34,7 +34,7 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
                     Create New
                   </h3>
                   <p className="text-xs text-zinc-500">
-                    Generate a new lesson prep note from recordings
+                    Generate new lesson prep
                   </p>
                 </div>
               </div>
