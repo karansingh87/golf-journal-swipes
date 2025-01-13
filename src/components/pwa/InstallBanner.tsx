@@ -14,8 +14,8 @@ const InstallBanner = () => {
     
     if (isInstallDismissed) return;
 
-    // Check if the device is iOS
-    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    // Check if the device is iOS - using a more TypeScript-friendly approach
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(isIOSDevice);
 
     // For non-iOS devices, listen for install prompt
