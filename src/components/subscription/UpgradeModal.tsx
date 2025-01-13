@@ -38,7 +38,7 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="w-[95%] sm:max-w-md mx-auto">
         <DialogHeader>
           <DialogTitle>{content.title}</DialogTitle>
           <DialogDescription className="pt-4">
