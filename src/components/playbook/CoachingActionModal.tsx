@@ -53,7 +53,7 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
                 </div>
                 <div className="text-left">
                   <h3 className="text-base font-medium text-zinc-950">
-                    View Latest Note
+                    View Past
                   </h3>
                   <p className="text-xs text-zinc-500">
                     See your most recent lesson prep note
