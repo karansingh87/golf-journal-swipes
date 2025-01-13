@@ -6,11 +6,10 @@ import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface UpgradeButtonProps {
-  showTrial?: boolean;
   className?: string;
 }
 
-export const UpgradeButton = ({ showTrial = false, className }: UpgradeButtonProps) => {
+export const UpgradeButton = ({ className }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -25,9 +24,7 @@ export const UpgradeButton = ({ showTrial = false, className }: UpgradeButtonPro
         },
       });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (!data.url) {
         throw new Error('No checkout URL received');
@@ -58,7 +55,7 @@ export const UpgradeButton = ({ showTrial = false, className }: UpgradeButtonPro
           Redirecting to checkout...
         </>
       ) : (
-        showTrial ? 'Start Free Trial' : 'Upgrade to Pro'
+        'Start Free Trial'
       )}
     </Button>
   );

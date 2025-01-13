@@ -15,7 +15,7 @@ export const SubscriptionSection = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status, current_period_end, has_had_trial')
+        .select('subscription_tier, subscription_status, current_period_end, trial_end')
         .eq('id', session.user.id)
         .single();
 
@@ -24,20 +24,26 @@ export const SubscriptionSection = () => {
     },
   });
 
-  const isProUser = profile?.subscription_tier === 'pro' && 
-                    profile?.subscription_status === 'active';
+  const isProUser = profile?.subscription_status === 'active' && 
+                    profile?.subscription_tier === 'pro';
   
-  const isTrialUser = profile?.subscription_tier === 'trial' && 
-                     profile?.subscription_status === 'active';
+  const isTrialUser = profile?.subscription_status === 'trialing';
 
-  const daysRemaining = profile?.current_period_end 
-    ? differenceInDays(new Date(profile.current_period_end), new Date())
-    : 0;
+  const trialEnd = profile?.trial_end ? new Date(profile.trial_end) : null;
+  const subscriptionEnd = profile?.current_period_end ? new Date(profile.current_period_end) : null;
+
+  const daysRemaining = isTrialUser && trialEnd
+    ? differenceInDays(trialEnd, new Date())
+    : isProUser && subscriptionEnd
+      ? differenceInDays(subscriptionEnd, new Date())
+      : 0;
 
   const getSubscriptionStatus = () => {
     if (isProUser) return { label: "Pro", color: "text-green-600" };
     if (isTrialUser) return { label: "Trial", color: "text-blue-600" };
-    return { label: "Expired", color: "text-red-600" };
+    if (profile?.subscription_status === 'canceled') return { label: "Canceled", color: "text-red-600" };
+    if (profile?.subscription_status === 'past_due') return { label: "Past Due", color: "text-amber-600" };
+    return { label: "Free", color: "text-zinc-600" };
   };
 
   const status = getSubscriptionStatus();
@@ -62,13 +68,13 @@ export const SubscriptionSection = () => {
               </h3>
             </div>
             
-            {isTrialUser && (
+            {(isTrialUser || isProUser) && daysRemaining > 0 && (
               <div className="flex items-center gap-2 text-sm text-amber-600">
                 <AlertCircle className="h-4 w-4" />
                 <span>
-                  {daysRemaining > 0 
-                    ? `${daysRemaining} days remaining in your trial` 
-                    : "Your trial is ending soon"}
+                  {isTrialUser
+                    ? `${daysRemaining} days remaining in your trial`
+                    : `Your subscription renews in ${daysRemaining} days`}
                 </span>
               </div>
             )}
@@ -103,7 +109,7 @@ export const SubscriptionSection = () => {
                 </ul>
               </div>
 
-              <UpgradeButton showTrial={!profile?.has_had_trial} />
+              <UpgradeButton />
             </>
           )}
         </div>

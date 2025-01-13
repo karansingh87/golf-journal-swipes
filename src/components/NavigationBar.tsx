@@ -26,7 +26,7 @@ const NavigationBar = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('is_admin')
+        .select('is_admin, subscription_status')
         .eq('id', session.user.id)
         .single();
 
@@ -59,6 +59,8 @@ const NavigationBar = () => {
   };
 
   const isPublicPage = location.pathname === '/' || location.pathname === '/login';
+  const hasValidSubscription = profile?.subscription_status === 'active' || 
+                              profile?.subscription_status === 'trialing';
 
   if (location.pathname === '/') return null;
 
@@ -100,18 +102,22 @@ const NavigationBar = () => {
                 >
                   Record
                 </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
-                  onClick={() => navigate('/notes')}
-                >
-                  Notes
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
-                  onClick={() => navigate('/playbook')}
-                >
-                  Playbook
-                </DropdownMenuItem>
+                {hasValidSubscription && (
+                  <>
+                    <DropdownMenuItem 
+                      className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                      onClick={() => navigate('/notes')}
+                    >
+                      Notes
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
+                      onClick={() => navigate('/playbook')}
+                    >
+                      Playbook
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuSeparator className="bg-zinc-200" />
                 <DropdownMenuItem 
                   className="cursor-pointer text-zinc-800 hover:text-zinc-900 hover:bg-zinc-50 focus:bg-zinc-50"
