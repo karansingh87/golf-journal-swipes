@@ -140,6 +140,16 @@ const CoachNoteDetail = () => {
                 </p>
               </div>
             </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                onClick={handleDelete}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
 
           <div className="flex items-center justify-between pl-11">
@@ -147,7 +157,7 @@ const CoachNoteDetail = () => {
               <div className="flex items-center gap-3.5 bg-secondary/50 rounded-full px-2 py-0.5">
                 <Switch
                   checked={note.is_public}
-                  onCheckedChange={(checked) => togglePublicMutation.mutate()}
+                  onCheckedChange={() => togglePublicMutation.mutate()}
                 />
                 <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                   {note.is_public ? (
@@ -163,8 +173,6 @@ const CoachNoteDetail = () => {
                   )}
                 </span>
               </div>
-            </div>
-            <div className="flex items-center gap-2">
               {note.is_public && (
                 <Button
                   variant="secondary"
@@ -176,14 +184,6 @@ const CoachNoteDetail = () => {
                   <span className="text-xs">Share</span>
                 </Button>
               )}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                onClick={handleDelete}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
             </div>
           </div>
         </div>
