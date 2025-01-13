@@ -16,7 +16,7 @@ const screenshots: ScreenshotData[] = [
     title: "Watch your thoughts turn to text.",
   },
   {
-    image: "/lovable-uploads/bb2a5651-bb9d-4849-bcac-67aeecd2f025.png",
+    image: "/lovable-uploads/173e1123-4a0a-4566-a059-8bd0d36a1b0b.png",
     title: "Your story comes together.",
   },
   {
