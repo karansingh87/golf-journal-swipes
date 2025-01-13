@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Download, X } from 'lucide-react';
+import { Download, X, Share } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 const InstallBanner = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isIOS, setIsIOS] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -13,20 +14,34 @@ const InstallBanner = () => {
     
     if (isInstallDismissed) return;
 
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowBanner(true);
-    };
+    // Check if the device is iOS
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    setIsIOS(isIOSDevice);
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    // For non-iOS devices, listen for install prompt
+    if (!isIOSDevice) {
+      const handleBeforeInstallPrompt = (e: Event) => {
+        e.preventDefault();
+        setDeferredPrompt(e);
+        setShowBanner(true);
+      };
 
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+      return () => {
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      };
+    } else {
+      // For iOS, show banner if not in standalone mode
+      const isStandalone = ('standalone' in window.navigator) && (window.navigator['standalone'] === true);
+      if (!isStandalone) {
+        setShowBanner(true);
+      }
+    }
   }, []);
 
   const handleInstall = async () => {
+    if (isIOS) return; // iOS uses different installation flow
     if (!deferredPrompt) return;
 
     deferredPrompt.prompt();
@@ -53,16 +68,27 @@ const InstallBanner = () => {
       <div className="mx-auto max-w-md px-4 py-2 mb-4">
         <div className="flex items-center justify-between gap-4 rounded-lg bg-white/80 backdrop-blur-sm px-4 py-2 shadow-lg border border-gray-200">
           <div className="flex items-center gap-2 text-sm text-golf-gray-text-primary">
-            <Download className="h-4 w-4" />
-            <span>Add GolfLog to home screen</span>
+            {isIOS ? (
+              <>
+                <Share className="h-4 w-4" />
+                <span>Tap Share then 'Add to Home Screen'</span>
+              </>
+            ) : (
+              <>
+                <Download className="h-4 w-4" />
+                <span>Add GolfLog to home screen</span>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleInstall}
-              className="text-sm font-medium text-golf-gray-text-primary hover:text-golf-gray-text-secondary"
-            >
-              Install
-            </button>
+            {!isIOS && (
+              <button
+                onClick={handleInstall}
+                className="text-sm font-medium text-golf-gray-text-primary hover:text-golf-gray-text-secondary"
+              >
+                Install
+              </button>
+            )}
             <button
               onClick={handleDismiss}
               className="rounded-full p-1 hover:bg-gray-100"
