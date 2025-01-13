@@ -36,7 +36,6 @@ const PhoneMockup = () => {
     offset: ["start center", "end center"]
   });
 
-  // Adjusted to give even more scroll time per screenshot
   const adjustedProgress = useTransform(scrollYProgress, [0.1, 0.85], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
@@ -113,7 +112,7 @@ const PhoneMockup = () => {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
-                  className="font-[700] text-base text-center text-golf-gray-text-primary"
+                  className="font-[600] text-base text-center text-golf-gray-text-primary"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
