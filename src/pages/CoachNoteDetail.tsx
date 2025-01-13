@@ -140,16 +140,6 @@ const CoachNoteDetail = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                onClick={handleDelete}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
 
           <div className="flex items-center justify-between pl-11">
@@ -185,6 +175,14 @@ const CoachNoteDetail = () => {
                 </Button>
               )}
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDelete}
+              className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            >
+              <Trash2 className="h-3 w-3" />
+            </Button>
           </div>
         </div>
 
