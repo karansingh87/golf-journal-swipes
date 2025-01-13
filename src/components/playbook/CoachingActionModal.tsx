@@ -56,7 +56,7 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
                     View Past
                   </h3>
                   <p className="text-xs text-zinc-500">
-                    See your most recent lesson prep note
+                    Browse previous lesson preps
                   </p>
                 </div>
               </div>
