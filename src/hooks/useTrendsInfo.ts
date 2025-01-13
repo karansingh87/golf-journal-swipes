@@ -14,7 +14,7 @@ export const useTrendsInfo = () => {
         .eq('user_id', session?.user?.id)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (!trends?.last_analysis_at) return { newRecordingsCount: 0 };
 

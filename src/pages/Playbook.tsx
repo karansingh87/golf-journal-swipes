@@ -25,7 +25,7 @@ const Playbook = () => {
         .from('profiles')
         .select('display_name')
         .eq('id', session?.user?.id)
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data;
@@ -56,7 +56,7 @@ const Playbook = () => {
         .eq('user_id', session?.user?.id)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
       
       if (error && error.code !== 'PGRST116') throw error;
       return data;
