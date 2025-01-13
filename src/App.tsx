@@ -1,57 +1,77 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { supabase } from "./integrations/supabase/client";
+import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
+import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
+import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Notes from "./pages/Notes";
-import Playbook from "./pages/Playbook";
-import Settings from "./pages/Settings";
-import Admin from "./pages/Admin";
 import Trends from "./pages/Trends";
-import PepTalks from "./pages/PepTalks";
-import PepTalkDetail from "./pages/PepTalkDetail";
+import Admin from "./pages/Admin";
+import Settings from "./pages/Settings";
+import RecordingDetail from "./pages/RecordingDetail";
+import SharedRecording from "./pages/SharedRecording";
+import SharedCoachNote from "./pages/SharedCoachNote";
+import Playbook from "./pages/Playbook";
 import CoachNotes from "./pages/CoachNotes";
 import CoachNoteDetail from "./pages/CoachNoteDetail";
-import SharedCoachNote from "./pages/SharedCoachNote";
-import SharedRecording from "./pages/SharedRecording";
-import RecordingDetail from "./pages/RecordingDetail";
-import Onboarding from "./pages/Onboarding";
+import PepTalkDetail from "./pages/PepTalkDetail";
+import PepTalks from "./pages/PepTalks";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <Router>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/notes" element={<Notes />} />
-              <Route path="/playbook" element={<Playbook />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/trends" element={<Trends />} />
-              <Route path="/pep_talks" element={<PepTalks />} />
-              <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
-              <Route path="/coach_notes" element={<CoachNotes />} />
-              <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
-              <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
-              <Route path="/shared/recording/:id" element={<SharedRecording />} />
-              <Route path="/recording/:id" element={<RecordingDetail />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-            </Routes>
-          </Suspense>
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <SessionContextProvider supabaseClient={supabase}>
+      <TooltipProvider>
+        <BrowserRouter>
+          <NavigationBar />
           <Toaster />
-        </Router>
-      </ThemeProvider>
-    </QueryClientProvider>
-  );
-}
+          <Sonner />
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/shared/:id" element={<SharedRecording />} />
+            <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
+            <Route path="/record" element={<VoiceRecorderContainer />} />
+            <Route path="/playbook" element={<Playbook />} />
+            <Route path="/notes" element={<Notes />} />
+            <Route path="/recording/:id" element={<RecordingDetail />} />
+            
+            {/* Previously protected routes - now using feature-level gates */}
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/coach_notes" element={<CoachNotes />} />
+            <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
+            <Route path="/pep_talks" element={<PepTalks />} />
+            <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
+            
+            {/* Admin route - keeps SubscriptionGuard for security */}
+            <Route path="/admin" element={<SubscriptionGuard><Admin /></SubscriptionGuard>} />
+            
+            {/* Redirects */}
+            <Route path="/history" element={<Navigate to="/notes" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </SessionContextProvider>
+  </QueryClientProvider>
+);
 
 export default App;
