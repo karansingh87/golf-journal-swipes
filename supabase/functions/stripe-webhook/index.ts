@@ -8,7 +8,6 @@ const corsHeaders = {
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -18,16 +17,13 @@ serve(async (req) => {
       apiVersion: '2023-10-16',
     })
 
-    // Get the signature from the header
     const signature = req.headers.get('stripe-signature')
     if (!signature) {
       throw new Error('No signature provided')
     }
 
-    // Get the raw body
     const body = await req.text()
 
-    // Verify the webhook signature using the async method
     let event
     try {
       event = await stripe.webhooks.constructEventAsync(
@@ -44,7 +40,6 @@ serve(async (req) => {
       })
     }
 
-    // Initialize Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
@@ -52,17 +47,16 @@ serve(async (req) => {
 
     console.log('Processing webhook event:', event.type)
 
-    // Handle the event
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
+      case 'customer.subscription.deleted':
         const subscription = event.data.object
         const customerId = subscription.customer as string
         
         console.log('Processing subscription event for customer:', customerId)
         console.log('Subscription status:', subscription.status)
         
-        // Get the user with this stripe_customer_id
         const { data: profiles, error: profileError } = await supabaseClient
           .from('profiles')
           .select('id')
@@ -76,20 +70,17 @@ serve(async (req) => {
 
         console.log('Found user profile:', profiles.id)
 
-        // Map Stripe subscription status to our allowed values
-        const dbStatus = ['active', 'trialing'].includes(subscription.status) ? 'active' : 'inactive'
-        const subscriptionTier = dbStatus === 'active' ? 'pro' : 'starter'
-
-        console.log('Mapping status:', subscription.status, 'to:', dbStatus)
-        console.log('Setting subscription tier to:', subscriptionTier)
-
-        // Update the user's subscription status
+        // Map subscription status directly from Stripe
+        const subscriptionTier = ['active', 'trialing'].includes(subscription.status) ? 'pro' : 'starter'
+        
+        // Update profile with detailed subscription information
         const { error: updateError } = await supabaseClient
           .from('profiles')
           .update({
-            subscription_status: dbStatus,
+            subscription_status: subscription.status, // Store raw Stripe status
             subscription_tier: subscriptionTier,
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+            current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000).toISOString() : null,
+            trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
           })
           .eq('id', profiles.id)
 
@@ -98,45 +89,7 @@ serve(async (req) => {
           throw new Error('Failed to update user')
         }
 
-        console.log('Successfully updated user subscription status')
-        break
-
-      case 'customer.subscription.deleted':
-        const deletedSubscription = event.data.object
-        const deletedCustomerId = deletedSubscription.customer as string
-
-        console.log('Processing subscription deletion for customer:', deletedCustomerId)
-
-        // Get the user with this stripe_customer_id
-        const { data: deletedProfile, error: deletedProfileError } = await supabaseClient
-          .from('profiles')
-          .select('id')
-          .eq('stripe_customer_id', deletedCustomerId)
-          .single()
-
-        if (deletedProfileError || !deletedProfile) {
-          console.error('Error finding user:', deletedProfileError)
-          throw new Error('User not found')
-        }
-
-        console.log('Found user profile for deletion:', deletedProfile.id)
-
-        // Reset the user's subscription status
-        const { error: resetError } = await supabaseClient
-          .from('profiles')
-          .update({
-            subscription_status: 'inactive',
-            subscription_tier: 'starter',
-            current_period_end: null,
-          })
-          .eq('id', deletedProfile.id)
-
-        if (resetError) {
-          console.error('Error resetting user:', resetError)
-          throw new Error('Failed to reset user')
-        }
-
-        console.log('Successfully reset user subscription status')
+        console.log('Successfully updated user subscription status to:', subscription.status)
         break
 
       default:
