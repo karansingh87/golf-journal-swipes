@@ -13,8 +13,8 @@ const TrendsCard = ({ onClick }: TrendsCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full py-6 px-6 bg-gradient-to-br from-gray-50/80 to-orange-100/80
-        backdrop-blur-sm hover:from-gray-100 hover:to-orange-200 rounded-2xl 
+      className="w-full py-6 px-6 bg-gradient-to-br from-amber-50/80 to-orange-100/80
+        backdrop-blur-sm hover:from-amber-100 hover:to-orange-200 rounded-2xl 
         shadow-sm transition-all duration-200
         flex items-start gap-4 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
         relative"
