@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import GenerateNotesCard from './GenerateNotesCard';
 import TrendsCard from './TrendsCard';
@@ -14,6 +15,7 @@ interface PlaybookActionsProps {
 
 const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsProps) => {
   const [upgradeFeature, setUpgradeFeature] = useState<'trends' | 'pep-talk' | 'lesson-prep' | null>(null);
+  const navigate = useNavigate();
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -42,7 +44,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
 
     switch (feature) {
       case 'trends':
-        window.location.href = '/trends';
+        navigate('/trends');
         break;
       case 'pep-talk':
         onPepTalkClick();
