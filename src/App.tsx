@@ -54,12 +54,14 @@ const App = () => (
             <Route path="/notes" element={<Notes />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
             
-            {/* Protected routes */}
-            <Route path="/trends" element={<SubscriptionGuard><Trends /></SubscriptionGuard>} />
-            <Route path="/coach_notes" element={<SubscriptionGuard><CoachNotes /></SubscriptionGuard>} />
-            <Route path="/coach_notes/:id" element={<SubscriptionGuard><CoachNoteDetail /></SubscriptionGuard>} />
-            <Route path="/pep_talks" element={<SubscriptionGuard><PepTalks /></SubscriptionGuard>} />
-            <Route path="/pep_talk/:id" element={<SubscriptionGuard><PepTalkDetail /></SubscriptionGuard>} />
+            {/* Previously protected routes - now using feature-level gates */}
+            <Route path="/trends" element={<Trends />} />
+            <Route path="/coach_notes" element={<CoachNotes />} />
+            <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
+            <Route path="/pep_talks" element={<PepTalks />} />
+            <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
+            
+            {/* Admin route - keeps SubscriptionGuard for security */}
             <Route path="/admin" element={<SubscriptionGuard><Admin /></SubscriptionGuard>} />
             
             {/* Redirects */}
