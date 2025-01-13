@@ -12,7 +12,7 @@ const screenshots: ScreenshotData[] = [
     title: "Press record and talk.",
   },
   {
-    image: "/lovable-uploads/ff6ca37a-ddc1-42ff-a2ac-1199d6b7099b.png",
+    image: "/lovable-uploads/d11356f6-f7f5-4bbb-a95a-2c79e28caaa3.png",
     title: "Watch your thoughts turn to text.",
   },
   {
