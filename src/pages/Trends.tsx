@@ -19,98 +19,53 @@ const Trends = () => {
   const session = useSession();
   const navigate = useNavigate();
 
+  // Redirect if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
+
   useEffect(() => {
-    const checkAccess = async () => {
-      if (!session?.user?.id) {
-        console.log("No session found, redirecting to login");
-        navigate('/login');
-        return;
-      }
+    const fetchRecordingsCount = async () => {
+      const { count } = await supabase
+        .from('recordings')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', session.user.id);
+      
+      setRecordingsCount(count || 0);
+    };
 
+    const fetchLatestTrends = async () => {
       try {
-        console.log("Checking subscription status for user:", session.user.id);
-        const { data: profile, error } = await supabase
-          .from('profiles')
-          .select('subscription_tier')
-          .eq('id', session.user.id)
-          .single();
+        const { data: trends, error } = await supabase
+          .from('trends')
+          .select('trends_output, milestone_type, last_analysis_at')
+          .eq('user_id', session.user.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
 
-        if (error) {
-          console.error('Error fetching profile:', error);
-          toast({
-            title: "Error",
-            description: "Failed to verify access. Please try again.",
-            variant: "destructive",
-          });
-          return;
+        if (error) throw error;
+
+        if (trends?.trends_output) {
+          try {
+            const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
+            const parsedTrends = JSON.parse(cleanTrendsOutput);
+            setTrendsData(parsedTrends);
+            setMilestone(trends.milestone_type);
+            setLastUpdateTime(new Date(trends.last_analysis_at));
+          } catch (error) {
+            console.error('Error parsing trends data:', error);
+          }
         }
-
-        console.log("Profile data:", profile);
-        console.log("Subscription tier:", profile?.subscription_tier);
-
-        // Only redirect if explicitly not pro
-        if (profile && profile.subscription_tier !== 'pro') {
-          console.log("User is not pro, redirecting to record");
-          navigate('/record');
-          return;
-        }
-
-        // If we get here, user is pro, fetch their data
-        fetchRecordingsCount();
-        fetchLatestTrends();
       } catch (error) {
-        console.error('Error checking access:', error);
-        toast({
-          title: "Error",
-          description: "Failed to verify access. Please try again.",
-          variant: "destructive",
-        });
+        console.error('Error fetching latest trends:', error);
       }
     };
 
-    checkAccess();
-  }, [session, navigate, toast]);
-
-  const fetchRecordingsCount = async () => {
-    if (!session?.user?.id) return;
-
-    const { count } = await supabase
-      .from('recordings')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', session.user.id);
-    
-    setRecordingsCount(count || 0);
-  };
-
-  const fetchLatestTrends = async () => {
-    if (!session?.user?.id) return;
-
-    try {
-      const { data: trends, error } = await supabase
-        .from('trends')
-        .select('trends_output, milestone_type, last_analysis_at')
-        .eq('user_id', session.user.id)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (trends?.trends_output) {
-        try {
-          const cleanTrendsOutput = trends.trends_output.replace(/```json\n|\n```/g, '');
-          const parsedTrends = JSON.parse(cleanTrendsOutput);
-          setTrendsData(parsedTrends);
-          setMilestone(trends.milestone_type);
-          setLastUpdateTime(new Date(trends.last_analysis_at));
-        } catch (error) {
-          console.error('Error parsing trends data:', error);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching latest trends:', error);
-    }
-  };
+    fetchRecordingsCount();
+    fetchLatestTrends();
+  }, [session.user.id]);
 
   // Auto-refresh when there are 3 or more new recordings
   useEffect(() => {
@@ -120,8 +75,6 @@ const Trends = () => {
   }, [trendsInfo?.newRecordingsCount]);
 
   const generateTrends = async () => {
-    if (!session?.user?.id) return;
-
     try {
       setIsLoading(true);
       const { error } = await supabase.functions.invoke('generate-trends', {
@@ -165,8 +118,6 @@ const Trends = () => {
       setIsLoading(false);
     }
   };
-
-  if (!session) return null;
 
   return (
     <div className="min-h-[100dvh] bg-background">

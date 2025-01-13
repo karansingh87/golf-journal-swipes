@@ -10,7 +10,7 @@ interface SessionTypeModalProps {
 const SessionTypeModal = ({ isOpen, onSelect, onClose }: SessionTypeModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95%] sm:max-w-sm mx-auto p-4 bg-white rounded-[16px] shadow-lg animate-scale-in">
+      <DialogContent className="w-full max-w-sm p-4 bg-white rounded-[16px] shadow-lg animate-scale-in">
         <div className="flex flex-col gap-4">
           <h2 className="text-lg font-semibold text-center text-zinc-950">
             Select Session Type
