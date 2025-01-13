@@ -8,7 +8,6 @@ import { supabase } from "./integrations/supabase/client";
 import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
-import InstallBanner from "./components/pwa/InstallBanner";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -40,7 +39,6 @@ const App = () => (
       <TooltipProvider>
         <BrowserRouter>
           <NavigationBar />
-          <InstallBanner />
           <Toaster />
           <Sonner />
           <Routes>
