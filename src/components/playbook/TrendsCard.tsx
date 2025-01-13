@@ -1,16 +1,18 @@
 import { LineChart } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useTrendsInfo } from "@/hooks/useTrendsInfo";
 import TrendsNotification from "@/components/trends/TrendsNotification";
 
-const TrendsCard = () => {
-  const navigate = useNavigate();
+interface TrendsCardProps {
+  onClick: () => void;
+}
+
+const TrendsCard = ({ onClick }: TrendsCardProps) => {
   const { data: trendsInfo } = useTrendsInfo();
   const showNotification = trendsInfo?.newRecordingsCount >= 3;
 
   return (
     <button
-      onClick={() => navigate('/trends')}
+      onClick={onClick}
       className="w-full py-6 px-6 bg-gradient-to-br from-amber-50/80 to-orange-100/80
         backdrop-blur-sm hover:from-amber-100 hover:to-orange-200 rounded-2xl 
         shadow-sm transition-all duration-200
