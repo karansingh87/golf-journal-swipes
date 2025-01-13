@@ -77,7 +77,7 @@ serve(async (req) => {
         const { error: updateError } = await supabaseClient
           .from('profiles')
           .update({
-            subscription_status: subscription.status, // Store raw Stripe status
+            subscription_status: subscription.status,
             subscription_tier: subscriptionTier,
             current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000).toISOString() : null,
             trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
@@ -89,7 +89,11 @@ serve(async (req) => {
           throw new Error('Failed to update user')
         }
 
-        console.log('Successfully updated user subscription status to:', subscription.status)
+        console.log('Successfully updated user subscription:', {
+          status: subscription.status,
+          tier: subscriptionTier,
+          trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
+        })
         break
 
       default:

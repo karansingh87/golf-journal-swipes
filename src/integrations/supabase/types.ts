@@ -120,6 +120,7 @@ export type Database = {
           subscription_status: string | null
           subscription_tier: string | null
           tracking_habit: Database["public"]["Enums"]["tracking_habit"] | null
+          trial_end: string | null
           updated_at: string | null
         }
         Insert: {
@@ -142,6 +143,7 @@ export type Database = {
           subscription_status?: string | null
           subscription_tier?: string | null
           tracking_habit?: Database["public"]["Enums"]["tracking_habit"] | null
+          trial_end?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -164,6 +166,7 @@ export type Database = {
           subscription_status?: string | null
           subscription_tier?: string | null
           tracking_habit?: Database["public"]["Enums"]["tracking_habit"] | null
+          trial_end?: string | null
           updated_at?: string | null
         }
         Relationships: []
