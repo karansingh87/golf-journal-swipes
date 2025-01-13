@@ -21,7 +21,7 @@ const VoiceRecorderContainer = () => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, monthly_recording_count')
+        .select('subscription_tier')
         .eq('id', user.id)
         .single();
 
@@ -39,7 +39,7 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!canRecord()) {
+    if (!isProUser()) {
       setShowUpgradeModal(true);
       return;
     }
@@ -48,7 +48,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = () => {
-    if (!canRecord()) {
+    if (!isProUser()) {
       setShowUpgradeModal(true);
       return;
     }
@@ -60,14 +60,12 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const canRecord = () => {
-    if (!profile) return false;
-    if (profile.subscription_tier === 'pro') return true;
-    return profile.monthly_recording_count < 3;
+  const isProUser = () => {
+    return profile?.subscription_tier === 'pro';
   };
 
   const handleSwitchToText = () => {
-    if (!canRecord()) {
+    if (!isProUser()) {
       setShowUpgradeModal(true);
       return;
     }

@@ -113,7 +113,6 @@ export type Database = {
           id: string
           is_admin: boolean | null
           location: string | null
-          monthly_recording_count: number | null
           onboarding_completed: boolean | null
           onboarding_last_step: number | null
           onboarding_skipped: boolean | null
@@ -136,7 +135,6 @@ export type Database = {
           id: string
           is_admin?: boolean | null
           location?: string | null
-          monthly_recording_count?: number | null
           onboarding_completed?: boolean | null
           onboarding_last_step?: number | null
           onboarding_skipped?: boolean | null
@@ -159,7 +157,6 @@ export type Database = {
           id?: string
           is_admin?: boolean | null
           location?: string | null
-          monthly_recording_count?: number | null
           onboarding_completed?: boolean | null
           onboarding_last_step?: number | null
           onboarding_skipped?: boolean | null
@@ -328,10 +325,7 @@ export type Database = {
       }
     }
     Functions: {
-      reset_monthly_recording_count: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       achievement_type:
