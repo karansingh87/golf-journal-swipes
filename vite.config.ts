@@ -18,8 +18,8 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['/lovable-uploads/ff5aafc4-9a66-47d6-baa6-5fe492e237e7.png'],
       manifest: {
-        name: 'golflog',
-        short_name: 'golflog',
+        name: 'GolfLog',
+        short_name: 'GolfLog',
         description: 'Your personal golf improvement companion',
         theme_color: '#ffffff',
         background_color: '#ffffff',

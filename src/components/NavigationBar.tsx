@@ -77,7 +77,7 @@ const NavigationBar = () => {
               WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
             }}
           >
-            golflog
+            GolfLog
           </span>
         </div>
         
