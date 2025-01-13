@@ -52,10 +52,10 @@ const App = () => (
             <Route path="/record" element={<VoiceRecorderContainer />} />
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/notes" element={<Notes />} />
+            <Route path="/recording/:id" element={<RecordingDetail />} />
             
             {/* Protected routes */}
             <Route path="/trends" element={<SubscriptionGuard><Trends /></SubscriptionGuard>} />
-            <Route path="/recording/:id" element={<SubscriptionGuard><RecordingDetail /></SubscriptionGuard>} />
             <Route path="/coach_notes" element={<SubscriptionGuard><CoachNotes /></SubscriptionGuard>} />
             <Route path="/coach_notes/:id" element={<SubscriptionGuard><CoachNoteDetail /></SubscriptionGuard>} />
             <Route path="/pep_talks" element={<SubscriptionGuard><PepTalks /></SubscriptionGuard>} />
