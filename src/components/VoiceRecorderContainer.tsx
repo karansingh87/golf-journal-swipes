@@ -66,6 +66,14 @@ const VoiceRecorderContainer = () => {
     return profile.monthly_recording_count < 3;
   };
 
+  const handleSwitchToText = () => {
+    if (!canRecord()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    setShowTextInput(true);
+  };
+
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
       {showTextInput ? (
@@ -80,7 +88,7 @@ const VoiceRecorderContainer = () => {
             isTranscribing={isTranscribing}
             transcription={transcription}
             onRecordingComplete={handleAudioRecording}
-            onSwitchToText={() => setShowTextInput(true)}
+            onSwitchToText={handleSwitchToText}
             onRecordingStart={handleRecordingStart}
             sessionType={sessionType}
             autoStartRecording={true}
