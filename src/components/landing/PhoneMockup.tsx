@@ -24,7 +24,7 @@ const screenshots: ScreenshotData[] = [
     title: "Get mindset and breakthrough insights.",
   },
   {
-    image: "/lovable-uploads/0ffb7065-6622-4b6d-8945-9c03333d7f97.png",
+    image: "/lovable-uploads/c9ec0f74-9bfa-441b-811a-b00e987b0d4f.png",
     title: "Discover your winning patterns.",
   }
 ];
