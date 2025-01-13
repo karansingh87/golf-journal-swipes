@@ -50,11 +50,11 @@ const App = () => (
             <Route path="/shared/:id" element={<SharedRecording />} />
             <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
             <Route path="/record" element={<VoiceRecorderContainer />} />
+            <Route path="/playbook" element={<Playbook />} />
             
             {/* Protected routes */}
             <Route path="/notes" element={<SubscriptionGuard><Notes /></SubscriptionGuard>} />
             <Route path="/trends" element={<SubscriptionGuard><Trends /></SubscriptionGuard>} />
-            <Route path="/playbook" element={<SubscriptionGuard><Playbook /></SubscriptionGuard>} />
             <Route path="/recording/:id" element={<SubscriptionGuard><RecordingDetail /></SubscriptionGuard>} />
             <Route path="/coach_notes" element={<SubscriptionGuard><CoachNotes /></SubscriptionGuard>} />
             <Route path="/coach_notes/:id" element={<SubscriptionGuard><CoachNoteDetail /></SubscriptionGuard>} />
