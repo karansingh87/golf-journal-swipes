@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => ({
     componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico'],
+      includeAssets: ['/lovable-uploads/ff5aafc4-9a66-47d6-baa6-5fe492e237e7.png'],
       manifest: {
         name: 'golflog',
         short_name: 'golflog',
