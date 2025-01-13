@@ -32,17 +32,16 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     },
   });
 
-  const isPremium = profile?.subscription_tier === 'pro';
+  const isProUser = profile?.subscription_tier === 'pro';
 
   const handleFeatureClick = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
-    if (!isPremium) {
+    if (!isProUser) {
       setUpgradeFeature(feature);
       return;
     }
 
     switch (feature) {
       case 'trends':
-        // Navigate to trends
         window.location.href = '/trends';
         break;
       case 'pep-talk':
