@@ -21,26 +21,37 @@ const Trends = () => {
 
   useEffect(() => {
     const checkAccess = async () => {
-      if (!session) {
+      if (!session?.user?.id) {
         navigate('/login');
         return;
       }
 
-      // Fetch user profile to check subscription
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('subscription_tier')
-        .eq('id', session.user.id)
-        .single();
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('subscription_tier')
+          .eq('id', session.user.id)
+          .single();
 
-      if (!profile || profile.subscription_tier !== 'pro') {
-        navigate('/record');
-        return;
+        if (error) throw error;
+
+        // Only redirect if explicitly not pro
+        if (profile && profile.subscription_tier !== 'pro') {
+          navigate('/record');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking access:', error);
+        toast({
+          title: "Error",
+          description: "Failed to verify access. Please try again.",
+          variant: "destructive",
+        });
       }
     };
 
     checkAccess();
-  }, [session, navigate]);
+  }, [session, navigate, toast]);
 
   useEffect(() => {
     if (!session?.user?.id) return;
@@ -140,7 +151,6 @@ const Trends = () => {
     }
   };
 
-  // Don't render anything while checking access
   if (!session) return null;
 
   return (
