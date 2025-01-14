@@ -55,13 +55,23 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
           </p>
           
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex justify-center gap-4">
             <Button
               onClick={() => navigate("/signup")}
               className="text-base px-6 py-2.5 h-auto bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-xl"
             >
-              <span className="relative z-10">Start your GolfLog</span>
+              <span className="relative z-10 flex items-center">
+                Start Free Trial
+                <span className="ml-2">→</span>
+              </span>
               <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-xl"></div>
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="text-base px-6 py-2.5 h-auto border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors rounded-xl"
+            >
+              Watch 1-min Demo
             </Button>
           </div>
         </div>
