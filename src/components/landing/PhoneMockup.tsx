@@ -9,23 +9,23 @@ interface ScreenshotData {
 const screenshots: ScreenshotData[] = [
   {
     image: "/lovable-uploads/18cfc506-b67d-485f-93cd-f8bbfbf62128.png",
-    title: "Hit record to share your golf thoughts, just like chatting with a coach or buddy.",
+    title: "Press record. Talk naturally.",
   },
   {
     image: "/lovable-uploads/d11356f6-f7f5-4bbb-a95a-2c79e28caaa3.png",
-    title: "Watch your thoughts turn to text.",
+    title: "Watch your thoughts appear",
   },
   {
     image: "/lovable-uploads/aa8bdac0-6f57-40f6-97b9-71c98224487c.png",
-    title: "Your story comes together.",
+    title: "Smart insights emerge",
   },
   {
     image: "/lovable-uploads/a7b1dcf1-33e5-490f-8346-7e1538067798.png",
-    title: "Get mindset and breakthrough insights.",
+    title: "See your patterns",
   },
   {
     image: "/lovable-uploads/c9ec0f74-9bfa-441b-811a-b00e987b0d4f.png",
-    title: "Discover your winning patterns.",
+    title: "Your playbook builds",
   }
 ];
 
