@@ -2,6 +2,7 @@ import Navigation from "@/components/landing/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
 import PhoneMockup from "@/components/landing/PhoneMockup";
 import BenefitsSection from "@/components/landing/BenefitsSection";
+import PowerFeaturesSection from "@/components/landing/PowerFeaturesSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
@@ -19,6 +20,7 @@ const Landing = () => {
       <HeroSection />
       <PhoneMockup />
       <BenefitsSection />
+      <PowerFeaturesSection />
       <PricingSection />
       <FAQSection />
       <Footer />
