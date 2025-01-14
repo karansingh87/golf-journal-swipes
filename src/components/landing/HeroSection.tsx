@@ -34,7 +34,12 @@ const HeroSection = ({ content }: HeroSectionProps) => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mt-12 flex flex-col items-center text-center">
           {/* Animated Mic Icon */}
-          <div className="mb-8 relative">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-8 relative"
+          >
             <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
               <svg className="w-full h-full animate-spin-slow" viewBox="0 0 100 100">
                 <circle
@@ -57,9 +62,14 @@ const HeroSection = ({ content }: HeroSectionProps) => {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-800 to-zinc-950"></div>
               <Mic className="w-12 h-12 text-white relative z-10" />
             </div>
-          </div>
+          </motion.div>
           
-          <h1 className="font-poppins font-[400] text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-poppins font-[400] text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto"
+          >
             Your best golf insights,
             <br />
             <span className="relative flex items-center justify-center h-[1.5em] overflow-hidden">
@@ -83,13 +93,23 @@ const HeroSection = ({ content }: HeroSectionProps) => {
                 </motion.span>
               ))}
             </span>
-          </h1>
+          </motion.h1>
           
-          <p className="mt-6 text-base md:text-lg leading-6 text-zinc-600 max-w-2xl mx-auto font-inter">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6 text-base md:text-lg leading-6 text-zinc-600 max-w-2xl mx-auto font-inter"
+          >
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
-          </p>
+          </motion.p>
           
-          <div className="mt-10 flex justify-center gap-3">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-10 flex justify-center gap-3"
+          >
             <Button
               onClick={() => navigate("/signup")}
               className="text-sm font-medium w-32 h-12 bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-300"
@@ -104,7 +124,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             >
               Watch Demo
             </Button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

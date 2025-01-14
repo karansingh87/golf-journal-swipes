@@ -43,7 +43,7 @@ const PhoneMockup = () => {
   useEffect(() => {
     const unsubscribe = adjustedProgress.on("change", (latest) => {
       const newIndex = Math.round(latest);
-      if (newIndex !== displayedIndex) {
+      if (newIndex !== displayedIndex && newIndex >= 0) {
         setPreviousIndex(displayedIndex);
         setDisplayedIndex(newIndex);
       }
@@ -59,16 +59,15 @@ const PhoneMockup = () => {
     >
       <div className="sticky top-[20vh] h-[60vh] flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
             opacity: 1, 
             y: 0,
             transition: {
-              duration: 0.5,
-              ease: "easeOut"
+              duration: 0.6,
+              ease: [0.22, 1, 0.36, 1]
             }
           }}
-          viewport={{ once: true, margin: "-100px" }}
           className="container px-4 mx-auto"
         >
           <div className="w-full max-w-[320px] mx-auto">
