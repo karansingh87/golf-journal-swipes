@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 const features = [
   {
     title: "Capture On Your Terms",
-    description: "Record your thoughts your way - voice notes on the drive home, quick text after a range session, or whenever it feels right. No manual tracking, just capture insights on your terms.",
+    description: "Record your thoughts your way - voice notes on the drive home, quick text after a range session, or whenever it feels right.",
     icon: MessageSquare,
   },
   {
@@ -15,7 +15,7 @@ const features = [
   },
   {
     title: "Beyond the Numbers",
-    description: "While others track just scores and stats, GolfLog captures the complete story of your golf journey. Understand what actually works for YOUR game.",
+    description: "While others track just scores and stats, GolfLog captures the complete story of your golf journey.",
     icon: Brain,
   },
   {
@@ -56,17 +56,17 @@ const BentoCard = ({
 }) => (
   <div
     className={cn(
-      "group relative flex flex-col overflow-hidden rounded-xl bg-white p-6",
-      "[box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
+      "group relative flex flex-col items-center justify-center overflow-hidden rounded-3xl bg-white p-8 text-center",
+      "shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_6px_rgba(0,0,0,0.03)]",
       "transform-gpu transition-transform duration-300 hover:scale-[1.02]",
       className
     )}
   >
-    <Icon className="h-12 w-12 origin-left transform-gpu text-zinc-900 transition-all duration-300 ease-in-out group-hover:scale-110" />
-    <h3 className="mt-4 text-xl font-semibold text-zinc-900">
+    <Icon className="h-12 w-12 mb-6 text-zinc-900" />
+    <h3 className="text-xl font-semibold text-zinc-900 mb-3">
       {title}
     </h3>
-    <p className="mt-2 text-zinc-600">{description}</p>
+    <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px]">{description}</p>
   </div>
 );
 
