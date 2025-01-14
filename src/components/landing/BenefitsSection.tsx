@@ -1,36 +1,21 @@
 import React from "react";
-import { MessageSquare, Brain, PieChart, Users, TrendingUp, Timer } from "lucide-react";
+import { MessageSquare, Brain, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const features = [
   {
-    title: "Capture On Your Terms",
-    description: "Record your thoughts your way - voice notes on the drive home, quick text after a range session, or whenever it feels right.",
+    title: "Smart Golf Journal",
+    description: "Voice or text, capture your golf thoughts naturally. Use it on the drive home, after practice, or whenever inspiration hits.",
     icon: MessageSquare,
   },
   {
-    title: "Personal Patterns",
-    description: "Discover your unique performance triggers. From practice drills to pre-shot routines, see what really improves your scores.",
-    icon: PieChart,
-  },
-  {
-    title: "Beyond the Numbers",
-    description: "While others track just scores and stats, GolfLog captures the complete story of your golf journey.",
+    title: "Deep Game Insights",
+    description: "Let smart analysis uncover your patterns. From swing thoughts to pre-shot routines, see what actually works for YOUR game.",
     icon: Brain,
   },
   {
-    title: "Your Golf Time Machine",
-    description: "Go back to any breakthrough moment. That perfect drive or game-changing range session? Every insight saved and searchable.",
-    icon: Timer,
-  },
-  {
-    title: "Coach-Ready Insights",
-    description: "Share focused insights with your coach. No more \"What were we working on last time?\" Transform your practice and play.",
-    icon: Users,
-  },
-  {
-    title: "Practice to Performance",
-    description: "Connect your range breakthroughs to course success. See which practice methods deliver real results for your game.",
+    title: "Your Golf Evolution",
+    description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, every improvement tracked.",
     icon: TrendingUp,
   },
 ];
