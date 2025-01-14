@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mic } from "lucide-react";
 
@@ -11,6 +13,21 @@ interface HeroSectionProps {
 
 const HeroSection = ({ content }: HeroSectionProps) => {
   const navigate = useNavigate();
+  
+  // Animation words state
+  const [wordIndex, setWordIndex] = useState(0);
+  const words = useMemo(
+    () => ["Spoken", "Recorded", "Analyzed", "Organized", "Transformed"],
+    []
+  );
+
+  // Word rotation effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setWordIndex((current) => (current === words.length - 1 ? 0 : current + 1));
+    }, 2000);
+    return () => clearTimeout(timeoutId);
+  }, [wordIndex, words]);
   
   return (
     <div className="relative pt-20 pb-24 sm:pt-24 sm:pb-32">
@@ -46,7 +63,23 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Your best golf insights,
             <br />
             <span className="flex items-center justify-center gap-2">
-              <span className="font-[600]">spoken</span>
+              <span className="relative h-[1.2em] overflow-hidden">
+                {words.map((word, index) => (
+                  <motion.span
+                    key={index}
+                    className="absolute font-[600] whitespace-nowrap"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={
+                      wordIndex === index
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: wordIndex > index ? -50 : 50 }
+                    }
+                    transition={{ type: "spring", stiffness: 125, damping: 20, mass: 1 }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
               <span>not lost.</span>
             </span>
           </h1>
