@@ -47,7 +47,7 @@ const BentoCard = ({
       className
     )}
   >
-    <Icon className="h-12 w-12 mb-6 text-zinc-900" />
+    <Icon className="h-12 w-12 mb-3 text-zinc-900" />
     <h3 className="text-xl font-semibold text-zinc-900 mb-3">
       {title}
     </h3>
