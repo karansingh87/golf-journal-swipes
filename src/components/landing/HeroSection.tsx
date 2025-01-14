@@ -37,7 +37,10 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ 
+              duration: 1,
+              ease: [0.16, 1, 0.3, 1]
+            }}
             className="mb-8 relative"
           >
             <div className="absolute -inset-3 w-[calc(100%+24px)] h-[calc(100%+24px)]">
@@ -67,7 +70,11 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ 
+              duration: 1,
+              delay: 0.2,
+              ease: [0.16, 1, 0.3, 1]
+            }}
             className="font-poppins font-[400] text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto"
           >
             Your best golf insights,
@@ -84,8 +91,8 @@ const HeroSection = ({ content }: HeroSectionProps) => {
                   }}
                   transition={{
                     type: "spring",
-                    stiffness: 125,
-                    damping: 20,
+                    stiffness: 100,
+                    damping: 25,
                     mass: 1
                   }}
                 >
@@ -98,7 +105,11 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ 
+              duration: 1,
+              delay: 0.4,
+              ease: [0.16, 1, 0.3, 1]
+            }}
             className="mt-6 text-base md:text-lg leading-6 text-zinc-600 max-w-2xl mx-auto font-inter"
           >
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
@@ -107,7 +118,11 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ 
+              duration: 1,
+              delay: 0.6,
+              ease: [0.16, 1, 0.3, 1]
+            }}
             className="mt-10 flex justify-center gap-3"
           >
             <Button

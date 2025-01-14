@@ -64,8 +64,8 @@ const PhoneMockup = () => {
             opacity: 1, 
             y: 0,
             transition: {
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1]
+              duration: 1,
+              ease: [0.16, 1, 0.3, 1]
             }
           }}
           className="container px-4 mx-auto"
@@ -78,7 +78,7 @@ const PhoneMockup = () => {
                   {screenshots.map((_, index) => (
                     <div
                       key={index}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors duration-200 ${
+                      className={`w-1.5 h-1.5 rounded-full transition-colors duration-500 ${
                         index === displayedIndex
                           ? "bg-golf-gray-light"
                           : "bg-golf-gray-light/30"
@@ -95,8 +95,8 @@ const PhoneMockup = () => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ 
-                      duration: 0.4,
-                      ease: [0.4, 0, 0.2, 1]
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1]
                     }}
                   >
                     <img
@@ -116,8 +116,8 @@ const PhoneMockup = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ 
-                    duration: 0.3,
-                    ease: [0.4, 0, 0.2, 1]
+                    duration: 0.5,
+                    ease: [0.16, 1, 0.3, 1]
                   }}
                 >
                   {screenshots[displayedIndex].title}
