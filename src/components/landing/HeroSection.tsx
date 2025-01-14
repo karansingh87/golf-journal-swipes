@@ -17,7 +17,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
   // Animation words state
   const [wordIndex, setWordIndex] = useState(0);
   const words = useMemo(
-    () => ["Spoken", "Recorded", "Analyzed", "Organized", "Transformed"],
+    () => ["spoken", "recorded", "analyzed", "organized", "transformed"],
     []
   );
 
@@ -63,26 +63,28 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Your best golf insights,
             <br />
             <span className="flex items-center justify-center gap-2">
-              <span className="relative inline-block h-[1.5em] w-[200px]">
-                {words.map((word, index) => (
-                  <motion.span
-                    key={word}
-                    className="absolute left-0 right-0 font-[600]"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{
-                      opacity: wordIndex === index ? 1 : 0,
-                      y: wordIndex === index ? 0 : -20,
-                    }}
-                    transition={{
-                      opacity: { duration: 0.2 },
-                      y: { type: "spring", stiffness: 300, damping: 30 }
-                    }}
-                  >
-                    {word}
-                  </motion.span>
-                ))}
+              <span className="inline-flex items-center">
+                <span className="relative inline-block h-[1.2em] w-[140px]">
+                  {words.map((word, index) => (
+                    <motion.span
+                      key={word}
+                      className="absolute left-0 right-0 font-[600]"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{
+                        opacity: wordIndex === index ? 1 : 0,
+                        y: wordIndex === index ? 0 : -20,
+                      }}
+                      transition={{
+                        opacity: { duration: 0.2 },
+                        y: { type: "spring", stiffness: 300, damping: 30 }
+                      }}
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </span>
+                <span className="font-[400]">&nbsp;not lost.</span>
               </span>
-              <span>not lost.</span>
             </span>
           </h1>
           
