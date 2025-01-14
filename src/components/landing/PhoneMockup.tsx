@@ -71,8 +71,8 @@ const PhoneMockup = () => {
           className="container px-4 mx-auto"
         >
           <div className="w-full max-w-[320px] mx-auto">
-            <div className="flex flex-col items-center space-y-4">
-              <div className="relative w-[275px] aspect-[9/19] mx-auto">
+            <div className="flex flex-col items-center space-y-8">
+              <div className="relative w-[240px] aspect-[9/19] mx-auto">
                 {/* Progress Dots */}
                 <div className="absolute -right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2">
                   {screenshots.map((_, index) => (
@@ -111,7 +111,7 @@ const PhoneMockup = () => {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
-                  className="font-[600] text-base text-center text-golf-gray-text-primary"
+                  className="font-[600] text-base text-center text-golf-gray-text-primary max-w-[280px]"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
