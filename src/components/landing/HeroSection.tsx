@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Mic } from "lucide-react";
 
@@ -13,21 +11,6 @@ interface HeroSectionProps {
 
 const HeroSection = ({ content }: HeroSectionProps) => {
   const navigate = useNavigate();
-  
-  // Animation words state
-  const [wordIndex, setWordIndex] = useState(0);
-  const words = useMemo(
-    () => ["spoken", "recorded", "analyzed", "organized", "transformed"],
-    []
-  );
-
-  // Word rotation effect
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setWordIndex((current) => (current === words.length - 1 ? 0 : current + 1));
-    }, 2000);
-    return () => clearTimeout(timeoutId);
-  }, [wordIndex, words]);
   
   return (
     <div className="relative pt-20 pb-24 sm:pt-24 sm:pb-32">
@@ -63,28 +46,8 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Your best golf insights,
             <br />
             <span className="flex items-center justify-center gap-2">
-              <span className="inline-flex items-center">
-                <span className="relative inline-block h-[1.2em] w-[140px]">
-                  {words.map((word, index) => (
-                    <motion.span
-                      key={word}
-                      className="absolute left-0 right-0 font-[600]"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{
-                        opacity: wordIndex === index ? 1 : 0,
-                        y: wordIndex === index ? 0 : -20,
-                      }}
-                      transition={{
-                        opacity: { duration: 0.2 },
-                        y: { type: "spring", stiffness: 300, damping: 30 }
-                      }}
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                </span>
-                <span className="font-[400]">&nbsp;not lost.</span>
-              </span>
+              <span className="font-[600]">spoken</span>
+              <span>not lost.</span>
             </span>
           </h1>
           
