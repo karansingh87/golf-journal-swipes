@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, AnimatePresence } from "framer-motion";
 
 interface ScreenshotData {
   image: string;
@@ -31,15 +31,8 @@ const screenshots: ScreenshotData[] = [
 
 const PhoneMockup = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  // Map scroll progress to [0, 5] for equal distribution
-  const adjustedProgress = useTransform(scrollYProgress, [0, 1], [0, 5]);
+  const { scrollY } = useScroll();
   const [displayedIndex, setDisplayedIndex] = useState(0);
-  const [previousIndex, setPreviousIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // Preload images
@@ -66,17 +59,24 @@ const PhoneMockup = () => {
     preloadImages();
   }, []);
 
+  // Update current section based on scroll position
   useEffect(() => {
-    const unsubscribe = adjustedProgress.on("change", (latest) => {
-      // Use Math.floor to create clear boundaries between sections
-      const newIndex = Math.min(Math.floor(latest), screenshots.length - 1);
-      if (newIndex !== displayedIndex && newIndex >= 0 && newIndex < screenshots.length) {
-        setPreviousIndex(displayedIndex);
-        setDisplayedIndex(newIndex);
+    const updateSection = () => {
+      const viewportHeight = window.innerHeight;
+      const currentScroll = window.scrollY;
+      const sectionIndex = Math.min(
+        Math.floor(currentScroll / viewportHeight),
+        screenshots.length - 1
+      );
+      
+      if (sectionIndex !== displayedIndex && sectionIndex >= 0) {
+        setDisplayedIndex(sectionIndex);
       }
-    });
-    return () => unsubscribe();
-  }, [adjustedProgress, displayedIndex]);
+    };
+
+    window.addEventListener('scroll', updateSection);
+    return () => window.removeEventListener('scroll', updateSection);
+  }, [displayedIndex]);
 
   if (!imagesLoaded) {
     return (
@@ -95,7 +95,7 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[500vh]"
+      className="relative h-[500vh]"
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-0 h-screen flex items-center justify-center">
