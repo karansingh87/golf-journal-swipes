@@ -55,7 +55,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
           </p>
           
-          <div className="mt-8 flex justify-center gap-3">
+          <div className="mt-10 flex justify-center gap-3">
             <Button
               onClick={() => navigate("/signup")}
               className="text-sm font-medium w-32 h-12 bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-300"
