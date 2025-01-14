@@ -131,10 +131,9 @@ const PhoneMockup = () => {
                   <motion.div
                     key={screenshots[displayedIndex].image}
                     className="absolute inset-0"
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0 }}
                     animate={{ 
-                      opacity: 1, 
-                      scale: 1,
+                      opacity: 1,
                       transition: {
                         duration: 0.8,
                         ease: [0.16, 1, 0.3, 1]
@@ -142,7 +141,6 @@ const PhoneMockup = () => {
                     }}
                     exit={{ 
                       opacity: 0,
-                      scale: 1.05,
                       transition: {
                         duration: 0.8,
                         ease: [0.16, 1, 0.3, 1]
