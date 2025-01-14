@@ -85,7 +85,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             </span>
           </h1>
           
-          <p className="mt-6 text-lg leading-6 text-zinc-600 max-w-2xl mx-auto font-inter">
+          <p className="mt-6 text-base leading-6 text-zinc-600 max-w-2xl mx-auto font-inter">
             Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
           </p>
           
