@@ -63,18 +63,20 @@ const HeroSection = ({ content }: HeroSectionProps) => {
             Your best golf insights,
             <br />
             <span className="flex items-center justify-center gap-2">
-              <span className="relative h-[1.2em] overflow-hidden">
+              <span className="relative inline-block h-[1.5em] w-[200px]">
                 {words.map((word, index) => (
                   <motion.span
-                    key={index}
-                    className="absolute font-[600] whitespace-nowrap"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={
-                      wordIndex === index
-                        ? { opacity: 1, y: 0 }
-                        : { opacity: 0, y: wordIndex > index ? -50 : 50 }
-                    }
-                    transition={{ type: "spring", stiffness: 125, damping: 20, mass: 1 }}
+                    key={word}
+                    className="absolute left-0 right-0 font-[600]"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: wordIndex === index ? 1 : 0,
+                      y: wordIndex === index ? 0 : -20,
+                    }}
+                    transition={{
+                      opacity: { duration: 0.2 },
+                      y: { type: "spring", stiffness: 300, damping: 30 }
+                    }}
                   >
                     {word}
                   </motion.span>
