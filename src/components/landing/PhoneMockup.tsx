@@ -39,6 +39,32 @@ const PhoneMockup = () => {
   const adjustedProgress = useTransform(scrollYProgress, [0.1, 0.85], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  // Preload images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = screenshots.map((screenshot) => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = screenshot.image;
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      });
+
+      try {
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+      } catch (error) {
+        console.error("Error preloading images:", error);
+        // Still set as loaded to prevent infinite loading state
+        setImagesLoaded(true);
+      }
+    };
+
+    preloadImages();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = adjustedProgress.on("change", (latest) => {
@@ -50,6 +76,20 @@ const PhoneMockup = () => {
     });
     return () => unsubscribe();
   }, [adjustedProgress, displayedIndex]);
+
+  if (!imagesLoaded) {
+    return (
+      <div className="min-h-[400vh] flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-golf-gray-text-primary"
+        >
+          Loading...
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <section 
@@ -91,19 +131,28 @@ const PhoneMockup = () => {
                   <motion.div
                     key={screenshots[displayedIndex].image}
                     className="absolute inset-0"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ 
-                      duration: 0.6,
-                      ease: [0.16, 1, 0.3, 1]
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ 
+                      opacity: 1, 
+                      scale: 1,
+                      transition: {
+                        duration: 0.8,
+                        ease: [0.16, 1, 0.3, 1]
+                      }
+                    }}
+                    exit={{ 
+                      opacity: 0,
+                      scale: 1.05,
+                      transition: {
+                        duration: 0.8,
+                        ease: [0.16, 1, 0.3, 1]
+                      }
                     }}
                   >
                     <img
                       src={screenshots[displayedIndex].image}
                       alt={screenshots[displayedIndex].title}
                       className="w-full h-full object-cover rounded-xl"
-                      loading="lazy"
                     />
                   </motion.div>
                 </AnimatePresence>
@@ -113,11 +162,21 @@ const PhoneMockup = () => {
                   key={screenshots[displayedIndex].title}
                   className="font-[600] text-base text-center text-golf-gray-text-primary max-w-[280px]"
                   initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ 
-                    duration: 0.5,
-                    ease: [0.16, 1, 0.3, 1]
+                  animate={{ 
+                    opacity: 1, 
+                    y: 0,
+                    transition: {
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1]
+                    }
+                  }}
+                  exit={{ 
+                    opacity: 0, 
+                    y: -10,
+                    transition: {
+                      duration: 0.4,
+                      ease: [0.16, 1, 0.3, 1]
+                    }
                   }}
                 >
                   {screenshots[displayedIndex].title}
