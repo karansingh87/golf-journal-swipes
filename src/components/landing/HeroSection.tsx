@@ -4,7 +4,7 @@ import HeroContent from "@/components/hero/HeroContent";
 
 const HeroSection = () => {
   return (
-    <div className="relative pt-20 pb-8 sm:pt-24 sm:pb-12">
+    <div className="relative pt-20 pb-0 sm:pt-24 sm:pb-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mt-12 flex flex-col items-center text-center">
           <AnimatedMicIcon />
