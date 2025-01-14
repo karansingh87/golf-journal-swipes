@@ -13,7 +13,7 @@ const screenshots: ScreenshotData[] = [
   },
   {
     image: "/lovable-uploads/d11356f6-f7f5-4bbb-a95a-2c79e28caaa3.png",
-    title: "Thoughts transcribe into text instantly.",
+    title: "Thoughts turn to text instantly.",
   },
   {
     image: "/lovable-uploads/aa8bdac0-6f57-40f6-97b9-71c98224487c.png",
