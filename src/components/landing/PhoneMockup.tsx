@@ -33,16 +33,10 @@ const PhoneMockup = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start center", "end center"]
   });
 
-  // Divide the scroll progress evenly among screenshots
-  const adjustedProgress = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, screenshots.length - 1]
-  );
-
+  const adjustedProgress = useTransform(scrollYProgress, [0.1, 0.85], [0, screenshots.length - 1]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -64,6 +58,7 @@ const PhoneMockup = () => {
         setImagesLoaded(true);
       } catch (error) {
         console.error("Error preloading images:", error);
+        // Still set as loaded to prevent infinite loading state
         setImagesLoaded(true);
       }
     };
@@ -74,7 +69,7 @@ const PhoneMockup = () => {
   useEffect(() => {
     const unsubscribe = adjustedProgress.on("change", (latest) => {
       const newIndex = Math.round(latest);
-      if (newIndex !== displayedIndex && newIndex >= 0 && newIndex < screenshots.length) {
+      if (newIndex !== displayedIndex && newIndex >= 0) {
         setPreviousIndex(displayedIndex);
         setDisplayedIndex(newIndex);
       }
@@ -84,7 +79,7 @@ const PhoneMockup = () => {
 
   if (!imagesLoaded) {
     return (
-      <div className="min-h-[500vh] flex items-center justify-center">
+      <div className="min-h-[400vh] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -99,10 +94,10 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative min-h-[500vh]"
+      className="relative min-h-[400vh] py-12"
       aria-label="App screenshots showcase"
     >
-      <div className="sticky top-0 h-screen flex items-center justify-center">
+      <div className="sticky top-[20vh] h-[60vh] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
