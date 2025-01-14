@@ -31,6 +31,7 @@ const screenshots: ScreenshotData[] = [
 
 const PhoneMockup = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll();
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
@@ -63,22 +64,10 @@ const PhoneMockup = () => {
     const updateSection = () => {
       const viewportHeight = window.innerHeight;
       const currentScroll = window.scrollY;
-      
-      // First section is 150vh, others are 100vh
-      const firstSectionHeight = viewportHeight * 1.5;
-      const regularSectionHeight = viewportHeight;
-      
-      let sectionIndex;
-      
-      if (currentScroll < firstSectionHeight) {
-        sectionIndex = 0;
-      } else {
-        const remainingScroll = currentScroll - firstSectionHeight;
-        sectionIndex = Math.min(
-          Math.floor(remainingScroll / regularSectionHeight) + 1,
-          screenshots.length - 1
-        );
-      }
+      const sectionIndex = Math.min(
+        Math.floor(currentScroll / viewportHeight),
+        screenshots.length - 1
+      );
       
       if (sectionIndex !== displayedIndex && sectionIndex >= 0) {
         setDisplayedIndex(sectionIndex);
@@ -91,7 +80,7 @@ const PhoneMockup = () => {
 
   if (!imagesLoaded) {
     return (
-      <div className="min-h-[550vh] flex items-center justify-center">
+      <div className="min-h-[500vh] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -106,10 +95,10 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative h-[550vh]"
+      className="relative h-[500vh]"
       aria-label="App screenshots showcase"
     >
-      <div className="sticky top-[-15vh] h-screen flex items-center justify-center">
+      <div className="sticky top-0 h-screen flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
