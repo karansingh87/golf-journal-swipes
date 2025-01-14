@@ -58,18 +58,18 @@ const HeroSection = ({ content }: HeroSectionProps) => {
           <div className="mt-8 flex justify-center gap-3">
             <Button
               onClick={() => navigate("/signup")}
-              className="text-sm font-medium px-4 py-2 h-9 bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-lg"
+              className="text-sm font-medium px-6 py-2 h-12 bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-full"
             >
               <span className="relative z-10 flex items-center">
                 Start Now
                 <span className="ml-1.5">→</span>
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-lg"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full"></div>
             </Button>
             
             <Button
               variant="outline"
-              className="text-sm font-medium px-4 py-2 h-9 border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors rounded-lg"
+              className="text-sm font-medium px-6 py-2 h-12 border-2 border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors rounded-full"
             >
               Watch Demo
             </Button>
