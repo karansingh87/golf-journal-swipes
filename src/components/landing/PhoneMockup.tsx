@@ -33,10 +33,11 @@ const PhoneMockup = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end start"]
   });
 
-  const adjustedProgress = useTransform(scrollYProgress, [0, 1], [0, screenshots.length - 1]);
+  // Map scroll progress to [0, 5] for equal distribution
+  const adjustedProgress = useTransform(scrollYProgress, [0, 1], [0, 5]);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -58,7 +59,6 @@ const PhoneMockup = () => {
         setImagesLoaded(true);
       } catch (error) {
         console.error("Error preloading images:", error);
-        // Still set as loaded to prevent infinite loading state
         setImagesLoaded(true);
       }
     };
@@ -68,7 +68,8 @@ const PhoneMockup = () => {
 
   useEffect(() => {
     const unsubscribe = adjustedProgress.on("change", (latest) => {
-      const newIndex = Math.round(latest);
+      // Use Math.floor to create clear boundaries between sections
+      const newIndex = Math.min(Math.floor(latest), screenshots.length - 1);
       if (newIndex !== displayedIndex && newIndex >= 0 && newIndex < screenshots.length) {
         setPreviousIndex(displayedIndex);
         setDisplayedIndex(newIndex);
