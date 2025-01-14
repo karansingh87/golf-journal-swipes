@@ -16,7 +16,7 @@ const HeroSection = ({ content }: HeroSectionProps) => {
   const [wordIndex, setWordIndex] = useState(0);
   
   const animatedWords = useMemo(
-    () => ["spoken", "recorded", "organized", "analyzed", "unlocked"],
+    () => ["spoken.", "recorded.", "organized.", "analyzed.", "unlocked."],
     []
   );
 
