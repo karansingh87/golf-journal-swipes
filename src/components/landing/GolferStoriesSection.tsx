@@ -32,7 +32,7 @@ const GolferStoriesSection = () => {
           {stories.map((story) => (
             <div
               key={story.content}
-              className="group relative flex flex-col"
+              className="group relative flex flex-col text-left"
             >
               <div className="mb-6">
                 <story.icon className="h-12 w-12 text-zinc-100" />
