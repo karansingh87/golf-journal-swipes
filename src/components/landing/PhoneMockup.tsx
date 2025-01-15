@@ -35,6 +35,7 @@ const PhoneMockup = () => {
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
+  // Preload images
   useEffect(() => {
     const preloadImages = async () => {
       const imagePromises = screenshots.map((screenshot) => {
@@ -58,38 +59,28 @@ const PhoneMockup = () => {
     preloadImages();
   }, []);
 
+  // Update current section based on scroll position
   useEffect(() => {
     const updateSection = () => {
-      if (!containerRef.current) return;
-      
       const viewportHeight = window.innerHeight;
-      const containerTop = containerRef.current.offsetTop;
-      const scrollPosition = window.scrollY - containerTop;
-      
-      // Calculate section index based on scroll position relative to container
+      const currentScroll = window.scrollY;
       const sectionIndex = Math.min(
-        Math.max(
-          Math.floor(scrollPosition / viewportHeight),
-          0
-        ),
+        Math.floor(currentScroll / viewportHeight),
         screenshots.length - 1
       );
       
-      if (sectionIndex !== displayedIndex) {
+      if (sectionIndex !== displayedIndex && sectionIndex >= 0) {
         setDisplayedIndex(sectionIndex);
       }
     };
 
     window.addEventListener('scroll', updateSection);
-    // Initial position check
-    updateSection();
-    
     return () => window.removeEventListener('scroll', updateSection);
   }, [displayedIndex]);
 
   if (!imagesLoaded) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="min-h-[500vh] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -104,17 +95,17 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative"
-      style={{ height: `${screenshots.length * 100}vh` }}
+      className="relative h-[500vh]"
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-0 h-screen flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ 
-            opacity: 1,
+            opacity: 1, 
+            y: 0,
             transition: {
-              duration: 0.8,
+              duration: 1,
               ease: [0.16, 1, 0.3, 1]
             }
           }}
@@ -169,16 +160,18 @@ const PhoneMockup = () => {
                 <motion.p 
                   key={screenshots[displayedIndex].title}
                   className="font-[600] text-base text-center text-golf-gray-text-primary max-w-[280px]"
-                  initial={{ opacity: 0 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ 
-                    opacity: 1,
+                    opacity: 1, 
+                    y: 0,
                     transition: {
                       duration: 0.6,
                       ease: [0.16, 1, 0.3, 1]
                     }
                   }}
                   exit={{ 
-                    opacity: 0,
+                    opacity: 0, 
+                    y: -10,
                     transition: {
                       duration: 0.4,
                       ease: [0.16, 1, 0.3, 1]
