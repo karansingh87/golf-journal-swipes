@@ -37,17 +37,21 @@ const GolferStoriesSection = () => {
           {stories.map((story) => (
             <div
               key={story.title}
-              className="relative bg-gradient-to-b from-[#FCF5FF]/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
+              className="relative bg-gradient-to-b from-neutral-200/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
             >
-              <story.icon className="h-8 w-8 text-zinc-900 mb-6" />
-              <p className="text-base font-bold text-neutral-800 mb-4">
-                {story.title}
-              </p>
-              <p className="text-neutral-600 text-base font-normal relative z-20 mb-6">
-                {story.content}
-              </p>
-              <div className="text-sm text-zinc-500 relative z-20">
-                {story.author}, {story.handicap} handicap
+              <div className="min-h-[160px]">
+                <p className="text-base font-bold text-neutral-800 mb-4">
+                  {story.title}
+                </p>
+                <p className="text-neutral-600 text-base font-normal relative z-20 mb-6">
+                  {story.content}
+                </p>
+                <div className="text-sm text-zinc-500 relative z-20">
+                  {story.author}, {story.handicap} handicap
+                </div>
+              </div>
+              <div className="absolute bottom-8 right-8">
+                <story.icon className="h-8 w-8 text-zinc-900" />
               </div>
             </div>
           ))}
