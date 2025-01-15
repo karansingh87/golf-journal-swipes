@@ -27,9 +27,9 @@ const AnimatedTitle = () => {
         delay: 0.2,
         ease: [0.16, 1, 0.3, 1]
       }}
-      className="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.02em] text-zinc-900 max-w-4xl mx-auto"
+      className="font-display text-4xl sm:text-5xl tracking-[-0.02em] text-zinc-900 max-w-4xl mx-auto"
     >
-      Your best golf insights,
+      <span className="font-medium">Your swing thoughts,</span>
       <br />
       <span className="relative flex items-center justify-center h-[1.5em] overflow-hidden">
         {animatedWords.map((word, index) => (
