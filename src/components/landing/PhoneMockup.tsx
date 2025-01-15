@@ -35,7 +35,6 @@ const PhoneMockup = () => {
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  // Preload images
   useEffect(() => {
     const preloadImages = async () => {
       const imagePromises = screenshots.map((screenshot) => {
@@ -59,7 +58,6 @@ const PhoneMockup = () => {
     preloadImages();
   }, []);
 
-  // Update current section based on scroll position
   useEffect(() => {
     const updateSection = () => {
       const viewportHeight = window.innerHeight;
@@ -100,12 +98,11 @@ const PhoneMockup = () => {
     >
       <div className="sticky top-0 h-screen flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0 }}
           animate={{ 
-            opacity: 1, 
-            y: 0,
+            opacity: 1,
             transition: {
-              duration: 1,
+              duration: 0.8,
               ease: [0.16, 1, 0.3, 1]
             }
           }}
@@ -160,18 +157,16 @@ const PhoneMockup = () => {
                 <motion.p 
                   key={screenshots[displayedIndex].title}
                   className="font-[600] text-base text-center text-golf-gray-text-primary max-w-[280px]"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0 }}
                   animate={{ 
-                    opacity: 1, 
-                    y: 0,
+                    opacity: 1,
                     transition: {
                       duration: 0.6,
                       ease: [0.16, 1, 0.3, 1]
                     }
                   }}
                   exit={{ 
-                    opacity: 0, 
-                    y: -10,
+                    opacity: 0,
                     transition: {
                       duration: 0.4,
                       ease: [0.16, 1, 0.3, 1]
