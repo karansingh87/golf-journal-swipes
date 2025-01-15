@@ -27,7 +27,7 @@ const AnimatedTitle = () => {
         delay: 0.2,
         ease: [0.16, 1, 0.3, 1]
       }}
-      className="font-display text-3xl sm:text-5xl tracking-[-0.02em] text-zinc-900 max-w-4xl mx-auto"
+      className="font-display text-4xl sm:text-6xl tracking-[-0.02em] text-zinc-900 max-w-4xl mx-auto"
     >
       <span className="font-medium">Your golf insights,</span>
       <br />
