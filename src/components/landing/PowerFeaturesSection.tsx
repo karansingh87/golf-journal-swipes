@@ -1,12 +1,12 @@
 import React from "react";
-import { LineChart, Brain, Share2 } from "lucide-react";
+import { Blend, Brain, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const features = [
   {
     title: "Trend Spotting",
     description: "See patterns across multiple rounds. Smart analysis connects the dots between your best performances.",
-    icon: LineChart,
+    icon: Blend,
   },
   {
     title: "Instant Confidence",
