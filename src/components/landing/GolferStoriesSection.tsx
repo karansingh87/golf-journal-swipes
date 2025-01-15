@@ -1,22 +1,22 @@
 import React from "react";
-import { NotebookPen, Target, MessageSquare } from "lucide-react";
+import { Car, Bucket, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const stories = [
   {
     title: "Drive Back Home",
     content: "Record during the drive home and capture fresh insights from your round",
-    icon: NotebookPen,
+    icon: Car,
   },
   {
     title: "On The Range",
     content: "Type quick thoughts between practice sessions at the range to track progress",
-    icon: Target,
+    icon: Bucket,
   },
   {
     title: "Reflection Time",
     content: "Choose between voice or text recording, right after play or when ready to reflect",
-    icon: MessageSquare,
+    icon: Home,
   },
 ];
 
