@@ -39,7 +39,7 @@ const GolferStoriesSection = () => {
             <div
               key={story.title}
               className={cn(
-                "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-zinc-900 p-6",
+                "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-zinc-900/90 p-6",
                 "border border-zinc-800/30",
                 "shadow-[0_8px_16px_rgba(0,0,0,0.3),0_0_4px_rgba(0,0,0,0.2)]",
                 "transition-all duration-300 ease-in-out",
