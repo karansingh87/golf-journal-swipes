@@ -4,19 +4,16 @@ import { cn } from "@/lib/utils";
 
 const stories = [
   {
-    stat: "24/7",
     title: "Drive Back Home",
     content: "Record during the drive home and capture fresh insights from your round",
     icon: NotebookPen,
   },
   {
-    stat: "Quick",
     title: "On The Range",
     content: "Type quick thoughts between practice sessions at the range to track progress",
     icon: Target,
   },
   {
-    stat: "Easy",
     title: "Reflection Time",
     content: "Choose between voice or text recording, right after play or when ready to reflect",
     icon: MessageSquare,
@@ -33,10 +30,8 @@ const GolferStoriesSection = () => {
               key={story.content}
               className="group relative flex flex-col"
             >
-              <div className="mb-4">
-                <span className="text-5xl font-semibold text-zinc-100">
-                  {story.stat}
-                </span>
+              <div className="mb-6">
+                <story.icon className="h-12 w-12 text-zinc-100" />
               </div>
               
               <h3 className="text-2xl font-semibold text-zinc-100 mb-3">
@@ -46,8 +41,6 @@ const GolferStoriesSection = () => {
               <p className="text-zinc-400 text-lg leading-relaxed">
                 {story.content}
               </p>
-              
-              <story.icon className="h-8 w-8 text-zinc-500 mt-6" />
             </div>
           ))}
         </div>
