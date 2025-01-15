@@ -1,5 +1,6 @@
 import React from "react";
 import { Car, Target, MessageSquare } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const stories = [
   {
@@ -37,21 +38,28 @@ const GolferStoriesSection = () => {
           {stories.map((story) => (
             <div
               key={story.title}
-              className="relative bg-gradient-to-b from-background/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
+              className={cn(
+                "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-zinc-900 p-6",
+                "border border-zinc-800/30",
+                "shadow-[0_8px_16px_rgba(0,0,0,0.3),0_0_4px_rgba(0,0,0,0.2)]",
+                "transition-all duration-300 ease-in-out",
+                "hover:shadow-[0_12px_24px_rgba(0,0,0,0.4),0_0_6px_rgba(0,0,0,0.3)]",
+                "hover:translate-y-[-4px]"
+              )}
             >
-              <div className="min-h-[160px]">
-                <p className="text-base font-bold text-neutral-800 mb-4">
+              <div className="min-h-[140px]">
+                <p className="text-base font-bold text-zinc-100 mb-4">
                   {story.title}
                 </p>
-                <p className="text-neutral-600 text-base font-normal relative z-20 mb-6">
+                <p className="text-zinc-400 text-base font-normal relative z-20 mb-6">
                   {story.content}
                 </p>
                 <div className="text-sm text-zinc-500 relative z-20">
                   {story.author}, {story.handicap} handicap
                 </div>
               </div>
-              <div className="absolute bottom-8 right-8">
-                <story.icon className="h-8 w-8 text-zinc-900" />
+              <div className="absolute bottom-6 right-6">
+                <story.icon className="h-8 w-8 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
               </div>
             </div>
           ))}
