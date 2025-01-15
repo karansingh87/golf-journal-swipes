@@ -67,7 +67,7 @@ const BenefitsSection = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12">
           <h2 className="text-3xl font-semibold text-zinc-900">
-            <span className="font-semibold">Core</span> Features
+            <span className="font-semibold">Game</span> Changers
           </h2>
         </div>
         
