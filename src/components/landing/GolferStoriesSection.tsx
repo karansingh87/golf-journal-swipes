@@ -40,7 +40,7 @@ const GolferStoriesSection = () => {
             >
               <div className="flex items-center justify-between w-full gap-4">
                 <p className={cn(
-                  "text-zinc-400 text-lg leading-relaxed relative z-20",
+                  "text-zinc-100 text-lg leading-relaxed relative z-20",
                   index === 0 ? "font-semibold" : "font-normal"
                 )}>
                   {story.content}
