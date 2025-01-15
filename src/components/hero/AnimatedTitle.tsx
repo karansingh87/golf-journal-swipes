@@ -29,13 +29,13 @@ const AnimatedTitle = () => {
       }}
       className="font-display text-3xl sm:text-5xl tracking-[-0.02em] text-zinc-900 max-w-4xl mx-auto"
     >
-      <span className="font-normal">Your golf insights,</span>
+      <span className="font-medium">Your golf insights,</span>
       <br />
       <span className="relative flex items-center justify-center h-[1.5em] overflow-hidden">
         {animatedWords.map((word, index) => (
           <motion.span
             key={index}
-            className="absolute font-black"
+            className="absolute font-extrabold"
             initial={{ opacity: 0, y: 50 }}
             animate={{
               opacity: wordIndex === index ? 1 : 0,
