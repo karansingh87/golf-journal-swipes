@@ -62,10 +62,10 @@ const BentoCard = ({
 
 const PowerFeaturesSection = () => {
   return (
-    <section className="py-20 sm:py-28 bg-zinc-950">
+    <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12">
-          <h2 className="text-3xl font-normal text-zinc-100 max-w-2xl">
+          <h2 className="text-3xl font-normal text-zinc-900 max-w-2xl">
             Power <span className="font-semibold">Features</span>
           </h2>
         </div>
