@@ -1,5 +1,5 @@
 import React from "react";
-import { Blend, Flame, MessageSquare } from "lucide-react";
+import { Blend, Flame, MessagesSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const features = [
@@ -16,7 +16,7 @@ const features = [
   {
     title: "Better Lessons",
     description: "Share structured insights with your coach. Transform random thoughts into focused improvement plans.",
-    icon: MessageSquare,
+    icon: MessagesSquare,
   },
 ];
 
