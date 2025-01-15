@@ -35,7 +35,6 @@ const PhoneMockup = () => {
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  // Preload images
   useEffect(() => {
     const preloadImages = async () => {
       const imagePromises = screenshots.map((screenshot) => {
@@ -59,7 +58,6 @@ const PhoneMockup = () => {
     preloadImages();
   }, []);
 
-  // Update current section based on scroll position
   useEffect(() => {
     const updateSection = () => {
       const viewportHeight = window.innerHeight;
@@ -98,11 +96,11 @@ const PhoneMockup = () => {
       className="relative h-[500vh]"
       aria-label="App screenshots showcase"
     >
-      <div className="sticky top-0 h-screen flex items-center justify-center">
-        <div className="container px-4 mx-auto">
+      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+        <div className="container mx-auto px-4 pt-0">
           <div className="w-full max-w-[320px] mx-auto">
-            <div className="flex flex-col items-center space-y-8">
-              <div className="relative w-[240px] aspect-[9/19] mx-auto">
+            <div className="flex flex-col items-center">
+              <div className="relative w-[240px] aspect-[9/19] mx-auto mb-8">
                 {/* Progress Dots */}
                 <div className="absolute -right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2">
                   {screenshots.map((_, index) => (
