@@ -13,22 +13,22 @@ interface Story {
 const stories: Story[] = [
   {
     icon: Car,
-    title: "The Drive Home Review",
-    content: "Perfect time for voice notes. I use my 15-minute drive to capture what clicked today before the feeling fades. No pressure, just talking through my round.",
+    title: "Record on your drive home",
+    content: "Capture fresh insights during your post-round drive",
     author: "Mike",
     handicap: 15,
   },
   {
     icon: Target,
-    title: "Range Session Insights",
-    content: "Quick text notes after practice. Found a new feeling with my driver? Type it in. Working on a swing change? Save what works. Takes seconds.",
+    title: "Quick notes at the range",
+    content: "Type quick thoughts between practice sessions",
     author: "Sarah",
     handicap: 8,
   },
   {
     icon: MessageSquare,
-    title: "Post-Round Notes",
-    content: "Sometimes I'll wait until I'm alone to record my thoughts. Other times I'll type quick notes right after a putt drops. GolfLog fits how I want to use it.",
+    title: "Flexible recording options",
+    content: "Voice or text, right after play or when you're ready",
     author: "Tom",
     handicap: 12,
   },
