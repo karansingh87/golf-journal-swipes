@@ -30,7 +30,7 @@ const GolferStoriesSection = () => {
             <div
               key={story.content}
               className={cn(
-                "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-zinc-900/90 p-4",
+                "group relative flex overflow-hidden rounded-2xl bg-zinc-900/90 p-4",
                 "border border-zinc-800/30",
                 "shadow-[0_8px_16px_rgba(0,0,0,0.3),0_0_4px_rgba(0,0,0,0.2)]",
                 "transition-all duration-300 ease-in-out",
@@ -38,13 +38,11 @@ const GolferStoriesSection = () => {
                 "hover:translate-y-[-4px]"
               )}
             >
-              <div className="min-h-[100px]">
-                <p className="text-zinc-400 text-base font-normal relative z-20">
+              <div className="flex items-center justify-between w-full gap-4">
+                <p className="text-zinc-400 text-lg font-normal leading-relaxed relative z-20">
                   {story.content}
                 </p>
-              </div>
-              <div className="absolute bottom-4 right-4">
-                <story.icon className="h-8 w-8 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
+                <story.icon className="h-10 w-10 flex-shrink-0 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
               </div>
             </div>
           ))}
