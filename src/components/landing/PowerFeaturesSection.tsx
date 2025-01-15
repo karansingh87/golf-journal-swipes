@@ -41,21 +41,21 @@ const BentoCard = ({
 }) => (
   <div
     className={cn(
-      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-zinc-900/90 p-8",
-      "backdrop-blur-sm border border-zinc-800/30",
-      "shadow-[0_8px_16px_rgba(0,0,0,0.3),0_0_4px_rgba(0,0,0,0.2)]",
+      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white/80 p-8",
+      "backdrop-blur-sm border border-white/20",
+      "shadow-[0_8px_16px_rgba(0,0,0,0.08),0_0_4px_rgba(0,0,0,0.05)]",
       "transition-all duration-300 ease-in-out",
-      "hover:shadow-[0_12px_24px_rgba(0,0,0,0.4),0_0_6px_rgba(0,0,0,0.3)]",
-      "hover:translate-y-[-4px] hover:bg-zinc-900/95",
+      "hover:shadow-[0_12px_24px_rgba(0,0,0,0.12),0_0_6px_rgba(0,0,0,0.08)]",
+      "hover:translate-y-[-4px] hover:bg-white/90",
       className
     )}
   >
     <div>
-      <Icon className="h-12 w-12 mb-6 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
-      <h3 className="text-2xl font-semibold text-zinc-100 mb-3 tracking-tight">
+      <Icon className="h-12 w-12 mb-6 text-zinc-800 transition-transform duration-300 group-hover:scale-110" />
+      <h3 className="text-2xl font-semibold text-zinc-800 mb-3 tracking-tight">
         {title}
       </h3>
-      <p className="text-zinc-400 text-sm leading-relaxed font-light max-w-[280px]">{description}</p>
+      <p className="text-zinc-600 text-sm leading-relaxed font-light max-w-[280px]">{description}</p>
     </div>
   </div>
 );
