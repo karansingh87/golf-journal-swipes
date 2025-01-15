@@ -22,7 +22,7 @@ const features = [
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full auto-rows-[18rem] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid w-full auto-rows-[18rem] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {children}
     </div>
   );
@@ -41,21 +41,22 @@ const BentoCard = ({
 }) => (
   <div
     className={cn(
-      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white/80 p-8",
-      "backdrop-blur-sm border border-white/20",
-      "shadow-[0_8px_16px_rgba(0,0,0,0.08),0_0_4px_rgba(0,0,0,0.05)]",
+      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white/90 p-8",
+      "backdrop-blur-sm border border-zinc-200",
+      "shadow-lg hover:shadow-xl",
       "transition-all duration-300 ease-in-out",
-      "hover:shadow-[0_12px_24px_rgba(0,0,0,0.12),0_0_6px_rgba(0,0,0,0.08)]",
-      "hover:translate-y-[-4px] hover:bg-white/90",
+      "hover:translate-y-[-4px]",
       className
     )}
   >
     <div>
-      <Icon className="h-12 w-12 mb-6 text-zinc-800 transition-transform duration-300 group-hover:scale-110" />
-      <h3 className="text-2xl font-semibold text-zinc-800 mb-3 tracking-tight">
+      <Icon className="h-12 w-12 mb-6 text-zinc-900 transition-transform duration-300 group-hover:scale-110" />
+      <h3 className="text-2xl font-medium text-zinc-900 mb-3 tracking-tight">
         {title}
       </h3>
-      <p className="text-zinc-600 text-sm leading-relaxed font-light max-w-[280px]">{description}</p>
+      <p className="text-base leading-7 text-zinc-600 font-light max-w-[280px]">
+        {description}
+      </p>
     </div>
   </div>
 );
@@ -65,7 +66,7 @@ const PowerFeaturesSection = () => {
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12">
-          <h2 className="text-3xl font-normal text-zinc-900 max-w-2xl">
+          <h2 className="text-3xl font-semibold text-zinc-900">
             Power <span className="font-semibold">Features</span>
           </h2>
         </div>

@@ -24,25 +24,25 @@ const GolferStoriesSection = () => {
   return (
     <section className="py-20 sm:py-28 bg-zinc-900 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="text-4xl font-semibold text-zinc-100 text-left mb-16">
+        <h2 className="text-3xl font-semibold text-zinc-100 text-left mb-16">
           When Do Golfers Use It?
         </h2>
         
-        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-8">
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stories.map((story) => (
             <div
               key={story.content}
               className="group relative flex flex-col text-left"
             >
               <div className="mb-6">
-                <story.icon className="h-12 w-12 text-zinc-100" />
+                <story.icon className="h-12 w-12 text-zinc-100 transition-transform duration-300 group-hover:scale-110" />
               </div>
               
-              <h3 className="text-2xl font-semibold text-zinc-100 mb-3">
+              <h3 className="text-2xl font-medium text-zinc-100 mb-3">
                 {story.title}
               </h3>
               
-              <p className="text-zinc-400 text-lg leading-relaxed">
+              <p className="text-base leading-7 text-zinc-400">
                 {story.content}
               </p>
             </div>

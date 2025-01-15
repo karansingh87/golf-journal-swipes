@@ -27,7 +27,7 @@ const AnimatedTitle = () => {
         delay: 0.2,
         ease: [0.16, 1, 0.3, 1]
       }}
-      className="font-poppins font-[400] text-3xl sm:text-4xl md:text-5xl tracking-tight text-zinc-900 max-w-4xl mx-auto"
+      className="font-sans text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 max-w-4xl mx-auto"
     >
       Your best golf insights,
       <br />
@@ -35,7 +35,7 @@ const AnimatedTitle = () => {
         {animatedWords.map((word, index) => (
           <motion.span
             key={index}
-            className="absolute font-[600]"
+            className="absolute font-semibold"
             initial={{ opacity: 0, y: 50 }}
             animate={{
               opacity: wordIndex === index ? 1 : 0,

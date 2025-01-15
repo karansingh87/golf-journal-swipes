@@ -42,7 +42,7 @@ const FAQSection = ({ content }: FAQSectionProps) => {
   const questions = content?.questions || defaultQuestions;
 
   return (
-    <div className="relative py-24 sm:py-32">
+    <div className="relative py-20 sm:py-28">
       <div className="mx-auto max-w-3xl px-6 lg:px-8">
         <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-16 text-center">
           {content?.title || "Common Questions"}
@@ -55,10 +55,10 @@ const FAQSection = ({ content }: FAQSectionProps) => {
               value={`item-${index}`} 
               className="group border-b border-zinc-200 transition-colors duration-300"
             >
-              <AccordionTrigger className="text-lg text-left font-medium text-zinc-900 py-6 hover:no-underline hover:text-zinc-700 group-hover:bg-zinc-50/50 px-4 rounded-lg transition-colors duration-300">
+              <AccordionTrigger className="text-lg font-medium text-zinc-900 py-6 hover:no-underline hover:text-zinc-700 group-hover:bg-zinc-50/50 px-4 rounded-lg transition-colors duration-300">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-base text-zinc-600 pb-6 px-4">
+              <AccordionContent className="text-base leading-7 text-zinc-600 pb-6 px-4">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
