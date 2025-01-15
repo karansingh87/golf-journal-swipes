@@ -39,10 +39,12 @@ const GolferStoriesSection = () => {
               key={story.title}
               className="relative bg-gradient-to-b from-neutral-200/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
             >
-              <story.icon className="h-8 w-8 mb-6 text-zinc-900 relative z-20" />
-              <p className="text-base font-bold text-neutral-800 relative z-20 mb-4">
-                {story.title}
-              </p>
+              <div className="flex items-center gap-3 mb-6">
+                <story.icon className="h-8 w-8 text-zinc-900" />
+                <p className="text-base font-bold text-neutral-800">
+                  {story.title}
+                </p>
+              </div>
               <p className="text-neutral-600 text-base font-normal relative z-20 mb-6">
                 {story.content}
               </p>
