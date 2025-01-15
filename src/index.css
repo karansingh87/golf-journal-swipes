@@ -34,8 +34,12 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground leading-relaxed tracking-tight;
     font-family: Inter, system-ui, sans-serif;
+  }
+  
+  p {
+    @apply leading-7 tracking-[-0.01em];
   }
 }
 
@@ -43,11 +47,13 @@
   .font-display {
     font-family: Manrope, system-ui, sans-serif;
     font-weight: 600;
+    letter-spacing: -0.02em;
   }
   
   .font-logo {
     font-family: Manrope, system-ui, sans-serif;
     font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
 
