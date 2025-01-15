@@ -1,5 +1,5 @@
 import React from "react";
-import { Car, Bucket, Home } from "lucide-react";
+import { Car, GolfBall, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const stories = [
@@ -11,7 +11,7 @@ const stories = [
   {
     title: "On The Range",
     content: "Type quick thoughts between practice sessions at the range to track progress",
-    icon: Bucket,
+    icon: GolfBall,
   },
   {
     title: "Reflection Time",
