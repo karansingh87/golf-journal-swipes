@@ -92,13 +92,22 @@ export default {
           "0%": { transform: "scale(1)", opacity: "0.8" },
           "50%": { transform: "scale(1.1)", opacity: "0.4" },
           "100%": { transform: "scale(1)", opacity: "0.8" },
-        }
+        },
+        "meteor": {
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "spin-slow": "spin 4s linear infinite",
         "pulse-ring": "pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "meteor-effect": "meteor 5s linear infinite",
       },
       rotate: {
         'y-180': 'rotateY(180deg)',

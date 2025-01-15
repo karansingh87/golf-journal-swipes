@@ -1,6 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { MessageSquare, Car, Target } from "lucide-react";
+import { Car, Target, MessageSquare } from "lucide-react";
+import { Meteors } from "@/components/ui/meteors";
 
 interface Story {
   icon: any;
@@ -67,16 +68,19 @@ const BentoCard = ({
       className
     )}
   >
-    <div>
+    <div className="relative z-10">
       <Icon className="h-12 w-12 mb-6 text-zinc-700 transition-transform duration-300 group-hover:scale-110" />
       <h3 className="text-2xl font-semibold text-zinc-900 mb-3 tracking-tight">
         {title}
       </h3>
-      <p className="text-zinc-600 text-sm leading-relaxed font-light max-w-[280px] mb-6">{content}</p>
+      <p className="text-zinc-600 text-sm leading-relaxed font-light max-w-[280px] mb-6">
+        {content}
+      </p>
       <div className="text-sm text-zinc-500">
         {author}, {handicap} handicap
       </div>
     </div>
+    <Meteors number={20} className="opacity-0 group-hover:opacity-100" />
   </div>
 );
 
