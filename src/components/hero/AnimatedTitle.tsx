@@ -26,7 +26,7 @@ const AnimatedTitle = () => {
       <div className="h-[1.5em] relative flex items-center justify-center">
         <MorphingText 
           texts={animatedWords}
-          className="text-[1.2em] font-[600] h-[1.5em]"
+          className="text-[1em] font-[600] h-[1.5em]"
         />
       </div>
     </motion.h1>
