@@ -25,7 +25,7 @@ const GolferStoriesSection = () => {
     <section className="py-20 sm:py-28 bg-zinc-900 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <h2 className="text-3xl font-semibold text-zinc-100 text-left mb-16">
-          When Do Golfers Use It?
+          Journal Anytime
         </h2>
         
         <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
