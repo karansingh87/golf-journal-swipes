@@ -26,7 +26,7 @@ const GolferStoriesSection = () => {
         </h2>
         
         <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-2">
-          {stories.map((story) => (
+          {stories.map((story, index) => (
             <div
               key={story.content}
               className={cn(
@@ -39,7 +39,10 @@ const GolferStoriesSection = () => {
               )}
             >
               <div className="flex items-center justify-between w-full gap-4">
-                <p className="text-zinc-400 text-lg font-normal leading-relaxed relative z-20">
+                <p className={cn(
+                  "text-zinc-400 text-lg leading-relaxed relative z-20",
+                  index === 0 ? "font-semibold" : "font-normal"
+                )}>
                   {story.content}
                 </p>
                 <story.icon className="h-10 w-10 flex-shrink-0 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
