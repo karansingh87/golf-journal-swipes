@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const HeroContent = () => {
   const navigate = useNavigate();
-
+  
   return (
     <>
       <motion.p 
@@ -15,7 +15,7 @@ const HeroContent = () => {
           delay: 0.4,
           ease: [0.16, 1, 0.3, 1]
         }}
-        className="mt-6 text-base leading-7 text-zinc-600 max-w-2xl mx-auto font-sans"
+        className="mt-6 text-base leading-7 text-zinc-600 max-w-2xl mx-auto font-sans tracking-[-0.01em]"
       >
         Turn your golf thoughts into a playbook for better golf. Just talk, we'll capture the genius.
       </motion.p>
