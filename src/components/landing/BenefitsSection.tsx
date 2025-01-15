@@ -22,7 +22,7 @@ const features = [
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full auto-rows-[22rem] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid w-full auto-rows-[18rem] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {children}
     </div>
   );
