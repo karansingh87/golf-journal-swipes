@@ -5,19 +5,19 @@ import { cn } from "@/lib/utils";
 const stories = [
   {
     stat: "24/7",
-    title: "Record Anywhere",
-    content: "Record during the drive home and capture fresh insights from post-round drive",
+    title: "Drive Back Home",
+    content: "Record during the drive home and capture fresh insights from your round",
     icon: NotebookPen,
   },
   {
     stat: "Quick",
-    title: "Practice Notes",
+    title: "On The Range",
     content: "Type quick thoughts between practice sessions at the range to track progress",
     icon: Target,
   },
   {
     stat: "Easy",
-    title: "Voice or Text",
+    title: "Reflection Time",
     content: "Choose between voice or text recording, right after play or when ready to reflect",
     icon: MessageSquare,
   },
