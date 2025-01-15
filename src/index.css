@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital@0;1&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -35,22 +35,18 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 }
 
 @layer base {
-  .font-serif {
-    font-family: 'Playfair Display', serif;
+  .font-display {
+    font-family: 'Poppins', sans-serif;
   }
   
   .font-logo {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 700;
-  }
-
-  .font-poppins {
-    font-family: 'Poppins', sans-serif;
   }
 }
 
@@ -97,4 +93,3 @@
   animation: gradientFlow 15s ease infinite;
   pointer-events: none;
 }
-
