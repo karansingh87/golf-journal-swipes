@@ -99,18 +99,7 @@ const PhoneMockup = () => {
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-0 h-screen flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ 
-            opacity: 1, 
-            y: 0,
-            transition: {
-              duration: 1,
-              ease: [0.16, 1, 0.3, 1]
-            }
-          }}
-          className="container px-4 mx-auto"
-        >
+        <div className="container px-4 mx-auto">
           <div className="w-full max-w-[320px] mx-auto">
             <div className="flex flex-col items-center space-y-8">
               <div className="relative w-[240px] aspect-[9/19] mx-auto">
@@ -183,7 +172,7 @@ const PhoneMockup = () => {
               </AnimatePresence>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
