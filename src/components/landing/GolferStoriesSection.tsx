@@ -5,15 +5,15 @@ import { cn } from "@/lib/utils";
 const stories = [
   {
     icon: Car,
-    content: "Record on your drive home and capture fresh insights during your post-round drive",
+    content: "Record during the drive home and capture fresh insights from post-round drive",
   },
   {
     icon: Target,
-    content: "Type quick thoughts between practice sessions at the range to track your progress",
+    content: "Type quick thoughts between practice sessions at the range to track progress",
   },
   {
     icon: MessageSquare,
-    content: "Choose between voice or text recording, right after play or when you're ready to reflect",
+    content: "Choose between voice or text recording, right after play or when ready to reflect",
   },
 ];
 
