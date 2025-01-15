@@ -35,7 +35,7 @@ const AnimatedTitle = () => {
         {animatedWords.map((word, index) => (
           <motion.span
             key={index}
-            className="absolute font-semibold"
+            className="absolute font-bold"
             initial={{ opacity: 0, y: 50 }}
             animate={{
               opacity: wordIndex === index ? 1 : 0,
