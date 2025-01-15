@@ -17,7 +17,7 @@ const HeroContent = () => {
         }}
         className="mt-6 text-base md:text-lg leading-6 text-zinc-600 max-w-2xl mx-auto font-inter"
       >
-        Turn your post-round thoughts into your personal playbook for better golf. Just talk – we'll capture the genius
+        Turn your golf thoughts into a playbook for better golf. Just talk, we'll capture the genius.
       </motion.p>
       
       <motion.div 
