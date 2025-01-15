@@ -1,12 +1,12 @@
 import React from "react";
-import { MessageSquare, Brain, TrendingUp } from "lucide-react";
+import { NotebookPen, Brain, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const features = [
   {
     title: "Smart Golf Journal",
     description: "Voice or text, capture your golf thoughts naturally. Use it on the drive home, after practice, or whenever inspiration hits.",
-    icon: MessageSquare,
+    icon: NotebookPen,
   },
   {
     title: "Deep Game Insights",
