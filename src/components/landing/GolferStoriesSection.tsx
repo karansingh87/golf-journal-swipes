@@ -24,7 +24,7 @@ const GolferStoriesSection = () => {
   return (
     <section className="py-20 sm:py-28 bg-zinc-900 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="text-4xl font-semibold text-zinc-100 text-right mb-16">
+        <h2 className="text-4xl font-semibold text-zinc-100 text-left mb-16">
           When Do Golfers Use It?
         </h2>
         
