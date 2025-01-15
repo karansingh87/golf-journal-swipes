@@ -1,6 +1,5 @@
 import React from "react";
 import { Car, Target, MessageSquare } from "lucide-react";
-import { Grid } from "@/components/ui/grid-pattern";
 
 const stories = [
   {
@@ -38,7 +37,7 @@ const GolferStoriesSection = () => {
           {stories.map((story) => (
             <div
               key={story.title}
-              className="relative bg-gradient-to-b from-neutral-100 to-white p-8 rounded-3xl overflow-hidden"
+              className="relative bg-gradient-to-b from-neutral-200/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
             >
               <story.icon className="h-8 w-8 mb-6 text-zinc-900 relative z-20" />
               <p className="text-base font-bold text-neutral-800 relative z-20 mb-4">
@@ -50,7 +49,6 @@ const GolferStoriesSection = () => {
               <div className="text-sm text-zinc-500 relative z-20">
                 {story.author}, {story.handicap} handicap
               </div>
-              <Grid size={20} />
             </div>
           ))}
         </div>
