@@ -37,7 +37,7 @@ const GolferStoriesSection = () => {
           {stories.map((story) => (
             <div
               key={story.title}
-              className="relative bg-gradient-to-b from-neutral-200/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
+              className="relative bg-gradient-to-b from-[#FCF5FF]/90 to-transparent p-8 rounded-t-3xl overflow-hidden"
             >
               <story.icon className="h-8 w-8 text-zinc-900 mb-6" />
               <p className="text-base font-bold text-neutral-800 mb-4">
