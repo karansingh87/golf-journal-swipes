@@ -1,22 +1,59 @@
+import React from "react";
 import { LineChart, Brain, Share2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const features = [
   {
-    name: "Trend Spotting",
+    title: "Trend Spotting",
     description: "See patterns across multiple rounds. Smart analysis connects the dots between your best performances.",
     icon: LineChart,
   },
   {
-    name: "Instant Confidence",
+    title: "Instant Confidence",
     description: "Get AI-powered pep talks based on your recent rounds. Remind yourself what works before you play.",
     icon: Brain,
   },
   {
-    name: "Better Lessons",
+    title: "Better Lessons",
     description: "Share structured insights with your coach. Transform random thoughts into focused improvement plans.",
     icon: Share2,
   },
 ];
+
+const BentoGrid = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="grid w-full auto-rows-[22rem] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {children}
+    </div>
+  );
+};
+
+const BentoCard = ({
+  title,
+  description,
+  Icon,
+  className,
+}: {
+  title: string;
+  description: string;
+  Icon: any;
+  className?: string;
+}) => (
+  <div
+    className={cn(
+      "group relative flex flex-col justify-end overflow-hidden rounded-3xl bg-zinc-800 p-8",
+      "shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_6px_rgba(0,0,0,0.03)]",
+      "transform-gpu transition-transform duration-300 hover:scale-[1.02]",
+      className
+    )}
+  >
+    <Icon className="h-12 w-12 mb-3 text-zinc-300" />
+    <h3 className="text-xl font-semibold text-zinc-100 mb-3">
+      {title}
+    </h3>
+    <p className="text-zinc-400 text-sm leading-relaxed max-w-[280px]">{description}</p>
+  </div>
+);
 
 const PowerFeaturesSection = () => {
   return (
@@ -27,28 +64,17 @@ const PowerFeaturesSection = () => {
             Power <span className="font-semibold">Features</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        
+        <BentoGrid>
           {features.map((feature) => (
-            <div
-              key={feature.name}
-              className="group relative overflow-hidden rounded-3xl bg-zinc-800 p-8 transition-all hover:ring-2 hover:ring-zinc-600"
-            >
-              <div className="relative z-10">
-                <div className="flex items-center">
-                  <div className="rounded-full bg-zinc-700/50 p-3">
-                    <feature.icon className="h-6 w-6 text-zinc-300" />
-                  </div>
-                </div>
-                <h3 className="mt-6 text-lg font-semibold text-zinc-100">
-                  {feature.name}
-                </h3>
-                <p className="mt-2 text-zinc-400 text-sm leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            </div>
+            <BentoCard
+              key={feature.title}
+              title={feature.title}
+              description={feature.description}
+              Icon={feature.icon}
+            />
           ))}
-        </div>
+        </BentoGrid>
       </div>
     </section>
   );

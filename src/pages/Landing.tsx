@@ -1,20 +1,28 @@
+import Navigation from "@/components/landing/Navigation";
 import HeroSection from "@/components/landing/HeroSection";
+import PhoneMockup from "@/components/landing/PhoneMockup";
 import BenefitsSection from "@/components/landing/BenefitsSection";
 import PowerFeaturesSection from "@/components/landing/PowerFeaturesSection";
-import FAQSection from "@/components/landing/FAQSection";
 import PricingSection from "@/components/landing/PricingSection";
+import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
-import Navigation from "@/components/landing/Navigation";
 
 const Landing = () => {
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen bg-background">
+      {/* Grid Background */}
+      <div className="fixed inset-0 grid-background pointer-events-none" />
+      
+      {/* Gradient Overlay */}
+      <div className="gradient-overlay" />
+      
       <Navigation />
       <HeroSection />
+      <PhoneMockup />
       <BenefitsSection />
       <PowerFeaturesSection />
-      <FAQSection />
       <PricingSection />
+      <FAQSection />
       <Footer />
     </div>
   );
