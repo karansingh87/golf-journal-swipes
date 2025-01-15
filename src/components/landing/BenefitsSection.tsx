@@ -41,17 +41,22 @@ const BentoCard = ({
 }) => (
   <div
     className={cn(
-      "group relative flex flex-col justify-end overflow-hidden rounded-3xl bg-white p-8",
-      "shadow-[0_2px_4px_rgba(0,0,0,0.02),0_1px_6px_rgba(0,0,0,0.03)]",
-      "transform-gpu transition-transform duration-300 hover:scale-[1.02]",
+      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white/80 p-8",
+      "backdrop-blur-sm border border-white/20",
+      "shadow-[0_8px_16px_rgba(0,0,0,0.08),0_0_4px_rgba(0,0,0,0.05)]",
+      "transition-all duration-300 ease-in-out",
+      "hover:shadow-[0_12px_24px_rgba(0,0,0,0.12),0_0_6px_rgba(0,0,0,0.08)]",
+      "hover:translate-y-[-4px] hover:bg-white/90",
       className
     )}
   >
-    <Icon className="h-12 w-12 mb-3 text-zinc-900" />
-    <h3 className="text-xl font-semibold text-zinc-900 mb-3">
-      {title}
-    </h3>
-    <p className="text-zinc-500 text-sm leading-relaxed max-w-[280px]">{description}</p>
+    <div>
+      <Icon className="h-12 w-12 mb-6 text-zinc-800 transition-transform duration-300 group-hover:scale-110" />
+      <h3 className="text-2xl font-semibold text-zinc-800 mb-3 tracking-tight">
+        {title}
+      </h3>
+      <p className="text-zinc-600 text-sm leading-relaxed font-light max-w-[280px]">{description}</p>
+    </div>
   </div>
 );
 
