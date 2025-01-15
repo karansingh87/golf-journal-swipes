@@ -60,25 +60,36 @@ const PhoneMockup = () => {
 
   useEffect(() => {
     const updateSection = () => {
+      if (!containerRef.current) return;
+      
       const viewportHeight = window.innerHeight;
-      const currentScroll = window.scrollY;
+      const containerTop = containerRef.current.offsetTop;
+      const scrollPosition = window.scrollY - containerTop;
+      
+      // Calculate section index based on scroll position relative to container
       const sectionIndex = Math.min(
-        Math.floor(currentScroll / viewportHeight),
+        Math.max(
+          Math.floor(scrollPosition / viewportHeight),
+          0
+        ),
         screenshots.length - 1
       );
       
-      if (sectionIndex !== displayedIndex && sectionIndex >= 0) {
+      if (sectionIndex !== displayedIndex) {
         setDisplayedIndex(sectionIndex);
       }
     };
 
     window.addEventListener('scroll', updateSection);
+    // Initial position check
+    updateSection();
+    
     return () => window.removeEventListener('scroll', updateSection);
   }, [displayedIndex]);
 
   if (!imagesLoaded) {
     return (
-      <div className="min-h-[500vh] flex items-center justify-center">
+      <div className="h-screen flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -93,7 +104,8 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative h-[500vh]"
+      className="relative"
+      style={{ height: `${screenshots.length * 100}vh` }}
       aria-label="App screenshots showcase"
     >
       <div className="sticky top-0 h-screen flex items-center justify-center">
