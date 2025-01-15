@@ -67,7 +67,7 @@ const PowerFeaturesSection = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12">
           <h2 className="text-3xl font-semibold text-zinc-900">
-            Power <span className="font-semibold">Features</span>
+            Deeper <span className="font-semibold">Insights</span>
           </h2>
         </div>
         
