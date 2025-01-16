@@ -45,9 +45,9 @@ const FAQSection = ({ content }: FAQSectionProps) => {
   };
 
   return (
-    <section className="py-16 sm:py-20">
+    <section className="py-20 sm:py-28 lg:py-32">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16 sm:mb-20">
           <h2 className="text-3xl font-display tracking-tight text-zinc-900 sm:text-4xl">
             {content?.title || "Frequently asked questions"}
           </h2>

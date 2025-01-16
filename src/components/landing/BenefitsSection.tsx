@@ -82,10 +82,10 @@ const BentoCard = ({
 
 const BenefitsSection = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-24 relative">
+    <section className="py-20 sm:py-28 lg:py-32 relative">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(211,228,253,0.05),transparent_70%)] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
-        <div className="mb-12">
+        <div className="mb-16 sm:mb-20">
           <div className="flex justify-center">
             <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
               <span className="text-sm font-medium text-zinc-900">
