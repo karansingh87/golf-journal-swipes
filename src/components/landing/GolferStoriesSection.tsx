@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 const stories = [
   {
-    title: "Talk through rounds during the drive home",
+    title: "Talk through rounds on the drive home",
     icon: Car,
   },
   {
