@@ -26,9 +26,13 @@ const GolferStoriesSection = () => {
   return (
     <section className="py-20 sm:py-28 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="text-3xl font-semibold text-zinc-900 text-left mb-16">
-          Journal Anytime
-        </h2>
+        <div className="flex justify-center mb-16">
+          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
+            <span className="text-sm font-medium text-zinc-900">
+              Journal Anytime
+            </span>
+          </div>
+        </div>
         
         <div className="grid w-full grid-cols-2 gap-3 sm:gap-6 max-w-3xl mx-auto">
           {stories.map((story) => (
