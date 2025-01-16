@@ -157,7 +157,7 @@ const PhoneMockup = () => {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
-                  className="font-[600] text-lg text-center text-golf-gray-text-primary max-w-[280px] min-h-[54px]"
+                  className="font-[600] text-lg text-center text-golf-gray-text-primary max-w-[280px] min-h-[60px]"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ 
                     opacity: 1, 
