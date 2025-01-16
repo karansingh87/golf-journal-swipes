@@ -49,7 +49,7 @@ const Login = () => {
             theme="light"
             providers={[]}
             view="sign_in"
-            showLinks={false}
+            showLinks={true}
           />
         </AuthCard>
         
