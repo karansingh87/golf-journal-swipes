@@ -50,10 +50,11 @@ const BentoCard = ({
       "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
       "bg-gradient-to-br from-zinc-900 via-zinc-800/95 to-zinc-700/90",
       "backdrop-blur-sm border border-zinc-800/30",
-      "shadow-[0_4px_8px_-2px_rgba(0,0,0,0.3),0_2px_4px_-2px_rgba(0,0,0,0.3)]",
-      "hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.4),0_4px_8px_-4px_rgba(0,0,0,0.4)]",
+      "shadow-[0_4px_12px_-2px_rgba(0,0,0,0.2),0_2px_6px_-2px_rgba(0,0,0,0.1)]",
+      "hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.3),0_4px_12px_-4px_rgba(0,0,0,0.2)]",
       "transition-all duration-300 ease-in-out",
       "hover:translate-y-[-2px]",
+      "before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(155,135,245,0.1),transparent_60%)]",
       className
     )}
   >
@@ -82,8 +83,9 @@ const BentoCard = ({
 
 const PowerFeaturesSection = () => {
   return (
-    <section className="py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-20 lg:py-24 relative">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(229,222,255,0.05),transparent_70%)] pointer-events-none" />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         <div className="mb-12">
           <div className="flex justify-center">
             <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">

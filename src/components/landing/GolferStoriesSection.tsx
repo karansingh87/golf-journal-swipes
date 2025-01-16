@@ -24,7 +24,8 @@ const stories = [
 
 const GolferStoriesSection = () => {
   return (
-    <section className="py-20 sm:py-28 overflow-hidden">
+    <section className="py-20 sm:py-28 overflow-hidden relative">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(211,228,253,0.05),transparent_70%)] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center mb-16">
           <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
@@ -40,14 +41,18 @@ const GolferStoriesSection = () => {
               key={story.title}
               className={cn(
                 "group relative overflow-hidden aspect-square",
-                "bg-white/80 backdrop-blur-sm border border-border/50",
-                "shadow-card-light hover:shadow-lg transition-all duration-300",
-                "hover:translate-y-[-2px]"
+                "bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/90",
+                "backdrop-blur-sm border border-zinc-200/80",
+                "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
+                "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
+                "transition-all duration-300",
+                "hover:translate-y-[-2px]",
+                "before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_right,rgba(155,135,245,0.05),transparent_60%)]"
               )}
             >
-              <CardContent className="p-3 sm:p-4 h-full flex flex-col items-center justify-center text-center gap-4 sm:gap-6">
+              <CardContent className="p-3 sm:p-4 h-full flex flex-col items-center justify-center text-center gap-4 sm:gap-6 relative z-10">
                 <story.icon className="h-8 w-8 sm:h-10 sm:w-10 text-zinc-900 transition-transform duration-300 group-hover:scale-110" />
-                <h3 className="text-sm sm:text-base font-normal sm:font-medium text-golf-gray-text-primary">
+                <h3 className="text-sm sm:text-base font-medium text-golf-gray-text-primary">
                   {story.title}
                 </h3>
               </CardContent>
