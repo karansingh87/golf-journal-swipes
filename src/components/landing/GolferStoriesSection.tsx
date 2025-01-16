@@ -1,22 +1,23 @@
 import React from "react";
-import { Car, Target, Home } from "lucide-react";
+import { Car, Target, Beer, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
 const stories = [
   {
-    title: "Drive Back Home",
-    content: "Record during the drive home and capture fresh insights from your round",
+    title: "Talk through rounds during the drive home",
     icon: Car,
   },
   {
-    title: "On The Range",
-    content: "Type quick thoughts between practice sessions at the range to track progress",
+    title: "Quick notes during range sessions",
     icon: Target,
   },
   {
-    title: "Reflection Time",
-    content: "Choose between voice or text recording, right after play or when ready to reflect",
+    title: "Capture thoughts at the 19th hole",
+    icon: Beer,
+  },
+  {
+    title: "Review rounds from home",
     icon: Home,
   },
 ];
@@ -29,10 +30,10 @@ const GolferStoriesSection = () => {
           Journal Anytime
         </h2>
         
-        <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {stories.map((story) => (
             <Card 
-              key={story.content}
+              key={story.title}
               className={cn(
                 "group relative overflow-hidden",
                 "bg-zinc-950/90 backdrop-blur-sm border border-zinc-800/30",
@@ -40,17 +41,13 @@ const GolferStoriesSection = () => {
                 "hover:translate-y-[-2px]"
               )}
             >
-              <CardContent className="p-4 space-y-3">
+              <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <story.icon className="h-5 w-5 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
                   <h3 className="text-lg font-medium text-zinc-100">
                     {story.title}
                   </h3>
                 </div>
-                
-                <p className="text-sm leading-relaxed text-zinc-400">
-                  {story.content}
-                </p>
               </CardContent>
             </Card>
           ))}
