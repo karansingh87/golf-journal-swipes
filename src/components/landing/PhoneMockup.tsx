@@ -95,10 +95,10 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative h-[500vh]"
+      className="relative h-[600vh]"
       aria-label="App screenshots showcase"
     >
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+      <div className="sticky top-[20vh] h-screen flex items-center justify-center overflow-hidden">
         <div className="container px-4 mx-auto">
           <div className="w-full max-w-[320px] mx-auto">
             <div className="flex flex-col items-center">
@@ -148,7 +148,7 @@ const PhoneMockup = () => {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
-                  className="font-[600] text-base text-center text-golf-gray-text-primary max-w-[280px] mt-8"
+                  className="font-[600] text-base text-center text-golf-gray-text-primary mt-8"
                   initial={{ opacity: 0 }}
                   animate={{ 
                     opacity: 1,
