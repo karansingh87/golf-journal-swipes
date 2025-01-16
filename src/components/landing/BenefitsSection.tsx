@@ -48,7 +48,7 @@ const BentoCard = ({
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
       "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
-      "bg-gradient-to-br from-white via-slate-50 to-slate-100",
+      "bg-gradient-to-br from-white via-stone-50 to-stone-100",
       "backdrop-blur-sm border border-zinc-200",
       "shadow-[0_4px_8px_-2px_rgba(16,24,40,0.1),0_2px_4px_-2px_rgba(16,24,40,0.06)]",
       "hover:shadow-[0_8px_16px_-4px_rgba(16,24,40,0.1),0_4px_8px_-4px_rgba(16,24,40,0.1)]",
@@ -74,7 +74,7 @@ const BentoCard = ({
     
     {/* Animated gradient blob - always visible on mobile */}
     <div className="absolute -right-6 -bottom-6 w-32 h-32 
-                    bg-gradient-to-br from-slate-200/70 to-slate-100/40 
+                    bg-gradient-to-br from-stone-200/70 to-stone-100/40 
                     rounded-full blur-2xl opacity-70
                     animate-pulse-ring" />
   </motion.div>
