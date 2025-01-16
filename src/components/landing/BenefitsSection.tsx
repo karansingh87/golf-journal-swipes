@@ -86,7 +86,7 @@ const BenefitsSection = () => {
         <div className="mb-12">
           <div className="flex justify-center">
             <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
-              <span className="text-sm font-bold text-zinc-900">
+              <span className="text-sm font-normal text-zinc-900">
                 Core Features
               </span>
             </div>
