@@ -45,7 +45,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-16">
-            {content?.title || "Pricing"}
+            {content?.title || "Simple, transparent pricing"}
           </h2>
         </div>
 
