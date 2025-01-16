@@ -66,10 +66,14 @@ const PowerFeaturesSection = () => {
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12">
-          <h2 className="text-3xl text-zinc-900">
-            <span className="font-bold">Deeper</span>{" "}
-            <span className="font-medium">Insights</span>
-          </h2>
+          <div className="flex justify-center">
+            <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
+              <span className="text-sm font-medium text-zinc-900">
+                <span className="font-bold">Deeper</span>{" "}
+                <span className="font-medium">Insights</span>
+              </span>
+            </div>
+          </div>
         </div>
         
         <BentoGrid>
