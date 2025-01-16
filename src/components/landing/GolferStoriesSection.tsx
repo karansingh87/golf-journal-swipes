@@ -35,19 +35,17 @@ const GolferStoriesSection = () => {
             <Card 
               key={story.title}
               className={cn(
-                "group relative overflow-hidden",
+                "group relative overflow-hidden aspect-square",
                 "bg-zinc-950/90 backdrop-blur-sm border border-zinc-800/30",
                 "shadow-lg hover:shadow-xl transition-all duration-300",
                 "hover:translate-y-[-2px]"
               )}
             >
-              <CardContent className="p-3 sm:p-4">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <story.icon className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
-                  <h3 className="text-sm sm:text-base font-normal sm:font-medium text-zinc-100">
-                    {story.title}
-                  </h3>
-                </div>
+              <CardContent className="p-3 sm:p-4 h-full flex flex-col items-center justify-center text-center gap-3 sm:gap-4">
+                <story.icon className="h-8 w-8 sm:h-10 sm:w-10 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
+                <h3 className="text-sm sm:text-base font-normal sm:font-medium text-zinc-100">
+                  {story.title}
+                </h3>
               </CardContent>
             </Card>
           ))}
