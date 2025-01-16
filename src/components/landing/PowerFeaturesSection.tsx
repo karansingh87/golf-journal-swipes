@@ -41,8 +41,8 @@ const BentoCard = ({
 }) => (
   <div
     className={cn(
-      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-white/90 p-8",
-      "backdrop-blur-sm border border-zinc-200",
+      "group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-zinc-950/90 p-8",
+      "backdrop-blur-sm border border-zinc-800/30",
       "shadow-lg hover:shadow-xl",
       "transition-all duration-300 ease-in-out",
       "hover:translate-y-[-4px]",
@@ -50,11 +50,11 @@ const BentoCard = ({
     )}
   >
     <div>
-      <Icon className="h-12 w-12 mb-6 text-zinc-900 transition-transform duration-300 group-hover:scale-110" />
-      <h3 className="text-2xl font-medium text-zinc-900 mb-3 tracking-tight">
+      <Icon className="h-12 w-12 mb-6 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
+      <h3 className="text-2xl font-medium text-zinc-100 mb-3 tracking-tight">
         {title}
       </h3>
-      <p className="text-base leading-7 text-zinc-600 font-light max-w-[280px]">
+      <p className="text-base leading-7 text-zinc-400 font-light max-w-[280px]">
         {description}
       </p>
     </div>
