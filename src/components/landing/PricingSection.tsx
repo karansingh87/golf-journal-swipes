@@ -60,7 +60,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               {/* Pricing Content */}
               <div className="flex flex-col">
                 <div className="flex items-baseline">
-                  <span className="text-3xl font-semibold tracking-tight text-zinc-900">$12</span>
+                  <span className="text-4xl font-semibold tracking-tight text-zinc-900">$12</span>
                   <span className="text-base text-zinc-500 ms-2">/month</span>
                 </div>
                 <div className="mt-6 flex flex-col gap-2">
@@ -81,7 +81,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   <ul className="space-y-3.5">
                     {(content?.features?.core || defaultFeatures.core).map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
+                        <Check className="h-5 w-5 flex-shrink-0 text-[#8B5CF6]" />
                         <span className="text-sm text-zinc-600">{feature}</span>
                       </li>
                     ))}
@@ -96,7 +96,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   <ul className="space-y-3.5">
                     {(content?.features?.power || defaultFeatures.power).map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
+                        <Check className="h-5 w-5 flex-shrink-0 text-[#8B5CF6]" />
                         <span className="text-sm text-zinc-600">{feature}</span>
                       </li>
                     ))}
@@ -111,7 +111,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   <ul className="space-y-3.5">
                     {(content?.features?.extras || defaultFeatures.extras).map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
+                        <Check className="h-5 w-5 flex-shrink-0 text-[#8B5CF6]" />
                         <span className="text-sm text-zinc-600">{feature}</span>
                       </li>
                     ))}
@@ -122,7 +122,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               {/* CTA Button */}
               <Button
                 onClick={() => navigate("/signup")}
-                className="mt-8 w-full bg-zinc-900 text-white hover:bg-zinc-800 h-12 rounded-xl text-base font-medium"
+                className="mt-8 w-full bg-[#8B5CF6] text-white hover:bg-[#7C3AED] h-12 rounded-xl text-base font-medium transition-all duration-200 hover:shadow-lg"
               >
                 Start 30-Day Free Trial
               </Button>
