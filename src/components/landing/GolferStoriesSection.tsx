@@ -29,7 +29,7 @@ const GolferStoriesSection = () => {
         <div className="flex justify-center mb-16">
           <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
             <span className="text-sm font-medium text-zinc-900">
-              How are golfers using it
+              Journal Anytime
             </span>
           </div>
         </div>
