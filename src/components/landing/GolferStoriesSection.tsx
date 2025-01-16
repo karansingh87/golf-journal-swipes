@@ -33,17 +33,22 @@ const GolferStoriesSection = () => {
           {stories.map((story) => (
             <Card 
               key={story.content}
-              className="group relative overflow-hidden border-zinc-200/50 shadow-sm hover:shadow-md transition-shadow duration-300"
+              className={cn(
+                "group relative overflow-hidden",
+                "bg-zinc-950/90 backdrop-blur-sm border border-zinc-800/30",
+                "shadow-lg hover:shadow-xl transition-all duration-300",
+                "hover:translate-y-[-2px]"
+              )}
             >
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-3">
-                  <story.icon className="h-5 w-5 text-zinc-900 transition-transform duration-300 group-hover:scale-110" />
-                  <h3 className="text-lg font-medium text-zinc-900">
+                  <story.icon className="h-5 w-5 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
+                  <h3 className="text-lg font-medium text-zinc-100">
                     {story.title}
                   </h3>
                 </div>
                 
-                <p className="text-sm leading-relaxed text-zinc-600">
+                <p className="text-sm leading-relaxed text-zinc-400">
                   {story.content}
                 </p>
               </CardContent>
