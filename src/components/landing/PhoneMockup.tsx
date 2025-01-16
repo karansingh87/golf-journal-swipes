@@ -95,13 +95,24 @@ const PhoneMockup = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative h-[600vh]"
+      className="relative h-[500vh]"
       aria-label="App screenshots showcase"
     >
-      <div className="sticky top-[20vh] h-screen flex items-center justify-center overflow-hidden">
-        <div className="container px-4 mx-auto">
+      <div className="sticky top-0 h-screen flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ 
+            opacity: 1, 
+            y: 0,
+            transition: {
+              duration: 1,
+              ease: [0.16, 1, 0.3, 1]
+            }
+          }}
+          className="container px-4 mx-auto"
+        >
           <div className="w-full max-w-[320px] mx-auto">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center space-y-8">
               <div className="relative w-[240px] aspect-[9/19] mx-auto">
                 {/* Progress Dots */}
                 <div className="absolute -right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2">
@@ -148,17 +159,19 @@ const PhoneMockup = () => {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.p 
                   key={screenshots[displayedIndex].title}
-                  className="font-[600] text-base text-center text-golf-gray-text-primary mt-8"
-                  initial={{ opacity: 0 }}
+                  className="font-[600] text-base text-center text-golf-gray-text-primary max-w-[280px]"
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ 
-                    opacity: 1,
+                    opacity: 1, 
+                    y: 0,
                     transition: {
                       duration: 0.6,
                       ease: [0.16, 1, 0.3, 1]
                     }
                   }}
                   exit={{ 
-                    opacity: 0,
+                    opacity: 0, 
+                    y: -10,
                     transition: {
                       duration: 0.4,
                       ease: [0.16, 1, 0.3, 1]
@@ -170,7 +183,7 @@ const PhoneMockup = () => {
               </AnimatePresence>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
