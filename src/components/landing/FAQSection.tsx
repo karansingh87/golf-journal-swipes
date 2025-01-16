@@ -57,7 +57,7 @@ const FAQSection = ({ content }: FAQSectionProps) => {
           {questions.map((faq, index) => (
             <div
               key={index}
-              className="rounded-2xl border border-zinc-200 bg-white px-4 transition-all duration-200 hover:bg-zinc-50/50"
+              className="rounded-2xl border border-zinc-200 bg-white/90 px-4 transition-all duration-200 hover:bg-zinc-50/80"
             >
               <button
                 onClick={() => toggleQuestion(index)}
