@@ -52,18 +52,18 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         <div className="mx-auto max-w-sm">
           <div className="relative overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-gray-200/50">
             {/* Plan Type */}
-            <div className="px-8 pt-8 text-center">
+            <div className="px-8 pt-8">
               <h3 className="text-lg font-medium uppercase tracking-wider text-zinc-500 mb-6">
                 All Access
               </h3>
               
               {/* Pricing Content */}
-              <div className="flex flex-col items-center">
-                <div className="flex items-baseline justify-center">
-                  <span className="text-6xl font-bold tracking-tight text-zinc-900">$12</span>
-                  <span className="text-xl text-zinc-500 ms-2">/month</span>
+              <div className="flex flex-col">
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-semibold tracking-tight text-zinc-900">$12</span>
+                  <span className="text-base text-zinc-500 ms-2">/month</span>
                 </div>
-                <div className="mt-6 flex flex-col items-center gap-2">
+                <div className="mt-6 flex flex-col gap-2">
                   <span className="text-base font-semibold text-zinc-800">Try free for 30 days</span>
                   <span className="text-sm text-zinc-500">No credit card required</span>
                 </div>
