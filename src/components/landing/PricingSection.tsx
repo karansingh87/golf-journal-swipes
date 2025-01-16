@@ -35,16 +35,14 @@ const PricingSection = ({ content }: PricingSectionProps) => {
     extras: [
       "Early access to new features",
       "Full search across all notes",
-      "Export your insights",
-      "Priority support",
     ],
   };
   
   return (
-    <div className="relative py-20 sm:py-28">
+    <div className="relative py-12 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-16">
+          <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-12">
             {content?.title || "Simple, transparent pricing"}
           </h2>
         </div>
@@ -52,8 +50,8 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         <div className="mx-auto max-w-sm">
           <div className="relative overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-gray-200/50">
             {/* Plan Type */}
-            <div className="px-8 pt-8 text-center">
-              <h3 className="text-lg font-medium uppercase tracking-wider text-zinc-500 mb-6">
+            <div className="px-6 pt-6 text-center">
+              <h3 className="text-lg font-medium uppercase tracking-wider text-zinc-500 mb-4">
                 All Access
               </h3>
               
@@ -63,7 +61,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   <span className="text-6xl font-bold tracking-tight text-zinc-900">$12</span>
                   <span className="text-xl text-zinc-500 ms-2">/month</span>
                 </div>
-                <div className="mt-6 flex flex-col items-center gap-2">
+                <div className="mt-4 flex flex-col items-center gap-2">
                   <span className="text-base font-semibold text-zinc-800">Try free for 30 days</span>
                   <span className="text-sm text-zinc-500">No credit card required</span>
                 </div>
@@ -71,14 +69,14 @@ const PricingSection = ({ content }: PricingSectionProps) => {
             </div>
 
             {/* Features List */}
-            <div className="p-8 mt-4">
-              <div className="space-y-8">
+            <div className="p-6 mt-2">
+              <div className="space-y-6">
                 {/* Core Features */}
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-4">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-3">
                     Core Features
                   </p>
-                  <ul className="space-y-3.5">
+                  <ul className="space-y-3">
                     {(content?.features?.core || defaultFeatures.core).map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
                         <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
@@ -90,10 +88,10 @@ const PricingSection = ({ content }: PricingSectionProps) => {
 
                 {/* Power Features */}
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-4">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-3">
                     Power Features
                   </p>
-                  <ul className="space-y-3.5">
+                  <ul className="space-y-3">
                     {(content?.features?.power || defaultFeatures.power).map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
                         <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
@@ -105,10 +103,10 @@ const PricingSection = ({ content }: PricingSectionProps) => {
 
                 {/* Extras */}
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-4">
+                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-3">
                     Extras
                   </p>
-                  <ul className="space-y-3.5">
+                  <ul className="space-y-3">
                     {(content?.features?.extras || defaultFeatures.extras).map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
                         <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
@@ -122,7 +120,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               {/* CTA Button */}
               <Button
                 onClick={() => navigate("/signup")}
-                className="mt-8 w-full bg-zinc-900 text-white hover:bg-zinc-800 h-12 rounded-xl text-base font-medium"
+                className="mt-6 w-full bg-zinc-900 text-white hover:bg-zinc-800 h-12 rounded-xl text-base font-medium"
               >
                 Start 30-Day Free Trial
               </Button>
