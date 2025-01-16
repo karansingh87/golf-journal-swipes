@@ -17,20 +17,24 @@ const FAQSection = ({ content }: FAQSectionProps) => {
   
   const defaultQuestions = [
     {
-      question: "Can I cancel my subscription anytime?",
-      answer: "Yes, you can cancel your subscription at any time. Your access will continue until the end of your current billing period."
+      question: "What exactly is GolfLog?",
+      answer: "GolfLog is a web app that turns your post-round thoughts into actionable golf insights. Just talk or type about your game, and our AI helps you understand your performance, mental game, and improvement opportunities."
     },
     {
-      question: "Is there a free trial available?",
-      answer: "Yes, we offer a 14-day free trial with full access to all features. No credit card required to start."
+      question: "How does it work?",
+      answer: "Record a voice note or type insights after your round or practice. Our AI analyzes your session, spotting patterns in your technical skills, mental approach, and overall performance. It's like having a personal golf analyst in your pocket."
     },
     {
-      question: "Can I access my recordings offline?",
-      answer: "Yes, you can download your recordings for offline access. They'll automatically sync back when you're online."
+      question: "Do I need to be a tech expert to use it?",
+      answer: "Not at all! If you can chat about golf with a friend, you can use GolfLog. It takes less than 60 seconds to start. Just open golflog.ai, create an account, and you're ready to go. No downloads, no complicated setup."
     },
     {
-      question: "How secure are my recordings?",
-      answer: "Your recordings are encrypted and stored securely. Only you and those you explicitly share with can access them."
+      question: "Is my data private?",
+      answer: "100% private. Your insights are only visible to you, and we securely encrypt everything. You control what to share and with whom."
+    },
+    {
+      question: "How much does it cost?",
+      answer: "Start with a full 30-day trial - no credit card needed. After that, it's $11.99/month, giving you unlimited recordings, AI analysis, and performance tracking."
     }
   ];
 
