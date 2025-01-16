@@ -19,11 +19,8 @@ const PricingSection = ({ content }: PricingSectionProps) => {
     <div className="relative py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-4">
-            {content?.title?.split(',')[0] || "One Plan,"}
-          </h2>
           <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-16">
-            {content?.title?.split(',')[1] || "Total Access"}
+            {content?.title || "Pricing"}
           </h2>
         </div>
 
@@ -33,25 +30,21 @@ const PricingSection = ({ content }: PricingSectionProps) => {
             
             <div className="relative z-10">
               <div className="flex items-baseline gap-x-2">
-                <span className="text-5xl font-bold tracking-tight text-zinc-900">${content?.price || "19"}</span>
+                <span className="text-5xl font-bold tracking-tight text-zinc-900">${content?.price || "12"}</span>
                 <span className="text-base text-zinc-600">/{content?.interval || "month"}</span>
               </div>
 
               <p className="mt-6 text-base leading-7 text-zinc-600">
-                {content?.description || "We offer an all-inclusive, ad-free golf recording experience designed for serious golfers who want to improve their game."}
+                {content?.description || "Includes:"}
               </p>
 
               <ul className="mt-8 space-y-4">
                 {(content?.features || [
-                  "Unlimited Voice Recording Time",
-                  "AI-Powered Game Analysis",
-                  "Access to Exclusive Insights",
-                  "Early Access to New Features",
-                  "No Ads or Interruptions",
-                  "Personalized Recommendations",
-                  "Coach Collaboration Tools",
-                  "Multi-Device Support",
-                  "Priority Customer Support",
+                  "Unlimited recordings",
+                  "Deep analysis & trends",
+                  "Smart pep talks",
+                  "Lesson prep tools",
+                  "All future features",
                 ]).map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
                     <div className="rounded-full p-1 bg-zinc-900 group-hover:scale-110 transition-transform duration-300">
@@ -66,7 +59,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                 onClick={() => navigate("/signup")}
                 className="mt-8 w-full text-base px-6 py-3 h-auto bg-zinc-900 hover:bg-zinc-800 relative overflow-hidden group rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <span className="relative z-10">Get started right now</span>
+                <span className="relative z-10">Start 30-Day Free Trial</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-zinc-800 to-zinc-900 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
               </Button>
             </div>
