@@ -151,7 +151,7 @@ const PhoneMockup = () => {
                     <img
                       src={screenshots[displayedIndex].image}
                       alt={screenshots[displayedIndex].title}
-                      className="w-full h-full object-cover rounded-xl"
+                      className="w-full h-full object-cover rounded-xl mt-[5px]"
                     />
                   </motion.div>
                 </AnimatePresence>
