@@ -69,7 +69,7 @@ const NavigationBar = () => {
       <div className="h-full px-6 flex justify-between items-center">
         <div 
           onClick={() => navigate(isPublicPage ? '/' : '/record')}
-          className="text-2xl font-roboto tracking-[-0.02em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
+          className="text-2xl font-roboto font-bold tracking-[-0.02em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
         >
           <span 
             className="flex items-center text-zinc-900"

@@ -7,7 +7,7 @@ const Navigation = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] h-14 backdrop-blur-sm border-b border-zinc-800/10 bg-white/80">
       <div className="h-full px-6 flex justify-between items-center">
-        <div className="text-2xl font-roboto tracking-[-0.02em] cursor-pointer hover:opacity-90 transition-opacity flex items-center">
+        <div className="text-2xl font-roboto font-bold tracking-[-0.02em] cursor-pointer hover:opacity-90 transition-opacity flex items-center">
           <span 
             className="flex items-center text-zinc-900"
             style={{
