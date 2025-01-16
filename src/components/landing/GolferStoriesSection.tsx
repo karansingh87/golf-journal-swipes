@@ -30,7 +30,7 @@ const GolferStoriesSection = () => {
           Journal Anytime
         </h2>
         
-        <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div className="grid w-full grid-cols-2 gap-3 sm:gap-6 max-w-3xl mx-auto">
           {stories.map((story) => (
             <Card 
               key={story.title}
@@ -41,10 +41,10 @@ const GolferStoriesSection = () => {
                 "hover:translate-y-[-2px]"
               )}
             >
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                  <story.icon className="h-5 w-5 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
-                  <h3 className="text-lg font-medium text-zinc-100">
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <story.icon className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-300 transition-transform duration-300 group-hover:scale-110" />
+                  <h3 className="text-sm sm:text-base font-normal sm:font-medium text-zinc-100">
                     {story.title}
                   </h3>
                 </div>
