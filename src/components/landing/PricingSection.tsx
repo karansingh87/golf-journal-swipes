@@ -63,7 +63,10 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   <span className="text-6xl font-bold tracking-tight text-zinc-900">$12</span>
                   <span className="text-xl text-zinc-500 ms-2">/month</span>
                 </div>
-                <span className="mt-6 text-base font-medium text-zinc-800">Try free for 30 days</span>
+                <div className="mt-6 flex flex-col items-center gap-2">
+                  <span className="text-base font-semibold text-zinc-800">Try free for 30 days</span>
+                  <span className="text-sm text-zinc-500">No credit card required</span>
+                </div>
               </div>
             </div>
 
