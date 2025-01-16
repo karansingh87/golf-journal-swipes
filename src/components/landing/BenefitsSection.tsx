@@ -72,7 +72,6 @@ const BentoCard = ({
       </p>
     </div>
     
-    {/* Animated gradient blob */}
     <div className="absolute -right-6 -bottom-6 w-32 h-32 
                     bg-gradient-to-br from-zinc-200/60 to-zinc-100/40 
                     rounded-full blur-2xl opacity-70
@@ -87,9 +86,8 @@ const BenefitsSection = () => {
         <div className="mb-12">
           <div className="flex justify-center">
             <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
-              <span className="text-sm font-medium text-zinc-900">
-                <span className="font-bold">Core</span>{" "}
-                <span className="font-medium">Features</span>
+              <span className="text-sm font-bold text-zinc-900">
+                Core Features
               </span>
             </div>
           </div>
