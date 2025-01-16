@@ -60,7 +60,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               {/* Pricing Content */}
               <div className="flex flex-col items-center">
                 <div className="flex items-baseline justify-center">
-                  <span className="text-6xl font-bold tracking-tight text-zinc-900">$11.99</span>
+                  <span className="text-6xl font-bold tracking-tight text-zinc-900">$12</span>
                   <span className="text-xl text-zinc-500 ms-2">/month</span>
                 </div>
                 <span className="mt-6 text-base font-medium text-zinc-800">Try free for 30 days</span>
