@@ -41,7 +41,7 @@ const GolferStoriesSection = () => {
                 "hover:translate-y-[-2px]"
               )}
             >
-              <CardContent className="p-3 sm:p-4 h-full flex flex-col items-center justify-center text-center gap-3 sm:gap-4">
+              <CardContent className="p-3 sm:p-4 h-full flex flex-col items-center justify-center text-center gap-4 sm:gap-6">
                 <story.icon className="h-8 w-8 sm:h-10 sm:w-10 text-zinc-900 transition-transform duration-300 group-hover:scale-110" />
                 <h3 className="text-sm sm:text-base font-normal sm:font-medium text-golf-gray-text-primary">
                   {story.title}
