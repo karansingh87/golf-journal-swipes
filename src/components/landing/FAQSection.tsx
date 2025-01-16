@@ -1,10 +1,6 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useState } from "react";
 import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FAQSectionProps {
   content?: {
@@ -17,6 +13,8 @@ interface FAQSectionProps {
 }
 
 const FAQSection = ({ content }: FAQSectionProps) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  
   const defaultQuestions = [
     {
       question: "Can I cancel my subscription anytime?",
@@ -38,6 +36,10 @@ const FAQSection = ({ content }: FAQSectionProps) => {
 
   const questions = content?.questions || defaultQuestions;
 
+  const toggleQuestion = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <section className="py-16 sm:py-20">
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
@@ -47,26 +49,33 @@ const FAQSection = ({ content }: FAQSectionProps) => {
           </h2>
         </div>
         
-        <div className="space-y-3">
-          <Accordion type="single" collapsible className="w-full">
-            {questions.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="group rounded-2xl border border-zinc-200 bg-white px-4 transition-all duration-200 data-[state=open]:bg-zinc-50/50"
+        <div className="space-y-4">
+          {questions.map((faq, index) => (
+            <div
+              key={index}
+              className="rounded-2xl border border-zinc-200 bg-white px-4 transition-all duration-200 hover:bg-zinc-50/50"
+            >
+              <button
+                onClick={() => toggleQuestion(index)}
+                className="flex w-full items-center justify-between py-4 text-left"
               >
-                <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left [&[data-state=open]>svg]:rotate-45">
-                  <span className="text-base font-medium tracking-tight text-zinc-900">
-                    {faq.question}
-                  </span>
-                  <Plus className="h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-200" />
-                </AccordionTrigger>
-                <AccordionContent className="pb-4 pt-0 text-[15px] leading-normal text-zinc-600">
+                <span className="text-base font-medium tracking-tight text-zinc-900">
+                  {faq.question}
+                </span>
+                <Plus 
+                  className={cn(
+                    "h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-200",
+                    openIndex === index && "rotate-45"
+                  )} 
+                />
+              </button>
+              {openIndex === index && (
+                <div className="pb-4 text-[15px] leading-normal text-zinc-600 animate-accordion-down">
                   {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
