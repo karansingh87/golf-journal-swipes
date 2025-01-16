@@ -66,8 +66,9 @@ const BenefitsSection = () => {
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-12">
-          <h2 className="text-3xl font-semibold text-zinc-900">
-            <span className="font-semibold">Game</span> Changers
+          <h2 className="text-3xl text-zinc-900">
+            <span className="font-bold">Core</span>{" "}
+            <span className="font-medium">Features</span>
           </h2>
         </div>
         
