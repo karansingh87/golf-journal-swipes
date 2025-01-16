@@ -48,7 +48,7 @@ const BentoCard = ({
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
       "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
-      "bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800/90",
+      "bg-gradient-to-br from-zinc-900 via-zinc-800/95 to-zinc-700/90",
       "backdrop-blur-sm border border-zinc-800/30",
       "shadow-[0_4px_8px_-2px_rgba(0,0,0,0.3),0_2px_4px_-2px_rgba(0,0,0,0.3)]",
       "hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.4),0_4px_8px_-4px_rgba(0,0,0,0.4)]",
@@ -59,7 +59,7 @@ const BentoCard = ({
   >
     <div className="relative z-10 h-full flex flex-col">
       <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
-                    bg-gradient-to-br from-zinc-800 to-zinc-700/80 
+                    bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-600
                     shadow-[0_2px_4px_rgba(0,0,0,0.2)]
                     group-hover:scale-110 transition-transform duration-300
                     group-hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]">
@@ -73,9 +73,11 @@ const BentoCard = ({
       </p>
     </div>
     
-    {/* Decorative gradient blob */}
-    <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-gradient-to-br from-purple-500/10 to-blue-500/5 
-                    rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    {/* Animated gradient blob */}
+    <div className="absolute -right-6 -bottom-6 w-32 h-32 
+                    bg-gradient-to-br from-purple-500/20 to-blue-500/10 
+                    rounded-full blur-2xl opacity-70
+                    animate-pulse-ring" />
   </motion.div>
 );
 

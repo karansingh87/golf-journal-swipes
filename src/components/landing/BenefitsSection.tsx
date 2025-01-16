@@ -48,10 +48,10 @@ const BentoCard = ({
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
       "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
-      "bg-gradient-to-br from-white to-zinc-50/80",
-      "backdrop-blur-sm border border-zinc-200/50",
-      "shadow-[0_4px_8px_-2px_rgba(16,24,40,0.06),0_2px_4px_-2px_rgba(16,24,40,0.06)]",
-      "hover:shadow-[0_8px_16px_-4px_rgba(16,24,40,0.08),0_4px_8px_-4px_rgba(16,24,40,0.08)]",
+      "bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100",
+      "backdrop-blur-sm border border-zinc-200",
+      "shadow-[0_4px_8px_-2px_rgba(16,24,40,0.1),0_2px_4px_-2px_rgba(16,24,40,0.06)]",
+      "hover:shadow-[0_8px_16px_-4px_rgba(16,24,40,0.1),0_4px_8px_-4px_rgba(16,24,40,0.1)]",
       "transition-all duration-300 ease-in-out",
       "hover:translate-y-[-2px]",
       className
@@ -59,8 +59,8 @@ const BentoCard = ({
   >
     <div className="relative z-10 h-full flex flex-col">
       <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
-                    bg-gradient-to-br from-zinc-50 to-zinc-100/80 
-                    shadow-[0_2px_4px_rgba(16,24,40,0.06)]
+                    bg-gradient-to-br from-zinc-100 to-white
+                    shadow-[0_2px_4px_rgba(16,24,40,0.1)]
                     group-hover:scale-110 transition-transform duration-300">
         <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
       </div>
@@ -72,9 +72,11 @@ const BentoCard = ({
       </p>
     </div>
     
-    {/* Decorative gradient blob */}
-    <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-gradient-to-br from-zinc-100/40 to-zinc-50/20 
-                    rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    {/* Animated gradient blob */}
+    <div className="absolute -right-6 -bottom-6 w-32 h-32 
+                    bg-gradient-to-br from-zinc-200/60 to-zinc-100/40 
+                    rounded-full blur-2xl opacity-70
+                    animate-pulse-ring" />
   </motion.div>
 );
 
