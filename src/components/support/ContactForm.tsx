@@ -31,14 +31,9 @@ export const ContactForm = () => {
 
   return (
     <div className="py-4">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-display tracking-tight text-zinc-900 mb-2">
-          Still have questions?
-        </h2>
-        <p className="text-zinc-600">
-          We're here to help! Send us a message and we'll get back to you soon.
-        </p>
-      </div>
+      <p className="text-zinc-600 text-center mb-8">
+        We're here to help! Send us a message and we'll get back to you soon.
+      </p>
 
       <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
         <div className="space-y-2">

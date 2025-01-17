@@ -23,7 +23,8 @@ import CoachNotes from "./pages/CoachNotes";
 import CoachNoteDetail from "./pages/CoachNoteDetail";
 import PepTalkDetail from "./pages/PepTalkDetail";
 import PepTalks from "./pages/PepTalks";
-import Support from "./pages/Support";
+import FAQ from "./pages/FAQ";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,7 +55,8 @@ const App = () => (
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
-            <Route path="/support" element={<Support />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contact" element={<Contact />} />
             
             {/* Previously protected routes - now using feature-level gates */}
             <Route path="/trends" element={<Trends />} />
@@ -68,6 +70,7 @@ const App = () => (
             
             {/* Redirects */}
             <Route path="/history" element={<Navigate to="/notes" replace />} />
+            <Route path="/support" element={<Navigate to="/faq" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
