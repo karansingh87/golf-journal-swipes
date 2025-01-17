@@ -50,7 +50,20 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         <div className="mx-auto max-w-sm">
           <div className="relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl">
             {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900 opacity-50" />
+            <div 
+              className="absolute inset-0 opacity-40" 
+              style={{
+                background: "linear-gradient(135deg, rgba(229,222,255,0.15) 0%, rgba(255,222,226,0.15) 50%, rgba(211,228,253,0.15) 100%)",
+              }}
+            />
+            
+            {/* Radial Glow Effect */}
+            <div 
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: "radial-gradient(circle at top right, rgba(229,222,255,0.3), transparent 70%)",
+              }}
+            />
             
             {/* Content */}
             <div className="relative px-6 pt-8 pb-10">
@@ -78,8 +91,8 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   </ul>
                 </div>
 
-                {/* Divider */}
-                <div className="h-px bg-zinc-800 my-8" />
+                {/* Divider with gradient */}
+                <div className="h-px my-8 bg-gradient-to-r from-transparent via-zinc-700 to-transparent" />
                 
                 {/* Pricing Content */}
                 <div className="flex flex-col items-center space-y-4">
@@ -93,10 +106,10 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                   </div>
                 </div>
 
-                {/* CTA Button */}
+                {/* CTA Button with hover effect */}
                 <Button
                   onClick={() => navigate("/signup")}
-                  className="mt-8 w-full bg-white text-zinc-900 hover:bg-zinc-100 h-12 rounded-xl text-base font-medium"
+                  className="mt-8 w-full bg-white text-zinc-900 hover:bg-zinc-100 hover:scale-[1.02] transition-all duration-200 h-12 rounded-xl text-base font-medium"
                 >
                   Start 30-Day Free Trial
                 </Button>
