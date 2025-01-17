@@ -12,7 +12,7 @@ const screenshots: ScreenshotData[] = [
     title: "Hit record and talk,\nlike debriefing with a coach.",
   },
   {
-    image: "/lovable-uploads/d11356f6-f7f5-4bbb-a95a-2c79e28caaa3.png",
+    image: "/lovable-uploads/73567fa8-3d34-40dd-a79a-a6ac36b56dbf.png",
     title: "Thoughts turn to text instantly.",
   },
   {
