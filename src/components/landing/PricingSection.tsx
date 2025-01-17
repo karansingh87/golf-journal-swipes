@@ -50,23 +50,15 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         <div className="mx-auto max-w-sm">
           {/* Gradient Background */}
           <div 
-            className="absolute inset-0 w-full max-w-sm mx-auto h-[600px] blur-[100px]"
+            className="absolute inset-0 w-full max-w-sm mx-auto h-[600px] blur-[120px] opacity-50"
             style={{
-              background: `
-                radial-gradient(
-                  circle at center,
-                  rgba(229,222,255,0.85) 0%,
-                  rgba(255,222,226,0.85) 50%,
-                  rgba(211,228,253,0.85) 100%
-                )
-              `,
-              transform: 'translate(0, -100px)',
-              pointerEvents: 'none',
-              zIndex: 0,
+              background: "radial-gradient(circle at center, rgba(229,222,255,0.8) 0%, rgba(255,222,226,0.8) 50%, rgba(211,228,253,0.8) 100%)",
+              transform: "translate(0, -50px)",
+              pointerEvents: "none",
             }}
           />
           
-          <div className="relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl" style={{ zIndex: 1 }}>
+          <div className="relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl">
             {/* Content */}
             <div className="relative px-6 pt-8 pb-10">
               {/* Plan Type */}
