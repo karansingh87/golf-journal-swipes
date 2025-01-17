@@ -16,7 +16,7 @@ const screenshots: ScreenshotData[] = [
     title: "Thoughts turn to text instantly.",
   },
   {
-    image: "/lovable-uploads/aa8bdac0-6f57-40f6-97b9-71c98224487c.png",
+    image: "/lovable-uploads/f427e13d-d29e-441d-b92f-ca9a3f85a5fd.png",
     title: "AI turns thoughts into insights.",
   },
   {
