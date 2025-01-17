@@ -3,10 +3,10 @@ import { Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white border-t border-zinc-200">
+    <footer className="bg-white/95 border-t border-zinc-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="py-8">
-          <div className="text-center mb-4">
+        <div className="py-6 sm:py-8">
+          <div className="text-center mb-3">
             <p className="text-sm text-zinc-500 flex items-center justify-center">
               Made for the <Heart className="mx-1 inline-block animate-pulse-ring" size={16} color="black" fill="black" /> of swing thoughts
             </p>
@@ -17,7 +17,7 @@ const Footer = () => {
                 &copy; {new Date().getFullYear()} GolfLog. All rights reserved.
               </p>
             </div>
-            <div className="mt-4 flex justify-center space-x-6 md:mt-0">
+            <div className="mt-3 flex justify-center space-x-6 md:mt-0">
               <Link to="/faq" className="text-sm text-zinc-500 hover:text-zinc-900">
                 FAQs
               </Link>
