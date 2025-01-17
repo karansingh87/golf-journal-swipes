@@ -6,16 +6,19 @@ const HeroContent = () => {
   const navigate = useNavigate();
   
   const scrollToMockups = () => {
-    const mockupsSection = document.querySelector('[aria-label="App screenshots showcase"]');
-    if (mockupsSection) {
-      const elementPosition = mockupsSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset;
-      
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
+    // Add a small delay to allow browser UI to settle
+    setTimeout(() => {
+      const mockupsSection = document.querySelector('[aria-label="App screenshots showcase"]');
+      if (mockupsSection) {
+        const elementPosition = mockupsSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100); // 100ms delay
   };
   
   return (
