@@ -50,6 +50,41 @@ const Login = () => {
             providers={[]}
             view="sign_in"
             showLinks={true}
+            localization={{
+              variables: {
+                sign_up: {
+                  email_label: "Email",
+                  password_label: "Password",
+                  button_label: "Sign up",
+                  loading_button_label: "Signing up ...",
+                  social_provider_text: "Sign in with {{provider}}",
+                  link_text: "Don't have an account? Sign up",
+                  confirmation_text: "Check your email for the confirmation link and check your spam folder if you don't see it within a few minutes",
+                },
+                sign_in: {
+                  email_label: "Email",
+                  password_label: "Password",
+                  button_label: "Sign in",
+                  loading_button_label: "Signing in ...",
+                  social_provider_text: "Sign in with {{provider}}",
+                  link_text: "Already have an account? Sign in",
+                },
+                magic_link: {
+                  email_input_label: "Email address",
+                  button_label: "Send Magic Link",
+                  loading_button_label: "Sending Magic Link ...",
+                  link_text: "Send a magic link email",
+                  confirmation_text: "Check your email for the magic link and don't forget to check your spam folder!",
+                },
+                forgotten_password: {
+                  email_label: "Email address",
+                  button_label: "Send reset password instructions",
+                  loading_button_label: "Sending reset instructions ...",
+                  link_text: "Forgot your password?",
+                  confirmation_text: "Check your email for the password reset link. Remember to check your spam folder if you don't see it!",
+                },
+              },
+            }}
           />
         </AuthCard>
         
