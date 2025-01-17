@@ -1,9 +1,6 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface FAQCategory {
   title: string;
@@ -110,33 +107,59 @@ const faqCategories: FAQCategory[] = [
 ];
 
 export const FAQSection = () => {
+  const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
+
+  const toggleItem = (categoryIndex: number, questionIndex: number) => {
+    const key = `${categoryIndex}-${questionIndex}`;
+    setOpenItems(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
   return (
     <div className="mb-20">
-      <h2 className="text-2xl font-display tracking-tight text-zinc-900 mb-8">
-        Frequently Asked Questions
-      </h2>
       <div className="space-y-8">
-        {faqCategories.map((category, index) => (
-          <div key={index} className="space-y-4">
+        {faqCategories.map((category, categoryIndex) => (
+          <div key={categoryIndex} className="space-y-4">
             <h3 className="text-lg font-semibold text-zinc-800">
               {category.title}
             </h3>
-            <Accordion type="single" collapsible className="space-y-2">
-              {category.questions.map((faq, faqIndex) => (
-                <AccordionItem
-                  key={faqIndex}
-                  value={`${index}-${faqIndex}`}
-                  className="border border-zinc-200/80 bg-white/80 backdrop-blur-sm rounded-lg px-4"
+            <div className="space-y-2">
+              {category.questions.map((faq, questionIndex) => (
+                <div
+                  key={questionIndex}
+                  className="rounded-lg border border-zinc-200/80 bg-white/80 backdrop-blur-sm"
                 >
-                  <AccordionTrigger className="text-left hover:no-underline">
-                    <span className="text-zinc-800">{faq.question}</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-zinc-600">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
+                  <button
+                    onClick={() => toggleItem(categoryIndex, questionIndex)}
+                    className="flex w-full items-center justify-between px-4 py-4 text-left"
+                  >
+                    <span className="text-base font-medium tracking-tight text-zinc-900">
+                      {faq.question}
+                    </span>
+                    <Plus 
+                      className={cn(
+                        "h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-300 ease-out",
+                        openItems[`${categoryIndex}-${questionIndex}`] && "rotate-45"
+                      )}
+                    />
+                  </button>
+                  <div 
+                    className={cn(
+                      "grid transition-all duration-300 ease-out",
+                      openItems[`${categoryIndex}-${questionIndex}`] ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    )}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="px-4 pb-4 text-[15px] leading-normal text-zinc-600">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </Accordion>
+            </div>
           </div>
         ))}
       </div>
