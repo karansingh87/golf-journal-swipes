@@ -5,6 +5,13 @@ import { useNavigate } from "react-router-dom";
 const HeroContent = () => {
   const navigate = useNavigate();
   
+  const scrollToMockups = () => {
+    const mockupsSection = document.querySelector('[aria-label="App screenshots showcase"]');
+    if (mockupsSection) {
+      mockupsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  
   return (
     <>
       <motion.p 
@@ -40,6 +47,7 @@ const HeroContent = () => {
         
         <Button
           variant="outline"
+          onClick={scrollToMockups}
           className="text-sm font-medium px-6 py-3 h-auto border-2 border-zinc-200 text-zinc-900 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-colors rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
         >
           Watch Demo
