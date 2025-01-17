@@ -43,17 +43,31 @@ serve(async (req) => {
     const price_id = "price_1QgLHZLbszPXbxPVP8tJ794K";
 
     let customer_id;
+    let hasHadTrial = false;
+
     if (customers.data.length > 0) {
       customer_id = customers.data[0].id;
-      // check if already subscribed to this price
-      const subscriptions = await stripe.subscriptions.list({
-        customer: customers.data[0].id,
+      console.log('Found existing customer:', customer_id);
+
+      // Check all subscriptions (including cancelled ones) for previous trials
+      const allSubscriptions = await stripe.subscriptions.list({
+        customer: customer_id,
+        limit: 100,
+        status: 'all', // This includes active, cancelled, etc.
+      });
+
+      hasHadTrial = allSubscriptions.data.some(sub => sub.trial_end !== null);
+      console.log('Customer has had trial before:', hasHadTrial);
+
+      // Check for active subscription to this price
+      const activeSubscriptions = await stripe.subscriptions.list({
+        customer: customer_id,
         status: 'active',
         price: price_id,
         limit: 1
       });
 
-      if (subscriptions.data.length > 0) {
+      if (activeSubscriptions.data.length > 0) {
         throw new Error("Customer already has an active subscription");
       }
     } else {
@@ -62,6 +76,7 @@ serve(async (req) => {
         email: email,
       });
       customer_id = customer.id;
+      console.log('Created new customer:', customer_id);
     }
 
     // Update the user's profile with the Stripe customer ID
@@ -76,7 +91,7 @@ serve(async (req) => {
     }
 
     console.log('Creating checkout session...');
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig: any = {
       customer: customer_id,
       line_items: [
         {
@@ -85,25 +100,30 @@ serve(async (req) => {
         },
       ],
       mode: 'subscription',
-      subscription_data: {
+      allow_promotion_codes: true,
+      billing_address_collection: 'auto',
+      success_url: `${req.headers.get('origin')}/settings?success=true`,
+      cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
+    };
+
+    // Only add trial period if the customer hasn't had one before
+    if (!hasHadTrial) {
+      sessionConfig.subscription_data = {
         trial_period_days: 30,
         trial_settings: {
           end_behavior: {
             missing_payment_method: 'cancel',
           },
         },
-      },
-      payment_method_collection: 'if_required',
-      allow_promotion_codes: true,
-      billing_address_collection: 'auto',
-      success_url: `${req.headers.get('origin')}/settings?success=true`,
-      cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
-      custom_text: {
+      };
+      sessionConfig.custom_text = {
         submit: {
           message: 'Start your 30-day free trial - no credit card required',
         },
-      },
-    });
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     console.log('Checkout session created:', session.id);
     return new Response(
