@@ -23,6 +23,7 @@ import CoachNotes from "./pages/CoachNotes";
 import CoachNoteDetail from "./pages/CoachNoteDetail";
 import PepTalkDetail from "./pages/PepTalkDetail";
 import PepTalks from "./pages/PepTalks";
+import Support from "./pages/Support";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
+            <Route path="/support" element={<Support />} />
             
             {/* Previously protected routes - now using feature-level gates */}
             <Route path="/trends" element={<Trends />} />
