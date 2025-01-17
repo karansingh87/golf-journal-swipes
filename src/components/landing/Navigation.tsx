@@ -14,7 +14,7 @@ const Navigation = () => {
               WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
             }}
           >
-            GolfLog
+            golflog
           </span>
         </div>
         
