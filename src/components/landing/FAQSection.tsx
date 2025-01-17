@@ -68,16 +68,23 @@ const FAQSection = ({ content }: FAQSectionProps) => {
                 </span>
                 <Plus 
                   className={cn(
-                    "h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-200",
+                    "h-5 w-5 shrink-0 text-zinc-500 transition-transform duration-300 ease-out",
                     openIndex === index && "rotate-45"
                   )} 
                 />
               </button>
-              {openIndex === index && (
-                <div className="pb-4 text-[15px] leading-normal text-zinc-600 animate-accordion-down">
-                  {faq.answer}
+              <div 
+                className={cn(
+                  "grid transition-all duration-300 ease-out",
+                  openIndex === index ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                )}
+              >
+                <div className="overflow-hidden">
+                  <p className="pb-4 text-[15px] leading-normal text-zinc-600">
+                    {faq.answer}
+                  </p>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
