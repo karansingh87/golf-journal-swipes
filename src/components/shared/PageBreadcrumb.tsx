@@ -22,10 +22,10 @@ const PageBreadcrumb = ({ currentPage }: PageBreadcrumbProps) => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink 
-                onClick={() => navigate('/playbook')}
+                onClick={() => navigate('/')}
                 className="text-sm font-medium cursor-pointer"
               >
-                Playbook
+                Home
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />

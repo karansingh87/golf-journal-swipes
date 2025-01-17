@@ -11,7 +11,7 @@ const Support = () => {
       {/* Gradient Overlay */}
       <div className="gradient-overlay" />
       
-      <div className="relative">
+      <div className="relative pt-14">
         <PageBreadcrumb currentPage="Support" />
         <div className="container max-w-4xl mx-auto px-4 py-16">
           <div className="space-y-20">
