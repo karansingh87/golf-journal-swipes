@@ -30,8 +30,8 @@ export const ContactForm = () => {
   };
 
   return (
-    <div className="py-8">
-      <div className="text-center mb-8">
+    <div className="py-4">
+      <div className="text-center mb-6">
         <h2 className="text-2xl font-display tracking-tight text-zinc-900 mb-2">
           Still have questions?
         </h2>
@@ -40,7 +40,7 @@ export const ContactForm = () => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-6">
+      <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4">
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm font-medium text-zinc-700">
             Name

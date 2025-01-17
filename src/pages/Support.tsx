@@ -13,10 +13,10 @@ const Support = () => {
       
       <div className="relative pt-14">
         <PageBreadcrumb currentPage="Support" />
-        <div className="container max-w-4xl mx-auto px-4 py-16">
-          <div className="space-y-20">
+        <div className="container max-w-4xl mx-auto px-4 py-12">
+          <div className="space-y-16">
             <div>
-              <h2 className="text-2xl font-display tracking-tight text-zinc-900 mb-8">
+              <h2 className="text-2xl font-display tracking-tight text-zinc-900 pb-6">
                 Frequently Asked Questions
               </h2>
               <FAQSection />
