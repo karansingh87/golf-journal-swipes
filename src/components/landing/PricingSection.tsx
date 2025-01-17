@@ -43,7 +43,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl font-display tracking-tight text-zinc-900">
-            {content?.title || "Simple, transparent pricing"}
+            {content?.title || "One membership, full access"}
           </h2>
         </div>
 
@@ -63,7 +63,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               {/* Plan Type */}
               <div className="text-center">
                 <h3 className="text-lg font-medium uppercase tracking-wider text-zinc-400 mb-6">
-                  All Access
+                  &nbsp;
                 </h3>
                 
                 {/* Features List */}
