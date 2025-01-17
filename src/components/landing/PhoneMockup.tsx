@@ -20,7 +20,7 @@ const screenshots: ScreenshotData[] = [
     title: "AI turns thoughts into insights.",
   },
   {
-    image: "/lovable-uploads/a7b1dcf1-33e5-490f-8346-7e1538067798.png",
+    image: "/lovable-uploads/d7d9718e-1a21-4ac7-853b-a8231cb030aa.png",
     title: "Spot patterns, trends, progress.",
   },
   {
