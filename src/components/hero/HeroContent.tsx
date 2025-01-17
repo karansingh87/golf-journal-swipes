@@ -8,7 +8,14 @@ const HeroContent = () => {
   const scrollToMockups = () => {
     const mockupsSection = document.querySelector('[aria-label="App screenshots showcase"]');
     if (mockupsSection) {
-      mockupsSection.scrollIntoView({ behavior: 'smooth' });
+      const offset = 50; // Small offset to scroll slightly further
+      const elementPosition = mockupsSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
   
