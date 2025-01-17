@@ -25,7 +25,7 @@ const FAQSection = ({ content }: FAQSectionProps) => {
       answer: "Record a voice note or type insights after your round or practice. Our AI analyzes your session, spotting patterns in your technical skills, mental approach, and overall performance. It's like having a personal golf analyst in your pocket."
     },
     {
-      question: "How does GolfLog understand golf so well?",
+      question: "How does it understand golf so well?",
       answer: "Our AI has been fine-tuned by analyzing thousands of real golf insights from hundreds of golfers. From weekend players to scratch golfers, from swing thoughts to course strategy, it understands how golfers actually think and talk about their game. Like having a caddie who's learned from countless rounds."
     },
     {
