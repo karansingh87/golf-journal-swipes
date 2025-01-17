@@ -8,7 +8,7 @@ interface ScreenshotData {
 
 const screenshots: ScreenshotData[] = [
   {
-    image: "/lovable-uploads/18cfc506-b67d-485f-93cd-f8bbfbf62128.png",
+    image: "/lovable-uploads/d75e7e2a-4100-41cd-90cd-5e2ea644687f.png",
     title: "Hit record and talk,\nlike debriefing with a coach.",
   },
   {
