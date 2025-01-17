@@ -21,9 +21,8 @@ const Landing = () => {
       <Navigation />
       <HeroSection />
       
-      <FadeInView>
-        <PhoneMockup />
-      </FadeInView>
+      {/* PhoneMockup without fade-in */}
+      <PhoneMockup />
       
       <FadeInView>
         <BenefitsSection />
