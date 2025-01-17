@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="py-8">
           <div className="text-center mb-4">
             <p className="text-sm text-zinc-500 flex items-center justify-center">
-              Made for the <Heart className="mx-1 inline-block" size={16} color="black" fill="black" /> of swing thoughts
+              Made for the <Heart className="mx-1 inline-block animate-pulse-ring" size={16} color="black" fill="black" /> of swing thoughts
             </p>
           </div>
           <div className="md:flex md:items-center md:justify-between">
