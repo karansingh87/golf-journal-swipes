@@ -24,7 +24,7 @@ const screenshots: ScreenshotData[] = [
     title: "Spot patterns, trends, progress.",
   },
   {
-    image: "/lovable-uploads/c9ec0f74-9bfa-441b-811a-b00e987b0d4f.png",
+    image: "/lovable-uploads/9a9e2cd6-697c-49e6-97d9-d482a097cfce.png",
     title: "Build a playbook that remembers.",
   }
 ];
