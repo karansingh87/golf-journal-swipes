@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface FAQSectionProps {
   content?: {
@@ -65,11 +65,11 @@ const FAQSection = ({ content }: FAQSectionProps) => {
           {questions.map((faq, index) => (
             <div
               key={index}
-              className="rounded-2xl border border-zinc-200 bg-white/90 px-4 transition-all duration-200 hover:bg-zinc-50/80"
+              className="rounded-2xl border border-zinc-200/80 bg-white/[0.98] backdrop-blur-sm"
             >
               <button
                 onClick={() => toggleQuestion(index)}
-                className="flex w-full items-center justify-between py-4 text-left"
+                className="flex w-full items-center justify-between px-4 py-4 text-left"
               >
                 <span className="text-base font-medium tracking-tight text-zinc-900">
                   {faq.question}
@@ -88,7 +88,7 @@ const FAQSection = ({ content }: FAQSectionProps) => {
                 )}
               >
                 <div className="overflow-hidden">
-                  <p className="pb-4 text-[15px] leading-normal text-zinc-600">
+                  <p className="px-4 pb-4 text-[15px] leading-normal text-zinc-600">
                     {faq.answer}
                   </p>
                 </div>

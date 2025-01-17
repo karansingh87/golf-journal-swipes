@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white/95 border-t border-zinc-200">
+    <footer className="bg-white/[0.98] border-t border-zinc-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="py-6 sm:py-8">
           <div className="text-center mb-3">
