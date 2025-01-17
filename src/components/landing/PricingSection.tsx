@@ -48,82 +48,59 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         </div>
 
         <div className="mx-auto max-w-sm">
-          <div className="relative overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-gray-200/50">
-            {/* Plan Type */}
-            <div className="px-6 pt-6 text-center">
-              <h3 className="text-lg font-medium uppercase tracking-wider text-zinc-500 mb-4">
-                All Access
-              </h3>
-              
-              {/* Pricing Content */}
-              <div className="flex flex-col items-center">
-                <div className="flex items-baseline justify-center">
-                  <span className="text-6xl font-bold tracking-tight text-zinc-900">$12</span>
-                  <span className="text-xl text-zinc-500 ms-2">/month</span>
+          <div className="relative overflow-hidden rounded-3xl bg-zinc-900 shadow-2xl">
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-900 opacity-50" />
+            
+            {/* Content */}
+            <div className="relative px-6 pt-8 pb-10">
+              {/* Plan Type */}
+              <div className="text-center">
+                <h3 className="text-lg font-medium uppercase tracking-wider text-zinc-400 mb-8">
+                  All Access
+                </h3>
+                
+                {/* Features List */}
+                <div className="space-y-6 mb-8">
+                  <ul className="space-y-3">
+                    {[
+                      ...(content?.features?.core || defaultFeatures.core),
+                      ...(content?.features?.power || defaultFeatures.power),
+                      ...(content?.features?.extras || defaultFeatures.extras),
+                    ].map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <div className="rounded-full p-1">
+                          <Check className="h-4 w-4 text-emerald-400" />
+                        </div>
+                        <span className="text-sm text-zinc-300">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="mt-4 flex flex-col items-center gap-2">
-                  <span className="text-base font-semibold text-zinc-800">Try free for 30 days</span>
-                  <span className="text-sm text-zinc-500">No credit card required</span>
+
+                {/* Divider */}
+                <div className="h-px bg-zinc-800 my-8" />
+                
+                {/* Pricing Content */}
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-5xl font-bold tracking-tight text-white">$12</span>
+                    <span className="text-xl text-zinc-400 ms-2">/month</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-base font-semibold text-zinc-300">Try free for 30 days</span>
+                    <span className="text-sm text-zinc-400">No credit card required</span>
+                  </div>
                 </div>
+
+                {/* CTA Button */}
+                <Button
+                  onClick={() => navigate("/signup")}
+                  className="mt-8 w-full bg-white text-zinc-900 hover:bg-zinc-100 h-12 rounded-xl text-base font-medium"
+                >
+                  Start 30-Day Free Trial
+                </Button>
               </div>
-            </div>
-
-            {/* Features List */}
-            <div className="p-6 mt-2">
-              <div className="space-y-6">
-                {/* Core Features */}
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-3">
-                    Core Features
-                  </p>
-                  <ul className="space-y-3">
-                    {(content?.features?.core || defaultFeatures.core).map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
-                        <span className="text-sm text-zinc-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Power Features */}
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-3">
-                    Power Features
-                  </p>
-                  <ul className="space-y-3">
-                    {(content?.features?.power || defaultFeatures.power).map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
-                        <span className="text-sm text-zinc-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Extras */}
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-wider text-zinc-900 mb-3">
-                    Extras
-                  </p>
-                  <ul className="space-y-3">
-                    {(content?.features?.extras || defaultFeatures.extras).map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 flex-shrink-0 text-zinc-900" />
-                        <span className="text-sm text-zinc-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* CTA Button */}
-              <Button
-                onClick={() => navigate("/signup")}
-                className="mt-6 w-full bg-zinc-900 text-white hover:bg-zinc-800 h-12 rounded-xl text-base font-medium"
-              >
-                Start 30-Day Free Trial
-              </Button>
             </div>
           </div>
         </div>
