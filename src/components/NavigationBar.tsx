@@ -1,4 +1,4 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ import {
 
 const NavigationBar = () => {
   const supabaseClient = useSupabaseClient();
+  const session = useSession();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
@@ -37,6 +38,7 @@ const NavigationBar = () => {
 
       return data;
     },
+    enabled: !!session, // Only run query if session exists
   });
 
   const handleLogout = async () => {
@@ -58,11 +60,35 @@ const NavigationBar = () => {
     }
   };
 
-  const isPublicPage = location.pathname === '/' || location.pathname === '/login';
+  const isPublicPage = ['/login', '/signup', '/'].includes(location.pathname);
   const hasValidSubscription = profile?.subscription_status === 'active' || 
                               profile?.subscription_status === 'trialing';
 
+  // Don't show navbar on landing page
   if (location.pathname === '/') return null;
+
+  // Don't show menu for unauthenticated users on public pages
+  if (isPublicPage && !session) {
+    return (
+      <div className="fixed top-0 left-0 right-0 z-[100] h-14 backdrop-blur-sm border-b border-zinc-800/10 bg-white/80">
+        <div className="h-full px-6 flex justify-between items-center">
+          <div 
+            onClick={() => navigate('/')}
+            className="text-2xl font-roboto font-bold tracking-[-0.02em] cursor-pointer hover:opacity-90 transition-opacity flex items-center"
+          >
+            <span 
+              className="flex items-center text-zinc-900"
+              style={{
+                WebkitTextStroke: '0.5px rgba(0, 0, 0, 0.08)',
+              }}
+            >
+              golflog
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] h-14 backdrop-blur-sm border-b border-zinc-800/10 bg-white/80">
@@ -82,7 +108,7 @@ const NavigationBar = () => {
         </div>
         
         <div className="flex-1 flex justify-end">
-          {!isPublicPage && (
+          {session && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
