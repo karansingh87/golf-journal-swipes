@@ -7,6 +7,7 @@ import GolferStoriesSection from "@/components/landing/GolferStoriesSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
+import { FadeInView } from "@/components/ui/fade-in-view";
 
 const Landing = () => {
   return (
@@ -19,12 +20,31 @@ const Landing = () => {
       
       <Navigation />
       <HeroSection />
-      <PhoneMockup />
-      <BenefitsSection />
-      <PowerFeaturesSection />
-      <GolferStoriesSection />
-      <PricingSection />
-      <FAQSection />
+      
+      <FadeInView>
+        <PhoneMockup />
+      </FadeInView>
+      
+      <FadeInView>
+        <BenefitsSection />
+      </FadeInView>
+      
+      <FadeInView>
+        <PowerFeaturesSection />
+      </FadeInView>
+      
+      <FadeInView>
+        <GolferStoriesSection />
+      </FadeInView>
+      
+      <FadeInView>
+        <PricingSection />
+      </FadeInView>
+      
+      <FadeInView>
+        <FAQSection />
+      </FadeInView>
+      
       <Footer />
     </div>
   );
