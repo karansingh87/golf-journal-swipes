@@ -50,7 +50,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         <div className="mx-auto max-w-sm">
           {/* Gradient Background */}
           <div 
-            className="absolute inset-0 w-full max-w-sm mx-auto h-[800px] blur-[100px]"
+            className="absolute inset-0 w-full max-w-sm mx-auto h-[600px] blur-[100px]"
             style={{
               background: `
                 radial-gradient(
