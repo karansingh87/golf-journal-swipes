@@ -8,9 +8,8 @@ const HeroContent = () => {
   const scrollToMockups = () => {
     const mockupsSection = document.querySelector('[aria-label="App screenshots showcase"]');
     if (mockupsSection) {
-      const offset = -50; // Changed to negative offset to scroll further down
       const elementPosition = mockupsSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      const offsetPosition = elementPosition + window.pageYOffset;
       
       window.scrollTo({
         top: offsetPosition,
