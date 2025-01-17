@@ -51,7 +51,7 @@ export const ContactForm = () => {
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
             required
-            className="w-full"
+            className="w-full bg-white/80 backdrop-blur-sm border-zinc-200/80"
           />
         </div>
 
@@ -66,7 +66,7 @@ export const ContactForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
             required
-            className="w-full"
+            className="w-full bg-white/80 backdrop-blur-sm border-zinc-200/80"
           />
         </div>
 
@@ -80,13 +80,13 @@ export const ContactForm = () => {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="How can we help?"
             required
-            className="w-full min-h-[150px]"
+            className="w-full min-h-[150px] bg-white/80 backdrop-blur-sm border-zinc-200/80"
           />
         </div>
 
         <Button
           type="submit"
-          className="w-full"
+          className="w-full bg-zinc-900 hover:bg-zinc-800 text-white"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Sending..." : "Send Message"}

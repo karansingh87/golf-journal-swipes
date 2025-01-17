@@ -126,7 +126,7 @@ export const FAQSection = () => {
                 <AccordionItem
                   key={faqIndex}
                   value={`${index}-${faqIndex}`}
-                  className="border border-zinc-200 rounded-lg px-4"
+                  className="border border-zinc-200/80 bg-white/80 backdrop-blur-sm rounded-lg px-4"
                 >
                   <AccordionTrigger className="text-left hover:no-underline">
                     <span className="text-zinc-800">{faq.question}</span>
