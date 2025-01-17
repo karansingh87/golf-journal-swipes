@@ -33,6 +33,10 @@ const FAQSection = ({ content }: FAQSectionProps) => {
       answer: "Not at all! If you can chat about golf with a friend, you can use GolfLog. It takes less than 60 seconds to start. Just open golflog.ai, create an account, and you're ready to go. No downloads, no complicated setup."
     },
     {
+      question: "Is GolfLog a swing analyzer or score tracker?",
+      answer: "No, and that's by design. GolfLog focuses on something more valuable: your insights, breakthroughs, and mental game. It's your dedicated space for all those 'aha' moments that actually improve your game. While we don't track scores directly, our AI notes any scores you mention in your recordings, making them part of your improvement story."
+    },
+    {
       question: "Is my data private?",
       answer: "100% private. Your insights are only visible to you, and we securely encrypt everything. You control what to share and with whom."
     },
