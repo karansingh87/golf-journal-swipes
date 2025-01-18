@@ -22,7 +22,7 @@ const PageBreadcrumb = ({ currentPage }: PageBreadcrumbProps) => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink 
-                onClick={() => navigate('/record')}
+                onClick={() => navigate('/playbook')}
                 className="text-sm font-medium cursor-pointer"
               >
                 Playbook
