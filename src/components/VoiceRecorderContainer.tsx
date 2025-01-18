@@ -14,7 +14,7 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  const { data: profile, isLoading: isProfileLoading } = useQuery({
+  const { data: profile } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -28,8 +28,7 @@ const VoiceRecorderContainer = () => {
 
       if (error) throw error;
       return data;
-    },
-    staleTime: 1000 * 30, // Cache for 30 seconds
+    }
   });
 
   const {
@@ -40,30 +39,8 @@ const VoiceRecorderContainer = () => {
     handleTextSubmit,
   } = useGolfRecording();
 
-  // Loading state guard - moved to top level for visibility
-  if (isProfileLoading) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white/95 backdrop-blur-sm z-50">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
-          <p className="text-zinc-600 text-sm font-medium">Loading your profile...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Ensure we have profile data before proceeding
-  if (!profile) {
-    console.error('No profile data available');
-    return null;
-  }
-
-  const isProUser = () => {
-    return profile.subscription_tier === 'pro';
-  };
-
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!isProUser()) {
+    if (!profile || profile.subscription_tier !== 'pro') {
       setShowUpgradeModal(true);
       return;
     }
@@ -72,7 +49,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = () => {
-    if (!isProUser()) {
+    if (!profile || profile.subscription_tier !== 'pro') {
       setShowUpgradeModal(true);
       return;
     }
@@ -85,7 +62,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = () => {
-    if (!isProUser()) {
+    if (!profile || profile.subscription_tier !== 'pro') {
       setShowUpgradeModal(true);
       return;
     }
