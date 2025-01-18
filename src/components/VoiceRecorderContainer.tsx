@@ -20,6 +20,11 @@ const VoiceRecorderContainer = () => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       console.log('Auth session initialized:', !!session);
+      console.log('Session details:', {
+        hasSession: !!session,
+        userId: session?.user?.id,
+        timestamp: new Date().toISOString()
+      });
       setAuthInitialized(true);
     };
     
@@ -39,11 +44,14 @@ const VoiceRecorderContainer = () => {
     queryFn: async () => {
       console.log('Query function starting...');
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('Current auth state:', !!user);
-      console.log('User ID if available:', user?.id);
+      console.log('Current auth state:', {
+        hasUser: !!user,
+        userId: user?.id,
+        timestamp: new Date().toISOString()
+      });
       
       if (!user) {
-        console.log('No user found');
+        console.log('No user found, returning null');
         return null;
       }
 
@@ -59,8 +67,15 @@ const VoiceRecorderContainer = () => {
         throw error;
       }
       
-      console.log('Raw Supabase response:', data);
-      console.log('Full profile data:', data);
+      console.log('Raw Supabase response:', {
+        hasData: !!data,
+        fields: data ? Object.keys(data) : [],
+        subscriptionTier: data?.subscription_tier,
+        subscriptionStatus: data?.subscription_status,
+        isAdmin: data?.is_admin,
+        timestamp: new Date().toISOString()
+      });
+      
       return data;
     },
     enabled: authInitialized,
@@ -70,18 +85,26 @@ const VoiceRecorderContainer = () => {
 
   // Debug logs for component state
   useEffect(() => {
-    console.log('Component state update:');
-    console.log('- Auth initialized:', authInitialized);
-    console.log('- Profile loading state:', isProfileLoading);
-    console.log('- Current profile data:', profile);
+    console.log('Component state update:', {
+      authInitialized,
+      isProfileLoading,
+      profile: profile ? {
+        subscriptionTier: profile.subscription_tier,
+        subscriptionStatus: profile.subscription_status,
+        isAdmin: profile.is_admin,
+      } : undefined,
+      timestamp: new Date().toISOString()
+    });
   }, [authInitialized, isProfileLoading, profile]);
 
   // Don't render anything until auth is initialized and we have profile data
   if (!authInitialized || isProfileLoading || !profile) {
-    console.log('Showing loading state because:');
-    console.log('- Auth initialized:', authInitialized);
-    console.log('- Profile loading:', isProfileLoading);
-    console.log('- Profile data exists:', !!profile);
+    console.log('Showing loading state because:', {
+      authInitialized,
+      isProfileLoading,
+      hasProfile: !!profile,
+      timestamp: new Date().toISOString()
+    });
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">
         <div className="flex flex-col items-center space-y-4">
