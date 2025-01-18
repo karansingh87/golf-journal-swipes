@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
@@ -14,11 +14,17 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
+      console.log('Fetching profile data...');
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user found');
+      console.log('Current user:', user?.id);
+      
+      if (!user) {
+        console.log('No user found');
+        throw new Error('No user found');
+      }
 
       const { data, error } = await supabase
         .from('profiles')
@@ -26,9 +32,15 @@ const VoiceRecorderContainer = () => {
         .eq('id', user.id)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+      }
+      
+      console.log('Profile data received:', data);
       return data;
-    }
+    },
+    retry: 1
   });
 
   const {
@@ -39,8 +51,30 @@ const VoiceRecorderContainer = () => {
     handleTextSubmit,
   } = useGolfRecording();
 
+  // Debug logs for component state
+  useEffect(() => {
+    console.log('Profile loading state:', isProfileLoading);
+    console.log('Current profile data:', profile);
+  }, [isProfileLoading, profile]);
+
+  if (isProfileLoading) {
+    console.log('Showing loading state');
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center space-y-4">
+          <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
+          <p className="text-golf-green/80 text-sm font-medium">
+            Loading your profile...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
+    console.log('Handling text submit with profile:', profile);
     if (!profile || profile.subscription_tier !== 'pro') {
+      console.log('Showing upgrade modal - not pro user');
       setShowUpgradeModal(true);
       return;
     }
@@ -49,7 +83,9 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = () => {
+    console.log('Handling recording start with profile:', profile);
     if (!profile || profile.subscription_tier !== 'pro') {
+      console.log('Showing upgrade modal - not pro user');
       setShowUpgradeModal(true);
       return;
     }
@@ -62,7 +98,9 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = () => {
+    console.log('Handling switch to text with profile:', profile);
     if (!profile || profile.subscription_tier !== 'pro') {
+      console.log('Showing upgrade modal - not pro user');
       setShowUpgradeModal(true);
       return;
     }
