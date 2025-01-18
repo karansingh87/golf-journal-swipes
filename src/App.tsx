@@ -1,9 +1,9 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
@@ -40,34 +40,6 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Profile prefetcher component
-const ProfilePrefetcher = () => {
-  const session = useSession();
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    if (session?.user?.id) {
-      queryClient.prefetchQuery({
-        queryKey: ['profile'],
-        queryFn: async () => {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('subscription_tier, subscription_status')
-            .eq('id', session.user.id)
-            .maybeSingle();
-
-          if (error) throw error;
-          return data;
-        },
-        staleTime: 30000, // 30 seconds
-        gcTime: 1000 * 60 * 5, // 5 minutes
-      });
-    }
-  }, [session?.user?.id, queryClient]);
-
-  return null;
-};
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -82,7 +54,6 @@ const App = () => (
     <SessionContextProvider supabaseClient={supabase}>
       <TooltipProvider>
         <BrowserRouter>
-          <ProfilePrefetcher />
           <ScrollToTop />
           <NavigationBar />
           <Toaster />
