@@ -1,4 +1,4 @@
-import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
+import PublicPageBreadcrumb from "@/components/shared/PublicPageBreadcrumb";
 
 const Privacy = () => {
   return (
@@ -10,7 +10,7 @@ const Privacy = () => {
       <div className="gradient-overlay" />
       
       <div className="relative pt-14">
-        <PageBreadcrumb currentPage="Privacy Policy" />
+        <PublicPageBreadcrumb currentPage="Privacy Policy" />
         <div className="container max-w-4xl mx-auto px-4 py-8">
           <div className="space-y-8">
             <div className="text-center mb-8">

@@ -1,4 +1,4 @@
-import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
+import PublicPageBreadcrumb from "@/components/shared/PublicPageBreadcrumb";
 
 const Terms = () => {
   return (
@@ -10,7 +10,7 @@ const Terms = () => {
       <div className="gradient-overlay" />
       
       <div className="relative pt-14">
-        <PageBreadcrumb currentPage="Terms of Service" />
+        <PublicPageBreadcrumb currentPage="Terms of Service" />
         <div className="container max-w-4xl mx-auto px-4 py-8">
           <div className="space-y-8">
             <div className="text-center mb-8">

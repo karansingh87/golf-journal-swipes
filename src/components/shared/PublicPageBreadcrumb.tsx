@@ -8,11 +8,11 @@ import {
 } from "@/components/ui/breadcrumb";
 import { useNavigate } from "react-router-dom";
 
-interface PageBreadcrumbProps {
+interface PublicPageBreadcrumbProps {
   currentPage: string;
 }
 
-const PageBreadcrumb = ({ currentPage }: PageBreadcrumbProps) => {
+const PublicPageBreadcrumb = ({ currentPage }: PublicPageBreadcrumbProps) => {
   const navigate = useNavigate();
   
   return (
@@ -22,10 +22,10 @@ const PageBreadcrumb = ({ currentPage }: PageBreadcrumbProps) => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink 
-                onClick={() => navigate('/record')}
+                onClick={() => navigate('/')}
                 className="text-sm font-medium cursor-pointer"
               >
-                Playbook
+                Home
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -41,4 +41,4 @@ const PageBreadcrumb = ({ currentPage }: PageBreadcrumbProps) => {
   );
 };
 
-export default PageBreadcrumb;
+export default PublicPageBreadcrumb;

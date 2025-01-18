@@ -1,5 +1,5 @@
 import { FAQSection } from "@/components/support/FAQSection";
-import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
+import PublicPageBreadcrumb from "@/components/shared/PublicPageBreadcrumb";
 
 const FAQ = () => {
   return (
@@ -11,7 +11,7 @@ const FAQ = () => {
       <div className="gradient-overlay" />
       
       <div className="relative pt-14">
-        <PageBreadcrumb currentPage="FAQ" />
+        <PublicPageBreadcrumb currentPage="FAQ" />
         <div className="container max-w-4xl mx-auto px-4 py-12">
           <h1 className="text-3xl font-display tracking-tight text-zinc-900 pb-8">
             Frequently Asked Questions

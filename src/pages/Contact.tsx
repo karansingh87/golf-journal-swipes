@@ -1,5 +1,5 @@
 import { ContactForm } from "@/components/support/ContactForm";
-import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
+import PublicPageBreadcrumb from "@/components/shared/PublicPageBreadcrumb";
 
 const Contact = () => {
   return (
@@ -11,7 +11,7 @@ const Contact = () => {
       <div className="gradient-overlay" />
       
       <div className="relative pt-14">
-        <PageBreadcrumb currentPage="Contact" />
+        <PublicPageBreadcrumb currentPage="Contact" />
         <div className="container max-w-2xl mx-auto px-4 py-12">
           <h1 className="text-3xl font-display tracking-tight text-zinc-900 text-center mb-8">
             Get in Touch
