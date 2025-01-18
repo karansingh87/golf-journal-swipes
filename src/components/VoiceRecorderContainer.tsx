@@ -21,7 +21,7 @@ const VoiceRecorderContainer = () => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('subscription_status')
         .eq('id', user.id)
         .single();
 
@@ -61,7 +61,8 @@ const VoiceRecorderContainer = () => {
   };
 
   const isProUser = () => {
-    return profile?.subscription_tier === 'pro';
+    return profile?.subscription_status === 'active' || 
+           profile?.subscription_status === 'trialing';
   };
 
   const handleSwitchToText = () => {
