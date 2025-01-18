@@ -7,6 +7,7 @@ import TrendsCard from './TrendsCard';
 import PlaceholderCard from './PlaceholderCard';
 import NewPlaceholderCard from './NewPlaceholderCard';
 import { UpgradeModal } from '@/components/subscription/UpgradeModal';
+import { isSubscriptionActive } from "@/utils/subscription";
 
 interface PlaybookActionsProps {
   onGenerateClick: () => void;
@@ -34,7 +35,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     },
   });
 
-  const isProUser = profile?.subscription_tier === 'pro';
+  const isProUser = profile && isSubscriptionActive(profile);
 
   const handleFeatureClick = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
     if (!isProUser) {

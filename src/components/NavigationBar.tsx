@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { isSubscriptionActive } from "@/utils/subscription";
 
 const NavigationBar = () => {
   const supabaseClient = useSupabaseClient();
@@ -61,8 +62,7 @@ const NavigationBar = () => {
   };
 
   const isPublicPage = ['/login', '/signup', '/'].includes(location.pathname);
-  const hasValidSubscription = profile?.subscription_status === 'active' || 
-                              profile?.subscription_status === 'trialing';
+  const hasValidSubscription = profile && isSubscriptionActive(profile);
 
   // Don't show navbar on landing page
   if (location.pathname === '/') return null;

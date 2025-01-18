@@ -6,6 +6,7 @@ import SessionTypeModal from "./SessionTypeModal";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
+import { isSubscriptionActive } from "@/utils/subscription";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -39,7 +40,7 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!isProUser()) {
+    if (!isSubscriptionActive(profile)) {
       setShowUpgradeModal(true);
       return;
     }
@@ -48,7 +49,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = () => {
-    if (!isProUser()) {
+    if (!isSubscriptionActive(profile)) {
       setShowUpgradeModal(true);
       return;
     }
@@ -60,13 +61,8 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const isProUser = () => {
-    return profile?.subscription_status === 'active' || 
-           profile?.subscription_status === 'trialing';
-  };
-
   const handleSwitchToText = () => {
-    if (!isProUser()) {
+    if (!isSubscriptionActive(profile)) {
       setShowUpgradeModal(true);
       return;
     }
