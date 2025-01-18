@@ -6,6 +6,7 @@ import SessionTypeModal from "./SessionTypeModal";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
+import { Loader2 } from "lucide-react";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -13,7 +14,7 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -38,6 +39,22 @@ const VoiceRecorderContainer = () => {
     handleTextSubmit,
   } = useGolfRecording();
 
+  // Loading state guard
+  if (isProfileLoading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
+          <p className="text-zinc-600 text-sm">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const isProUser = () => {
+    return profile?.subscription_tier === 'pro';
+  };
+
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     if (!isProUser()) {
       setShowUpgradeModal(true);
@@ -58,10 +75,6 @@ const VoiceRecorderContainer = () => {
   const handleSessionTypeSelect = (type: "course" | "practice") => {
     setSessionType(type);
     setShowSessionTypeModal(false);
-  };
-
-  const isProUser = () => {
-    return profile?.subscription_tier === 'pro';
   };
 
   const handleSwitchToText = () => {
