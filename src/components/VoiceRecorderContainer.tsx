@@ -13,11 +13,23 @@ const VoiceRecorderContainer = () => {
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [authInitialized, setAuthInitialized] = useState(false);
+  
+  // Wait for auth to be initialized
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('Auth session initialized:', !!session);
+      setAuthInitialized(true);
+    };
+    
+    checkAuth();
+  }, []);
   
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      console.log('Fetching profile data...');
+      console.log('Starting profile fetch...');
       const { data: { user } } = await supabase.auth.getUser();
       console.log('Current user:', user?.id);
       
@@ -40,33 +52,27 @@ const VoiceRecorderContainer = () => {
       console.log('Profile data received:', data);
       return data;
     },
-    retry: 1,
+    enabled: authInitialized, // Only run query when auth is initialized
+    retry: 2,
     staleTime: 30000, // Cache for 30 seconds
   });
 
-  const {
-    isTranscribing,
-    isProcessingText,
-    transcription,
-    handleAudioRecording,
-    handleTextSubmit,
-  } = useGolfRecording();
-
   // Debug logs for component state
   useEffect(() => {
+    console.log('Auth initialized:', authInitialized);
     console.log('Profile loading state:', isProfileLoading);
     console.log('Current profile data:', profile);
-  }, [isProfileLoading, profile]);
+  }, [authInitialized, isProfileLoading, profile]);
 
-  // Don't render anything until we have profile data
-  if (isProfileLoading || !profile) {
+  // Don't render anything until auth is initialized and we have profile data
+  if (!authInitialized || isProfileLoading || !profile) {
     console.log('Showing loading state');
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">
         <div className="flex flex-col items-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
           <p className="text-golf-green/80 text-sm font-medium">
-            Loading your profile...
+            {!authInitialized ? 'Initializing...' : 'Loading your profile...'}
           </p>
         </div>
       </div>
