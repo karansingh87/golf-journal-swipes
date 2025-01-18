@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
@@ -6,109 +6,40 @@ import SessionTypeModal from "./SessionTypeModal";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
-import { Loader2 } from "lucide-react";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [authInitialized, setAuthInitialized] = useState(false);
   
-  // Wait for auth to be initialized
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('Auth session initialized:', !!session);
-      console.log('Session details:', {
-        hasSession: !!session,
-        userId: session?.user?.id,
-        timestamp: new Date().toISOString()
-      });
-      setAuthInitialized(true);
-    };
-    
-    checkAuth();
-  }, []);
-
-  const { data: profile, isLoading: isProfileLoading } = useQuery({
+  const { data: profile } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      console.log('Profile query starting...', new Date().toISOString());
       const { data: { user } } = await supabase.auth.getUser();
-      
-      if (!user) {
-        console.log('No user found in auth state');
-        return null;
-      }
+      if (!user) throw new Error('No user found');
 
-      console.log('Fetching profile for user:', user.id);
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, is_admin, subscription_status')
+        .select('subscription_tier')
         .eq('id', user.id)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        console.error('Error fetching profile:', error);
-        throw error;
-      }
-      
-      console.log('Raw profile data from Supabase:', data);
-      console.log('Profile query fields returned:', Object.keys(data || {}));
-      console.log('Full profile response:', {
-        subscriptionTier: data?.subscription_tier,
-        subscriptionStatus: data?.subscription_status,
-        isAdmin: data?.is_admin,
-        timestamp: new Date().toISOString()
-      });
-      
+      if (error) throw error;
       return data;
     },
-    enabled: authInitialized,
-    retry: 2,
-    staleTime: 30000,
   });
 
-  // Debug logs for component state
-  useEffect(() => {
-    console.log('Component state update:', {
-      authInitialized,
-      isProfileLoading,
-      profile: profile ? {
-        subscriptionTier: profile.subscription_tier,
-        subscriptionStatus: profile.subscription_status,
-        isAdmin: profile.is_admin,
-        fullProfile: profile // Log the entire profile object
-      } : null,
-      timestamp: new Date().toISOString()
-    });
-  }, [authInitialized, isProfileLoading, profile]);
-
-  // Don't render anything until auth is initialized and we have profile data
-  if (!authInitialized || isProfileLoading || !profile) {
-    console.log('Loading state active because:', {
-      authInitialized,
-      isProfileLoading,
-      hasProfile: !!profile,
-      timestamp: new Date().toISOString()
-    });
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-background">
-        <div className="flex flex-col items-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-golf-green" />
-          <p className="text-golf-green/80 text-sm font-medium">
-            {!authInitialized ? 'Initializing...' : 'Loading your profile...'}
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const {
+    isTranscribing,
+    isProcessingText,
+    transcription,
+    handleAudioRecording,
+    handleTextSubmit,
+  } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    console.log('Handling text submit with profile:', profile);
-    if (!profile || profile.subscription_tier !== 'pro') {
-      console.log('Showing upgrade modal - not pro user');
+    if (!isProUser()) {
       setShowUpgradeModal(true);
       return;
     }
@@ -117,9 +48,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = () => {
-    console.log('Handling recording start with profile:', profile);
-    if (!profile || profile.subscription_tier !== 'pro') {
-      console.log('Showing upgrade modal - not pro user');
+    if (!isProUser()) {
       setShowUpgradeModal(true);
       return;
     }
@@ -131,23 +60,17 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
+  const isProUser = () => {
+    return profile?.subscription_tier === 'pro';
+  };
+
   const handleSwitchToText = () => {
-    console.log('Handling switch to text with profile:', profile);
-    if (!profile || profile.subscription_tier !== 'pro') {
-      console.log('Showing upgrade modal - not pro user');
+    if (!isProUser()) {
       setShowUpgradeModal(true);
       return;
     }
     setShowTextInput(true);
   };
-
-  const {
-    isTranscribing,
-    isProcessingText,
-    transcription,
-    handleAudioRecording,
-    handleTextSubmit,
-  } = useGolfRecording();
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
