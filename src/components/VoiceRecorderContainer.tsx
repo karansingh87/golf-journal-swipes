@@ -14,7 +14,6 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  // Add suspense: false to ensure loading state is handled by component
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
@@ -30,7 +29,6 @@ const VoiceRecorderContainer = () => {
       if (error) throw error;
       return data;
     },
-    suspense: false, // Important: This ensures we handle loading state in component
     staleTime: 1000 * 30, // Cache for 30 seconds
   });
 
