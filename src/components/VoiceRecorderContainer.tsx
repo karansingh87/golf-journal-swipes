@@ -25,6 +25,14 @@ const VoiceRecorderContainer = () => {
     
     checkAuth();
   }, []);
+
+  const {
+    isTranscribing,
+    isProcessingText,
+    transcription,
+    handleAudioRecording,
+    handleTextSubmit,
+  } = useGolfRecording();
   
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
