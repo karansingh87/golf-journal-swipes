@@ -31,31 +31,18 @@ const VoiceRecorderContainer = () => {
     checkAuth();
   }, []);
 
-  const {
-    isTranscribing,
-    isProcessingText,
-    transcription,
-    handleAudioRecording,
-    handleTextSubmit,
-  } = useGolfRecording();
-  
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      console.log('Query function starting...');
+      console.log('Profile query starting...', new Date().toISOString());
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('Current auth state:', {
-        hasUser: !!user,
-        userId: user?.id,
-        timestamp: new Date().toISOString()
-      });
       
       if (!user) {
-        console.log('No user found, returning null');
+        console.log('No user found in auth state');
         return null;
       }
 
-      console.log('Starting Supabase query for profile...');
+      console.log('Fetching profile for user:', user.id);
       const { data, error } = await supabase
         .from('profiles')
         .select('subscription_tier, is_admin, subscription_status')
@@ -67,9 +54,9 @@ const VoiceRecorderContainer = () => {
         throw error;
       }
       
-      console.log('Raw Supabase response:', {
-        hasData: !!data,
-        fields: data ? Object.keys(data) : [],
+      console.log('Raw profile data from Supabase:', data);
+      console.log('Profile query fields returned:', Object.keys(data || {}));
+      console.log('Full profile response:', {
         subscriptionTier: data?.subscription_tier,
         subscriptionStatus: data?.subscription_status,
         isAdmin: data?.is_admin,
@@ -92,14 +79,15 @@ const VoiceRecorderContainer = () => {
         subscriptionTier: profile.subscription_tier,
         subscriptionStatus: profile.subscription_status,
         isAdmin: profile.is_admin,
-      } : undefined,
+        fullProfile: profile // Log the entire profile object
+      } : null,
       timestamp: new Date().toISOString()
     });
   }, [authInitialized, isProfileLoading, profile]);
 
   // Don't render anything until auth is initialized and we have profile data
   if (!authInitialized || isProfileLoading || !profile) {
-    console.log('Showing loading state because:', {
+    console.log('Loading state active because:', {
       authInitialized,
       isProfileLoading,
       hasProfile: !!profile,
@@ -152,6 +140,14 @@ const VoiceRecorderContainer = () => {
     }
     setShowTextInput(true);
   };
+
+  const {
+    isTranscribing,
+    isProcessingText,
+    transcription,
+    handleAudioRecording,
+    handleTextSubmit,
+  } = useGolfRecording();
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
