@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { SessionContextProvider, useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
@@ -40,6 +40,32 @@ const ScrollToTop = () => {
   return null;
 };
 
+// Profile prefetcher component
+const ProfilePrefetcher = () => {
+  const session = useSession();
+  const queryClient = new QueryClient();
+
+  useEffect(() => {
+    if (session?.user?.id) {
+      queryClient.prefetchQuery({
+        queryKey: ['profile'],
+        queryFn: async () => {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('subscription_tier')
+            .eq('id', session.user.id)
+            .single();
+
+          if (error) throw error;
+          return data;
+        },
+      });
+    }
+  }, [session?.user?.id]);
+
+  return null;
+};
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -55,6 +81,7 @@ const App = () => (
       <TooltipProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <ProfilePrefetcher />
           <NavigationBar />
           <Toaster />
           <Sonner />
