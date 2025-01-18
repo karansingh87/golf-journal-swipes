@@ -26,7 +26,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('subscription_status')
         .eq('id', user.id)
         .single();
 

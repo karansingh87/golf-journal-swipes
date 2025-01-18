@@ -22,7 +22,7 @@ const VoiceRecorderContainer = () => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_status')
+        .select('subscription_status, is_admin')
         .eq('id', user.id)
         .single();
 
