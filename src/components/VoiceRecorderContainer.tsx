@@ -37,15 +37,17 @@ const VoiceRecorderContainer = () => {
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      console.log('Starting profile fetch...');
+      console.log('Query function starting...');
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('Current user:', user?.id);
+      console.log('Current auth state:', !!user);
+      console.log('User ID if available:', user?.id);
       
       if (!user) {
         console.log('No user found');
         return null;
       }
 
+      console.log('Starting Supabase query for profile...');
       const { data, error } = await supabase
         .from('profiles')
         .select('subscription_tier, is_admin, subscription_status')
@@ -57,24 +59,29 @@ const VoiceRecorderContainer = () => {
         throw error;
       }
       
-      console.log('Profile data received:', data);
+      console.log('Raw Supabase response:', data);
+      console.log('Full profile data:', data);
       return data;
     },
-    enabled: authInitialized, // Only run query when auth is initialized
+    enabled: authInitialized,
     retry: 2,
-    staleTime: 30000, // Cache for 30 seconds
+    staleTime: 30000,
   });
 
   // Debug logs for component state
   useEffect(() => {
-    console.log('Auth initialized:', authInitialized);
-    console.log('Profile loading state:', isProfileLoading);
-    console.log('Current profile data:', profile);
+    console.log('Component state update:');
+    console.log('- Auth initialized:', authInitialized);
+    console.log('- Profile loading state:', isProfileLoading);
+    console.log('- Current profile data:', profile);
   }, [authInitialized, isProfileLoading, profile]);
 
   // Don't render anything until auth is initialized and we have profile data
   if (!authInitialized || isProfileLoading || !profile) {
-    console.log('Showing loading state');
+    console.log('Showing loading state because:');
+    console.log('- Auth initialized:', authInitialized);
+    console.log('- Profile loading:', isProfileLoading);
+    console.log('- Profile data exists:', !!profile);
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">
         <div className="flex flex-col items-center space-y-4">
