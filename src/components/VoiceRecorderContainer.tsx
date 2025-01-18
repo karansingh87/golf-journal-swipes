@@ -14,6 +14,7 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
+  // Add suspense: false to ensure loading state is handled by component
   const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
@@ -24,11 +25,13 @@ const VoiceRecorderContainer = () => {
         .from('profiles')
         .select('subscription_tier')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       return data;
     },
+    suspense: false, // Important: This ensures we handle loading state in component
+    staleTime: 1000 * 30, // Cache for 30 seconds
   });
 
   const {
@@ -39,20 +42,26 @@ const VoiceRecorderContainer = () => {
     handleTextSubmit,
   } = useGolfRecording();
 
-  // Loading state guard
+  // Loading state guard - moved to top level for visibility
   if (isProfileLoading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-background">
+      <div className="fixed inset-0 flex items-center justify-center bg-white/95 backdrop-blur-sm z-50">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
-          <p className="text-zinc-600 text-sm">Loading your profile...</p>
+          <p className="text-zinc-600 text-sm font-medium">Loading your profile...</p>
         </div>
       </div>
     );
   }
 
+  // Ensure we have profile data before proceeding
+  if (!profile) {
+    console.error('No profile data available');
+    return null;
+  }
+
   const isProUser = () => {
-    return profile?.subscription_tier === 'pro';
+    return profile.subscription_tier === 'pro';
   };
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
