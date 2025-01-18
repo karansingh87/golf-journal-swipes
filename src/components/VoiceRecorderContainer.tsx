@@ -23,12 +23,12 @@ const VoiceRecorderContainer = () => {
       
       if (!user) {
         console.log('No user found');
-        throw new Error('No user found');
+        return null;
       }
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('subscription_tier, is_admin, subscription_status')
         .eq('id', user.id)
         .maybeSingle();
 
@@ -40,7 +40,8 @@ const VoiceRecorderContainer = () => {
       console.log('Profile data received:', data);
       return data;
     },
-    retry: 1
+    retry: 1,
+    staleTime: 30000, // Cache for 30 seconds
   });
 
   const {
@@ -57,7 +58,8 @@ const VoiceRecorderContainer = () => {
     console.log('Current profile data:', profile);
   }, [isProfileLoading, profile]);
 
-  if (isProfileLoading) {
+  // Don't render anything until we have profile data
+  if (isProfileLoading || !profile) {
     console.log('Showing loading state');
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">
