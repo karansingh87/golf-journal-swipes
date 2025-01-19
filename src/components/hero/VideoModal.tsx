@@ -19,7 +19,7 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-screen-lg p-0 border-none bg-transparent px-4 sm:px-0 flex items-center justify-center"
+        className="max-w-screen-lg p-0 border-none bg-transparent/5 backdrop-blur-md px-4 sm:px-0 flex items-center justify-center"
         style={{ zIndex: 150 }}
       >
         <button
