@@ -19,9 +19,9 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-[85vw] sm:max-w-[80vw] mt-14 p-0 border-none bg-transparent"
+        className="max-w-[90vw] mt-14 p-0 border-none bg-transparent"
       >
-        <div className="relative w-full max-h-[calc(100vh-7rem)] mx-auto bg-black rounded-lg overflow-hidden">
+        <div className="relative w-full mx-auto bg-black rounded-lg overflow-hidden">
           <button
             onClick={onClose}
             className="absolute -right-6 -top-6 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
@@ -29,10 +29,10 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
           >
             <X className="h-4 w-4 text-white" />
           </button>
-          <div className="aspect-video w-full h-full flex items-center justify-center">
+          <div className="w-full">
             <video
               ref={videoRef}
-              className="w-full h-full object-contain"
+              className="w-full h-auto"
               controls
               playsInline
               preload="auto"
