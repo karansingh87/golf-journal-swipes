@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
+import ReactGA from "react-ga4";
+import { useEffect } from "react";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
@@ -27,14 +29,18 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
-import { useEffect } from "react";
 
-// Custom ScrollToTop component
+// Initialize GA4
+ReactGA.initialize("G-3VEFQ2RGDH");
+
+// Custom ScrollToTop component with page view tracking
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Send pageview to GA4
+    ReactGA.send({ hitType: "pageview", page: pathname });
   }, [pathname]);
 
   return null;
