@@ -19,32 +19,34 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-[90vw] max-h-[calc(100vh-theme(spacing.20))] mt-20 p-0 border-none bg-transparent"
+        className="max-w-[85vw] sm:max-w-[80vw] mt-14 p-0 border-none bg-transparent"
       >
-        <div className="relative w-full h-full max-h-[calc(100vh-theme(spacing.20))] max-w-[calc((100vh-theme(spacing.20))*16/9)] mx-auto bg-black rounded-lg overflow-hidden">
+        <div className="relative w-full max-h-[calc(100vh-7rem)] mx-auto bg-black rounded-lg overflow-hidden">
           <button
             onClick={onClose}
-            className="absolute -right-8 -top-8 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
+            className="absolute -right-6 -top-6 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
             aria-label="Close video"
           >
             <X className="h-4 w-4 text-white" />
           </button>
-          <video
-            ref={videoRef}
-            className="w-full h-full object-contain"
-            controls
-            playsInline
-            preload="auto"
-            autoPlay
-            controlsList="nodownload"
-            onContextMenu={(e) => e.preventDefault()}
-          >
-            <source
-              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
+          <div className="aspect-video w-full h-full flex items-center justify-center">
+            <video
+              ref={videoRef}
+              className="w-full h-full object-contain"
+              controls
+              playsInline
+              preload="auto"
+              autoPlay
+              controlsList="nodownload"
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <source
+                src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
