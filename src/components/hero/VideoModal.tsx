@@ -1,4 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useEffect, useRef } from "react";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -6,11 +7,20 @@ interface VideoModalProps {
 }
 
 const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (isOpen && videoRef.current) {
+      videoRef.current.play();
+    }
+  }, [isOpen]);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent">
         <div className="relative w-full max-h-[90vh] aspect-[9/16] bg-black rounded-lg overflow-hidden">
           <video
+            ref={videoRef}
             className="w-full h-full object-contain"
             controls
             playsInline
