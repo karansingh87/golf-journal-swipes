@@ -1,6 +1,6 @@
 import ReactGA from "react-ga4";
 
-// User Events
+// Authentication Events
 export const trackUserSignup = () => {
   ReactGA.event({
     category: "User",
@@ -16,48 +16,69 @@ export const trackUserLogin = () => {
 };
 
 // Recording Events
-export const trackRecordingCreated = (type: 'voice' | 'text') => {
+export const trackRecordingCreated = (type: 'voice' | 'text', duration?: number) => {
   ReactGA.event({
     category: "Recording",
     action: "Created Recording",
-    label: type
-  });
-};
-
-export const trackRecordingShared = () => {
-  ReactGA.event({
-    category: "Recording",
-    action: "Shared Recording"
+    label: type,
+    value: duration // Only included for voice recordings
   });
 };
 
 // Playbook Events
-export const trackPlaybookAccess = () => {
+export const trackLessonPrepGenerated = (recordingCount: number) => {
   ReactGA.event({
     category: "Playbook",
-    action: "Accessed Playbook"
+    action: "Generated Lesson Prep",
+    value: recordingCount
   });
 };
 
-export const trackNotesGenerated = () => {
+export const trackPepTalkGenerated = (recordingCount: number) => {
   ReactGA.event({
     category: "Playbook",
-    action: "Generated Notes"
+    action: "Generated Pep Talk",
+    value: recordingCount
   });
 };
 
-// Subscription Events
-export const trackSubscriptionStarted = (tier: string) => {
+export const trackTrendsViewed = () => {
   ReactGA.event({
-    category: "Subscription",
-    action: "Started Subscription",
-    label: tier
+    category: "Playbook",
+    action: "Viewed Trends"
   });
 };
 
-export const trackSubscriptionCancelled = () => {
+export const trackCoachNotesCreated = () => {
   ReactGA.event({
-    category: "Subscription",
-    action: "Cancelled Subscription"
+    category: "Playbook",
+    action: "Created Coach Notes"
   });
+};
+
+// Feature Engagement Events
+export const trackAnalysisTimeSpent = (timeInSeconds: number) => {
+  ReactGA.event({
+    category: "Engagement",
+    action: "Analysis Time Spent",
+    value: timeInSeconds
+  });
+};
+
+export const trackRecordingShared = (type: 'recording' | 'coach_notes') => {
+  ReactGA.event({
+    category: "Engagement",
+    action: "Shared Content",
+    label: type
+  });
+};
+
+// Initialize GA (call this in your App.tsx)
+export const initializeGA = (measurementId: string) => {
+  ReactGA.initialize(measurementId);
+};
+
+// Track page views (call this on route changes)
+export const trackPageView = (path: string) => {
+  ReactGA.send({ hitType: "pageview", page: path });
 };
