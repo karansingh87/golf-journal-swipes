@@ -19,19 +19,20 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-[90vw] mt-14 p-0 border-none bg-transparent relative"
+        className="max-w-[90vw] p-0 border-none bg-transparent"
       >
         <button
           onClick={onClose}
-          className="absolute -right-8 -top-8 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
+          className="absolute -right-2 -top-8 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
           aria-label="Close video"
         >
           <X className="h-4 w-4 text-white" />
         </button>
-        <div className="relative w-full mx-auto bg-black rounded-lg overflow-hidden max-h-[85vh] sm:max-h-[90vh]">
+        
+        <div className="relative bg-black rounded-lg overflow-hidden h-[85vh] sm:h-[90vh] flex items-center justify-center">
           <video
             ref={videoRef}
-            className="w-full h-auto"
+            className="h-full w-auto"
             controls
             playsInline
             preload="auto"
