@@ -25,6 +25,7 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
             controls
             playsInline
             preload="auto"
+            autoPlay
             controlsList="nodownload"
             onContextMenu={(e) => e.preventDefault()}
           >
