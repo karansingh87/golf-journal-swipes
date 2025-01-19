@@ -29,24 +29,22 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
           <X className="h-4 w-4 text-white" />
         </button>
         <div className="relative w-full mx-auto bg-black rounded-lg overflow-hidden max-h-[85vh] sm:max-h-[90vh]">
-          <div className="w-full">
-            <video
-              ref={videoRef}
-              className="w-full h-auto"
-              controls
-              playsInline
-              preload="auto"
-              autoPlay
-              controlsList="nodownload"
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <source
-                src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
-                type="video/mp4"
-              />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+          <video
+            ref={videoRef}
+            className="w-full h-auto"
+            controls
+            playsInline
+            preload="auto"
+            autoPlay
+            controlsList="nodownload"
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            <source
+              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </DialogContent>
     </Dialog>
