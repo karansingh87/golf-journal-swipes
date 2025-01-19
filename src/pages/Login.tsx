@@ -1,104 +1,111 @@
-import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import AuthContainer from "@/components/auth/AuthContainer";
+import AuthHeader from "@/components/auth/AuthHeader";
 import AuthCard from "@/components/auth/AuthCard";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { trackLogin } from "@/utils/analytics";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        navigate('/record');
-      }
-    };
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     
-    checkSession();
+    if (!email || !password) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please fill in all fields",
+      });
+      return;
+    }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        navigate('/record');
-      }
-    });
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+      if (error) throw error;
+
+      // Track successful login
+      trackLogin();
+      
+      navigate("/record");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Login failed",
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthContainer>
-      <div className="space-y-6">
-        <AuthCard>
-          <Auth
-            supabaseClient={supabase}
-            appearance={{
-              theme: ThemeSupa,
-              variables: {
-                default: {
-                  colors: {
-                    brand: '#000000',
-                    brandAccent: '#333333',
-                  }
-                }
-              }
-            }}
-            theme="light"
-            providers={[]}
-            view="sign_in"
-            showLinks={true}
-            localization={{
-              variables: {
-                sign_up: {
-                  email_label: "Email",
-                  password_label: "Password",
-                  button_label: "Sign up",
-                  loading_button_label: "Signing up ...",
-                  social_provider_text: "Sign in with {{provider}}",
-                  link_text: "Don't have an account? Sign up",
-                  confirmation_text: "Check your email for the confirmation link and check your spam folder if you don't see it within a few minutes",
-                },
-                sign_in: {
-                  email_label: "Email",
-                  password_label: "Password",
-                  button_label: "Sign in",
-                  loading_button_label: "Signing in ...",
-                  social_provider_text: "Sign in with {{provider}}",
-                  link_text: "Already have an account? Sign in",
-                },
-                magic_link: {
-                  email_input_label: "Email address",
-                  button_label: "Send Magic Link",
-                  loading_button_label: "Sending Magic Link ...",
-                  link_text: "Send a magic link email",
-                  confirmation_text: "Check your email for the magic link and don't forget to check your spam folder!",
-                },
-                forgotten_password: {
-                  email_label: "Email address",
-                  button_label: "Send reset password instructions",
-                  loading_button_label: "Sending reset instructions ...",
-                  link_text: "Forgot your password?",
-                  confirmation_text: "Check your email for the password reset link. Remember to check your spam folder if you don't see it!",
-                },
-              },
-            }}
-          />
-        </AuthCard>
-        
-        <div className="text-center space-y-4">
-          <p className="text-sm text-zinc-600">Don't have an account?</p>
-          <Button
-            onClick={() => navigate('/signup')}
-            variant="outline"
+      <AuthHeader 
+        title="Welcome Back" 
+        subtitle="Sign in to your account" 
+      />
+
+      <AuthCard>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              disabled={loading}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              disabled={loading}
+            />
+          </div>
+
+          <Button 
+            type="submit" 
             className="w-full"
+            disabled={loading}
           >
-            Start Free Trial
+            {loading ? "Signing in..." : "Sign In"}
+          </Button>
+        </form>
+
+        <div className="mt-4 text-center">
+          <Button
+            variant="link"
+            className="text-gray-500 hover:text-gray-700"
+            onClick={() => navigate("/signup")}
+            disabled={loading}
+          >
+            Don't have an account? Sign up
           </Button>
         </div>
-      </div>
+      </AuthCard>
     </AuthContainer>
   );
 };

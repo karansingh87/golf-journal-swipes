@@ -1,84 +1,79 @@
 import ReactGA from "react-ga4";
 
 // Authentication Events
-export const trackUserSignup = () => {
+export const trackSignUp = () => {
   ReactGA.event({
-    category: "User",
-    action: "Signed Up"
+    category: "Authentication",
+    action: "Sign Up",
   });
 };
 
-export const trackUserLogin = () => {
+export const trackLogin = () => {
   ReactGA.event({
-    category: "User",
-    action: "Logged In"
+    category: "Authentication",
+    action: "Login",
   });
 };
 
 // Recording Events
-export const trackRecordingCreated = (type: 'voice' | 'text', duration?: number) => {
+export const trackRecordingCreation = (type: 'voice' | 'text', durationSeconds?: number) => {
   ReactGA.event({
     category: "Recording",
-    action: "Created Recording",
+    action: "Create Recording",
     label: type,
-    value: duration // Only included for voice recordings
+    value: durationSeconds,
   });
 };
 
-// Playbook Events
-export const trackLessonPrepGenerated = (recordingCount: number) => {
+// Playbook Feature Usage
+export const trackLessonPrepGeneration = (numRecordings: number) => {
   ReactGA.event({
     category: "Playbook",
-    action: "Generated Lesson Prep",
-    value: recordingCount
+    action: "Generate Lesson Prep",
+    value: numRecordings,
   });
 };
 
-export const trackPepTalkGenerated = (recordingCount: number) => {
+export const trackPepTalkGeneration = (numRecordings: number) => {
   ReactGA.event({
     category: "Playbook",
-    action: "Generated Pep Talk",
-    value: recordingCount
+    action: "Generate Pep Talk",
+    value: numRecordings,
   });
 };
 
-export const trackTrendsViewed = () => {
+export const trackTrendsView = () => {
   ReactGA.event({
     category: "Playbook",
-    action: "Viewed Trends"
+    action: "View Trends",
   });
 };
 
-export const trackCoachNotesCreated = () => {
+export const trackCoachNotesCreation = () => {
   ReactGA.event({
     category: "Playbook",
-    action: "Created Coach Notes"
+    action: "Create Coach Notes",
   });
 };
 
-// Feature Engagement Events
-export const trackAnalysisTimeSpent = (timeInSeconds: number) => {
+// Feature Engagement
+export const trackAnalysisTimeSpent = (durationSeconds: number) => {
   ReactGA.event({
     category: "Engagement",
     action: "Analysis Time Spent",
-    value: timeInSeconds
+    value: Math.round(durationSeconds),
   });
 };
 
-export const trackRecordingShared = (type: 'recording' | 'coach_notes') => {
+export const trackPublicSharing = (type: 'recording' | 'coach_notes') => {
   ReactGA.event({
     category: "Engagement",
-    action: "Shared Content",
-    label: type
+    action: "Public Share",
+    label: type,
   });
 };
 
-// Initialize GA (call this in your App.tsx)
-export const initializeGA = (measurementId: string) => {
-  ReactGA.initialize(measurementId);
-};
-
-// Track page views (call this on route changes)
-export const trackPageView = (path: string) => {
-  ReactGA.send({ hitType: "pageview", page: path });
+// Initialize GA (if not already initialized)
+export const initGA = () => {
+  ReactGA.initialize("G-3VEFQ2RGDH");
 };
