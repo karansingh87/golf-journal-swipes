@@ -1,5 +1,15 @@
 import ReactGA from "react-ga4";
 
+// Initialize GA4
+export const initGA = () => {
+  ReactGA.initialize("G-3VEFQ2RGDH");
+};
+
+// Page Views
+export const trackPageView = (path: string) => {
+  ReactGA.send({ hitType: "pageview", page: path });
+};
+
 // Authentication Events
 export const trackSignUp = () => {
   ReactGA.event({
@@ -71,9 +81,4 @@ export const trackPublicSharing = (type: 'recording' | 'coach_notes') => {
     action: "Public Share",
     label: type,
   });
-};
-
-// Initialize GA (if not already initialized)
-export const initGA = () => {
-  ReactGA.initialize("G-3VEFQ2RGDH");
 };

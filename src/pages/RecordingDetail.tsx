@@ -1,42 +1,30 @@
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { useTheme } from "next-themes";
-import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AnalysisTab from "@/components/recording-detail/AnalysisTab";
-import TranscriptionTab from "@/components/recording-detail/TranscriptionTab";
-import RecordingHeader from "@/components/recording-detail/RecordingHeader";
+import { useQuery } from "@tanstack/react-query";
 import { useSession } from "@supabase/auth-helpers-react";
-
-interface AnalysisSection {
-  type: string;
-  content: string | string[];
-}
-
-interface Analysis {
-  sections: AnalysisSection[];
-}
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Loader2, Share2 } from "lucide-react";
+import { trackAnalysisTimeSpent, trackPublicSharing } from "@/utils/analytics";
+import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
+import AudioPlayer from "@/components/recorder/AudioPlayer";
+import TranscriptionDisplay from "@/components/TranscriptionDisplay";
+import RecordingAnalysis from "@/components/analysis/RecordingAnalysis";
+import { CopyLinkButton } from "@/components/shared/CopyLinkButton";
 
 const RecordingDetail = () => {
+  const [startTime] = useState(Date.now());
+  const [isPublic, setIsPublic] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
+  const session = useSession();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { theme } = useTheme();
-  const isDark = theme === 'dark';
-  const session = useSession();
-  const queryClient = useQueryClient();
 
-  // Redirect if not authenticated
-  if (!session) {
-    navigate('/login');
-    return null;
-  }
-
-  const { data: recording, isLoading } = useQuery({
+  const { data: recording, isLoading: isLoadingRecording } = useQuery({
     queryKey: ['recording', id],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -46,144 +34,133 @@ const RecordingDetail = () => {
         .single();
 
       if (error) throw error;
-      
-      let parsedAnalysis: Analysis | null = null;
-      if (data.analysis) {
-        try {
-          parsedAnalysis = JSON.parse(data.analysis);
-        } catch (e) {
-          console.error('Error parsing analysis:', e);
-        }
-      }
-
-      return {
-        ...data,
-        analysis: parsedAnalysis
-      };
+      return data;
     },
-    enabled: !!session && !!id,
+    enabled: !!id && !!session,
   });
 
-  const togglePublicMutation = useMutation({
-    mutationFn: async (isPublic: boolean) => {
-      const { error } = await supabase
-        .from('recordings')
-        .update({ is_public: isPublic })
-        .eq('id', id);
-      
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['recording', id] });
-      toast({
-        title: recording?.is_public ? "Recording made private" : "Recording made public",
-        description: recording?.is_public 
-          ? "This recording is no longer shareable"
-          : "You can now share this recording with others",
-      });
-    },
-    onError: () => {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to update recording visibility",
-      });
-    },
-  });
-
-  const handleTogglePublic = () => {
+  useEffect(() => {
     if (recording) {
-      togglePublicMutation.mutate(!recording.is_public);
+      setIsPublic(recording.is_public || false);
     }
-  };
+  }, [recording]);
 
-  const handleCopyShareLink = () => {
-    if (recording?.is_public) {
-      const shareUrl = `${window.location.origin}/shared/${id}`;
-      navigator.clipboard.writeText(shareUrl);
-      toast({
-        title: "Link copied!",
-        description: "Share this link with others to view this recording",
-      });
-    }
-  };
+  useEffect(() => {
+    return () => {
+      const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+      trackAnalysisTimeSpent(timeSpent);
+    };
+  }, [startTime]);
 
-  const handleDelete = async () => {
+  const handleShareToggle = async (checked: boolean) => {
+    if (!id) return;
+
+    setIsLoading(true);
     try {
       const { error } = await supabase
         .from('recordings')
-        .delete()
+        .update({ is_public: checked })
         .eq('id', id);
 
       if (error) throw error;
 
-      toast({
-        title: "Success",
-        description: "Recording deleted successfully",
-      });
-      navigate('/notes');
+      setIsPublic(checked);
+      if (checked) {
+        trackPublicSharing('recording');
+        toast({
+          title: "Recording shared",
+          description: "Anyone with the link can now view this recording",
+        });
+      } else {
+        toast({
+          title: "Recording unshared",
+          description: "This recording is now private",
+        });
+      }
     } catch (error) {
-      console.error("Error deleting recording:", error);
+      console.error('Error updating recording:', error);
       toast({
-        variant: "destructive",
         title: "Error",
-        description: "Failed to delete recording",
+        description: "Failed to update sharing settings",
+        variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  if (isLoading) {
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
+
+  if (isLoadingRecording) {
     return (
-      <div className="flex justify-center items-center min-h-screen pt-16">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }
 
   if (!recording) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen pt-16">
-        <p className="text-lg text-muted-foreground">Recording not found</p>
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/notes')}
-          className="mt-4"
-        >
-          Go back to notes
-        </Button>
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Recording not found</p>
       </div>
     );
   }
 
+  const shareUrl = `${window.location.origin}/shared/${id}`;
+
   return (
-    <div className="min-h-screen bg-background pt-16">
-      <div className="max-w-3xl mx-auto p-4">
-        <RecordingHeader 
-          recording={recording} 
-          onDelete={handleDelete}
-          onTogglePublic={handleTogglePublic}
-          onShare={handleCopyShareLink}
+    <div className="min-h-screen bg-background pt-14">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <PageBreadcrumb currentPage="Recording" />
+        
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-4">
+            <Switch
+              id="public-toggle"
+              checked={isPublic}
+              onCheckedChange={handleShareToggle}
+              disabled={isLoading}
+            />
+            <Label htmlFor="public-toggle">
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Share2 className="h-4 w-4" />
+                  <span>Share publicly</span>
+                </div>
+              )}
+            </Label>
+          </div>
+
+          {isPublic && (
+            <CopyLinkButton
+              url={shareUrl}
+              className="text-sm"
+            />
+          )}
+        </div>
+
+        {recording.audio_url && (
+          <div className="mb-8">
+            <AudioPlayer audioUrl={recording.audio_url} />
+          </div>
+        )}
+
+        <TranscriptionDisplay
+          transcription={recording.transcription}
+          isTranscribing={false}
         />
 
-        <div className={cn(
-          "rounded-2xl border border-border/50 backdrop-blur-sm overflow-hidden mt-6",
-          "transition-all duration-300",
-          isDark ? "bg-black/40 shadow-[0_0_15px_rgba(74,222,128,0.1)]" : "bg-white/80"
-        )}>
-          <Tabs defaultValue="analysis" className="w-full">
-            <TabsList className="w-full grid grid-cols-2">
-              <TabsTrigger value="analysis">Analysis</TabsTrigger>
-              <TabsTrigger value="transcription">Transcript</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="analysis" className="mt-0">
-              <AnalysisTab analysis={recording.analysis} />
-            </TabsContent>
-            <TabsContent value="transcription" className="mt-0">
-              <TranscriptionTab transcription={recording.transcription} />
-            </TabsContent>
-          </Tabs>
-        </div>
+        {recording.analysis && (
+          <div className="mt-8">
+            <RecordingAnalysis analysis={recording.analysis} />
+          </div>
+        )}
       </div>
     </div>
   );

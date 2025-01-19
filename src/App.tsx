@@ -7,7 +7,7 @@ import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
 import { useEffect } from "react";
-import { initializeGA, trackPageView } from "./utils/analytics";
+import { initGA, trackPageView } from "./utils/analytics";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
@@ -31,7 +31,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 
 // Initialize GA4
-initializeGA("G-3VEFQ2RGDH");
+initGA();
 
 // Custom ScrollToTop component with page view tracking
 const ScrollToTop = () => {

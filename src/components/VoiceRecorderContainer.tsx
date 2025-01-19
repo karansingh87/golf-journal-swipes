@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
 import { isSubscriptionActive } from "@/utils/subscription";
+import { trackRecordingCreation } from "@/utils/analytics";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -45,6 +46,7 @@ const VoiceRecorderContainer = () => {
       return;
     }
     await handleTextSubmit(text, type);
+    trackRecordingCreation('text');
     setShowTextInput(false);
   };
 

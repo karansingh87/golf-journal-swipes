@@ -9,6 +9,7 @@ import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 import { useCoachingNotes } from "@/hooks/useCoachingNotes";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { trackLessonPrepGeneration, trackPepTalkGeneration } from "@/utils/analytics";
 
 const Playbook = () => {
   const session = useSession();
@@ -67,6 +68,7 @@ const Playbook = () => {
   const handleGenerateNotes = async (selectedRecordings: string[]) => {
     const noteData = await generateNotes(selectedRecordings, recordings || []);
     if (noteData) {
+      trackLessonPrepGeneration(selectedRecordings.length);
       navigate(`/coach_notes/${noteData.id}`);
     }
   };
@@ -80,6 +82,7 @@ const Playbook = () => {
       });
       return;
     }
+    trackPepTalkGeneration(recordings.length);
     setIsPepTalkModalOpen(true);
   };
 

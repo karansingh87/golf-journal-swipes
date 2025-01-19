@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { transcribeAudio } from "../utils/transcription";
 import { useGolfStorage } from "./useGolfStorage";
+import { trackRecordingCreation } from "@/utils/analytics";
 
 export const useGolfRecording = () => {
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -21,6 +22,7 @@ export const useGolfRecording = () => {
       const text = await transcribeAudio(audioBlob);
       setTranscription(text);
       await saveRecording(audioUrl, text, sessionType);
+      trackRecordingCreation('voice', recordingTime);
     } catch (error) {
       console.error("Error processing recording:", error);
       toast({
