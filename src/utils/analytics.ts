@@ -1,84 +1,63 @@
 import ReactGA from "react-ga4";
 
-// Initialize GA4
-export const initGA = () => {
-  ReactGA.initialize("G-3VEFQ2RGDH");
-};
-
-// Page Views
-export const trackPageView = (path: string) => {
-  ReactGA.send({ hitType: "pageview", page: path });
-};
-
-// Authentication Events
-export const trackSignUp = () => {
+// User Events
+export const trackUserSignup = () => {
   ReactGA.event({
-    category: "Authentication",
-    action: "Sign Up",
+    category: "User",
+    action: "Signed Up"
   });
 };
 
-export const trackLogin = () => {
+export const trackUserLogin = () => {
   ReactGA.event({
-    category: "Authentication",
-    action: "Login",
+    category: "User",
+    action: "Logged In"
   });
 };
 
 // Recording Events
-export const trackRecordingCreation = (type: 'voice' | 'text', durationSeconds?: number) => {
+export const trackRecordingCreated = (type: 'voice' | 'text') => {
   ReactGA.event({
     category: "Recording",
-    action: "Create Recording",
-    label: type,
-    value: durationSeconds,
+    action: "Created Recording",
+    label: type
   });
 };
 
-// Playbook Feature Usage
-export const trackLessonPrepGeneration = (numRecordings: number) => {
+export const trackRecordingShared = () => {
+  ReactGA.event({
+    category: "Recording",
+    action: "Shared Recording"
+  });
+};
+
+// Playbook Events
+export const trackPlaybookAccess = () => {
   ReactGA.event({
     category: "Playbook",
-    action: "Generate Lesson Prep",
-    value: numRecordings,
+    action: "Accessed Playbook"
   });
 };
 
-export const trackPepTalkGeneration = (numRecordings: number) => {
+export const trackNotesGenerated = () => {
   ReactGA.event({
     category: "Playbook",
-    action: "Generate Pep Talk",
-    value: numRecordings,
+    action: "Generated Notes"
   });
 };
 
-export const trackTrendsView = () => {
+// Subscription Events
+export const trackSubscriptionStarted = (tier: string) => {
   ReactGA.event({
-    category: "Playbook",
-    action: "View Trends",
+    category: "Subscription",
+    action: "Started Subscription",
+    label: tier
   });
 };
 
-export const trackCoachNotesCreation = () => {
+export const trackSubscriptionCancelled = () => {
   ReactGA.event({
-    category: "Playbook",
-    action: "Create Coach Notes",
-  });
-};
-
-// Feature Engagement
-export const trackAnalysisTimeSpent = (durationSeconds: number) => {
-  ReactGA.event({
-    category: "Engagement",
-    action: "Analysis Time Spent",
-    value: Math.round(durationSeconds),
-  });
-};
-
-export const trackPublicSharing = (type: 'recording' | 'coach_notes') => {
-  ReactGA.event({
-    category: "Engagement",
-    action: "Public Share",
-    label: type,
+    category: "Subscription",
+    action: "Cancelled Subscription"
   });
 };

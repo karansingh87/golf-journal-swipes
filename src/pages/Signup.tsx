@@ -8,7 +8,6 @@ import AuthCard from "@/components/auth/AuthCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { trackSignUp } from "@/utils/analytics";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -43,9 +42,6 @@ const Signup = () => {
       });
 
       if (signUpError) throw signUpError;
-
-      // Track successful signup
-      trackSignUp();
 
       toast({
         title: "Success",

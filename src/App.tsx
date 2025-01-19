@@ -6,8 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
 import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
+import ReactGA from "react-ga4";
 import { useEffect } from "react";
-import { initGA, trackPageView } from "./utils/analytics";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
@@ -31,16 +31,16 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 
 // Initialize GA4
-initGA();
+ReactGA.initialize("G-3VEFQ2RGDH");
 
 // Custom ScrollToTop component with page view tracking
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Track page view
-    trackPageView(pathname);
+    // Send pageview to GA4
+    ReactGA.send({ hitType: "pageview", page: pathname });
   }, [pathname]);
 
   return null;
@@ -55,17 +55,16 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <SessionContextProvider supabaseClient={supabase}>
-        <TooltipProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <NavigationBar />
-            <Toaster />
-            <Sonner />
-            <Routes>
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <SessionContextProvider supabaseClient={supabase}>
+      <TooltipProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <NavigationBar />
+          <Toaster />
+          <Sonner />
+          <Routes>
             {/* Public routes */}
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
@@ -96,12 +95,11 @@ const App = () => {
             <Route path="/history" element={<Navigate to="/notes" replace />} />
             <Route path="/support" element={<Navigate to="/faq" replace />} />
             <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </SessionContextProvider>
-    </QueryClientProvider>
-  );
-};
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </SessionContextProvider>
+  </QueryClientProvider>
+);
 
 export default App;

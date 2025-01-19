@@ -7,7 +7,6 @@ import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 import { useToast } from "@/hooks/use-toast";
 import TrendsHeader from "@/components/trends/TrendsHeader";
 import { useTrendsInfo } from "@/hooks/useTrendsInfo";
-import { trackTrendsView } from "@/utils/analytics";
 
 const Trends = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,12 +18,6 @@ const Trends = () => {
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (session) {
-      trackTrendsView();
-    }
-  }, [session]);
 
   // Redirect if not authenticated
   if (!session) {
