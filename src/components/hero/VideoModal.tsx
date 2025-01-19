@@ -1,5 +1,6 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useEffect, useRef } from "react";
+import { X } from "lucide-react";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -21,6 +22,13 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
         className="max-w-[90vw] max-h-[calc(100vh-theme(spacing.14))] mt-14 p-0 border-none bg-transparent"
       >
         <div className="relative w-full h-full max-h-[calc(100vh-theme(spacing.14))] max-w-[calc((100vh-theme(spacing.14))*9/16)] mx-auto bg-black rounded-lg overflow-hidden">
+          <button
+            onClick={onClose}
+            className="absolute right-2 top-2 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
+            aria-label="Close video"
+          >
+            <X className="h-4 w-4 text-white" />
+          </button>
           <video
             ref={videoRef}
             className="w-full h-full object-contain"
