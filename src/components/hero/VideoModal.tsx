@@ -1,0 +1,33 @@
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+
+interface VideoModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent">
+        <div className="relative w-full max-h-[90vh] aspect-[9/16] bg-black rounded-lg overflow-hidden">
+          <video
+            className="w-full h-full object-contain"
+            controls
+            playsInline
+            preload="auto"
+            controlsList="nodownload"
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            <source
+              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default VideoModal;
