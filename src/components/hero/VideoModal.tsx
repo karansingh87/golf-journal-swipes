@@ -19,7 +19,7 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-screen-lg p-0 border-none bg-transparent px-4 sm:px-0"
+        className="max-w-screen-lg p-0 border-none bg-transparent px-4 sm:px-0 flex items-center justify-center"
         style={{ zIndex: 150 }}
       >
         <button
@@ -32,7 +32,7 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
         
         <video
           ref={videoRef}
-          className="w-auto h-[85vh] sm:h-[90vh] rounded-lg"
+          className="w-auto h-[85vh] sm:h-[90vh] rounded-lg mx-auto"
           controls
           playsInline
           preload="auto"
