@@ -18,7 +18,7 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[90vw] max-h-[90vh] p-0 border-none bg-transparent">
-        <div className="relative w-full max-h-[90vh] aspect-[9/16] bg-black rounded-lg overflow-hidden">
+        <div className="relative w-full max-h-[90vh] max-w-[calc(90vh*9/16)] mx-auto bg-black rounded-lg overflow-hidden">
           <video
             ref={videoRef}
             className="w-full h-full object-contain"
