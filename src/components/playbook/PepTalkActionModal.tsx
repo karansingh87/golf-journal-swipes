@@ -37,7 +37,7 @@ const PepTalkActionModal = ({ isOpen, onClose, onViewPast, onCreateNew }: PepTal
             
             <div className="text-center space-y-2">
               <h2 className="text-lg font-semibold text-zinc-950">
-                Pick Recent Rounds
+                Pick your best rounds and we'll highlight what works in your game.
               </h2>
               <p className="text-sm text-zinc-500">
                 Choose up to 3 moments for your confidence boost
@@ -49,7 +49,7 @@ const PepTalkActionModal = ({ isOpen, onClose, onViewPast, onCreateNew }: PepTal
               className="w-full p-3 mt-2 rounded-xl bg-zinc-950 text-white hover:bg-zinc-800 
                 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
             >
-              Get a Pep Talk
+              Generate Pep Talk
             </button>
           </div>
         ) : (
