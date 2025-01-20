@@ -46,7 +46,7 @@ const VideoOverlay = ({ isOpen, onClose }: VideoOverlayProps) => {
             onContextMenu={(e) => e.preventDefault()}
           >
             <source
-              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
+              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920_updated.mp4?t=2025-01-20T01%3A51%3A12.962Z"
               type="video/mp4"
             />
             Your browser does not support the video tag.
