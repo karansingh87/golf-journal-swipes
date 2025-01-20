@@ -54,13 +54,13 @@ export const SubscriptionSection = () => {
   const renderSubscriptionButton = () => {
     if (isTrialUser) {
       return (
-        <Button
-          onClick={() => window.location.href = '/checkout'} // You'll need to implement the checkout page
-          className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+        <UpgradeButton
+          priceId={MONTHLY_PRICE_ID}
+          className="w-full sm:w-auto bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white"
         >
           <ArrowRight className="mr-2 h-4 w-4" />
           Subscribe Now
-        </Button>
+        </UpgradeButton>
       );
     }
 
@@ -70,13 +70,13 @@ export const SubscriptionSection = () => {
 
     if (isPastDue || isCanceled) {
       return (
-        <Button
-          onClick={() => window.location.href = '/checkout'}
-          className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white"
+        <UpgradeButton
+          priceId={MONTHLY_PRICE_ID}
+          className="w-full sm:w-auto bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white"
         >
           <RefreshCw className="mr-2 h-4 w-4" />
           Reactivate Subscription
-        </Button>
+        </UpgradeButton>
       );
     }
 
