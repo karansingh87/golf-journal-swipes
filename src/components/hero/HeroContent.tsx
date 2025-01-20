@@ -53,7 +53,6 @@ const HeroContent = () => {
       <VideoModal 
         isOpen={isVideoModalOpen}
         onClose={() => setIsVideoModalOpen(false)}
-        videoUrl="/demo.mp4" // Add the correct path to your demo video
       />
     </>
   );
