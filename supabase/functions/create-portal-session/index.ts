@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     // Get the user's stripe_customer_id from profiles
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('stripe_customer_id')
+      .select('stripe_customer_id, subscription_status')
       .eq('id', user.id)
       .single();
 
@@ -50,9 +50,9 @@ Deno.serve(async (req) => {
       throw new Error('No Stripe customer found');
     }
 
-    console.log('Creating portal session for customer:', profile.stripe_customer_id);
+    console.log('Creating portal session for customer:', profile.stripe_customer_id, 'Status:', profile.subscription_status);
 
-    // Create the portal session with promotion code configuration
+    // Create the portal session with enhanced configuration
     const { url } = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
       return_url: `${req.headers.get('origin')}/settings`,
@@ -62,6 +62,8 @@ Deno.serve(async (req) => {
         },
         subscription_cancel: {
           enabled: true,
+          mode: 'immediately',
+          proration_behavior: 'always_invoice',
         },
         subscription_pause: {
           enabled: false,
@@ -69,18 +71,18 @@ Deno.serve(async (req) => {
         subscription_update: {
           enabled: true,
           proration_behavior: 'always_invoice',
-          default_allowed_updates: ['price'],
+          default_allowed_updates: ['price', 'promotion_code'],
         },
         customer_update: {
           enabled: true,
           allowed_updates: ['email', 'name'],
         },
+        invoice_history: {
+          enabled: true,
+        },
         promotion_code: {
           enabled: true,
         },
-        invoice_history: {
-          enabled: true,
-        }
       },
     });
 
