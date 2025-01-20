@@ -1,75 +1,68 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
-import Plyr from "plyr";
-import "plyr/dist/plyr.css";
+import React, { useEffect, useRef } from 'react';
+import Plyr from 'plyr';
+import 'plyr/dist/plyr.css';
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
+  videoUrl: string;
 }
 
-const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
+const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoUrl }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const playerRef = useRef<Plyr>();
+  const playerRef = useRef<Plyr | null>(null);
 
   useEffect(() => {
     if (videoRef.current && !playerRef.current) {
       playerRef.current = new Plyr(videoRef.current, {
-        controls: [
-          'play-large',
-          'play',
-          'progress',
-          'current-time',
-          'mute',
-          'volume',
-          'fullscreen'
-        ],
+        controls: ['play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
         hideControls: false,
-        resetOnEnd: true,
       });
     }
 
-    // Clean up
     return () => {
       if (playerRef.current) {
         playerRef.current.destroy();
+        playerRef.current = null;
       }
     };
   }, []);
 
   useEffect(() => {
     if (isOpen && playerRef.current) {
-      playerRef.current.play();
+      setTimeout(() => {
+        playerRef.current?.play().catch(error => {
+          console.error('Error playing video:', error);
+        });
+      }, 100);
     }
   }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className="max-w-screen-lg p-0 border-none bg-black/70 backdrop-blur-xl"
-      >
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 z-50 rounded-full bg-black/50 p-2 hover:bg-black/70 transition-colors"
-          aria-label="Close video"
-        >
-          <X className="h-4 w-4 text-white" />
-        </button>
+      <DialogContent className="sm:max-w-[900px] p-0 bg-black/90 backdrop-blur-sm" style={{ zIndex: 50 }}>
+        <VisuallyHidden>
+          <DialogTitle>Product Demo Video</DialogTitle>
+        </VisuallyHidden>
+        <DialogDescription className="sr-only">
+          A demonstration video showing the key features of our golf journal application
+        </DialogDescription>
         
         <div className="relative w-full aspect-video">
           <video
             ref={videoRef}
             className="w-full h-full"
             playsInline
-            preload="auto"
-            controlsList="nodownload"
-            onContextMenu={(e) => e.preventDefault()}
+            preload="metadata"
           >
-            <source
-              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
-              type="video/mp4"
-            />
+            <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
