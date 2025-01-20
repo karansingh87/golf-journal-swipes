@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeButton } from "./UpgradeButton";
-import { ManageSubscriptionButton } from "./ManageSubscriptionButton";
 import { Card } from "@/components/ui/card";
 import { Check, AlertCircle, ArrowRight, Settings, RefreshCw } from "lucide-react";
 import { differenceInDays } from "date-fns";
@@ -63,7 +62,14 @@ export const SubscriptionSection = () => {
     }
 
     if (isActiveUser) {
-      return <ManageSubscriptionButton />;
+      return (
+        <UpgradeButton
+          priceId={MONTHLY_PRICE_ID}
+          className="w-full sm:w-auto bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white"
+          text="Manage Subscription"
+          icon={<Settings className="mr-2 h-4 w-4" />}
+        />
+      );
     }
 
     if (isPastDue || isCanceled) {
