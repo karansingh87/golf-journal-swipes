@@ -52,10 +52,14 @@ Deno.serve(async (req) => {
 
     console.log('Creating portal session for customer:', profile.stripe_customer_id, 'Status:', profile.subscription_status);
 
-    // Create the portal session with enhanced configuration
+    // Create the portal session with enhanced configuration for trial users
     const { url } = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
       return_url: `${req.headers.get('origin')}/settings`,
+      flow_data: {
+        type: 'subscription_flow',
+        after_completion: { type: 'hosted_confirmation' }
+      },
       features: {
         payment_method_update: {
           enabled: true,
@@ -72,16 +76,21 @@ Deno.serve(async (req) => {
           enabled: true,
           proration_behavior: 'always_invoice',
           default_allowed_updates: ['price', 'promotion_code'],
+          products: ['prod_*']
         },
         customer_update: {
           enabled: true,
-          allowed_updates: ['email', 'name'],
+          allowed_updates: ['email', 'name', 'tax_id'],
         },
         invoice_history: {
           enabled: true,
         },
         promotion_code: {
           enabled: true,
+          subscription_behavior: {
+            type: 'apply_immediately',
+            missing_payment_method_behavior: { type: 'require_payment_method' }
+          }
         },
       },
     });
