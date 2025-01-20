@@ -103,10 +103,21 @@ serve(async (req) => {
         address: 'auto',
         name: 'auto',
       },
+      subscription_data: {
+        metadata: {
+          started_with_promo: false
+        }
+      }
     };
 
-    if (!hasHadTrial) {
+    // Only add trial if there's no promotion code in the URL
+    // We'll check this by looking at the referrer URL
+    const referrer = req.headers.get('referer') || '';
+    const hasPromoCode = referrer.includes('?promo=') || referrer.includes('&promo=');
+
+    if (!hasHadTrial && !hasPromoCode) {
       sessionConfig.subscription_data = {
+        ...sessionConfig.subscription_data,
         trial_period_days: 30,
         trial_settings: {
           end_behavior: {
