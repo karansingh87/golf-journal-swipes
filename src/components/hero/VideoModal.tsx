@@ -12,10 +12,10 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 interface VideoModalProps {
   isOpen: boolean;
   onClose: () => void;
-  videoUrl: string;
+  videoUrl?: string; // Made optional
 }
 
-const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoUrl }) => {
+const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoUrl = '/demo.mp4' }) => { // Added default value
   const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<Plyr | null>(null);
 
@@ -36,12 +36,17 @@ const VideoModal: React.FC<VideoModalProps> = ({ isOpen, onClose, videoUrl }) =>
   }, []);
 
   useEffect(() => {
-    if (isOpen && playerRef.current) {
-      setTimeout(() => {
-        playerRef.current?.play().catch(error => {
+    if (isOpen && playerRef.current && videoRef.current) {
+      const playVideo = async () => {
+        try {
+          await playerRef.current?.play();
+        } catch (error) {
           console.error('Error playing video:', error);
-        });
-      }, 100);
+        }
+      };
+      
+      // Small delay to ensure modal is fully rendered
+      setTimeout(playVideo, 100);
     }
   }, [isOpen]);
 
