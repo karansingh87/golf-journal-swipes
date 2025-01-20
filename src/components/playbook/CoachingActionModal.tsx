@@ -1,5 +1,5 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Eye, Plus } from "lucide-react";
+import { Eye, Plus, Target } from "lucide-react";
 
 interface CoachingActionModalProps {
   isOpen: boolean;
@@ -12,54 +12,39 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-full max-w-sm p-4 bg-white rounded-[16px] shadow-lg animate-scale-in">
-        <div className="flex flex-col gap-4">
-          <h2 className="text-lg font-semibold text-center text-zinc-950">
-            Lesson Prep
-          </h2>
+        <div className="flex flex-col items-center gap-6 text-center">
+          <div className="relative w-12 h-12 flex items-center justify-center">
+            <div className="absolute inset-0 bg-primary/10 rounded-full" />
+            <Target className="w-6 h-6 text-primary relative z-10" />
+          </div>
           
-          <div className="flex flex-col gap-2">
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold text-zinc-950">
+              Prepare for Your Lesson
+            </h2>
+            <p className="text-sm text-zinc-500">
+              We'll organize your recent rounds into focused notes for your coach.
+            </p>
+            <p className="text-xs text-zinc-400">
+              Choose up to 3 rounds to include
+            </p>
+          </div>
+
+          <div className="w-full space-y-3">
             <button
               onClick={onCreateNew}
-              className="group w-full p-3 rounded-xl bg-zinc-100 hover:bg-white transition-all duration-200 
-                hover:shadow-md hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-950/20"
+              className="w-full p-3 rounded-xl bg-primary text-white hover:bg-primary/90 
+                transition-colors duration-200 font-medium"
             >
-              <div className="flex items-center gap-3">
-                <div className="relative w-8 h-8 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-zinc-200 rounded-full group-hover:bg-zinc-100 
-                    transition-colors duration-200" />
-                  <Plus className="w-5 h-5 text-zinc-950 relative z-10" />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-base font-medium text-zinc-950">
-                    Create New
-                  </h3>
-                  <p className="text-xs text-zinc-500">
-                    Generate new lesson prep
-                  </p>
-                </div>
-              </div>
+              Generate Prep for Lesson
             </button>
-
+            
             <button
               onClick={onViewLatest}
-              className="group w-full p-3 rounded-xl bg-zinc-100 hover:bg-white transition-all duration-200 
-                hover:shadow-md hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-950/20"
+              className="w-full p-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 
+                transition-colors duration-200 text-zinc-900 font-medium"
             >
-              <div className="flex items-center gap-3">
-                <div className="relative w-8 h-8 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-zinc-200 rounded-full group-hover:bg-zinc-100 
-                    transition-colors duration-200" />
-                  <Eye className="w-5 h-5 text-zinc-950 relative z-10" />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-base font-medium text-zinc-950">
-                    View Past
-                  </h3>
-                  <p className="text-xs text-zinc-500">
-                    Browse previous lesson preps
-                  </p>
-                </div>
-              </div>
+              View Past Notes
             </button>
           </div>
         </div>
