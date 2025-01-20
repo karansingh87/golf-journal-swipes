@@ -107,6 +107,7 @@ serve(async (req) => {
           },
         },
       };
+      sessionConfig.payment_method_collection = 'if_required';
       sessionConfig.custom_text = {
         submit: {
           message: 'Start your 30-day free trial - no credit card required',
