@@ -9,17 +9,9 @@ export interface UpgradeButtonProps {
   className?: string;
   showTrial?: boolean;
   priceId: string;
-  text?: string;
-  icon?: React.ReactNode;
 }
 
-export const UpgradeButton = ({ 
-  className, 
-  showTrial = true, 
-  priceId,
-  text = 'Subscribe',
-  icon
-}: UpgradeButtonProps) => {
+export const UpgradeButton = ({ className, showTrial = true, priceId }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -66,10 +58,7 @@ export const UpgradeButton = ({
           Redirecting to checkout...
         </>
       ) : (
-        <>
-          {icon}
-          {text}
-        </>
+        'Subscribe'
       )}
     </Button>
   );

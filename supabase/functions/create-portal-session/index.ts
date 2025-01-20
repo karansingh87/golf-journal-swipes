@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     // Get the user's stripe_customer_id from profiles
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('stripe_customer_id, subscription_status')
+      .select('stripe_customer_id')
       .eq('id', user.id)
       .single();
 
@@ -50,24 +50,18 @@ Deno.serve(async (req) => {
       throw new Error('No Stripe customer found');
     }
 
-    console.log('Creating portal session for customer:', profile.stripe_customer_id, 'Status:', profile.subscription_status);
+    console.log('Creating portal session for customer:', profile.stripe_customer_id);
 
-    // Create the portal session with enhanced configuration for trial users
+    // Create the portal session with promotion code configuration
     const { url } = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
       return_url: `${req.headers.get('origin')}/settings`,
-      flow_data: {
-        type: 'subscription_flow',
-        after_completion: { type: 'hosted_confirmation' }
-      },
       features: {
         payment_method_update: {
           enabled: true,
         },
         subscription_cancel: {
           enabled: true,
-          mode: 'immediately',
-          proration_behavior: 'always_invoice',
         },
         subscription_pause: {
           enabled: false,
@@ -75,22 +69,14 @@ Deno.serve(async (req) => {
         subscription_update: {
           enabled: true,
           proration_behavior: 'always_invoice',
-          default_allowed_updates: ['price', 'promotion_code'],
-          products: ['prod_*']
+          default_allowed_updates: ['price'],
         },
         customer_update: {
           enabled: true,
-          allowed_updates: ['email', 'name', 'tax_id'],
-        },
-        invoice_history: {
-          enabled: true,
+          allowed_updates: ['email', 'name'],
         },
         promotion_code: {
           enabled: true,
-          subscription_behavior: {
-            type: 'apply_immediately',
-            missing_payment_method_behavior: { type: 'require_payment_method' }
-          }
         },
       },
     });
