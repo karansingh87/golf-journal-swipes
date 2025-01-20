@@ -94,9 +94,15 @@ serve(async (req) => {
       mode: 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      payment_method_collection: 'always', // Changed from 'if_required' to 'always'
+      payment_method_collection: 'always',
       success_url: `${req.headers.get('origin')}/settings?success=true`,
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
+      automatic_tax: { enabled: true },
+      tax_id_collection: { enabled: true },
+      customer_update: {
+        address: 'auto',
+        name: 'auto',
+      },
     };
 
     if (!hasHadTrial) {
