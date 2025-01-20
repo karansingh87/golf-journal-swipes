@@ -32,7 +32,7 @@ const PepTalkActionModal = ({ isOpen, onClose, onViewPast, onCreateNew }: PepTal
         {step === 'intro' ? (
           <div className="flex flex-col items-center gap-4 py-4">
             <div className="relative w-12 h-12 flex items-center justify-center">
-              <Flame className="w-6 h-6 text-zinc-950 fill-current" />
+              <Flame className="w-8 h-8 text-zinc-950 fill-current" />
             </div>
             
             <div className="text-center space-y-2">
