@@ -110,12 +110,14 @@ serve(async (req) => {
       }
     };
 
-    // Only add trial if there's no promotion code in the URL
-    // We'll check this by looking at the referrer URL
-    const referrer = req.headers.get('referer') || '';
-    const hasPromoCode = referrer.includes('?promo=') || referrer.includes('&promo=');
+    // Get the URL parameters from the referrer
+    const url = new URL(req.headers.get('referer') || '');
+    const promoCode = url.searchParams.get('promo');
+    
+    console.log('Promo code from URL:', promoCode);
 
-    if (!hasHadTrial && !hasPromoCode) {
+    if (!hasHadTrial && !promoCode) {
+      // Only add trial if there's no promo code
       sessionConfig.subscription_data = {
         ...sessionConfig.subscription_data,
         trial_period_days: 30,
@@ -130,6 +132,13 @@ serve(async (req) => {
           message: 'Start your 30-day free trial',
         },
       };
+    } else if (promoCode) {
+      // If there's a promo code, we'll validate and apply it
+      console.log('Applying promo code:', promoCode);
+      sessionConfig.discounts = [{
+        promotion_code: promoCode,
+      }];
+      sessionConfig.subscription_data.metadata.started_with_promo = true;
     }
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
