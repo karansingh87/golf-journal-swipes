@@ -31,12 +31,13 @@ const VideoOverlay = ({ isOpen, onClose }: VideoOverlayProps) => {
         <div 
           style={{
             width: 'min(80vw, calc(1080px * 0.8))',
+            height: 'min(90vh, calc(1920px * 0.8))',
             aspectRatio: '1080/1920',
           }}
         >
           <video
             ref={videoRef}
-            className="h-full w-full"
+            className="h-full w-full object-contain"
             controls
             playsInline
             preload="auto"
