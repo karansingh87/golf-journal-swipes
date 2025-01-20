@@ -72,10 +72,10 @@ const PepTalkActionModal = ({ isOpen, onClose, onViewPast, onCreateNew }: PepTal
                   </div>
                   <div className="text-left">
                     <h3 className="text-base font-medium text-zinc-950">
-                      Create New
+                      New Pep Talk
                     </h3>
                     <p className="text-xs text-zinc-500">
-                      Generate a new pep talk
+                      Use your best rounds to boost confidence
                     </p>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ const PepTalkActionModal = ({ isOpen, onClose, onViewPast, onCreateNew }: PepTal
                   </div>
                   <div className="text-left">
                     <h3 className="text-base font-medium text-zinc-950">
-                      View Past
+                      Past Pep Talks
                     </h3>
                     <p className="text-xs text-zinc-500">
                       Browse previous pep talks
