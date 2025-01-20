@@ -78,6 +78,9 @@ Deno.serve(async (req) => {
         promotion_code: {
           enabled: true,
         },
+        invoice_history: {
+          enabled: true,
+        }
       },
     });
 
