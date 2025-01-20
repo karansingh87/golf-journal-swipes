@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface PricingSectionProps {
   content?: {
@@ -16,8 +19,12 @@ interface PricingSectionProps {
   };
 }
 
+const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
+const ANNUAL_PRICE_ID = "price_1QjBdELbszPXbxPVMBBRO6fz";
+
 const PricingSection = ({ content }: PricingSectionProps) => {
   const navigate = useNavigate();
+  const [isAnnual, setIsAnnual] = useState(false);
   
   const defaultFeatures = {
     core: [
@@ -48,6 +55,22 @@ const PricingSection = ({ content }: PricingSectionProps) => {
         </div>
 
         <div className="mx-auto max-w-sm">
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <Label htmlFor="billing-toggle" className="text-sm text-zinc-600">Monthly</Label>
+            <Switch
+              id="billing-toggle"
+              checked={isAnnual}
+              onCheckedChange={setIsAnnual}
+            />
+            <div className="flex items-center gap-2">
+              <Label htmlFor="billing-toggle" className="text-sm text-zinc-600">Annual</Label>
+              <span className="inline-flex items-center rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-800">
+                Save 17%
+              </span>
+            </div>
+          </div>
+
           {/* Gradient Background */}
           <div 
             className="absolute inset-0 w-full max-w-sm mx-auto h-[400px] blur-[120px] opacity-30"
@@ -84,9 +107,19 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               {/* Pricing Content */}
               <div className="flex flex-col items-center space-y-2.5">
                 <div className="flex items-baseline justify-center">
-                  <span className="text-5xl font-bold tracking-tight text-white">$12</span>
-                  <span className="text-xl text-zinc-400 ms-2">/month</span>
+                  <span className="text-5xl font-bold tracking-tight text-white">
+                    ${isAnnual ? '89.99' : '8.99'}
+                  </span>
+                  <span className="text-xl text-zinc-400 ms-2">
+                    /{isAnnual ? 'year' : 'month'}
+                  </span>
                 </div>
+                {isAnnual && (
+                  <div className="flex items-center gap-2 bg-emerald-900/30 px-3 py-1 rounded-full">
+                    <Sparkles className="w-4 h-4 text-emerald-400" />
+                    <span className="text-sm font-medium text-emerald-400">Save 17% annually</span>
+                  </div>
+                )}
                 <div className="flex flex-col items-center gap-1">
                   <span className="text-base font-semibold text-zinc-300">Try free for 30 days</span>
                   <span className="text-sm text-zinc-400">No credit card required</span>

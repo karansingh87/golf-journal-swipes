@@ -8,9 +8,10 @@ import { supabase } from "@/integrations/supabase/client";
 export interface UpgradeButtonProps {
   className?: string;
   showTrial?: boolean;
+  priceId: string;
 }
 
-export const UpgradeButton = ({ className, showTrial = true }: UpgradeButtonProps) => {
+export const UpgradeButton = ({ className, showTrial = true, priceId }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -20,6 +21,7 @@ export const UpgradeButton = ({ className, showTrial = true }: UpgradeButtonProp
       setIsLoading(true);
       
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
+        body: { priceId },
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },

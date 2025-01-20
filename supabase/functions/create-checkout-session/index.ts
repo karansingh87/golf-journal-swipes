@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -19,7 +18,7 @@ serve(async (req) => {
   );
 
   try {
-    // Get the session or user object
+    const { priceId } = await req.json();
     const authHeader = req.headers.get('Authorization')!;
     const token = authHeader.replace('Bearer ', '');
     const { data } = await supabaseClient.auth.getUser(token);
@@ -39,9 +38,6 @@ serve(async (req) => {
       limit: 1
     });
 
-    // Replace this with your actual Stripe Price ID for the Pro tier
-    const price_id = "price_1QgLHZLbszPXbxPVP8tJ794K";
-
     let customer_id;
     let hasHadTrial = false;
 
@@ -49,21 +45,19 @@ serve(async (req) => {
       customer_id = customers.data[0].id;
       console.log('Found existing customer:', customer_id);
 
-      // Check all subscriptions (including cancelled ones) for previous trials
       const allSubscriptions = await stripe.subscriptions.list({
         customer: customer_id,
         limit: 100,
-        status: 'all', // This includes active, cancelled, etc.
+        status: 'all',
       });
 
       hasHadTrial = allSubscriptions.data.some(sub => sub.trial_end !== null);
       console.log('Customer has had trial before:', hasHadTrial);
 
-      // Check for active subscription to this price
       const activeSubscriptions = await stripe.subscriptions.list({
         customer: customer_id,
         status: 'active',
-        price: price_id,
+        price: priceId,
         limit: 1
       });
 
@@ -71,7 +65,6 @@ serve(async (req) => {
         throw new Error("Customer already has an active subscription");
       }
     } else {
-      // Create a new customer if one doesn't exist
       const customer = await stripe.customers.create({
         email: email,
       });
@@ -79,7 +72,6 @@ serve(async (req) => {
       console.log('Created new customer:', customer_id);
     }
 
-    // Update the user's profile with the Stripe customer ID
     const { error: updateError } = await supabaseClient
       .from('profiles')
       .update({ stripe_customer_id: customer_id })
@@ -95,7 +87,7 @@ serve(async (req) => {
       customer: customer_id,
       line_items: [
         {
-          price: price_id,
+          price: priceId,
           quantity: 1,
         },
       ],
@@ -106,7 +98,6 @@ serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
     };
 
-    // Only add trial period if the customer hasn't had one before
     if (!hasHadTrial) {
       sessionConfig.subscription_data = {
         trial_period_days: 30,
