@@ -23,7 +23,7 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
               Prepare for Your Lesson
             </h2>
             <p className="text-sm text-zinc-500">
-              We'll organize your recent rounds into focused notes for your coach.
+              Organize your recent rounds into focused notes for your coach.
             </p>
             <p className="text-xs text-zinc-400">
               Choose up to 3 rounds to include
