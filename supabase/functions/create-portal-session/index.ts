@@ -52,10 +52,33 @@ Deno.serve(async (req) => {
 
     console.log('Creating portal session for customer:', profile.stripe_customer_id);
 
-    // Create the portal session
+    // Create the portal session with promotion code configuration
     const { url } = await stripe.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
       return_url: `${req.headers.get('origin')}/settings`,
+      features: {
+        payment_method_update: {
+          enabled: true,
+        },
+        subscription_cancel: {
+          enabled: true,
+        },
+        subscription_pause: {
+          enabled: false,
+        },
+        subscription_update: {
+          enabled: true,
+          proration_behavior: 'always_invoice',
+          default_allowed_updates: ['price'],
+        },
+        customer_update: {
+          enabled: true,
+          allowed_updates: ['email', 'name'],
+        },
+        promotion_code: {
+          enabled: true,
+        },
+      },
     });
 
     return handleSuccess({ url });
