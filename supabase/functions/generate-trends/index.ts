@@ -45,13 +45,13 @@ serve(async (req) => {
       throw new Error('No trends prompt configured');
     }
 
-    // Get user's recordings
+    // Get user's recordings - Updated to fetch 5 most recent recordings
     const { data: recordings, error: recordingsError } = await supabaseClient
       .from('recordings')
       .select('analysis, created_at')
       .eq('user_id', user_id)
       .order('created_at', { ascending: false })
-      .limit(10);
+      .limit(5);
 
     if (recordingsError) {
       console.error('Error fetching recordings:', recordingsError);
