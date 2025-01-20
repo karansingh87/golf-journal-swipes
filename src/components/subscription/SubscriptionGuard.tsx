@@ -11,6 +11,8 @@ interface SubscriptionGuardProps {
   children: React.ReactNode;
 }
 
+const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
+
 export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   const session = useSession();
   const navigate = useNavigate();
@@ -105,6 +107,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
             <div className="pt-2">
               <UpgradeButton 
                 showTrial={false}
+                priceId={MONTHLY_PRICE_ID}
                 className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors"
               />
             </div>

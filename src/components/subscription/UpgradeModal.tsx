@@ -1,6 +1,8 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { UpgradeButton } from "@/components/subscription/UpgradeButton";
 
+const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
+
 export type Feature = 'trends' | 'pep-talk' | 'lesson-prep' | 'recording';
 
 interface FeatureContent {
@@ -46,7 +48,11 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
           </DialogDescription>
         </DialogHeader>
         <div className="mt-6">
-          <UpgradeButton showTrial className="w-full" />
+          <UpgradeButton 
+            showTrial 
+            priceId={MONTHLY_PRICE_ID}
+            className="w-full" 
+          />
         </div>
       </DialogContent>
     </Dialog>
