@@ -33,6 +33,7 @@ serve(async (req) => {
       apiVersion: '2023-10-16',
     });
 
+    // Get or create customer
     const customers = await stripe.customers.list({
       email: email,
       limit: 1
@@ -54,6 +55,7 @@ serve(async (req) => {
       hasHadTrial = allSubscriptions.data.some(sub => sub.trial_end !== null);
       console.log('Customer has had trial before:', hasHadTrial);
 
+      // Check for active subscriptions
       const activeSubscriptions = await stripe.subscriptions.list({
         customer: customer_id,
         status: 'active',
@@ -72,6 +74,7 @@ serve(async (req) => {
       console.log('Created new customer:', customer_id);
     }
 
+    // Update profile with customer ID
     const { error: updateError } = await supabaseClient
       .from('profiles')
       .update({ stripe_customer_id: customer_id })
@@ -82,7 +85,12 @@ serve(async (req) => {
       throw new Error('Failed to update profile with customer ID');
     }
 
-    console.log('Creating checkout session...');
+    // Get the promo code from URL
+    const url = new URL(req.headers.get('referer') || '');
+    const promoCode = url.searchParams.get('promo');
+    console.log('Promo code from URL:', promoCode);
+
+    // Base session configuration
     const sessionConfig: any = {
       customer: customer_id,
       line_items: [
@@ -94,7 +102,6 @@ serve(async (req) => {
       mode: 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      payment_method_collection: 'if_required',
       success_url: `${req.headers.get('origin')}/settings?success=true`,
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
       automatic_tax: { enabled: true },
@@ -110,37 +117,33 @@ serve(async (req) => {
       }
     };
 
-    // Get the URL parameters from the referrer
-    const url = new URL(req.headers.get('referer') || '');
-    const promoCode = url.searchParams.get('promo');
-    
-    console.log('Promo code from URL:', promoCode);
-
-    if (!hasHadTrial && !promoCode) {
-      // Only add trial if there's no promo code
-      sessionConfig.subscription_data = {
-        ...sessionConfig.subscription_data,
-        trial_period_days: 30,
-        trial_settings: {
-          end_behavior: {
-            missing_payment_method: 'pause',
-          },
+    // Handle promo code vs trial logic
+    if (promoCode) {
+      console.log('Applying promo code and skipping trial:', promoCode);
+      sessionConfig.discounts = [{
+        promotion_code: promoCode,
+      }];
+      sessionConfig.subscription_data.metadata.started_with_promo = true;
+      // Skip trial completely for promo code users
+      sessionConfig.subscription_data.trial_period_days = 0;
+    } else if (!hasHadTrial) {
+      console.log('No promo code, applying 30-day trial');
+      // Only apply trial if no promo code and hasn't had trial before
+      sessionConfig.subscription_data.trial_period_days = 30;
+      sessionConfig.subscription_data.trial_settings = {
+        end_behavior: {
+          missing_payment_method: 'pause',
         },
       };
+      sessionConfig.payment_method_collection = 'if_required';
       sessionConfig.custom_text = {
         submit: {
           message: 'Start your 30-day free trial',
         },
       };
-    } else if (promoCode) {
-      // If there's a promo code, we'll validate and apply it
-      console.log('Applying promo code:', promoCode);
-      sessionConfig.discounts = [{
-        promotion_code: promoCode,
-      }];
-      sessionConfig.subscription_data.metadata.started_with_promo = true;
     }
 
+    console.log('Creating checkout session with config:', JSON.stringify(sessionConfig, null, 2));
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
     console.log('Checkout session created:', session.id);
