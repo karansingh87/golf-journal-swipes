@@ -38,22 +38,29 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
           <X className="h-6 w-6 text-white" />
         </button>
         
-        <video
-          ref={videoRef}
-          className="w-full h-full max-h-screen object-contain px-4 sm:px-8"
-          controls
-          playsInline
-          preload="auto"
-          autoPlay
-          controlsList="nodownload"
-          onContextMenu={(e) => e.preventDefault()}
-        >
-          <source
-            src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
-        </video>
+        <div className="relative w-auto h-auto" style={{
+          maxWidth: 'calc(1080px * 0.8)',
+          maxHeight: 'calc(1920px * 0.8)',
+          aspectRatio: '1080/1920',
+          margin: 'auto'
+        }}>
+          <video
+            ref={videoRef}
+            className="w-full h-full object-contain"
+            controls
+            playsInline
+            preload="auto"
+            autoPlay
+            controlsList="nodownload"
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            <source
+              src="https://ffrdieftaulfjaymmexb.supabase.co/storage/v1/object/public/Videos/golflog_demo_1080_1920.mp4?t=2025-01-19T13%3A53%3A41.585Z"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </DialogContent>
     </Dialog>
   );
