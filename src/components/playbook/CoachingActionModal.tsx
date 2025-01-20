@@ -36,7 +36,7 @@ const CoachingActionModal = ({ isOpen, onClose, onViewLatest, onCreateNew }: Coa
               className="w-full p-3 rounded-xl bg-primary text-white hover:bg-primary/90 
                 transition-colors duration-200 font-medium"
             >
-              Generate Prep for Lesson
+              New Lesson Prep
             </button>
             
             <button
