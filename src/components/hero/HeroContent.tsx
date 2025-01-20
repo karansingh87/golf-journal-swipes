@@ -2,11 +2,11 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import VideoModal from "./VideoModal";
+import VideoOverlay from "./VideoOverlay";
 
 const HeroContent = () => {
   const navigate = useNavigate();
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
   
   return (
     <>
@@ -43,16 +43,16 @@ const HeroContent = () => {
         
         <Button
           variant="outline"
-          onClick={() => setIsVideoModalOpen(true)}
+          onClick={() => setIsVideoOpen(true)}
           className="text-sm font-medium px-6 py-3 h-auto border-2 border-zinc-200 text-zinc-900 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-colors rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
         >
           Watch Demo
         </Button>
       </motion.div>
 
-      <VideoModal 
-        isOpen={isVideoModalOpen}
-        onClose={() => setIsVideoModalOpen(false)}
+      <VideoOverlay 
+        isOpen={isVideoOpen}
+        onClose={() => setIsVideoOpen(false)}
       />
     </>
   );
