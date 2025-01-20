@@ -94,7 +94,7 @@ serve(async (req) => {
       mode: 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
-      payment_method_collection: 'always',
+      payment_method_collection: 'if_required',
       success_url: `${req.headers.get('origin')}/settings?success=true`,
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
       automatic_tax: { enabled: true },
@@ -110,7 +110,7 @@ serve(async (req) => {
         trial_period_days: 30,
         trial_settings: {
           end_behavior: {
-            missing_payment_method: 'cancel',
+            missing_payment_method: 'pause',
           },
         },
       };
