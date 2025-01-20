@@ -33,7 +33,7 @@ const RecordingSelectionModal = ({
   onSelect,
   onGenerate,
   isGenerating,
-  modalTitle = "Select Recordings",
+  modalTitle = "Pick Recent Rounds",
   generateButtonText = "Generate Notes"
 }: RecordingSelectionModalProps) => {
   const [displayCount, setDisplayCount] = useState(RECORDINGS_PER_PAGE);
