@@ -5,7 +5,6 @@ import { ManageSubscriptionButton } from "./ManageSubscriptionButton";
 import { Card } from "@/components/ui/card";
 import { Check, AlertCircle, ArrowRight, Settings, RefreshCw } from "lucide-react";
 import { differenceInDays } from "date-fns";
-import { Button } from "@/components/ui/button";
 
 const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
 
@@ -57,10 +56,9 @@ export const SubscriptionSection = () => {
         <UpgradeButton
           priceId={MONTHLY_PRICE_ID}
           className="w-full sm:w-auto bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white"
-        >
-          <ArrowRight className="mr-2 h-4 w-4" />
-          Subscribe Now
-        </UpgradeButton>
+          text="Subscribe Now"
+          icon={<ArrowRight className="mr-2 h-4 w-4" />}
+        />
       );
     }
 
@@ -73,10 +71,9 @@ export const SubscriptionSection = () => {
         <UpgradeButton
           priceId={MONTHLY_PRICE_ID}
           className="w-full sm:w-auto bg-gradient-to-r from-[#9b87f5] to-[#7E69AB] hover:from-[#8B5CF6] hover:to-[#6E59A5] text-white"
-        >
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Reactivate Subscription
-        </UpgradeButton>
+          text="Reactivate Subscription"
+          icon={<RefreshCw className="mr-2 h-4 w-4" />}
+        />
       );
     }
 
