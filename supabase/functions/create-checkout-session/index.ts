@@ -94,6 +94,7 @@ serve(async (req) => {
       mode: 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
+      payment_method_collection: 'always', // Changed from 'if_required' to 'always'
       success_url: `${req.headers.get('origin')}/settings?success=true`,
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
     };
@@ -107,10 +108,9 @@ serve(async (req) => {
           },
         },
       };
-      sessionConfig.payment_method_collection = 'if_required';
       sessionConfig.custom_text = {
         submit: {
-          message: 'Start your 30-day free trial - no credit card required',
+          message: 'Start your 30-day free trial',
         },
       };
     }
