@@ -18,13 +18,15 @@ const Playbook = () => {
   const [isPepTalkModalOpen, setIsPepTalkModalOpen] = useState(false);
   const { toast } = useToast();
 
-  const { data: userProfile } = useQuery({
-    queryKey: ['profile'],
+  const { data: userProfile, isLoading: isProfileLoading } = useQuery({
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
+      if (!session?.user?.id) throw new Error('No authenticated user');
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('display_name')
-        .eq('id', session?.user?.id)
+        .eq('id', session.user.id)
         .maybeSingle();
       
       if (error) throw error;
@@ -34,8 +36,10 @@ const Playbook = () => {
   });
 
   const { data: recordings } = useQuery({
-    queryKey: ['recordings'],
+    queryKey: ['recordings', session?.user?.id],
     queryFn: async () => {
+      if (!session?.user?.id) throw new Error('No authenticated user');
+
       const { data, error } = await supabase
         .from('recordings')
         .select('*')
@@ -48,12 +52,14 @@ const Playbook = () => {
   });
 
   const { data: latestNote } = useQuery({
-    queryKey: ['latest_coaching_note'],
+    queryKey: ['latest_coaching_note', session?.user?.id],
     queryFn: async () => {
+      if (!session?.user?.id) throw new Error('No authenticated user');
+
       const { data, error } = await supabase
         .from('coaching_notes')
         .select('*')
-        .eq('user_id', session?.user?.id)
+        .eq('user_id', session.user.id)
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -83,8 +89,13 @@ const Playbook = () => {
     setIsPepTalkModalOpen(true);
   };
 
-  // Simplified display name handling
+  // Simplified display name handling with fallback
   const displayName = userProfile?.display_name || '';
+
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
