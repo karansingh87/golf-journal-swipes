@@ -3,6 +3,7 @@ import { UpgradeButton } from "@/components/subscription/UpgradeButton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getRemainingUsage } from "@/utils/subscription";
+import { Progress } from "@/components/ui/progress";
 
 export type Feature = 'trends' | 'pep-talk' | 'lesson-prep' | 'recording';
 
@@ -10,6 +11,7 @@ interface FeatureContent {
   title: string;
   description: string;
   usageKey?: keyof ReturnType<typeof getRemainingUsage>;
+  limit?: number;
 }
 
 const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
@@ -23,16 +25,19 @@ const featureContent: Record<Feature, FeatureContent> = {
     title: "Access Pep Talks",
     description: "Get personalized confidence boosters before your next round.",
     usageKey: 'pepTalks',
+    limit: 1,
   },
   'lesson-prep': {
     title: "Generate Lesson Prep",
     description: "Prepare effectively for your next coaching session.",
     usageKey: 'coachNotes',
+    limit: 1,
   },
   'recording': {
     title: "Record Your Sessions",
     description: "Capture and analyze your golf sessions.",
     usageKey: 'recordings',
+    limit: 3,
   },
 };
 
@@ -65,21 +70,38 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
   const usage = getRemainingUsage(profile);
   const usageKey = content.usageKey;
   const remainingUses = usageKey ? usage[usageKey] : null;
+  const limit = content.limit;
+  const usedCount = limit && remainingUses !== null ? limit - remainingUses : 0;
+  const usagePercentage = limit ? (usedCount / limit) * 100 : 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{content.title}</DialogTitle>
-          <DialogDescription className="pt-4 space-y-2">
+          <DialogDescription className="pt-4 space-y-4">
             <p>{content.description}</p>
-            {usageKey && remainingUses !== null && (
-              <p className="text-sm text-muted-foreground">
-                {remainingUses === 0 
-                  ? "You've reached your free tier limit for this month." 
-                  : `You have ${remainingUses} use${remainingUses !== 1 ? 's' : ''} remaining this month.`
-                }
-              </p>
+            {usageKey && remainingUses !== null && limit && (
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    {remainingUses === 0 
+                      ? "You've reached your free tier limit" 
+                      : `${remainingUses} use${remainingUses !== 1 ? 's' : ''} remaining`
+                    }
+                  </span>
+                  <span className="text-muted-foreground">
+                    {usedCount}/{limit} used
+                  </span>
+                </div>
+                <Progress value={usagePercentage} className="h-2" />
+                <p className="text-sm text-muted-foreground">
+                  {remainingUses === 0 
+                    ? "Upgrade to Pro for unlimited access to this feature and more." 
+                    : "Free tier users get limited monthly uses. Upgrade to Pro for unlimited access."
+                  }
+                </p>
+              </div>
             )}
           </DialogDescription>
         </DialogHeader>
