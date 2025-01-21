@@ -17,9 +17,6 @@ interface PricingSectionProps {
   };
 }
 
-const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
-const ANNUAL_PRICE_ID = "price_1QjbKnLbszPXbxPVXHDgF7LJ";
-
 const PricingSection = ({ content }: PricingSectionProps) => {
   const navigate = useNavigate();
   const [isAnnual, setIsAnnual] = useState(false);
@@ -125,7 +122,6 @@ const PricingSection = ({ content }: PricingSectionProps) => {
               </ul>
 
               <UpgradeButton 
-                priceId={isAnnual ? ANNUAL_PRICE_ID : MONTHLY_PRICE_ID}
                 className="mt-8 w-full bg-white text-zinc-900 hover:bg-zinc-50 h-11"
               />
             </div>

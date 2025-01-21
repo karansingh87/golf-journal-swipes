@@ -6,8 +6,6 @@ import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { differenceInDays } from "date-fns";
 
-const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
-
 export const SubscriptionSection = () => {
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -101,7 +99,7 @@ export const SubscriptionSection = () => {
                 </ul>
               </div>
 
-              <UpgradeButton priceId={MONTHLY_PRICE_ID} />
+              <UpgradeButton className="w-full" />
             </>
           )}
         </div>

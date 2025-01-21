@@ -84,7 +84,7 @@ serve(async (req) => {
               name: 'Pro Monthly',
               description: 'Monthly subscription to Pro features',
             },
-            unit_amount: 1499, // $14.99 per month
+            unit_amount: 599, // $5.99 per month
           },
           quantity: 1,
         },
@@ -96,9 +96,9 @@ serve(async (req) => {
             },
             product_data: {
               name: 'Pro Annual',
-              description: 'Annual subscription to Pro features (2 months free)',
+              description: 'Annual subscription to Pro features (Save 17%)',
             },
-            unit_amount: 14990, // $149.90 per year
+            unit_amount: 5999, // $59.99 per year
           },
           quantity: 1,
         }
