@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { supabase } from "./integrations/supabase/client";
-import { SubscriptionGuard } from "./components/subscription/SubscriptionGuard";
+import SubscriptionGuard from "./components/subscription/SubscriptionGuard";
 import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import VoiceRecorderContainer from "./components/VoiceRecorderContainer";

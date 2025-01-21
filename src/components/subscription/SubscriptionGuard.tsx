@@ -14,7 +14,7 @@ interface SubscriptionGuardProps {
   feature?: 'recordings' | 'pepTalks' | 'coachNotes';
 }
 
-export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
+export default function SubscriptionGuard({ children, feature }: SubscriptionGuardProps) {
   const session = useSession();
   const navigate = useNavigate();
 
@@ -100,4 +100,4 @@ export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps)
       </motion.div>
     </div>
   );
-};
+}
