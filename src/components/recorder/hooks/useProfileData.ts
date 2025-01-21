@@ -8,7 +8,11 @@ export const useProfileData = () => {
   const { toast } = useToast();
   const userId = session?.user?.id;
 
-  const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
+  const { 
+    data: profile, 
+    isLoading: isProfileLoading, 
+    error: profileError 
+  } = useQuery({
     queryKey: ['profile', userId],
     queryFn: async () => {
       try {

@@ -16,19 +16,21 @@ export const canAccessRecording = (profile: Partial<Profile> | null): boolean =>
   return !!profile?.id;
 };
 
-// Function to check if user can access a specific feature
 export const canUseFeature = (profile: Partial<Profile> | null, feature: 'trends' | 'pepTalks' | 'coachNotes'): boolean => {
+  // Pro users can access all features
+  if (profile?.has_pro_access) return true;
+  
   // Free users can't access these features
-  if (!profile?.id) return false;
-  return profile.has_pro_access === true;
+  return false;
 };
 
-// Helper function to check remaining usage (always returns true for free features)
 export const getRemainingUsage = (profile: Partial<Profile> | null) => {
+  const hasProAccess = profile?.has_pro_access || false;
+  
   return {
     recordings: true, // All users have unlimited recordings
-    pepTalks: profile?.has_pro_access || false,
-    coachNotes: profile?.has_pro_access || false,
-    trends: profile?.has_pro_access || false
+    pepTalks: hasProAccess,
+    coachNotes: hasProAccess,
+    trends: hasProAccess
   };
 };
