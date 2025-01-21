@@ -1,5 +1,4 @@
 import { Database } from "@/integrations/supabase/types";
-import { addMonths, isBefore } from "date-fns";
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
@@ -17,18 +16,19 @@ const FREE_TIER_LIMITS: UsageLimit = {
 
 export const isSubscriptionActive = (profile: Partial<Profile> | null) => {
   if (!profile) return false;
-  return profile.has_pro_access;
+  return profile.has_pro_access === true;
 };
 
 export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
   if (!lastResetDate) return true;
   
-  const nextResetDate = addMonths(new Date(lastResetDate), 1);
-  return isBefore(nextResetDate, new Date());
+  const nextResetDate = new Date(lastResetDate);
+  nextResetDate.setMonth(nextResetDate.getMonth() + 1);
+  return new Date() > nextResetDate;
 };
 
 export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit => {
-  if (profile?.has_pro_access) {
+  if (profile?.has_pro_access === true) {
     return {
       recordings: Infinity,
       pepTalks: Infinity,
@@ -51,7 +51,7 @@ export const canUseFeature = async (
   if (!profile) return false;
   
   // Pro users have unlimited access
-  if (profile.has_pro_access) return true;
+  if (profile.has_pro_access === true) return true;
 
   // Check if we need to reset usage counts
   if (shouldResetUsage(profile.last_reset_date ? new Date(profile.last_reset_date) : null)) {
@@ -84,7 +84,7 @@ export const incrementUsage = async (
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<void> => {
-  if (!profile || profile.has_pro_access) return;
+  if (!profile || profile.has_pro_access === true) return;
 
   const columnMap = {
     recordings: 'monthly_recordings_count',

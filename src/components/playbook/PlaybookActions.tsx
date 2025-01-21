@@ -26,7 +26,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_status')
+        .select('has_pro_access')
         .eq('id', user.id)
         .single();
 
@@ -35,7 +35,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     },
   });
 
-  const isProUser = profile && isSubscriptionActive(profile);
+  const isProUser = isSubscriptionActive(profile);
 
   const handleFeatureClick = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
     if (!isProUser) {
