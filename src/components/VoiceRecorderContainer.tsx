@@ -9,6 +9,7 @@ import { UpgradeModal } from "./subscription/UpgradeModal";
 import { canUseFeature, incrementUsage } from "@/utils/subscription";
 import { useToast } from "./ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
+import { useNavigate } from "react-router-dom";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -17,6 +18,7 @@ const VoiceRecorderContainer = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const { toast } = useToast();
   const session = useSession();
+  const navigate = useNavigate();
   
   const {
     isTranscribing,
@@ -25,25 +27,32 @@ const VoiceRecorderContainer = () => {
     handleAudioRecording,
     handleTextSubmit,
   } = useGolfRecording();
+
+  // Redirect to login if not authenticated
+  if (!session) {
+    navigate('/login');
+    return null;
+  }
   
   const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
-    queryKey: ['profile', session?.user?.id],
+    queryKey: ['profile', session.user?.id],
     queryFn: async () => {
-      if (!session?.user?.id) {
+      const userId = session.user?.id;
+      if (!userId) {
         throw new Error('No authenticated user');
       }
 
       const { data, error } = await supabase
         .from('profiles')
         .select('has_pro_access, monthly_recordings_count')
-        .eq('id', session.user.id)
+        .eq('id', userId)
         .maybeSingle();
 
       if (error) throw error;
       if (!data) throw new Error('No profile found');
       return data;
     },
-    enabled: !!session?.user?.id,
+    enabled: !!session.user?.id,
   });
 
   if (profileError) {
