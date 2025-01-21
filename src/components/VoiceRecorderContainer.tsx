@@ -6,7 +6,7 @@ import SessionTypeModal from "./SessionTypeModal";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
-import { isSubscriptionActive } from "@/utils/subscription";
+import { canUseFeature, incrementUsage } from "@/utils/subscription";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -22,7 +22,7 @@ const VoiceRecorderContainer = () => {
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_status, is_admin')
+        .select('*')
         .eq('id', user.id)
         .single();
 
@@ -40,16 +40,19 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!isSubscriptionActive(profile)) {
+    const canUse = await canUseFeature(profile, 'recordings', supabase);
+    if (!canUse) {
       setShowUpgradeModal(true);
       return;
     }
     await handleTextSubmit(text, type);
+    await incrementUsage(profile, 'recordings', supabase);
     setShowTextInput(false);
   };
 
-  const handleRecordingStart = () => {
-    if (!isSubscriptionActive(profile)) {
+  const handleRecordingStart = async () => {
+    const canUse = await canUseFeature(profile, 'recordings', supabase);
+    if (!canUse) {
       setShowUpgradeModal(true);
       return;
     }
@@ -61,8 +64,9 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const handleSwitchToText = () => {
-    if (!isSubscriptionActive(profile)) {
+  const handleSwitchToText = async () => {
+    const canUse = await canUseFeature(profile, 'recordings', supabase);
+    if (!canUse) {
       setShowUpgradeModal(true);
       return;
     }
