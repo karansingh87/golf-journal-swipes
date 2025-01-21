@@ -89,20 +89,6 @@ serve(async (req) => {
             unit_amount: 599, // $5.99 per month
           },
           quantity: 1,
-        },
-        {
-          price_data: {
-            currency: 'usd',
-            recurring: {
-              interval: 'year',
-            },
-            product_data: {
-              name: 'Pro Annual',
-              description: 'Annual subscription to Pro features (Save 17%)',
-            },
-            unit_amount: 5999, // $59.99 per year
-          },
-          quantity: 1,
         }
       ],
       mode: 'subscription',
