@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { UpgradeButton } from "@/components/subscription/UpgradeButton";
 
 interface PricingSectionProps {
   content?: {
@@ -123,12 +124,10 @@ const PricingSection = ({ content }: PricingSectionProps) => {
                 ))}
               </ul>
 
-              <Button
-                onClick={() => navigate(`/signup?plan=${isAnnual ? "annual" : "monthly"}`)}
+              <UpgradeButton 
+                priceId={isAnnual ? ANNUAL_PRICE_ID : MONTHLY_PRICE_ID}
                 className="mt-8 w-full bg-white text-zinc-900 hover:bg-zinc-50 h-11"
-              >
-                Get Pro Access
-              </Button>
+              />
             </div>
           </div>
         </div>
