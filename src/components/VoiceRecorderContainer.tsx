@@ -29,39 +29,23 @@ const VoiceRecorderContainer = () => {
   const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      try {
-        if (!session?.user?.id) {
-          throw new Error('No authenticated user');
-        }
-
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('has_pro_access, monthly_recordings_count')
-          .eq('id', session.user.id)
-          .maybeSingle();
-
-        if (error) {
-          console.error('Error fetching profile:', error);
-          throw error;
-        }
-
-        if (!data) {
-          throw new Error('No profile found');
-        }
-
-        return data;
-      } catch (error) {
-        console.error('Profile fetch error:', error);
-        throw error;
+      if (!session?.user?.id) {
+        throw new Error('No authenticated user');
       }
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('has_pro_access, monthly_recordings_count')
+        .eq('id', session.user.id)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!data) throw new Error('No profile found');
+      return data;
     },
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 1000 * 60, // 1 minute
-    enabled: !!session?.user?.id, // Only run query when we have a user ID
+    enabled: !!session?.user?.id,
   });
 
-  // Show error state
   if (profileError) {
     toast({
       title: "Error loading profile",
@@ -71,15 +55,13 @@ const VoiceRecorderContainer = () => {
     return null;
   }
 
-  // Don't render anything while profile is loading to prevent flashing modals
-  if (isProfileLoading) {
+  if (isProfileLoading || !profile) {
     return null;
   }
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     if (!profile) return;
 
-    // Pro users bypass usage checks
     if (profile.has_pro_access) {
       await handleTextSubmit(text, type);
       setShowTextInput(false);
@@ -97,9 +79,8 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = async () => {
-    if (!profile || isProfileLoading) return;
+    if (!profile) return;
 
-    // Pro users bypass usage checks
     if (profile.has_pro_access) {
       setShowSessionTypeModal(true);
       return;
@@ -107,10 +88,8 @@ const VoiceRecorderContainer = () => {
 
     const canUse = await canUseFeature(profile, 'recordings', supabase);
     if (canUse) {
-      // They have available credits, let them record
       setShowSessionTypeModal(true);
     } else {
-      // No credits left, show upgrade modal
       setShowUpgradeModal(true);
     }
   };
@@ -121,9 +100,8 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = async () => {
-    if (!profile || isProfileLoading) return;
+    if (!profile) return;
 
-    // Pro users bypass usage checks
     if (profile.has_pro_access) {
       setShowTextInput(true);
       return;
@@ -134,6 +112,16 @@ const VoiceRecorderContainer = () => {
       setShowTextInput(true);
     } else {
       setShowUpgradeModal(true);
+    }
+  };
+
+  const handleUpgradeModalContinue = async () => {
+    if (!profile) return;
+    
+    const canUse = await canUseFeature(profile, 'recordings', supabase);
+    if (canUse) {
+      setShowUpgradeModal(false);
+      setShowSessionTypeModal(true);
     }
   };
 
@@ -165,6 +153,7 @@ const VoiceRecorderContainer = () => {
             feature="recording"
             isOpen={showUpgradeModal}
             onClose={() => setShowUpgradeModal(false)}
+            onContinue={handleUpgradeModalContinue}
           />
         </div>
       )}
