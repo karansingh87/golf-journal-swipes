@@ -34,3 +34,10 @@ export const getRemainingUsage = (profile: Partial<Profile> | null) => {
     trends: hasProAccess
   };
 };
+
+// Since all features are now unlimited for pro users and recordings are unlimited for all users,
+// we don't need to track usage anymore
+export const incrementUsage = async () => {
+  // This is now a no-op function since we don't track usage
+  return Promise.resolve();
+};

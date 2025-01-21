@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { transcribeAudio } from "../utils/transcription";
 import { useGolfStorage } from "./useGolfStorage";
-import { incrementUsage } from "@/utils/subscription";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfileData } from "@/components/recorder/hooks/useProfileData";
 
@@ -30,11 +29,6 @@ export const useGolfRecording = () => {
       setTranscription(text);
       
       await saveRecording(audioUrl, text, sessionType);
-      
-      // Increment usage only for free users after successful save
-      if (!profile.has_pro_access) {
-        await incrementUsage(profile, 'recordings', supabase);
-      }
     } catch (error) {
       console.error("Error processing recording:", error);
       toast({
@@ -68,11 +62,6 @@ export const useGolfRecording = () => {
       console.log('Processing text submission:', { length: text.length });
       setIsProcessingText(true);
       await saveRecording(null, text, sessionType);
-      
-      // Increment usage only for free users after successful save
-      if (!profile.has_pro_access) {
-        await incrementUsage(profile, 'recordings', supabase);
-      }
     } catch (error) {
       console.error('Error processing text:', error);
       toast({
