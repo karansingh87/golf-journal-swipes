@@ -40,6 +40,13 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
+    // Pro/Lifetime users bypass usage checks
+    if (profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
+      await handleTextSubmit(text, type);
+      setShowTextInput(false);
+      return;
+    }
+
     const canUse = await canUseFeature(profile, 'recordings', supabase);
     if (!canUse) {
       setShowUpgradeModal(true);
@@ -51,6 +58,12 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = async () => {
+    // Pro/Lifetime users bypass usage checks
+    if (profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
+      setShowSessionTypeModal(true);
+      return;
+    }
+
     const canUse = await canUseFeature(profile, 'recordings', supabase);
     if (!canUse) {
       setShowUpgradeModal(true);
@@ -65,6 +78,12 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = async () => {
+    // Pro/Lifetime users bypass usage checks
+    if (profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
+      setShowTextInput(true);
+      return;
+    }
+
     const canUse = await canUseFeature(profile, 'recordings', supabase);
     if (!canUse) {
       setShowUpgradeModal(true);

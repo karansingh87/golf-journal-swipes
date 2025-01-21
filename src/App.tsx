@@ -76,17 +76,15 @@ const App = () => (
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            
-            {/* Previously protected routes - now using feature-level gates */}
             <Route path="/trends" element={<Trends />} />
             <Route path="/coach_notes" element={<CoachNotes />} />
             <Route path="/coach_notes/:id" element={<CoachNoteDetail />} />
             <Route path="/pep_talks" element={<PepTalks />} />
             <Route path="/pep_talk/:id" element={<PepTalkDetail />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             
             {/* Admin route - keeps SubscriptionGuard for security */}
             <Route path="/admin" element={<SubscriptionGuard><Admin /></SubscriptionGuard>} />
