@@ -8,6 +8,7 @@ import PepTalkActionModal from "./PepTalkActionModal";
 import { useSession } from "@supabase/auth-helpers-react";
 import { canUseFeature, incrementUsage } from "@/utils/subscription";
 import { UpgradeModal } from "@/components/subscription/UpgradeModal";
+import { useQuery } from "@tanstack/react-query";
 
 interface PlaybookModalsProps {
   recordings?: any[];
