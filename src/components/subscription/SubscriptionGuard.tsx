@@ -7,12 +7,14 @@ import { Crown, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
+const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
+
 interface SubscriptionGuardProps {
   children: React.ReactNode;
   feature?: 'recordings' | 'pepTalks' | 'coachNotes';
 }
 
-const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
+export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
   const session = useSession();
   const navigate = useNavigate();
 
@@ -99,5 +101,3 @@ const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
     </div>
   );
 };
-
-export default SubscriptionGuard;
