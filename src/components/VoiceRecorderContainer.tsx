@@ -52,14 +52,13 @@ const VoiceRecorderContainer = () => {
     }
 
     const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (!canUse) {
+    if (canUse) {
+      await handleTextSubmit(text, type);
+      await incrementUsage(profile, 'recordings', supabase);
+      setShowTextInput(false);
+    } else {
       setShowUpgradeModal(true);
-      return;
     }
-
-    await handleTextSubmit(text, type);
-    await incrementUsage(profile, 'recordings', supabase);
-    setShowTextInput(false);
   };
 
   const handleRecordingStart = async () => {
@@ -72,12 +71,13 @@ const VoiceRecorderContainer = () => {
     }
 
     const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (!canUse) {
+    if (canUse) {
+      // They have available credits, let them record
+      setShowSessionTypeModal(true);
+    } else {
+      // No credits left, show upgrade modal
       setShowUpgradeModal(true);
-      return;
     }
-
-    setShowSessionTypeModal(true);
   };
 
   const handleSessionTypeSelect = (type: "course" | "practice") => {
@@ -95,12 +95,11 @@ const VoiceRecorderContainer = () => {
     }
 
     const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (!canUse) {
+    if (canUse) {
+      setShowTextInput(true);
+    } else {
       setShowUpgradeModal(true);
-      return;
     }
-
-    setShowTextInput(true);
   };
 
   // Don't render anything while profile is loading to prevent flashing modals

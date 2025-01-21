@@ -6,14 +6,16 @@ import { Card } from "@/components/ui/card";
 import { Crown, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { canUseFeature } from "@/utils/subscription";
 
 interface SubscriptionGuardProps {
   children: React.ReactNode;
+  feature?: 'recordings' | 'pepTalks' | 'coachNotes';
 }
 
 const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
 
-export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
+export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
   const session = useSession();
   const navigate = useNavigate();
 
@@ -54,12 +56,23 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     );
   }
 
-  const hasAccess = profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime';
-
-  if (hasAccess) {
+  // If no feature is specified or user is pro/lifetime, render children
+  if (!feature || profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
     return <>{children}</>;
   }
 
+  // For free users with feature limits, check if they can use the feature
+  const checkFeatureAccess = async () => {
+    if (!profile) return false;
+    return await canUseFeature(profile, feature, supabase);
+  };
+
+  // If they can use the feature, render children
+  if (checkFeatureAccess()) {
+    return <>{children}</>;
+  }
+
+  // Otherwise show upgrade modal
   return (
     <div className="relative min-h-screen">
       {children}
