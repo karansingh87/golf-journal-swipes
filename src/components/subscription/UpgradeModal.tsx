@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { UpgradeButton } from "@/components/subscription/UpgradeButton";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getRemainingUsage } from "@/utils/subscription";
@@ -45,9 +46,10 @@ interface UpgradeModalProps {
   feature: Feature;
   isOpen: boolean;
   onClose: () => void;
+  onContinue?: () => void;
 }
 
-export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) => {
+export const UpgradeModal = ({ feature, isOpen, onClose, onContinue }: UpgradeModalProps) => {
   const content = featureContent[feature];
 
   const { data: profile } = useQuery({
@@ -58,7 +60,7 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
+        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
         .eq('id', user.id)
         .single();
 
@@ -73,6 +75,7 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
   const limit = content.limit;
   const usedCount = limit && remainingUses !== null ? limit - remainingUses : 0;
   const usagePercentage = limit ? (usedCount / limit) * 100 : 0;
+  const hasRemainingUses = remainingUses !== null && remainingUses > 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -95,18 +98,46 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
                   </span>
                 </div>
                 <Progress value={usagePercentage} className="h-2" />
-                <p className="text-sm text-muted-foreground">
-                  Upgrade to Pro for unlimited access to all features and take your game to the next level.
-                </p>
+                {remainingUses === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    Upgrade to Pro for unlimited access to all features and take your game to the next level.
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    You still have {remainingUses} free use{remainingUses !== 1 ? 's' : ''} this month.
+                  </p>
+                )}
               </div>
             )}
           </DialogDescription>
         </DialogHeader>
-        <div className="mt-6">
-          <UpgradeButton 
-            priceId={MONTHLY_PRICE_ID}
-            className="w-full" 
-          />
+        <div className="mt-6 space-y-3">
+          {hasRemainingUses && onContinue ? (
+            <Button 
+              onClick={() => {
+                onClose();
+                onContinue();
+              }}
+              className="w-full"
+              variant="default"
+            >
+              Continue ({remainingUses} remaining)
+            </Button>
+          ) : (
+            <UpgradeButton 
+              priceId={MONTHLY_PRICE_ID}
+              className="w-full" 
+            />
+          )}
+          {hasRemainingUses && (
+            <Button 
+              onClick={onClose}
+              className="w-full"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>
