@@ -5,6 +5,9 @@ import RecordingHistory from "@/components/RecordingHistory";
 import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 import PageBreadcrumb from "@/components/shared/PageBreadcrumb";
 
+// Update the import to use the new path
+import RecordingContainer from "@/components/recorder/RecordingContainer";
+
 const Notes = () => {
   const session = useSession();
   const [searchQuery, setSearchQuery] = useState("");
