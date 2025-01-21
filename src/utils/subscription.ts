@@ -22,9 +22,12 @@ export const isSubscriptionActive = (profile: Partial<Profile> | null) => {
 export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
   if (!lastResetDate) return true;
   
-  const nextResetDate = new Date(lastResetDate);
-  nextResetDate.setMonth(nextResetDate.getMonth() + 1);
-  return new Date() > nextResetDate;
+  const now = new Date();
+  const resetDate = new Date(lastResetDate);
+  const monthDiff = (now.getFullYear() - resetDate.getFullYear()) * 12 + 
+                   (now.getMonth() - resetDate.getMonth());
+                   
+  return monthDiff >= 1;
 };
 
 export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit => {
@@ -66,6 +69,7 @@ export const canUseFeature = async (
 
   // Check if we need to reset usage counts for free users
   if (shouldResetUsage(profile.last_reset_date ? new Date(profile.last_reset_date) : null)) {
+    console.log('Resetting usage counts for user:', profile.id);
     try {
       const { error } = await supabase
         .from('profiles')
@@ -81,13 +85,16 @@ export const canUseFeature = async (
         console.error('Error resetting usage:', error);
         throw error;
       }
+
+      // Update local profile counts
+      profile.monthly_recordings_count = 0;
+      profile.monthly_pep_talks_count = 0;
+      profile.monthly_coach_notes_count = 0;
+      profile.last_reset_date = new Date().toISOString();
     } catch (error) {
       console.error('Error in reset operation:', error);
       throw error;
     }
-
-    // Return true since we just reset the counters
-    return true;
   }
 
   // Check remaining usage for free users
@@ -117,6 +124,8 @@ export const incrementUsage = async (
   const column = columnMap[feature];
   const currentValue = profile[column as keyof Profile] as number || 0;
 
+  console.log(`Incrementing ${feature} usage for user:`, profile.id, 'Current value:', currentValue);
+
   try {
     const { error } = await supabase
       .from('profiles')
@@ -127,6 +136,9 @@ export const incrementUsage = async (
       console.error(`Error incrementing ${feature} usage:`, error);
       throw error;
     }
+
+    // Update local profile count
+    profile[column as keyof Profile] = (currentValue + 1) as never;
   } catch (error) {
     console.error(`Failed to increment ${feature} usage:`, error);
     throw error;
