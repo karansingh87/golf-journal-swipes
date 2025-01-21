@@ -69,13 +69,14 @@ const VoiceRecorderContainer = () => {
       }
 
       const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (canUse) {
-        await handleTextSubmit(text, type);
-        await incrementUsage(profile, 'recordings', supabase);
-        setShowTextInput(false);
-      } else {
+      if (!canUse) {
         setShowUpgradeModal(true);
+        return;
       }
+
+      await handleTextSubmit(text, type);
+      await incrementUsage(profile, 'recordings', supabase);
+      setShowTextInput(false);
     } catch (error) {
       console.error('Error handling text submit:', error);
       toast({
@@ -86,27 +87,9 @@ const VoiceRecorderContainer = () => {
     }
   };
 
-  const handleRecordingStart = async () => {
-    try {
-      if (profile.has_pro_access) {
-        setShowSessionTypeModal(true);
-        return;
-      }
-
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (canUse) {
-        setShowSessionTypeModal(true);
-      } else {
-        setShowUpgradeModal(true);
-      }
-    } catch (error) {
-      console.error('Error checking feature access:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to start recording. Please try again.",
-      });
-    }
+  const handleRecordingStart = () => {
+    // Immediately show session type modal without checking usage
+    setShowSessionTypeModal(true);
   };
 
   const handleSessionTypeSelect = (type: "course" | "practice") => {
@@ -114,44 +97,14 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const handleSwitchToText = async () => {
-    try {
-      if (profile.has_pro_access) {
-        setShowTextInput(true);
-        return;
-      }
-
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (canUse) {
-        setShowTextInput(true);
-      } else {
-        setShowUpgradeModal(true);
-      }
-    } catch (error) {
-      console.error('Error checking feature access:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to switch to text input. Please try again.",
-      });
-    }
+  const handleSwitchToText = () => {
+    // Immediately show text input without checking usage
+    setShowTextInput(true);
   };
 
-  const handleUpgradeModalContinue = async () => {
-    try {
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (canUse) {
-        setShowUpgradeModal(false);
-        setShowSessionTypeModal(true);
-      }
-    } catch (error) {
-      console.error('Error checking feature access:', error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to check feature access. Please try again.",
-      });
-    }
+  const handleUpgradeModalContinue = () => {
+    setShowUpgradeModal(false);
+    setShowSessionTypeModal(true);
   };
 
   return (
