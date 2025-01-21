@@ -24,7 +24,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status')
+        .select('subscription_tier')
         .eq('id', session.user.id)
         .maybeSingle();
 
@@ -54,10 +54,9 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
     );
   }
 
-  const hasValidSubscription = profile?.subscription_status === 'active' || 
-                             profile?.subscription_tier === 'lifetime';
+  const hasAccess = profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime';
 
-  if (hasValidSubscription) {
+  if (hasAccess) {
     return <>{children}</>;
   }
 
@@ -88,7 +87,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
                 <Crown className="h-5 w-5 text-zinc-800" />
               </div>
               <h2 className="text-xl font-semibold text-zinc-800">
-                Upgrade to Pro
+                Upgrade Required
               </h2>
             </div>
             
