@@ -7,7 +7,7 @@ import TrendsCard from './TrendsCard';
 import PlaceholderCard from './PlaceholderCard';
 import NewPlaceholderCard from './NewPlaceholderCard';
 import { UpgradeModal } from '@/components/subscription/UpgradeModal';
-import { isSubscriptionActive } from "@/utils/subscription";
+import { canUseFeature } from "@/utils/subscription";
 
 interface PlaybookActionsProps {
   onGenerateClick: () => void;
@@ -26,7 +26,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('has_pro_access')
+        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
         .eq('id', user.id)
         .single();
 
@@ -35,14 +35,36 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     },
   });
 
-  const isProUser = isSubscriptionActive(profile);
+  const handleFeatureClick = async (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
+    if (!profile) return;
 
-  const handleFeatureClick = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
-    if (!isProUser) {
-      setUpgradeFeature(feature);
+    // Pro users bypass all checks
+    if (profile.has_pro_access) {
+      handleFeatureAction(feature);
       return;
     }
 
+    // Check if free user has available credits
+    const canUse = await canUseFeature(profile, getFeatureKey(feature), supabase);
+    if (canUse) {
+      handleFeatureAction(feature);
+    } else {
+      setUpgradeFeature(feature);
+    }
+  };
+
+  const getFeatureKey = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
+    switch (feature) {
+      case 'pep-talk':
+        return 'pepTalks';
+      case 'lesson-prep':
+        return 'coachNotes';
+      default:
+        return 'recordings';
+    }
+  };
+
+  const handleFeatureAction = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
     switch (feature) {
       case 'trends':
         navigate('/trends');
@@ -69,6 +91,11 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
         feature={upgradeFeature || 'trends'}
         isOpen={!!upgradeFeature}
         onClose={() => setUpgradeFeature(null)}
+        onContinue={() => {
+          if (upgradeFeature) {
+            handleFeatureAction(upgradeFeature);
+          }
+        }}
       />
     </>
   );
