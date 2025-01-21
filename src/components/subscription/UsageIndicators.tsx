@@ -12,7 +12,7 @@ const UsageIndicators = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
+        .select('subscription_tier, has_pro_access')
         .eq('id', session.user.id)
         .single();
 
@@ -21,62 +21,43 @@ const UsageIndicators = () => {
     },
   });
 
-  const getFreeLimit = (feature: string) => {
-    switch (feature) {
-      case 'recordings':
-        return 3;
-      case 'pepTalks':
-      case 'coachNotes':
-        return 1;
-      default:
-        return 0;
-    }
-  };
+  if (!profile) return null;
 
-  const getProgress = (used: number, limit: number) => {
-    return Math.min((used / limit) * 100, 100);
-  };
+  const isUnlimited = profile.has_pro_access || profile.subscription_tier === 'lifetime';
 
   const features = [
     {
       name: 'Recordings',
-      used: profile?.monthly_recordings_count || 0,
-      limit: getFreeLimit('recordings'),
+      unlimited: true,
       key: 'recordings'
     },
     {
       name: 'Pep Talks',
-      used: profile?.monthly_pep_talks_count || 0,
-      limit: getFreeLimit('pepTalks'),
+      unlimited: isUnlimited,
       key: 'pepTalks'
     },
     {
       name: 'Coach Notes',
-      used: profile?.monthly_coach_notes_count || 0,
-      limit: getFreeLimit('coachNotes'),
+      unlimited: isUnlimited,
       key: 'coachNotes'
     }
   ];
 
-  if (!profile) return null;
-
-  const isUnlimited = profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime';
-
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-semibold mb-4">Monthly Usage</h3>
+      <h3 className="text-lg font-semibold mb-4">Feature Access</h3>
       <div className="space-y-4">
         {features.map((feature) => (
           <div key={feature.key} className="space-y-2">
             <div className="flex justify-between text-sm">
               <span>{feature.name}</span>
               <span className="text-muted-foreground">
-                {isUnlimited ? '∞' : `${feature.used} / ${feature.limit}`}
+                {feature.unlimited ? '∞' : 'Pro Feature'}
               </span>
             </div>
-            {!isUnlimited && (
+            {!feature.unlimited && (
               <Progress 
-                value={getProgress(feature.used, feature.limit)} 
+                value={0} 
                 className="h-2"
               />
             )}

@@ -6,16 +6,13 @@ import { Card } from "@/components/ui/card";
 import { Crown, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { canUseFeature } from "@/utils/subscription";
 
 interface SubscriptionGuardProps {
   children: React.ReactNode;
   feature?: 'recordings' | 'pepTalks' | 'coachNotes';
 }
 
-const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
-
-export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
+const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps) => {
   const session = useSession();
   const navigate = useNavigate();
 
@@ -26,21 +23,14 @@ export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps)
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier')
+        .select('subscription_tier, has_pro_access')
         .eq('id', session.user.id)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        console.error('Error fetching profile:', error);
-        throw error;
-      }
-      
+      if (error) throw error;
       return data;
     },
     enabled: !!session?.user?.id,
-    staleTime: 30000,
-    gcTime: 1000 * 60 * 5,
-    retry: 2,
   });
 
   if (!session) {
@@ -57,18 +47,7 @@ export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps)
   }
 
   // If no feature is specified or user is pro/lifetime, render children
-  if (!feature || profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
-    return <>{children}</>;
-  }
-
-  // For free users with feature limits, check if they can use the feature
-  const checkFeatureAccess = async () => {
-    if (!profile) return false;
-    return await canUseFeature(profile, feature, supabase);
-  };
-
-  // If they can use the feature, render children
-  if (checkFeatureAccess()) {
+  if (!feature || profile?.has_pro_access || profile?.subscription_tier === 'lifetime') {
     return <>{children}</>;
   }
 
@@ -120,3 +99,5 @@ export const SubscriptionGuard = ({ children, feature }: SubscriptionGuardProps)
     </div>
   );
 };
+
+export default SubscriptionGuard;
