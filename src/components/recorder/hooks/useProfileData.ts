@@ -11,14 +11,16 @@ export const useProfileData = () => {
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
       try {
-        if (!session?.user?.id) {
-          throw new Error('No authenticated user');
+        const userId = session?.user?.id;
+        if (!userId) {
+          console.log('No authenticated user found');
+          return null;
         }
 
         const { data, error } = await supabase
           .from('profiles')
           .select('has_pro_access, monthly_recordings_count')
-          .eq('id', session.user.id)
+          .eq('id', userId)
           .maybeSingle();
 
         if (error) {
@@ -27,7 +29,8 @@ export const useProfileData = () => {
         }
 
         if (!data) {
-          throw new Error('No profile found');
+          console.log('No profile found for user:', userId);
+          return null;
         }
 
         return data;
@@ -39,10 +42,11 @@ export const useProfileData = () => {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60,
-    enabled: !!session?.user?.id,
+    enabled: !!session?.user?.id, // Only run query when we have a valid user ID
   });
 
   if (profileError) {
+    console.error('Profile error:', profileError);
     toast({
       title: "Error loading profile",
       description: "Please try refreshing the page",
@@ -50,5 +54,10 @@ export const useProfileData = () => {
     });
   }
 
-  return { profile, isProfileLoading, profileError };
+  return { 
+    profile, 
+    isProfileLoading, 
+    profileError,
+    isAuthenticated: !!session?.user?.id 
+  };
 };

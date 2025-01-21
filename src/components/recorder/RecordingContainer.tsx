@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import VoiceRecorder from "../VoiceRecorder";
 import TextInput from "../TextInput";
 import { useGolfRecording } from "../../hooks/useGolfRecording";
@@ -8,12 +9,13 @@ import { useProfileData } from "./hooks/useProfileData";
 import { useFeatureAccess } from "./hooks/useFeatureAccess";
 
 const RecordingContainer = () => {
+  const navigate = useNavigate();
   const [showTextInput, setShowTextInput] = useState(false);
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
-  const { profile, isProfileLoading } = useProfileData();
+  const { profile, isProfileLoading, isAuthenticated } = useProfileData();
   const { checkFeatureAccess, incrementFeatureUsage } = useFeatureAccess();
   
   const {
@@ -23,6 +25,12 @@ const RecordingContainer = () => {
     handleAudioRecording,
     handleTextSubmit,
   } = useGolfRecording();
+
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    navigate('/login');
+    return null;
+  }
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     if (!profile) return;
