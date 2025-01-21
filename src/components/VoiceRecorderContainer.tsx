@@ -6,7 +6,7 @@ import SessionTypeModal from "./SessionTypeModal";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
-import { canUseFeature, incrementUsage } from "@/utils/subscription";
+import { canUseFeature } from "@/utils/subscription";
 import { useToast } from "./ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
@@ -43,13 +43,9 @@ const VoiceRecorderContainer = () => {
         .from('profiles')
         .select('has_pro_access, monthly_recordings_count')
         .eq('id', session.user.id)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        console.error('Profile fetch error:', error);
-        throw error;
-      }
-      if (!data) throw new Error('No profile found');
+      if (error) throw error;
       return data;
     },
     enabled: !!session?.user?.id,
@@ -62,20 +58,7 @@ const VoiceRecorderContainer = () => {
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     try {
-      if (profile.has_pro_access) {
-        await handleTextSubmit(text, type);
-        setShowTextInput(false);
-        return;
-      }
-
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (!canUse) {
-        setShowUpgradeModal(true);
-        return;
-      }
-
       await handleTextSubmit(text, type);
-      await incrementUsage(profile, 'recordings', supabase);
       setShowTextInput(false);
     } catch (error) {
       console.error('Error handling text submit:', error);
@@ -87,8 +70,14 @@ const VoiceRecorderContainer = () => {
     }
   };
 
-  const handleRecordingStart = () => {
-    // Immediately show session type modal without checking usage
+  const handleRecordingStart = async () => {
+    if (!profile.has_pro_access) {
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (!canUse) {
+        setShowUpgradeModal(true);
+        return;
+      }
+    }
     setShowSessionTypeModal(true);
   };
 
@@ -97,8 +86,14 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const handleSwitchToText = () => {
-    // Immediately show text input without checking usage
+  const handleSwitchToText = async () => {
+    if (!profile.has_pro_access) {
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (!canUse) {
+        setShowUpgradeModal(true);
+        return;
+      }
+    }
     setShowTextInput(true);
   };
 
