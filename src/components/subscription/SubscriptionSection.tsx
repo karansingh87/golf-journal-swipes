@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { UpgradeButton } from "./UpgradeButton";
 import { ManageSubscriptionButton } from "./ManageSubscriptionButton";
 import { Card } from "@/components/ui/card";
-import { Check, AlertCircle } from "lucide-react";
+import { Check } from "lucide-react";
 import { differenceInDays } from "date-fns";
 
 const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
@@ -17,7 +17,7 @@ export const SubscriptionSection = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status, current_period_end, trial_end')
+        .select('subscription_tier, current_period_end')
         .eq('id', session.user.id)
         .single();
 
@@ -26,29 +26,22 @@ export const SubscriptionSection = () => {
     },
   });
 
-  const isProUser = profile?.subscription_status === 'active' && 
-                    profile?.subscription_tier === 'pro';
+  const isProUser = profile?.subscription_tier === 'pro';
+  const isLifetimeUser = profile?.subscription_tier === 'lifetime';
+  const hasFullAccess = isProUser || isLifetimeUser;
   
-  const isTrialUser = profile?.subscription_status === 'trialing';
-
-  const trialEnd = profile?.trial_end ? new Date(profile.trial_end) : null;
   const subscriptionEnd = profile?.current_period_end ? new Date(profile.current_period_end) : null;
+  const daysRemaining = isProUser && subscriptionEnd
+    ? differenceInDays(subscriptionEnd, new Date())
+    : 0;
 
-  const daysRemaining = isTrialUser && trialEnd
-    ? differenceInDays(trialEnd, new Date())
-    : isProUser && subscriptionEnd
-      ? differenceInDays(subscriptionEnd, new Date())
-      : 0;
-
-  const getSubscriptionStatus = () => {
+  const getSubscriptionLabel = () => {
+    if (isLifetimeUser) return { label: "Lifetime", color: "text-violet-600" };
     if (isProUser) return { label: "Pro", color: "text-green-600" };
-    if (isTrialUser) return { label: "Trial", color: "text-blue-600" };
-    if (profile?.subscription_status === 'canceled') return { label: "Canceled", color: "text-red-600" };
-    if (profile?.subscription_status === 'past_due') return { label: "Past Due", color: "text-amber-600" };
-    return { label: "Inactive", color: "text-zinc-600" };
+    return { label: "Free", color: "text-zinc-600" };
   };
 
-  const status = getSubscriptionStatus();
+  const status = getSubscriptionLabel();
 
   return (
     <div className="space-y-6">
@@ -70,28 +63,23 @@ export const SubscriptionSection = () => {
               </h3>
             </div>
             
-            {(isTrialUser || isProUser) && daysRemaining > 0 && (
-              <div className="flex items-center gap-2 text-sm text-amber-600">
-                <AlertCircle className="h-4 w-4" />
-                <span>
-                  {isTrialUser
-                    ? `${daysRemaining} days remaining in your trial`
-                    : `Your subscription renews in ${daysRemaining} days`}
-                </span>
-              </div>
+            {isProUser && daysRemaining > 0 && (
+              <p className="text-sm text-muted-foreground">
+                Your subscription renews in {daysRemaining} days
+              </p>
             )}
 
             <p className="text-sm text-muted-foreground">
-              {isProUser 
-                ? 'You have access to all premium features'
-                : isTrialUser
-                  ? 'Subscribe to keep your golf insights flowing'
-                  : 'Subscribe to unlock your personal golf improvement playbook'}
+              {hasFullAccess 
+                ? isLifetimeUser
+                  ? 'You have permanent access to all premium features'
+                  : 'You have access to all premium features'
+                : 'Subscribe to unlock your personal golf improvement playbook'}
             </p>
           </div>
 
-          {isProUser ? (
-            <ManageSubscriptionButton />
+          {hasFullAccess ? (
+            !isLifetimeUser && <ManageSubscriptionButton />
           ) : (
             <>
               <div className="space-y-4">
