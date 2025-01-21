@@ -28,9 +28,11 @@ const RecordingContainer = () => {
     if (!profile) return;
 
     const canUse = await checkFeatureAccess(profile);
-    if (canUse) {
+    if (canUse || profile.has_pro_access) {
       await handleTextSubmit(text, type);
-      await incrementFeatureUsage(profile);
+      if (!profile.has_pro_access) {
+        await incrementFeatureUsage(profile);
+      }
       setShowTextInput(false);
     } else {
       setShowUpgradeModal(true);
@@ -41,7 +43,7 @@ const RecordingContainer = () => {
     if (!profile || isProfileLoading) return;
 
     const canUse = await checkFeatureAccess(profile);
-    if (canUse) {
+    if (canUse || profile.has_pro_access) {
       setShowSessionTypeModal(true);
     } else {
       setShowUpgradeModal(true);
@@ -57,11 +59,16 @@ const RecordingContainer = () => {
     if (!profile || isProfileLoading) return;
 
     const canUse = await checkFeatureAccess(profile);
-    if (canUse) {
+    if (canUse || profile.has_pro_access) {
       setShowTextInput(true);
     } else {
       setShowUpgradeModal(true);
     }
+  };
+
+  const handleContinue = () => {
+    setShowUpgradeModal(false);
+    setShowSessionTypeModal(true);
   };
 
   // Don't render anything while profile is loading to prevent flashing modals
@@ -97,6 +104,7 @@ const RecordingContainer = () => {
             feature="recording"
             isOpen={showUpgradeModal}
             onClose={() => setShowUpgradeModal(false)}
+            onContinue={handleContinue}
           />
         </div>
       )}
