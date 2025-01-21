@@ -21,7 +21,7 @@ export const useProfileData = () => {
           .from('profiles')
           .select('id, has_pro_access, subscription_tier')
           .eq('id', userId)
-          .maybeSingle();
+          .single();
 
         if (error) {
           console.error('Error fetching profile:', error);
