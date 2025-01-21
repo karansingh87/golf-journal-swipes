@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useSession } from "@supabase/auth-helpers-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 export interface UpgradeButtonProps {
   className?: string;
@@ -14,21 +15,32 @@ export const UpgradeButton = ({ className, priceId }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
+  const navigate = useNavigate();
 
   const handleUpgrade = async () => {
     try {
       setIsLoading(true);
       
+      // If no session, redirect to login
+      if (!session) {
+        navigate('/signup');
+        return;
+      }
+
+      console.log('Creating checkout session with price:', priceId);
+      
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: { priceId },
         headers: {
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
       });
 
+      console.log('Checkout session response:', { data, error });
+
       if (error) throw error;
 
-      if (!data.url) {
+      if (!data?.url) {
         throw new Error('No checkout URL received');
       }
 
