@@ -7,8 +7,8 @@ import PlaybookActions from "@/components/playbook/PlaybookActions";
 import PlaybookModals from "@/components/playbook/PlaybookModals";
 import FloatingRecordButton from "@/components/history/FloatingRecordButton";
 import { useCoachingNotes } from "@/hooks/useCoachingNotes";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect, useState } from "react";
 
 const Playbook = () => {
   const session = useSession();
@@ -18,10 +18,18 @@ const Playbook = () => {
   const [isPepTalkModalOpen, setIsPepTalkModalOpen] = useState(false);
   const { toast } = useToast();
 
+  // Handle authentication
+  useEffect(() => {
+    if (!session) {
+      navigate('/login');
+    }
+  }, [session, navigate]);
+
+  // Fetch user profile
   const { data: userProfile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      if (!session?.user?.id) throw new Error('No authenticated user');
+      if (!session?.user?.id) return null;
       
       const { data, error } = await supabase
         .from('profiles')
@@ -35,7 +43,8 @@ const Playbook = () => {
     enabled: !!session?.user?.id,
   });
 
-  const { data: recordings } = useQuery({
+  // Fetch recordings
+  const { data: recordings, isLoading: isRecordingsLoading } = useQuery({
     queryKey: ['recordings', session?.user?.id],
     queryFn: async () => {
       if (!session?.user?.id) throw new Error('No authenticated user');
@@ -43,14 +52,17 @@ const Playbook = () => {
       const { data, error } = await supabase
         .from('recordings')
         .select('*')
+        .eq('user_id', session.user.id)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
       return data;
     },
     enabled: !!session?.user?.id,
+    retry: 1,
   });
 
+  // Fetch latest coaching note
   const { data: latestNote } = useQuery({
     queryKey: ['latest_coaching_note', session?.user?.id],
     queryFn: async () => {
@@ -70,12 +82,9 @@ const Playbook = () => {
     enabled: !!session?.user?.id,
   });
 
-  const handleGenerateNotes = async (selectedRecordings: string[]) => {
-    const noteData = await generateNotes(selectedRecordings, recordings || []);
-    if (noteData) {
-      navigate(`/coach_notes/${noteData.id}`);
-    }
-  };
+  if (!session) {
+    return null;
+  }
 
   const handlePepTalkClick = () => {
     if (!recordings?.length) {
@@ -91,11 +100,6 @@ const Playbook = () => {
 
   // Simplified display name handling with fallback
   const displayName = userProfile?.display_name || '';
-
-  if (!session) {
-    navigate('/login');
-    return null;
-  }
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
@@ -120,7 +124,7 @@ const Playbook = () => {
         recordings={recordings}
         latestNoteId={latestNote?.id}
         isGenerating={isGenerating}
-        onGenerateNotes={handleGenerateNotes}
+        onGenerateNotes={generateNotes}
         isActionModalOpen={isActionModalOpen}
         setIsActionModalOpen={setIsActionModalOpen}
         isPepTalkModalOpen={isPepTalkModalOpen}
