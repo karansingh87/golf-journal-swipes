@@ -22,7 +22,6 @@ interface RecordingHistoryProps {
 const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
   const [recordings, setRecordings] = useState<Recording[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
   const session = useSession();
   const { toast } = useToast();
 
@@ -108,7 +107,7 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
             <RecordingCard
               key={recording.id}
               recording={recording}
-              isEditing={editingId === recording.id}
+              isEditing={false}
               onDelete={() => handleDelete(recording.id)}
               onEdit={() => {}}
               editedTranscription=""

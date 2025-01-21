@@ -4,18 +4,15 @@ import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
 import SessionTypeModal from "./SessionTypeModal";
 import { useProfileData } from "./recorder/hooks/useProfileData";
-import { UpgradeModal } from "./subscription/UpgradeModal";
-import { canUseFeature } from "@/utils/subscription";
-import { useToast } from "./ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "./ui/use-toast";
+import { canAccessRecording } from "@/utils/subscription";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
@@ -40,22 +37,14 @@ const VoiceRecorderContainer = () => {
     return null;
   }
 
+  // Check if user can access recording feature
+  if (!canAccessRecording(profile)) {
+    navigate('/');
+    return null;
+  }
+
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     try {
-      // If user is pro, allow unlimited access
-      if (profile.has_pro_access) {
-        await handleTextSubmit(text, type);
-        setShowTextInput(false);
-        return;
-      }
-
-      // For free users, check usage
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (!canUse) {
-        setShowUpgradeModal(true);
-        return;
-      }
-
       await handleTextSubmit(text, type);
       setShowTextInput(false);
     } catch (error) {
@@ -68,20 +57,7 @@ const VoiceRecorderContainer = () => {
     }
   };
 
-  const handleRecordingStart = async () => {
-    // If user is pro, allow unlimited access
-    if (profile.has_pro_access) {
-      setShowSessionTypeModal(true);
-      return;
-    }
-
-    // For free users, check usage
-    const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (!canUse) {
-      setShowUpgradeModal(true);
-      return;
-    }
-
+  const handleRecordingStart = () => {
     setShowSessionTypeModal(true);
   };
 
@@ -90,26 +66,8 @@ const VoiceRecorderContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const handleSwitchToText = async () => {
-    // If user is pro, allow unlimited access
-    if (profile.has_pro_access) {
-      setShowTextInput(true);
-      return;
-    }
-
-    // For free users, check usage
-    const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (!canUse) {
-      setShowUpgradeModal(true);
-      return;
-    }
-
+  const handleSwitchToText = () => {
     setShowTextInput(true);
-  };
-
-  const handleUpgradeModalContinue = () => {
-    setShowUpgradeModal(false);
-    setShowSessionTypeModal(true);
   };
 
   return (
@@ -135,12 +93,6 @@ const VoiceRecorderContainer = () => {
             isOpen={showSessionTypeModal}
             onClose={() => setShowSessionTypeModal(false)}
             onSelect={handleSessionTypeSelect}
-          />
-          <UpgradeModal
-            feature="recording"
-            isOpen={showUpgradeModal}
-            onClose={() => setShowUpgradeModal(false)}
-            onContinue={handleUpgradeModalContinue}
           />
         </div>
       )}

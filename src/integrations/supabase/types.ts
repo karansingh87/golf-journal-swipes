@@ -113,11 +113,7 @@ export type Database = {
           has_pro_access: boolean
           id: string
           is_admin: boolean | null
-          last_reset_date: string | null
           location: string | null
-          monthly_coach_notes_count: number | null
-          monthly_pep_talks_count: number | null
-          monthly_recordings_count: number | null
           onboarding_completed: boolean | null
           onboarding_last_step: number | null
           onboarding_skipped: boolean | null
@@ -141,11 +137,7 @@ export type Database = {
           has_pro_access?: boolean
           id: string
           is_admin?: boolean | null
-          last_reset_date?: string | null
           location?: string | null
-          monthly_coach_notes_count?: number | null
-          monthly_pep_talks_count?: number | null
-          monthly_recordings_count?: number | null
           onboarding_completed?: boolean | null
           onboarding_last_step?: number | null
           onboarding_skipped?: boolean | null
@@ -169,11 +161,7 @@ export type Database = {
           has_pro_access?: boolean
           id?: string
           is_admin?: boolean | null
-          last_reset_date?: string | null
           location?: string | null
-          monthly_coach_notes_count?: number | null
-          monthly_pep_talks_count?: number | null
-          monthly_recordings_count?: number | null
           onboarding_completed?: boolean | null
           onboarding_last_step?: number | null
           onboarding_skipped?: boolean | null
