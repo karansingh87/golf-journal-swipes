@@ -39,30 +39,22 @@ serve(async (req) => {
     });
 
     let customer_id;
-    let hasHadTrial = false;
-
     if (customers.data.length > 0) {
       customer_id = customers.data[0].id;
       console.log('Found existing customer:', customer_id);
 
-      const allSubscriptions = await stripe.subscriptions.list({
-        customer: customer_id,
-        limit: 100,
-        status: 'all',
-      });
+      // Check for active subscriptions only for subscription prices
+      if (priceId !== 'price_1Qjb8oLbszPXbxPV8dKn8RAJ') { // Not lifetime
+        const activeSubscriptions = await stripe.subscriptions.list({
+          customer: customer_id,
+          status: 'active',
+          price: priceId,
+          limit: 1
+        });
 
-      hasHadTrial = allSubscriptions.data.some(sub => sub.trial_end !== null);
-      console.log('Customer has had trial before:', hasHadTrial);
-
-      const activeSubscriptions = await stripe.subscriptions.list({
-        customer: customer_id,
-        status: 'active',
-        price: priceId,
-        limit: 1
-      });
-
-      if (activeSubscriptions.data.length > 0) {
-        throw new Error("Customer already has an active subscription");
+        if (activeSubscriptions.data.length > 0) {
+          throw new Error("Customer already has an active subscription");
+        }
       }
     } else {
       const customer = await stripe.customers.create({
@@ -91,7 +83,7 @@ serve(async (req) => {
           quantity: 1,
         },
       ],
-      mode: 'subscription',
+      mode: priceId === 'price_1Qjb8oLbszPXbxPV8dKn8RAJ' ? 'payment' : 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
       payment_method_collection: 'if_required',
@@ -104,22 +96,6 @@ serve(async (req) => {
         name: 'auto',
       },
     };
-
-    if (!hasHadTrial) {
-      sessionConfig.subscription_data = {
-        trial_period_days: 30,
-        trial_settings: {
-          end_behavior: {
-            missing_payment_method: 'pause',
-          },
-        },
-      };
-      sessionConfig.custom_text = {
-        submit: {
-          message: 'Start your 30-day free trial',
-        },
-      };
-    }
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
 

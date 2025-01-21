@@ -48,9 +48,42 @@ serve(async (req) => {
     console.log('Processing webhook event:', event.type)
 
     switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object;
+        const customerId = session.customer;
+        const isLifetime = session.mode === 'payment';
+
+        if (isLifetime) {
+          const { data: profiles, error: profileError } = await supabaseClient
+            .from('profiles')
+            .select('id')
+            .eq('stripe_customer_id', customerId)
+            .single()
+
+          if (profileError || !profiles) {
+            console.error('Error finding user:', profileError)
+            throw new Error('User not found')
+          }
+
+          const { error: updateError } = await supabaseClient
+            .from('profiles')
+            .update({
+              subscription_status: 'active',
+              subscription_tier: 'lifetime',
+            })
+            .eq('id', profiles.id)
+
+          if (updateError) {
+            console.error('Error updating user:', updateError)
+            throw new Error('Failed to update user')
+          }
+        }
+        break;
+      }
+      
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
-      case 'customer.subscription.deleted':
+      case 'customer.subscription.deleted': {
         const subscription = event.data.object
         const customerId = subscription.customer as string
         
@@ -70,17 +103,14 @@ serve(async (req) => {
 
         console.log('Found user profile:', profiles.id)
 
-        // Map subscription status directly from Stripe
         const subscriptionTier = ['active', 'trialing'].includes(subscription.status) ? 'pro' : 'starter'
         
-        // Update profile with detailed subscription information
         const { error: updateError } = await supabaseClient
           .from('profiles')
           .update({
             subscription_status: subscription.status,
             subscription_tier: subscriptionTier,
             current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000).toISOString() : null,
-            trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
           })
           .eq('id', profiles.id)
 
@@ -92,9 +122,9 @@ serve(async (req) => {
         console.log('Successfully updated user subscription:', {
           status: subscription.status,
           tier: subscriptionTier,
-          trialEnd: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null
         })
-        break
+        break;
+      }
 
       default:
         console.log(`Unhandled event type ${event.type}`)
