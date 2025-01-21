@@ -6,6 +6,8 @@ import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkActionModal from "./PepTalkActionModal";
 import { useSession } from "@supabase/auth-helpers-react";
+import { canUseFeature, incrementUsage } from "@/utils/subscription";
+import { UpgradeModal } from "@/components/subscription/UpgradeModal";
 
 interface PlaybookModalsProps {
   recordings?: any[];
@@ -33,9 +35,28 @@ const PlaybookModals = ({
   const [isGeneratingPepTalk, setIsGeneratingPepTalk] = useState(false);
   const [isGeneratingNotes, setIsGeneratingNotes] = useState(false);
   const [currentFlow, setCurrentFlow] = useState<'notes' | 'pepTalk'>('notes');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [featureType, setFeatureType] = useState<'pepTalks' | 'coachNotes'>('pepTalks');
   const navigate = useNavigate();
   const { toast } = useToast();
   const session = useSession();
+
+  // Fetch user profile for subscription checks
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      if (!session?.user?.id) return null;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!session?.user?.id,
+  });
 
   const handleViewLatest = () => {
     if (latestNoteId) {
@@ -50,7 +71,13 @@ const PlaybookModals = ({
     setIsActionModalOpen(false);
   };
 
-  const handleCreateNew = () => {
+  const handleCreateNew = async () => {
+    const canUse = await canUseFeature(profile, 'coachNotes', supabase);
+    if (!canUse) {
+      setFeatureType('coachNotes');
+      setShowUpgradeModal(true);
+      return;
+    }
     setCurrentFlow('notes');
     setIsActionModalOpen(false);
     setIsSelectionModalOpen(true);
@@ -73,6 +100,7 @@ const PlaybookModals = ({
     setIsGeneratingNotes(true);
     try {
       await onGenerateNotes(selectedRecordings);
+      await incrementUsage(profile, 'coachNotes', supabase);
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
     } catch (error) {
@@ -101,6 +129,7 @@ const PlaybookModals = ({
         throw error;
       }
 
+      await incrementUsage(profile, 'pepTalks', supabase);
       console.log('Pep talk generated:', data);
       
       setSelectedRecordings([]);
@@ -132,7 +161,13 @@ const PlaybookModals = ({
     navigate('/pep_talks');
   };
 
-  const handleCreateNewPepTalk = () => {
+  const handleCreateNewPepTalk = async () => {
+    const canUse = await canUseFeature(profile, 'pepTalks', supabase);
+    if (!canUse) {
+      setFeatureType('pepTalks');
+      setShowUpgradeModal(true);
+      return;
+    }
     setCurrentFlow('pepTalk');
     setIsPepTalkModalOpen(false);
     setIsSelectionModalOpen(true);
@@ -168,6 +203,12 @@ const PlaybookModals = ({
         isGenerating={currentFlow === 'notes' ? isGeneratingNotes : isGeneratingPepTalk}
         modalTitle={currentFlow === 'notes' ? "Pick Recent Rounds" : "Pick Recent Rounds"}
         generateButtonText={currentFlow === 'notes' ? "Prep for Lesson" : "Get a Pep Talk"}
+      />
+
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        feature={featureType === 'pepTalks' ? 'pep-talk' : 'lesson-prep'}
       />
     </>
   );
