@@ -18,13 +18,13 @@ serve(async (req) => {
   );
 
   try {
+    // Get user from auth header
     const authHeader = req.headers.get('Authorization')!;
     const token = authHeader.replace('Bearer ', '');
-    const { data } = await supabaseClient.auth.getUser(token);
-    const user = data.user;
-    const email = user?.email;
+    const { data: { user } } = await supabaseClient.auth.getUser(token);
 
-    if (!email) {
+    if (!user?.email) {
+      console.error('No email found for user');
       throw new Error('No email found');
     }
 
@@ -32,8 +32,9 @@ serve(async (req) => {
       apiVersion: '2023-10-16',
     });
 
+    // Check for existing customer
     const customers = await stripe.customers.list({
-      email: email,
+      email: user.email,
       limit: 1
     });
 
@@ -54,12 +55,13 @@ serve(async (req) => {
       }
     } else {
       const customer = await stripe.customers.create({
-        email: email,
+        email: user.email,
       });
       customer_id = customer.id;
       console.log('Created new customer:', customer_id);
     }
 
+    // Update profile with customer ID
     const { error: updateError } = await supabaseClient
       .from('profiles')
       .update({ stripe_customer_id: customer_id })
@@ -71,7 +73,7 @@ serve(async (req) => {
     }
 
     console.log('Creating checkout session...');
-    const sessionConfig: any = {
+    const session = await stripe.checkout.sessions.create({
       customer: customer_id,
       line_items: [
         {
@@ -115,9 +117,7 @@ serve(async (req) => {
         address: 'auto',
         name: 'auto',
       },
-    };
-
-    const session = await stripe.checkout.sessions.create(sessionConfig);
+    });
 
     console.log('Checkout session created:', session.id);
     return new Response(
@@ -133,7 +133,7 @@ serve(async (req) => {
       JSON.stringify({ error: error.message }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500,
+        status: 400,
       }
     );
   }
