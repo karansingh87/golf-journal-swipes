@@ -6,7 +6,7 @@ import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkActionModal from "./PepTalkActionModal";
 import { useSession } from "@supabase/auth-helpers-react";
-import { incrementUsage } from "@/utils/subscription";
+import { canUseFeature, incrementUsage } from "@/utils/subscription";
 import { UpgradeModal } from "@/components/subscription/UpgradeModal";
 import { useQuery } from "@tanstack/react-query";
 
@@ -49,7 +49,7 @@ const PlaybookModals = ({
       if (!session?.user?.id) return null;
       const { data, error } = await supabase
         .from('profiles')
-        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
+        .select('*')
         .eq('id', session.user.id)
         .single();
       
@@ -73,23 +73,12 @@ const PlaybookModals = ({
   };
 
   const handleCreateNew = async () => {
-    // Pro users bypass feature checks
-    if (profile?.has_pro_access) {
-      setCurrentFlow('notes');
-      setIsActionModalOpen(false);
-      setIsSelectionModalOpen(true);
-      setSelectedRecordings([]);
-      return;
-    }
-
-    // Check monthly usage for free users
-    const monthlyLimit = 1;
-    if ((profile?.monthly_coach_notes_count || 0) >= monthlyLimit) {
+    const canUse = await canUseFeature(profile, 'coachNotes', supabase);
+    if (!canUse) {
       setFeatureType('coachNotes');
       setShowUpgradeModal(true);
       return;
     }
-
     setCurrentFlow('notes');
     setIsActionModalOpen(false);
     setIsSelectionModalOpen(true);
@@ -112,9 +101,7 @@ const PlaybookModals = ({
     setIsGeneratingNotes(true);
     try {
       await onGenerateNotes(selectedRecordings);
-      if (!profile?.has_pro_access) {
-        await incrementUsage(profile, 'coachNotes', supabase);
-      }
+      await incrementUsage(profile, 'coachNotes', supabase);
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
     } catch (error) {
@@ -143,9 +130,8 @@ const PlaybookModals = ({
         throw error;
       }
 
-      if (!profile?.has_pro_access) {
-        await incrementUsage(profile, 'pepTalks', supabase);
-      }
+      await incrementUsage(profile, 'pepTalks', supabase);
+      console.log('Pep talk generated:', data);
       
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
@@ -177,23 +163,12 @@ const PlaybookModals = ({
   };
 
   const handleCreateNewPepTalk = async () => {
-    // Pro users bypass feature checks
-    if (profile?.has_pro_access) {
-      setCurrentFlow('pepTalk');
-      setIsPepTalkModalOpen(false);
-      setIsSelectionModalOpen(true);
-      setSelectedRecordings([]);
-      return;
-    }
-
-    // Check monthly usage for free users
-    const monthlyLimit = 1;
-    if ((profile?.monthly_pep_talks_count || 0) >= monthlyLimit) {
+    const canUse = await canUseFeature(profile, 'pepTalks', supabase);
+    if (!canUse) {
       setFeatureType('pepTalks');
       setShowUpgradeModal(true);
       return;
     }
-
     setCurrentFlow('pepTalk');
     setIsPepTalkModalOpen(false);
     setIsSelectionModalOpen(true);
