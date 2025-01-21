@@ -6,6 +6,7 @@ const FloatingRecordButton = () => {
   const navigate = useNavigate();
 
   const handleRecordClick = () => {
+    console.log("FloatingRecordButton: Navigating to /record");
     navigate('/record');
   };
 

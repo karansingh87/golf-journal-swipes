@@ -1,67 +1,41 @@
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useSession } from "@supabase/auth-helpers-react";
-import { useToast } from "@/components/ui/use-toast";
 
 export const useProfileData = () => {
   const session = useSession();
-  const { toast } = useToast();
-  const userId = session?.user?.id;
+  const supabase = useSupabaseClient();
+  
+  console.log("useProfileData: Current session", session);
 
-  const { 
-    data: profile, 
-    isLoading: isProfileLoading, 
-    error: profileError 
-  } = useQuery({
-    queryKey: ['profile', userId],
+  const { data: profile, isLoading: isProfileLoading } = useQuery({
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      try {
-        if (!userId) {
-          console.log('No authenticated user found');
-          return null;
-        }
+      console.log("useProfileData: Fetching profile for user", session?.user?.id);
+      if (!session?.user?.id) {
+        console.log("useProfileData: No user ID available");
+        return null;
+      }
 
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('id, has_pro_access, subscription_tier')
-          .eq('id', userId)
-          .single();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .maybeSingle();
 
-        if (error) {
-          console.error('Error fetching profile:', error);
-          throw error;
-        }
-
-        if (!data) {
-          console.log('No profile found for user:', userId);
-          return null;
-        }
-
-        return data;
-      } catch (error) {
-        console.error('Profile fetch error:', error);
+      if (error) {
+        console.error("useProfileData: Error fetching profile:", error);
         throw error;
       }
+
+      console.log("useProfileData: Profile data received:", data);
+      return data;
     },
-    retry: 3,
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
-    staleTime: 1000 * 60,
-    enabled: !!userId,
+    enabled: !!session?.user?.id,
   });
 
-  if (profileError) {
-    console.error('Profile error:', profileError);
-    toast({
-      title: "Error loading profile",
-      description: "Please try refreshing the page",
-      variant: "destructive",
-    });
-  }
-
-  return { 
-    profile, 
-    isProfileLoading, 
-    profileError,
-    isAuthenticated: !!userId 
+  return {
+    profile,
+    isProfileLoading,
+    isAuthenticated: !!session?.user?.id,
   };
 };
