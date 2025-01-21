@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { SubscriptionSection } from "@/components/subscription/SubscriptionSection";
+import UsageIndicators from "@/components/subscription/UsageIndicators";
 
 type HandicapRange = "scratch_or_better" | "1_5" | "6_10" | "11_15" | "16_20" | "21_25" | "26_plus" | "new_to_golf";
 
@@ -223,7 +224,8 @@ const Settings = () => {
               <SecurityTab />
             </TabsContent>
 
-            <TabsContent value="subscription">
+            <TabsContent value="subscription" className="space-y-6">
+              <UsageIndicators />
               <SubscriptionSection />
             </TabsContent>
           </Tabs>
