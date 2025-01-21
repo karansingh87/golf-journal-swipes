@@ -12,7 +12,7 @@ const UsageIndicators = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('subscription_tier, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
         .eq('id', session.user.id)
         .single();
 
@@ -60,6 +60,8 @@ const UsageIndicators = () => {
 
   if (!profile) return null;
 
+  const isUnlimited = profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime';
+
   return (
     <Card className="p-6">
       <h3 className="text-lg font-semibold mb-4">Monthly Usage</h3>
@@ -69,13 +71,15 @@ const UsageIndicators = () => {
             <div className="flex justify-between text-sm">
               <span>{feature.name}</span>
               <span className="text-muted-foreground">
-                {feature.used} / {profile.subscription_status === 'active' ? '∞' : feature.limit}
+                {isUnlimited ? '∞' : `${feature.used} / ${feature.limit}`}
               </span>
             </div>
-            <Progress 
-              value={profile.subscription_status === 'active' ? 0 : getProgress(feature.used, feature.limit)} 
-              className="h-2"
-            />
+            {!isUnlimited && (
+              <Progress 
+                value={getProgress(feature.used, feature.limit)} 
+                className="h-2"
+              />
+            )}
           </div>
         ))}
       </div>

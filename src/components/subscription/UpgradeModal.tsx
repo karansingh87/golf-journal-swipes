@@ -58,7 +58,7 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('subscription_tier, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
         .eq('id', user.id)
         .single();
 
@@ -96,10 +96,7 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
                 </div>
                 <Progress value={usagePercentage} className="h-2" />
                 <p className="text-sm text-muted-foreground">
-                  {remainingUses === 0 
-                    ? "Upgrade to Pro for unlimited access to this feature and more." 
-                    : "Free tier users get limited monthly uses. Upgrade to Pro for unlimited access."
-                  }
+                  Upgrade to Pro for unlimited access to all features and take your game to the next level.
                 </p>
               </div>
             )}
