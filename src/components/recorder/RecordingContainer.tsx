@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import VoiceRecorder from "../VoiceRecorder";
 import TextInput from "../TextInput";
@@ -27,8 +27,14 @@ const RecordingContainer = () => {
   } = useGolfRecording();
 
   // Redirect to login if not authenticated
-  if (!isAuthenticated) {
-    navigate('/login');
+  useEffect(() => {
+    if (!isAuthenticated && !isProfileLoading) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, isProfileLoading, navigate]);
+
+  // Don't render anything while checking authentication or if not authenticated
+  if (isProfileLoading || !isAuthenticated || !profile) {
     return null;
   }
 
@@ -48,7 +54,7 @@ const RecordingContainer = () => {
   };
 
   const handleRecordingStart = async () => {
-    if (!profile || isProfileLoading) return;
+    if (!profile) return;
 
     const canUse = await checkFeatureAccess(profile);
     if (canUse || profile.has_pro_access) {
@@ -64,7 +70,7 @@ const RecordingContainer = () => {
   };
 
   const handleSwitchToText = async () => {
-    if (!profile || isProfileLoading) return;
+    if (!profile) return;
 
     const canUse = await checkFeatureAccess(profile);
     if (canUse || profile.has_pro_access) {
@@ -78,11 +84,6 @@ const RecordingContainer = () => {
     setShowUpgradeModal(false);
     setShowSessionTypeModal(true);
   };
-
-  // Don't render anything while profile is loading to prevent flashing modals
-  if (isProfileLoading) {
-    return null;
-  }
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
