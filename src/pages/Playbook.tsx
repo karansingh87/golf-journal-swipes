@@ -98,6 +98,13 @@ const Playbook = () => {
     setIsPepTalkModalOpen(true);
   };
 
+  const handleGenerateNotes = async (selectedRecordings: string[]) => {
+    const noteData = await generateNotes(selectedRecordings, recordings || []);
+    if (noteData) {
+      navigate(`/coach_notes/${noteData.id}`);
+    }
+  };
+
   // Simplified display name handling with fallback
   const displayName = userProfile?.display_name || '';
 
@@ -124,7 +131,7 @@ const Playbook = () => {
         recordings={recordings}
         latestNoteId={latestNote?.id}
         isGenerating={isGenerating}
-        onGenerateNotes={generateNotes}
+        onGenerateNotes={handleGenerateNotes}
         isActionModalOpen={isActionModalOpen}
         setIsActionModalOpen={setIsActionModalOpen}
         isPepTalkModalOpen={isPepTalkModalOpen}
