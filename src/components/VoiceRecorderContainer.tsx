@@ -34,7 +34,7 @@ const VoiceRecorderContainer = () => {
     }
   }, [session, navigate]);
 
-  const { data: profile, isLoading: isProfileLoading } = useQuery({
+  const { data: profile } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
       if (!session?.user?.id) throw new Error('No authenticated user');
@@ -56,42 +56,56 @@ const VoiceRecorderContainer = () => {
   });
 
   // Don't render anything while loading or if no session
-  if (isProfileLoading || !session?.user?.id || !profile) {
+  if (!session?.user?.id || !profile) {
     return null;
   }
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!profile || !session?.user?.id) return;
+    try {
+      if (profile.has_pro_access) {
+        await handleTextSubmit(text, type);
+        setShowTextInput(false);
+        return;
+      }
 
-    if (profile.has_pro_access) {
-      await handleTextSubmit(text, type);
-      setShowTextInput(false);
-      return;
-    }
-
-    const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (canUse) {
-      await handleTextSubmit(text, type);
-      await incrementUsage(profile, 'recordings', supabase);
-      setShowTextInput(false);
-    } else {
-      setShowUpgradeModal(true);
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (canUse) {
+        await handleTextSubmit(text, type);
+        await incrementUsage(profile, 'recordings', supabase);
+        setShowTextInput(false);
+      } else {
+        setShowUpgradeModal(true);
+      }
+    } catch (error) {
+      console.error('Error handling text submit:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to save your note. Please try again.",
+      });
     }
   };
 
   const handleRecordingStart = async () => {
-    if (!profile || !session?.user?.id) return;
+    try {
+      if (profile.has_pro_access) {
+        setShowSessionTypeModal(true);
+        return;
+      }
 
-    if (profile.has_pro_access) {
-      setShowSessionTypeModal(true);
-      return;
-    }
-
-    const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (canUse) {
-      setShowSessionTypeModal(true);
-    } else {
-      setShowUpgradeModal(true);
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (canUse) {
+        setShowSessionTypeModal(true);
+      } else {
+        setShowUpgradeModal(true);
+      }
+    } catch (error) {
+      console.error('Error checking feature access:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to start recording. Please try again.",
+      });
     }
   };
 
@@ -101,28 +115,42 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = async () => {
-    if (!profile || !session?.user?.id) return;
+    try {
+      if (profile.has_pro_access) {
+        setShowTextInput(true);
+        return;
+      }
 
-    if (profile.has_pro_access) {
-      setShowTextInput(true);
-      return;
-    }
-
-    const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (canUse) {
-      setShowTextInput(true);
-    } else {
-      setShowUpgradeModal(true);
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (canUse) {
+        setShowTextInput(true);
+      } else {
+        setShowUpgradeModal(true);
+      }
+    } catch (error) {
+      console.error('Error checking feature access:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to switch to text input. Please try again.",
+      });
     }
   };
 
   const handleUpgradeModalContinue = async () => {
-    if (!profile || !session?.user?.id) return;
-    
-    const canUse = await canUseFeature(profile, 'recordings', supabase);
-    if (canUse) {
-      setShowUpgradeModal(false);
-      setShowSessionTypeModal(true);
+    try {
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (canUse) {
+        setShowUpgradeModal(false);
+        setShowSessionTypeModal(true);
+      }
+    } catch (error) {
+      console.error('Error checking feature access:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to check feature access. Please try again.",
+      });
     }
   };
 

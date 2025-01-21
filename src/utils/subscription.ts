@@ -79,11 +79,11 @@ export const canUseFeature = async (
 
       if (error) {
         console.error('Error resetting usage:', error);
-        return false;
+        throw error;
       }
     } catch (error) {
       console.error('Error in reset operation:', error);
-      return false;
+      throw error;
     }
 
     // Return true since we just reset the counters
