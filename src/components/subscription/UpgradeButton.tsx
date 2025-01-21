@@ -8,9 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 export interface UpgradeButtonProps {
   className?: string;
+  priceId: string;
 }
 
-export const UpgradeButton = ({ className }: UpgradeButtonProps) => {
+export const UpgradeButton = ({ className, priceId }: UpgradeButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const session = useSession();
@@ -26,10 +27,10 @@ export const UpgradeButton = ({ className }: UpgradeButtonProps) => {
         return;
       }
 
-      console.log('Creating checkout session...');
+      console.log('Creating checkout session with price:', priceId);
       
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: {},
+        body: { priceId },
         headers: {
           Authorization: `Bearer ${session.access_token}`,
         },

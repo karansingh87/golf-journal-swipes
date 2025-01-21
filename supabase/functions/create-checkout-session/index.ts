@@ -18,13 +18,14 @@ serve(async (req) => {
   );
 
   try {
-    // Get user from auth header
+    const { priceId } = await req.json();
     const authHeader = req.headers.get('Authorization')!;
     const token = authHeader.replace('Bearer ', '');
-    const { data: { user } } = await supabaseClient.auth.getUser(token);
+    const { data } = await supabaseClient.auth.getUser(token);
+    const user = data.user;
+    const email = user?.email;
 
-    if (!user?.email) {
-      console.error('No email found for user');
+    if (!email) {
       throw new Error('No email found');
     }
 
@@ -32,9 +33,8 @@ serve(async (req) => {
       apiVersion: '2023-10-16',
     });
 
-    // Check for existing customer
     const customers = await stripe.customers.list({
-      email: user.email,
+      email: email,
       limit: 1
     });
 
@@ -43,25 +43,27 @@ serve(async (req) => {
       customer_id = customers.data[0].id;
       console.log('Found existing customer:', customer_id);
 
-      // Check for active subscriptions
-      const activeSubscriptions = await stripe.subscriptions.list({
-        customer: customer_id,
-        status: 'active',
-        limit: 1
-      });
+      // Check for active subscriptions only for subscription prices
+      if (priceId !== 'price_1Qjb8oLbszPXbxPV8dKn8RAJ') { // Not lifetime
+        const activeSubscriptions = await stripe.subscriptions.list({
+          customer: customer_id,
+          status: 'active',
+          price: priceId,
+          limit: 1
+        });
 
-      if (activeSubscriptions.data.length > 0) {
-        throw new Error("Customer already has an active subscription");
+        if (activeSubscriptions.data.length > 0) {
+          throw new Error("Customer already has an active subscription");
+        }
       }
     } else {
       const customer = await stripe.customers.create({
-        email: user.email,
+        email: email,
       });
       customer_id = customer.id;
       console.log('Created new customer:', customer_id);
     }
 
-    // Update profile with customer ID
     const { error: updateError } = await supabaseClient
       .from('profiles')
       .update({ stripe_customer_id: customer_id })
@@ -73,25 +75,15 @@ serve(async (req) => {
     }
 
     console.log('Creating checkout session...');
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig: any = {
       customer: customer_id,
       line_items: [
         {
-          price_data: {
-            currency: 'usd',
-            recurring: {
-              interval: 'month',
-            },
-            product_data: {
-              name: 'Pro Monthly',
-              description: 'Monthly subscription to Pro features',
-            },
-            unit_amount: 599, // $5.99 per month
-          },
+          price: priceId,
           quantity: 1,
-        }
+        },
       ],
-      mode: 'subscription',
+      mode: priceId === 'price_1Qjb8oLbszPXbxPV8dKn8RAJ' ? 'payment' : 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
       payment_method_collection: 'if_required',
@@ -103,7 +95,9 @@ serve(async (req) => {
         address: 'auto',
         name: 'auto',
       },
-    });
+    };
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     console.log('Checkout session created:', session.id);
     return new Response(
@@ -119,7 +113,7 @@ serve(async (req) => {
       JSON.stringify({ error: error.message }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 400,
+        status: 500,
       }
     );
   }

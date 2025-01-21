@@ -7,6 +7,8 @@ import { Crown, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
+const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
+
 interface SubscriptionGuardProps {
   children: React.ReactNode;
   feature?: 'recordings' | 'pepTalks' | 'coachNotes';
@@ -89,6 +91,7 @@ export default function SubscriptionGuard({ children, feature }: SubscriptionGua
             
             <div className="pt-2">
               <UpgradeButton 
+                priceId={MONTHLY_PRICE_ID}
                 className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors"
               />
             </div>

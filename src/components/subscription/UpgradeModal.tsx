@@ -1,4 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { UpgradeButton } from "./UpgradeButton";
 
 export type Feature = 'trends' | 'pep-talk' | 'lesson-prep' | 'recording';
@@ -29,6 +30,8 @@ interface UpgradeModalProps {
   onContinue?: () => void;
 }
 
+const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
+
 export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) => {
   const featureInfo = featureDescriptions[feature];
 
@@ -44,6 +47,7 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
           </p>
           <div className="w-full max-w-sm">
             <UpgradeButton 
+              priceId={MONTHLY_PRICE_ID}
               className="w-full bg-primary text-white hover:bg-primary/90 h-11"
             />
           </div>
