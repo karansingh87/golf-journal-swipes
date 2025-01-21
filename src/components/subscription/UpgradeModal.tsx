@@ -77,6 +77,13 @@ export const UpgradeModal = ({ feature, isOpen, onClose, onContinue }: UpgradeMo
   const usagePercentage = limit ? (usedCount / limit) * 100 : 0;
   const hasRemainingUses = remainingUses !== null && remainingUses > 0;
 
+  const handleContinue = () => {
+    if (onContinue && hasRemainingUses) {
+      onClose();
+      onContinue();
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -112,31 +119,28 @@ export const UpgradeModal = ({ feature, isOpen, onClose, onContinue }: UpgradeMo
           </DialogDescription>
         </DialogHeader>
         <div className="mt-6 space-y-3">
-          {hasRemainingUses && onContinue ? (
-            <Button 
-              onClick={() => {
-                onClose();
-                onContinue();
-              }}
-              className="w-full"
-              variant="default"
-            >
-              Continue ({remainingUses} remaining)
-            </Button>
+          {hasRemainingUses ? (
+            <>
+              <Button 
+                onClick={handleContinue}
+                className="w-full"
+                variant="default"
+              >
+                Continue ({remainingUses} remaining)
+              </Button>
+              <Button 
+                onClick={onClose}
+                className="w-full"
+                variant="outline"
+              >
+                Cancel
+              </Button>
+            </>
           ) : (
             <UpgradeButton 
               priceId={MONTHLY_PRICE_ID}
               className="w-full" 
             />
-          )}
-          {hasRemainingUses && (
-            <Button 
-              onClick={onClose}
-              className="w-full"
-              variant="outline"
-            >
-              Cancel
-            </Button>
           )}
         </div>
       </DialogContent>
