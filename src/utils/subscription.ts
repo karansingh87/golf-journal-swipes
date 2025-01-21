@@ -14,11 +14,13 @@ const FREE_TIER_LIMITS: UsageLimit = {
   coachNotes: 1,
 };
 
+// Simplified check - only looks at has_pro_access
 export const isSubscriptionActive = (profile: Partial<Profile> | null) => {
   if (!profile) return false;
   return profile.has_pro_access === true;
 };
 
+// Simplified reset check
 export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
   if (!lastResetDate) return true;
   
@@ -27,6 +29,7 @@ export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
   return new Date() > nextResetDate;
 };
 
+// Simplified usage check - returns Infinity for pro users
 export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit => {
   if (isSubscriptionActive(profile)) {
     return {
@@ -43,6 +46,7 @@ export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit 
   };
 };
 
+// Simplified feature access check
 export const canUseFeature = async (
   profile: Partial<Profile> | null,
   feature: keyof UsageLimit,
@@ -50,10 +54,10 @@ export const canUseFeature = async (
 ): Promise<boolean> => {
   if (!profile) return false;
   
-  // Pro users have unlimited access
+  // Pro users always have access
   if (isSubscriptionActive(profile)) return true;
 
-  // Check if we need to reset usage counts
+  // Check if we need to reset usage counts for free users
   if (shouldResetUsage(profile.last_reset_date ? new Date(profile.last_reset_date) : null)) {
     const { error } = await supabase
       .from('profiles')
@@ -74,16 +78,18 @@ export const canUseFeature = async (
     return true;
   }
 
-  // Check remaining usage for the specific feature
+  // Check remaining usage for free users
   const remaining = getRemainingUsage(profile);
   return remaining[feature] > 0;
 };
 
+// Simplified usage increment
 export const incrementUsage = async (
   profile: Partial<Profile> | null,
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<void> => {
+  // Don't increment usage for pro users
   if (!profile || isSubscriptionActive(profile)) return;
 
   const columnMap = {
