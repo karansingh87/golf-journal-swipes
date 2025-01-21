@@ -53,43 +53,6 @@ serve(async (req) => {
         const customerId = session.customer;
         const isLifetime = session.mode === 'payment';
 
-        if (isLifetime) {
-          const { data: profiles, error: profileError } = await supabaseClient
-            .from('profiles')
-            .select('id')
-            .eq('stripe_customer_id', customerId)
-            .single()
-
-          if (profileError || !profiles) {
-            console.error('Error finding user:', profileError)
-            throw new Error('User not found')
-          }
-
-          const { error: updateError } = await supabaseClient
-            .from('profiles')
-            .update({
-              subscription_status: 'active',
-              subscription_tier: 'lifetime',
-            })
-            .eq('id', profiles.id)
-
-          if (updateError) {
-            console.error('Error updating user:', updateError)
-            throw new Error('Failed to update user')
-          }
-        }
-        break;
-      }
-      
-      case 'customer.subscription.created':
-      case 'customer.subscription.updated':
-      case 'customer.subscription.deleted': {
-        const subscription = event.data.object
-        const customerId = subscription.customer as string
-        
-        console.log('Processing subscription event for customer:', customerId)
-        console.log('Subscription status:', subscription.status)
-        
         const { data: profiles, error: profileError } = await supabaseClient
           .from('profiles')
           .select('id')
@@ -101,17 +64,15 @@ serve(async (req) => {
           throw new Error('User not found')
         }
 
-        console.log('Found user profile:', profiles.id)
+        // Set subscription tier based on payment type
+        const updateData = {
+          subscription_tier: isLifetime ? 'lifetime' : 'pro',
+          current_period_end: isLifetime ? null : new Date(session.subscription?.current_period_end * 1000).toISOString(),
+        }
 
-        const subscriptionTier = ['active', 'trialing'].includes(subscription.status) ? 'pro' : 'starter'
-        
         const { error: updateError } = await supabaseClient
           .from('profiles')
-          .update({
-            subscription_status: subscription.status,
-            subscription_tier: subscriptionTier,
-            current_period_end: subscription.current_period_end ? new Date(subscription.current_period_end * 1000).toISOString() : null,
-          })
+          .update(updateData)
           .eq('id', profiles.id)
 
         if (updateError) {
@@ -119,10 +80,81 @@ serve(async (req) => {
           throw new Error('Failed to update user')
         }
 
-        console.log('Successfully updated user subscription:', {
-          status: subscription.status,
-          tier: subscriptionTier,
-        })
+        console.log(`Successfully updated user to ${updateData.subscription_tier} tier`)
+        break;
+      }
+      
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object
+        const customerId = subscription.customer as string
+        
+        console.log('Processing subscription deletion for customer:', customerId)
+        
+        const { data: profiles, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('id, subscription_tier')
+          .eq('stripe_customer_id', customerId)
+          .single()
+
+        if (profileError || !profiles) {
+          console.error('Error finding user:', profileError)
+          throw new Error('User not found')
+        }
+
+        // Only update if not lifetime
+        if (profiles.subscription_tier !== 'lifetime') {
+          const { error: updateError } = await supabaseClient
+            .from('profiles')
+            .update({
+              subscription_tier: 'free',
+              current_period_end: null,
+            })
+            .eq('id', profiles.id)
+
+          if (updateError) {
+            console.error('Error updating user:', updateError)
+            throw new Error('Failed to update user')
+          }
+
+          console.log('Successfully downgraded user to free tier')
+        }
+        break;
+      }
+
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object
+        const customerId = subscription.customer as string
+        
+        console.log('Processing subscription update for customer:', customerId)
+        
+        const { data: profiles, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('id, subscription_tier')
+          .eq('stripe_customer_id', customerId)
+          .single()
+
+        if (profileError || !profiles) {
+          console.error('Error finding user:', profileError)
+          throw new Error('User not found')
+        }
+
+        // Only update if not lifetime
+        if (profiles.subscription_tier !== 'lifetime') {
+          const { error: updateError } = await supabaseClient
+            .from('profiles')
+            .update({
+              subscription_tier: 'pro',
+              current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+            })
+            .eq('id', profiles.id)
+
+          if (updateError) {
+            console.error('Error updating user:', updateError)
+            throw new Error('Failed to update user')
+          }
+
+          console.log('Successfully updated subscription details')
+        }
         break;
       }
 
