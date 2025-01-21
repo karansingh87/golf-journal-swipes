@@ -48,7 +48,7 @@ const PlaybookModals = ({
       if (!session?.user?.id) return null;
       const { data, error } = await supabase
         .from('profiles')
-        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count, last_reset_date')
+        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
         .eq('id', session.user.id)
         .single();
       
@@ -73,7 +73,7 @@ const PlaybookModals = ({
 
   const handleCreateNew = async () => {
     const canUse = await canUseFeature(profile, 'coachNotes', supabase);
-    if (!canUse) {
+    if (!canUse && !profile?.has_pro_access) {
       setFeatureType('coachNotes');
       setShowUpgradeModal(true);
       return;
@@ -127,9 +127,7 @@ const PlaybookModals = ({
         }
       });
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (!isSubscriptionActive(profile)) {
         await incrementUsage(profile, 'pepTalks', supabase);
@@ -166,7 +164,7 @@ const PlaybookModals = ({
 
   const handleCreateNewPepTalk = async () => {
     const canUse = await canUseFeature(profile, 'pepTalks', supabase);
-    if (!canUse) {
+    if (!canUse && !profile?.has_pro_access) {
       setFeatureType('pepTalks');
       setShowUpgradeModal(true);
       return;
@@ -212,6 +210,14 @@ const PlaybookModals = ({
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
         feature={featureType === 'pepTalks' ? 'pep-talk' : 'lesson-prep'}
+        onContinue={() => {
+          setShowUpgradeModal(false);
+          if (featureType === 'pepTalks') {
+            handleCreateNewPepTalk();
+          } else {
+            handleCreateNew();
+          }
+        }}
       />
     </>
   );
