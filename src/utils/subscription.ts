@@ -15,7 +15,7 @@ const FREE_TIER_LIMITS: UsageLimit = {
 };
 
 export const isSubscriptionActive = (profile: Partial<Profile> | null) => {
-  if (!profile) return false;
+  if (!profile?.id) return false;
   return profile.has_pro_access === true;
 };
 
@@ -28,6 +28,14 @@ export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
 };
 
 export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit => {
+  if (!profile?.id) {
+    return {
+      recordings: 0,
+      pepTalks: 0,
+      coachNotes: 0,
+    };
+  }
+
   if (isSubscriptionActive(profile)) {
     return {
       recordings: Infinity,
@@ -48,7 +56,10 @@ export const canUseFeature = async (
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<boolean> => {
-  if (!profile?.id) return false;
+  if (!profile?.id) {
+    console.error('No valid profile ID provided to canUseFeature');
+    return false;
+  }
   
   // Pro users always have access
   if (isSubscriptionActive(profile)) return true;
@@ -89,8 +100,13 @@ export const incrementUsage = async (
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<void> => {
-  // Don't increment usage for pro users or if no profile
-  if (!profile?.id || isSubscriptionActive(profile)) return;
+  if (!profile?.id) {
+    console.error('No valid profile ID provided to incrementUsage');
+    return;
+  }
+
+  // Don't increment usage for pro users
+  if (isSubscriptionActive(profile)) return;
 
   const columnMap = {
     recordings: 'monthly_recordings_count',
@@ -101,13 +117,18 @@ export const incrementUsage = async (
   const column = columnMap[feature];
   const currentValue = profile[column as keyof Profile] as number || 0;
 
-  const { error } = await supabase
-    .from('profiles')
-    .update({ [column]: currentValue + 1 })
-    .eq('id', profile.id);
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ [column]: currentValue + 1 })
+      .eq('id', profile.id);
 
-  if (error) {
-    console.error(`Error incrementing ${feature} usage:`, error);
+    if (error) {
+      console.error(`Error incrementing ${feature} usage:`, error);
+      throw error;
+    }
+  } catch (error) {
+    console.error(`Failed to increment ${feature} usage:`, error);
     throw error;
   }
 };

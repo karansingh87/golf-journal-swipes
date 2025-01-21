@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
@@ -28,43 +28,40 @@ const VoiceRecorderContainer = () => {
     handleTextSubmit,
   } = useGolfRecording();
 
-  // Redirect to login if not authenticated
-  if (!session?.user?.id) {
-    navigate('/login');
-    return null;
-  }
+  useEffect(() => {
+    if (!session?.user?.id) {
+      navigate('/login');
+    }
+  }, [session, navigate]);
 
-  // Only query profile if we have a valid session
-  const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
-    queryKey: ['profile', session.user.id],
+  const { data: profile, isLoading: isProfileLoading } = useQuery({
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
+      if (!session?.user?.id) throw new Error('No authenticated user');
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('has_pro_access, monthly_recordings_count')
         .eq('id', session.user.id)
         .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Profile fetch error:', error);
+        throw error;
+      }
       if (!data) throw new Error('No profile found');
       return data;
     },
+    enabled: !!session?.user?.id,
   });
 
-  if (profileError) {
-    toast({
-      title: "Error loading profile",
-      description: "Please try refreshing the page",
-      variant: "destructive",
-    });
-    return null;
-  }
-
-  if (isProfileLoading || !profile) {
+  // Don't render anything while loading or if no session
+  if (isProfileLoading || !session?.user?.id || !profile) {
     return null;
   }
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!profile) return;
+    if (!profile || !session?.user?.id) return;
 
     if (profile.has_pro_access) {
       await handleTextSubmit(text, type);
@@ -83,7 +80,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = async () => {
-    if (!profile) return;
+    if (!profile || !session?.user?.id) return;
 
     if (profile.has_pro_access) {
       setShowSessionTypeModal(true);
@@ -104,7 +101,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = async () => {
-    if (!profile) return;
+    if (!profile || !session?.user?.id) return;
 
     if (profile.has_pro_access) {
       setShowTextInput(true);
@@ -120,7 +117,7 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleUpgradeModalContinue = async () => {
-    if (!profile) return;
+    if (!profile || !session?.user?.id) return;
     
     const canUse = await canUseFeature(profile, 'recordings', supabase);
     if (canUse) {
