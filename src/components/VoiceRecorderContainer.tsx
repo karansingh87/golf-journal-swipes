@@ -19,29 +19,34 @@ const VoiceRecorderContainer = () => {
   const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        throw new Error('No user found');
-      }
+      try {
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (authError) throw authError;
+        if (!user) throw new Error('No user found');
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('has_pro_access, monthly_recordings_count')
-        .eq('id', user.id)
-        .maybeSingle();
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('has_pro_access, monthly_recordings_count')
+          .eq('id', user.id)
+          .maybeSingle();
 
-      if (error) {
-        console.error('Error fetching profile:', error);
+        if (error) {
+          console.error('Error fetching profile:', error);
+          throw error;
+        }
+
+        if (!data) {
+          throw new Error('No profile found');
+        }
+
+        return data;
+      } catch (error) {
+        console.error('Profile fetch error:', error);
         throw error;
       }
-
-      if (!data) {
-        throw new Error('No profile found');
-      }
-
-      return data;
     },
-    retry: 2,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60, // 1 minute
   });
 
