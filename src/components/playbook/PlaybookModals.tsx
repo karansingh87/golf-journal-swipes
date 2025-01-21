@@ -49,7 +49,7 @@ const PlaybookModals = ({
       if (!session?.user?.id) return null;
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count, last_reset_date')
         .eq('id', session.user.id)
         .single();
       
@@ -101,7 +101,9 @@ const PlaybookModals = ({
     setIsGeneratingNotes(true);
     try {
       await onGenerateNotes(selectedRecordings);
-      await incrementUsage(profile, 'coachNotes', supabase);
+      if (!isSubscriptionActive(profile)) {
+        await incrementUsage(profile, 'coachNotes', supabase);
+      }
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
     } catch (error) {
@@ -130,8 +132,9 @@ const PlaybookModals = ({
         throw error;
       }
 
-      await incrementUsage(profile, 'pepTalks', supabase);
-      console.log('Pep talk generated:', data);
+      if (!isSubscriptionActive(profile)) {
+        await incrementUsage(profile, 'pepTalks', supabase);
+      }
       
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
@@ -155,11 +158,6 @@ const PlaybookModals = ({
     } finally {
       setIsGeneratingPepTalk(false);
     }
-  };
-
-  const handleViewPastPepTalks = () => {
-    setIsPepTalkModalOpen(false);
-    navigate('/pep_talks');
   };
 
   const handleCreateNewPepTalk = async () => {

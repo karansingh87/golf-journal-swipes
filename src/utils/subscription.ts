@@ -28,7 +28,7 @@ export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
 };
 
 export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit => {
-  if (profile?.has_pro_access === true) {
+  if (isSubscriptionActive(profile)) {
     return {
       recordings: Infinity,
       pepTalks: Infinity,
@@ -51,7 +51,7 @@ export const canUseFeature = async (
   if (!profile) return false;
   
   // Pro users have unlimited access
-  if (profile.has_pro_access === true) return true;
+  if (isSubscriptionActive(profile)) return true;
 
   // Check if we need to reset usage counts
   if (shouldResetUsage(profile.last_reset_date ? new Date(profile.last_reset_date) : null)) {
@@ -84,7 +84,7 @@ export const incrementUsage = async (
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<void> => {
-  if (!profile || profile.has_pro_access === true) return;
+  if (!profile || isSubscriptionActive(profile)) return;
 
   const columnMap = {
     recordings: 'monthly_recordings_count',
