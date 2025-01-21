@@ -7,26 +7,38 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
 import { canUseFeature, incrementUsage } from "@/utils/subscription";
+import { useToast } from "./ui/use-toast";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const { toast } = useToast();
   
-  const { data: profile, isLoading: isProfileLoading } = useQuery({
+  const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error('No user found');
+      if (!user) {
+        throw new Error('No user found');
+      }
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('has_pro_access, monthly_recordings_count')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('No profile found');
+      }
+
       return data;
     },
     retry: 2,
@@ -44,8 +56,8 @@ const VoiceRecorderContainer = () => {
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     if (!profile) return;
 
-    // Pro/Lifetime users bypass usage checks
-    if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime') {
+    // Pro users bypass usage checks
+    if (profile.has_pro_access) {
       await handleTextSubmit(text, type);
       setShowTextInput(false);
       return;
@@ -64,8 +76,8 @@ const VoiceRecorderContainer = () => {
   const handleRecordingStart = async () => {
     if (!profile || isProfileLoading) return;
 
-    // Pro/Lifetime users bypass usage checks
-    if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime') {
+    // Pro users bypass usage checks
+    if (profile.has_pro_access) {
       setShowSessionTypeModal(true);
       return;
     }
@@ -88,8 +100,8 @@ const VoiceRecorderContainer = () => {
   const handleSwitchToText = async () => {
     if (!profile || isProfileLoading) return;
 
-    // Pro/Lifetime users bypass usage checks
-    if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime') {
+    // Pro users bypass usage checks
+    if (profile.has_pro_access) {
       setShowTextInput(true);
       return;
     }
@@ -101,6 +113,16 @@ const VoiceRecorderContainer = () => {
       setShowUpgradeModal(true);
     }
   };
+
+  // Show error state
+  if (profileError) {
+    toast({
+      title: "Error loading profile",
+      description: "Please try refreshing the page",
+      variant: "destructive",
+    });
+    return null;
+  }
 
   // Don't render anything while profile is loading to prevent flashing modals
   if (isProfileLoading) {
