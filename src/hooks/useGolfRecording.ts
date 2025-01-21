@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { transcribeAudio } from "../utils/transcription";
 import { useGolfStorage } from "./useGolfStorage";
-import { canUseFeature, incrementUsage } from "@/utils/subscription";
+import { incrementUsage } from "@/utils/subscription";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "@supabase/auth-helpers-react";
+import { useProfileData } from "@/components/recorder/hooks/useProfileData";
 
 export const useGolfRecording = () => {
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -13,24 +12,7 @@ export const useGolfRecording = () => {
   const [transcription, setTranscription] = useState("");
   const { toast } = useToast();
   const { saveRecording } = useGolfStorage();
-  const session = useSession();
-
-  const { data: profile } = useQuery({
-    queryKey: ['profile', session?.user?.id],
-    queryFn: async () => {
-      if (!session?.user?.id) return null;
-      
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('has_pro_access, monthly_recordings_count')
-        .eq('id', session.user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!session?.user?.id,
-  });
+  const { profile } = useProfileData();
 
   const handleAudioRecording = async (
     audioBlob: Blob, 
@@ -40,19 +22,6 @@ export const useGolfRecording = () => {
     try {
       if (!profile) {
         throw new Error("No profile found");
-      }
-
-      // Check if user can make more recordings
-      if (!profile.has_pro_access) {
-        const canUse = await canUseFeature(profile, 'recordings', supabase);
-        if (!canUse) {
-          toast({
-            variant: "destructive",
-            title: "Recording limit reached",
-            description: "You've reached your free tier limit. Upgrade to continue recording.",
-          });
-          return;
-        }
       }
 
       setIsTranscribing(true);
@@ -94,19 +63,6 @@ export const useGolfRecording = () => {
     try {
       if (!profile) {
         throw new Error("No profile found");
-      }
-
-      // Check if user can make more recordings
-      if (!profile.has_pro_access) {
-        const canUse = await canUseFeature(profile, 'recordings', supabase);
-        if (!canUse) {
-          toast({
-            variant: "destructive",
-            title: "Recording limit reached",
-            description: "You've reached your free tier limit. Upgrade to continue recording.",
-          });
-          return;
-        }
       }
 
       console.log('Processing text submission:', { length: text.length });

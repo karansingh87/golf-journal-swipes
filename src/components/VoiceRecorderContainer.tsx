@@ -3,13 +3,13 @@ import VoiceRecorder from "./VoiceRecorder";
 import TextInput from "./TextInput";
 import { useGolfRecording } from "../hooks/useGolfRecording";
 import SessionTypeModal from "./SessionTypeModal";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useProfileData } from "./recorder/hooks/useProfileData";
 import { UpgradeModal } from "./subscription/UpgradeModal";
 import { canUseFeature } from "@/utils/subscription";
 import { useToast } from "./ui/use-toast";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -19,6 +19,7 @@ const VoiceRecorderContainer = () => {
   const { toast } = useToast();
   const session = useSession();
   const navigate = useNavigate();
+  const { profile, isProfileLoading } = useProfileData();
   
   const {
     isTranscribing,
@@ -34,30 +35,19 @@ const VoiceRecorderContainer = () => {
     }
   }, [session, navigate]);
 
-  const { data: profile } = useQuery({
-    queryKey: ['profile', session?.user?.id],
-    queryFn: async () => {
-      if (!session?.user?.id) throw new Error('No authenticated user');
-      
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('has_pro_access, monthly_recordings_count')
-        .eq('id', session.user.id)
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!session?.user?.id,
-  });
-
   // Don't render anything while loading or if no session
-  if (!session?.user?.id || !profile) {
+  if (!session?.user?.id || isProfileLoading || !profile) {
     return null;
   }
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     try {
+      const canUse = await canUseFeature(profile, 'recordings', supabase);
+      if (!canUse && !profile.has_pro_access) {
+        setShowUpgradeModal(true);
+        return;
+      }
+
       await handleTextSubmit(text, type);
       setShowTextInput(false);
     } catch (error) {
