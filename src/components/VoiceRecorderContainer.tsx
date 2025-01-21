@@ -42,8 +42,16 @@ const VoiceRecorderContainer = () => {
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     try {
+      // If user is pro, allow unlimited access
+      if (profile.has_pro_access) {
+        await handleTextSubmit(text, type);
+        setShowTextInput(false);
+        return;
+      }
+
+      // For free users, check usage
       const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (!canUse && !profile.has_pro_access) {
+      if (!canUse) {
         setShowUpgradeModal(true);
         return;
       }
@@ -61,13 +69,19 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleRecordingStart = async () => {
-    if (!profile.has_pro_access) {
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (!canUse) {
-        setShowUpgradeModal(true);
-        return;
-      }
+    // If user is pro, allow unlimited access
+    if (profile.has_pro_access) {
+      setShowSessionTypeModal(true);
+      return;
     }
+
+    // For free users, check usage
+    const canUse = await canUseFeature(profile, 'recordings', supabase);
+    if (!canUse) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     setShowSessionTypeModal(true);
   };
 
@@ -77,13 +91,19 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = async () => {
-    if (!profile.has_pro_access) {
-      const canUse = await canUseFeature(profile, 'recordings', supabase);
-      if (!canUse) {
-        setShowUpgradeModal(true);
-        return;
-      }
+    // If user is pro, allow unlimited access
+    if (profile.has_pro_access) {
+      setShowTextInput(true);
+      return;
     }
+
+    // For free users, check usage
+    const canUse = await canUseFeature(profile, 'recordings', supabase);
+    if (!canUse) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     setShowTextInput(true);
   };
 

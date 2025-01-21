@@ -97,7 +97,7 @@ export const canUseFeature = async (
     }
   }
 
-  // Check remaining usage for free users
+  // Get remaining usage after potential reset
   const remaining = getRemainingUsage(profile);
   return remaining[feature] > 0;
 };
