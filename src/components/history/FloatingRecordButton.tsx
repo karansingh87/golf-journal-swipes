@@ -5,6 +5,10 @@ import ControlButton from "../recorder/ControlButton";
 const FloatingRecordButton = () => {
   const navigate = useNavigate();
 
+  const handleRecordClick = () => {
+    navigate('/record');
+  };
+
   return (
     <div className="fixed bottom-4 right-8 z-50">
       <div className="relative">
@@ -16,7 +20,7 @@ const FloatingRecordButton = () => {
         <div className="absolute inset-0 rounded-full bg-zinc-950/10 animate-pulse-ring" />
         <ControlButton
           icon={Mic}
-          onClick={() => navigate('/record')}
+          onClick={handleRecordClick}
           isLarge={false}
           isActive={true}
           variant="dark"

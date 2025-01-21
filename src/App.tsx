@@ -8,7 +8,6 @@ import { supabase } from "./integrations/supabase/client";
 import SubscriptionGuard from "./components/subscription/SubscriptionGuard";
 import ReactGA from "react-ga4";
 import { useEffect } from "react";
-import VoiceRecorderContainer from "./components/VoiceRecorderContainer";
 import NavigationBar from "./components/NavigationBar";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
@@ -29,6 +28,7 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import RecordingContainer from "./components/recorder/RecordingContainer";
 
 // Initialize GA4
 ReactGA.initialize("G-3VEFQ2RGDH");
@@ -72,7 +72,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/shared/:id" element={<SharedRecording />} />
             <Route path="/shared/coach_notes/:id" element={<SharedCoachNote />} />
-            <Route path="/record" element={<VoiceRecorderContainer />} />
+            <Route path="/record" element={<RecordingContainer />} />
             <Route path="/playbook" element={<Playbook />} />
             <Route path="/notes" element={<Notes />} />
             <Route path="/recording/:id" element={<RecordingDetail />} />
