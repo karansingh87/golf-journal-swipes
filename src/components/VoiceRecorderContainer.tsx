@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { UpgradeModal } from "./subscription/UpgradeModal";
 import { canUseFeature, incrementUsage } from "@/utils/subscription";
 import { useToast } from "./ui/use-toast";
+import { useSession } from "@supabase/auth-helpers-react";
 
 const VoiceRecorderContainer = () => {
   const [showTextInput, setShowTextInput] = useState(false);
@@ -15,19 +16,20 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const { toast } = useToast();
+  const session = useSession();
   
   const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
       try {
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
-        if (authError) throw authError;
-        if (!user) throw new Error('No user found');
+        if (!session?.user?.id) {
+          throw new Error('No authenticated user');
+        }
 
         const { data, error } = await supabase
           .from('profiles')
           .select('has_pro_access, monthly_recordings_count')
-          .eq('id', user.id)
+          .eq('id', session.user.id)
           .maybeSingle();
 
         if (error) {
@@ -48,15 +50,23 @@ const VoiceRecorderContainer = () => {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60, // 1 minute
+    enabled: !!session?.user?.id, // Only run query when we have a user ID
   });
 
-  const {
-    isTranscribing,
-    isProcessingText,
-    transcription,
-    handleAudioRecording,
-    handleTextSubmit,
-  } = useGolfRecording();
+  // Show error state
+  if (profileError) {
+    toast({
+      title: "Error loading profile",
+      description: "Please try refreshing the page",
+      variant: "destructive",
+    });
+    return null;
+  }
+
+  // Don't render anything while profile is loading to prevent flashing modals
+  if (isProfileLoading) {
+    return null;
+  }
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
     if (!profile) return;
@@ -118,21 +128,6 @@ const VoiceRecorderContainer = () => {
       setShowUpgradeModal(true);
     }
   };
-
-  // Show error state
-  if (profileError) {
-    toast({
-      title: "Error loading profile",
-      description: "Please try refreshing the page",
-      variant: "destructive",
-    });
-    return null;
-  }
-
-  // Don't render anything while profile is loading to prevent flashing modals
-  if (isProfileLoading) {
-    return null;
-  }
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
