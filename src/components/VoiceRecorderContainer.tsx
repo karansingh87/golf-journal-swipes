@@ -29,30 +29,25 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   // Redirect to login if not authenticated
-  if (!session) {
+  if (!session?.user?.id) {
     navigate('/login');
     return null;
   }
-  
-  const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
-    queryKey: ['profile', session.user?.id],
-    queryFn: async () => {
-      const userId = session.user?.id;
-      if (!userId) {
-        throw new Error('No authenticated user');
-      }
 
+  // Only query profile if we have a valid session
+  const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
+    queryKey: ['profile', session.user.id],
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('has_pro_access, monthly_recordings_count')
-        .eq('id', userId)
+        .eq('id', session.user.id)
         .maybeSingle();
 
       if (error) throw error;
       if (!data) throw new Error('No profile found');
       return data;
     },
-    enabled: !!session.user?.id,
   });
 
   if (profileError) {
