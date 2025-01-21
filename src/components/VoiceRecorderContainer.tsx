@@ -14,7 +14,7 @@ const VoiceRecorderContainer = () => {
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -29,6 +29,8 @@ const VoiceRecorderContainer = () => {
       if (error) throw error;
       return data;
     },
+    retry: 2,
+    staleTime: 1000 * 60, // 1 minute
   });
 
   const {
@@ -40,8 +42,10 @@ const VoiceRecorderContainer = () => {
   } = useGolfRecording();
 
   const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
+    if (!profile) return;
+
     // Pro/Lifetime users bypass usage checks
-    if (profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
+    if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime') {
       await handleTextSubmit(text, type);
       setShowTextInput(false);
       return;
@@ -52,14 +56,17 @@ const VoiceRecorderContainer = () => {
       setShowUpgradeModal(true);
       return;
     }
+
     await handleTextSubmit(text, type);
     await incrementUsage(profile, 'recordings', supabase);
     setShowTextInput(false);
   };
 
   const handleRecordingStart = async () => {
+    if (!profile || isProfileLoading) return;
+
     // Pro/Lifetime users bypass usage checks
-    if (profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
+    if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime') {
       setShowSessionTypeModal(true);
       return;
     }
@@ -69,6 +76,7 @@ const VoiceRecorderContainer = () => {
       setShowUpgradeModal(true);
       return;
     }
+
     setShowSessionTypeModal(true);
   };
 
@@ -78,8 +86,10 @@ const VoiceRecorderContainer = () => {
   };
 
   const handleSwitchToText = async () => {
+    if (!profile || isProfileLoading) return;
+
     // Pro/Lifetime users bypass usage checks
-    if (profile?.subscription_tier === 'pro' || profile?.subscription_tier === 'lifetime') {
+    if (profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime') {
       setShowTextInput(true);
       return;
     }
@@ -89,8 +99,14 @@ const VoiceRecorderContainer = () => {
       setShowUpgradeModal(true);
       return;
     }
+
     setShowTextInput(true);
   };
+
+  // Don't render anything while profile is loading to prevent flashing modals
+  if (isProfileLoading) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
