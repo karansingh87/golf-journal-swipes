@@ -14,13 +14,11 @@ const FREE_TIER_LIMITS: UsageLimit = {
   coachNotes: 1,
 };
 
-// Simplified check - only looks at has_pro_access
 export const isSubscriptionActive = (profile: Partial<Profile> | null) => {
   if (!profile) return false;
   return profile.has_pro_access === true;
 };
 
-// Simplified reset check
 export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
   if (!lastResetDate) return true;
   
@@ -29,7 +27,6 @@ export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
   return new Date() > nextResetDate;
 };
 
-// Simplified usage check - returns Infinity for pro users
 export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit => {
   if (isSubscriptionActive(profile)) {
     return {
@@ -46,31 +43,35 @@ export const getRemainingUsage = (profile: Partial<Profile> | null): UsageLimit 
   };
 };
 
-// Simplified feature access check
 export const canUseFeature = async (
   profile: Partial<Profile> | null,
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<boolean> => {
-  if (!profile) return false;
+  if (!profile?.id) return false;
   
   // Pro users always have access
   if (isSubscriptionActive(profile)) return true;
 
   // Check if we need to reset usage counts for free users
   if (shouldResetUsage(profile.last_reset_date ? new Date(profile.last_reset_date) : null)) {
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        monthly_recordings_count: 0,
-        monthly_pep_talks_count: 0,
-        monthly_coach_notes_count: 0,
-        last_reset_date: new Date().toISOString(),
-      })
-      .eq('id', profile.id);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          monthly_recordings_count: 0,
+          monthly_pep_talks_count: 0,
+          monthly_coach_notes_count: 0,
+          last_reset_date: new Date().toISOString(),
+        })
+        .eq('id', profile.id);
 
-    if (error) {
-      console.error('Error resetting usage:', error);
+      if (error) {
+        console.error('Error resetting usage:', error);
+        return false;
+      }
+    } catch (error) {
+      console.error('Error in reset operation:', error);
       return false;
     }
 
@@ -83,14 +84,13 @@ export const canUseFeature = async (
   return remaining[feature] > 0;
 };
 
-// Simplified usage increment
 export const incrementUsage = async (
   profile: Partial<Profile> | null,
   feature: keyof UsageLimit,
   supabase: any
 ): Promise<void> => {
-  // Don't increment usage for pro users
-  if (!profile || isSubscriptionActive(profile)) return;
+  // Don't increment usage for pro users or if no profile
+  if (!profile?.id || isSubscriptionActive(profile)) return;
 
   const columnMap = {
     recordings: 'monthly_recordings_count',
