@@ -6,7 +6,7 @@ import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkActionModal from "./PepTalkActionModal";
 import { useSession } from "@supabase/auth-helpers-react";
-import { canUseFeature, incrementUsage } from "@/utils/subscription";
+import { canUseFeature, incrementUsage, isSubscriptionActive } from "@/utils/subscription";
 import { UpgradeModal } from "@/components/subscription/UpgradeModal";
 import { useQuery } from "@tanstack/react-query";
 
@@ -42,7 +42,6 @@ const PlaybookModals = ({
   const { toast } = useToast();
   const session = useSession();
 
-  // Fetch user profile for subscription checks
   const { data: profile } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
@@ -158,6 +157,11 @@ const PlaybookModals = ({
     } finally {
       setIsGeneratingPepTalk(false);
     }
+  };
+
+  const handleViewPastPepTalks = () => {
+    setIsPepTalkModalOpen(false);
+    navigate('/pep_talks');
   };
 
   const handleCreateNewPepTalk = async () => {
