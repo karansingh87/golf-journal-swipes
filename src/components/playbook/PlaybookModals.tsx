@@ -6,7 +6,6 @@ import RecordingSelectionModal from "./RecordingSelectionModal";
 import CoachingActionModal from "./CoachingActionModal";
 import PepTalkActionModal from "./PepTalkActionModal";
 import { useSession } from "@supabase/auth-helpers-react";
-import { canUseFeature, incrementUsage, isSubscriptionActive } from "@/utils/subscription";
 import { UpgradeModal } from "@/components/subscription/UpgradeModal";
 import { useQuery } from "@tanstack/react-query";
 
@@ -48,7 +47,7 @@ const PlaybookModals = ({
       if (!session?.user?.id) return null;
       const { data, error } = await supabase
         .from('profiles')
-        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
+        .select('has_pro_access, subscription_tier')
         .eq('id', session.user.id)
         .single();
       
@@ -72,8 +71,7 @@ const PlaybookModals = ({
   };
 
   const handleCreateNew = async () => {
-    const canUse = await canUseFeature(profile, 'coachNotes', supabase);
-    if (!canUse && !profile?.has_pro_access) {
+    if (!profile?.has_pro_access) {
       setFeatureType('coachNotes');
       setShowUpgradeModal(true);
       return;
@@ -100,9 +98,6 @@ const PlaybookModals = ({
     setIsGeneratingNotes(true);
     try {
       await onGenerateNotes(selectedRecordings);
-      if (!isSubscriptionActive(profile)) {
-        await incrementUsage(profile, 'coachNotes', supabase);
-      }
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
     } catch (error) {
@@ -128,10 +123,6 @@ const PlaybookModals = ({
       });
 
       if (error) throw error;
-
-      if (!isSubscriptionActive(profile)) {
-        await incrementUsage(profile, 'pepTalks', supabase);
-      }
       
       setSelectedRecordings([]);
       setIsSelectionModalOpen(false);
@@ -163,8 +154,7 @@ const PlaybookModals = ({
   };
 
   const handleCreateNewPepTalk = async () => {
-    const canUse = await canUseFeature(profile, 'pepTalks', supabase);
-    if (!canUse && !profile?.has_pro_access) {
+    if (!profile?.has_pro_access) {
       setFeatureType('pepTalks');
       setShowUpgradeModal(true);
       return;

@@ -7,7 +7,6 @@ import TrendsCard from './TrendsCard';
 import PlaceholderCard from './PlaceholderCard';
 import NewPlaceholderCard from './NewPlaceholderCard';
 import { UpgradeModal } from '@/components/subscription/UpgradeModal';
-import { canUseFeature } from "@/utils/subscription";
 
 interface PlaybookActionsProps {
   onGenerateClick: () => void;
@@ -26,7 +25,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
 
       const { data, error } = await supabase
         .from('profiles')
-        .select('has_pro_access, monthly_recordings_count, monthly_pep_talks_count, monthly_coach_notes_count')
+        .select('has_pro_access, subscription_tier')
         .eq('id', user.id)
         .single();
 
@@ -35,7 +34,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     },
   });
 
-  const handleFeatureClick = async (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
+  const handleFeatureClick = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
     if (!profile) return;
 
     // Pro users bypass all checks
@@ -44,24 +43,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
       return;
     }
 
-    // Check if free user has available credits
-    const canUse = await canUseFeature(profile, getFeatureKey(feature), supabase);
-    if (canUse) {
-      handleFeatureAction(feature);
-    } else {
-      setUpgradeFeature(feature);
-    }
-  };
-
-  const getFeatureKey = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
-    switch (feature) {
-      case 'pep-talk':
-        return 'pepTalks';
-      case 'lesson-prep':
-        return 'coachNotes';
-      default:
-        return 'recordings';
-    }
+    setUpgradeFeature(feature);
   };
 
   const handleFeatureAction = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
