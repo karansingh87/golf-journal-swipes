@@ -6,12 +6,12 @@ import { useToast } from "@/components/ui/use-toast";
 export const useProfileData = () => {
   const session = useSession();
   const { toast } = useToast();
+  const userId = session?.user?.id;
 
   const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
-    queryKey: ['profile', session?.user?.id],
+    queryKey: ['profile', userId],
     queryFn: async () => {
       try {
-        const userId = session?.user?.id;
         if (!userId) {
           console.log('No authenticated user found');
           return null;
@@ -42,7 +42,7 @@ export const useProfileData = () => {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60,
-    enabled: !!session?.user?.id, // Only run query when we have a valid user ID
+    enabled: !!userId, // Only run query when we have a valid user ID
   });
 
   if (profileError) {
@@ -58,6 +58,6 @@ export const useProfileData = () => {
     profile, 
     isProfileLoading, 
     profileError,
-    isAuthenticated: !!session?.user?.id 
+    isAuthenticated: !!userId 
   };
 };
