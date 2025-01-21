@@ -19,7 +19,7 @@ export const useProfileData = () => {
 
         const { data, error } = await supabase
           .from('profiles')
-          .select('has_pro_access, monthly_recordings_count')
+          .select('id, has_pro_access, subscription_tier')
           .eq('id', userId)
           .maybeSingle();
 
@@ -42,7 +42,7 @@ export const useProfileData = () => {
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60,
-    enabled: !!userId, // Only run query when we have a valid user ID
+    enabled: !!userId,
   });
 
   if (profileError) {

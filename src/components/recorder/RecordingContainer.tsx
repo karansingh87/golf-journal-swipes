@@ -6,7 +6,7 @@ import { useGolfRecording } from "../../hooks/useGolfRecording";
 import SessionTypeModal from "../SessionTypeModal";
 import { UpgradeModal } from "../subscription/UpgradeModal";
 import { useProfileData } from "./hooks/useProfileData";
-import { useFeatureAccess } from "./hooks/useFeatureAccess";
+import { canAccessRecording } from "@/utils/subscription";
 
 const RecordingContainer = () => {
   const navigate = useNavigate();
@@ -16,7 +16,6 @@ const RecordingContainer = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const { profile, isProfileLoading, isAuthenticated } = useProfileData();
-  const { checkFeatureAccess, incrementFeatureUsage } = useFeatureAccess();
   
   const {
     isTranscribing,
@@ -38,30 +37,23 @@ const RecordingContainer = () => {
     return null;
   }
 
-  const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
-    if (!profile) return;
+  // Check if user can access recording feature
+  if (!canAccessRecording(profile)) {
+    navigate('/');
+    return null;
+  }
 
-    const canUse = await checkFeatureAccess(profile);
-    if (canUse || profile.has_pro_access) {
+  const handleTextSubmitAndClose = async (text: string, type: "course" | "practice") => {
+    try {
       await handleTextSubmit(text, type);
-      if (!profile.has_pro_access) {
-        await incrementFeatureUsage(profile);
-      }
       setShowTextInput(false);
-    } else {
-      setShowUpgradeModal(true);
+    } catch (error) {
+      console.error('Error handling text submit:', error);
     }
   };
 
-  const handleRecordingStart = async () => {
-    if (!profile) return;
-
-    const canUse = await checkFeatureAccess(profile);
-    if (canUse || profile.has_pro_access) {
-      setShowSessionTypeModal(true);
-    } else {
-      setShowUpgradeModal(true);
-    }
+  const handleRecordingStart = () => {
+    setShowSessionTypeModal(true);
   };
 
   const handleSessionTypeSelect = (type: "course" | "practice") => {
@@ -69,20 +61,8 @@ const RecordingContainer = () => {
     setShowSessionTypeModal(false);
   };
 
-  const handleSwitchToText = async () => {
-    if (!profile) return;
-
-    const canUse = await checkFeatureAccess(profile);
-    if (canUse || profile.has_pro_access) {
-      setShowTextInput(true);
-    } else {
-      setShowUpgradeModal(true);
-    }
-  };
-
-  const handleContinue = () => {
-    setShowUpgradeModal(false);
-    setShowSessionTypeModal(true);
+  const handleSwitchToText = () => {
+    setShowTextInput(true);
   };
 
   return (
@@ -113,7 +93,10 @@ const RecordingContainer = () => {
             feature="recording"
             isOpen={showUpgradeModal}
             onClose={() => setShowUpgradeModal(false)}
-            onContinue={handleContinue}
+            onContinue={() => {
+              setShowUpgradeModal(false);
+              setShowSessionTypeModal(true);
+            }}
           />
         </div>
       )}
