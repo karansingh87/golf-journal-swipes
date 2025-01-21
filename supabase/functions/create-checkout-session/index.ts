@@ -18,7 +18,6 @@ serve(async (req) => {
   );
 
   try {
-    const { priceId } = await req.json();
     const authHeader = req.headers.get('Authorization')!;
     const token = authHeader.replace('Bearer ', '');
     const { data } = await supabaseClient.auth.getUser(token);
@@ -43,18 +42,15 @@ serve(async (req) => {
       customer_id = customers.data[0].id;
       console.log('Found existing customer:', customer_id);
 
-      // Check for active subscriptions only for subscription prices
-      if (priceId !== 'price_1Qjb8oLbszPXbxPV8dKn8RAJ') { // Not lifetime
-        const activeSubscriptions = await stripe.subscriptions.list({
-          customer: customer_id,
-          status: 'active',
-          price: priceId,
-          limit: 1
-        });
+      // Check for active subscriptions
+      const activeSubscriptions = await stripe.subscriptions.list({
+        customer: customer_id,
+        status: 'active',
+        limit: 1
+      });
 
-        if (activeSubscriptions.data.length > 0) {
-          throw new Error("Customer already has an active subscription");
-        }
+      if (activeSubscriptions.data.length > 0) {
+        throw new Error("Customer already has an active subscription");
       }
     } else {
       const customer = await stripe.customers.create({
@@ -79,11 +75,35 @@ serve(async (req) => {
       customer: customer_id,
       line_items: [
         {
-          price: priceId,
+          price_data: {
+            currency: 'usd',
+            recurring: {
+              interval: 'month',
+            },
+            product_data: {
+              name: 'Pro Monthly',
+              description: 'Monthly subscription to Pro features',
+            },
+            unit_amount: 1499, // $14.99 per month
+          },
           quantity: 1,
         },
+        {
+          price_data: {
+            currency: 'usd',
+            recurring: {
+              interval: 'year',
+            },
+            product_data: {
+              name: 'Pro Annual',
+              description: 'Annual subscription to Pro features (2 months free)',
+            },
+            unit_amount: 14990, // $149.90 per year
+          },
+          quantity: 1,
+        }
       ],
-      mode: priceId === 'price_1Qjb8oLbszPXbxPV8dKn8RAJ' ? 'payment' : 'subscription',
+      mode: 'subscription',
       allow_promotion_codes: true,
       billing_address_collection: 'auto',
       payment_method_collection: 'if_required',
