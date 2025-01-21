@@ -16,9 +16,8 @@ const FREE_TIER_LIMITS: UsageLimit = {
 };
 
 export const isSubscriptionActive = (profile: Partial<Profile> | null) => {
-  return profile?.subscription_status === 'active' || 
-         profile?.subscription_status === 'trialing' ||
-         profile?.subscription_tier === 'lifetime';
+  if (!profile) return false;
+  return profile.subscription_tier === 'pro' || profile.subscription_tier === 'lifetime';
 };
 
 export const shouldResetUsage = (lastResetDate: Date | null): boolean => {
