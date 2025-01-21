@@ -18,6 +18,14 @@ const VoiceRecorderContainer = () => {
   const { toast } = useToast();
   const session = useSession();
   
+  const {
+    isTranscribing,
+    isProcessingText,
+    transcription,
+    handleAudioRecording,
+    handleTextSubmit,
+  } = useGolfRecording();
+  
   const { data: profile, isLoading: isProfileLoading, error: profileError } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
