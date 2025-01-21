@@ -14,7 +14,7 @@ interface FeatureContent {
   limit?: number;
 }
 
-const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
+const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
 
 const featureContent: Record<Feature, FeatureContent> = {
   'trends': {
@@ -107,7 +107,6 @@ export const UpgradeModal = ({ feature, isOpen, onClose }: UpgradeModalProps) =>
         </DialogHeader>
         <div className="mt-6">
           <UpgradeButton 
-            showTrial 
             priceId={MONTHLY_PRICE_ID}
             className="w-full" 
           />

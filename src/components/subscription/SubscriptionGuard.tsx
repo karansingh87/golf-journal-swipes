@@ -11,7 +11,7 @@ interface SubscriptionGuardProps {
   children: React.ReactNode;
 }
 
-const MONTHLY_PRICE_ID = "price_1QjBd2LbszPXbxPVv7deyKtT";
+const MONTHLY_PRICE_ID = "price_1QjbKgLbszPXbxPVjqNTDLHQ";
 
 export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   const session = useSession();
@@ -24,7 +24,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, subscription_status, trial_end')
+        .select('subscription_tier, subscription_status')
         .eq('id', session.user.id)
         .maybeSingle();
 
@@ -55,13 +55,7 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
   }
 
   const hasValidSubscription = profile?.subscription_status === 'active' || 
-                             profile?.subscription_status === 'trialing';
-
-  const isTrialing = profile?.subscription_status === 'trialing';
-  const trialEnd = profile?.trial_end ? new Date(profile.trial_end) : null;
-  const daysLeftInTrial = trialEnd 
-    ? Math.max(0, Math.ceil((trialEnd.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
-    : 0;
+                             profile?.subscription_tier === 'lifetime';
 
   if (hasValidSubscription) {
     return <>{children}</>;
@@ -94,19 +88,16 @@ export const SubscriptionGuard = ({ children }: SubscriptionGuardProps) => {
                 <Crown className="h-5 w-5 text-zinc-800" />
               </div>
               <h2 className="text-xl font-semibold text-zinc-800">
-                {isTrialing ? 'Trial Expired' : 'Upgrade to Pro'}
+                Upgrade to Pro
               </h2>
             </div>
             
             <p className="text-sm text-zinc-600 leading-relaxed">
-              {isTrialing 
-                ? `Your trial has expired. Upgrade to Pro to continue accessing all features.`
-                : 'Get unlimited access to all features and take your golf game to the next level with personalized insights and advanced analytics.'}
+              Get unlimited access to all features and take your golf game to the next level with personalized insights and advanced analytics.
             </p>
             
             <div className="pt-2">
               <UpgradeButton 
-                showTrial={false}
                 priceId={MONTHLY_PRICE_ID}
                 className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors"
               />
