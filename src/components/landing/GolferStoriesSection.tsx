@@ -34,11 +34,7 @@ const Feature = ({
     <div
       className={cn(
         "flex flex-col py-10 relative group/feature min-h-[180px] bg-zinc-50",
-        "border-zinc-200",
-        "lg:border-r lg:last:border-r-0",
-        "lg:border-b last:lg:border-b-0",
-        index >= 2 && "lg:border-b-0",
-        index < 2 && "lg:border-b"
+        "lg:border-r last:lg:border-r-0"
       )}
     >
       <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
@@ -67,7 +63,7 @@ const GolferStoriesSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 lg:grid-cols-4 relative z-10 divide-zinc-200 lg:divide-x border border-zinc-200">
+        <div className="grid grid-cols-2 lg:grid-cols-4 relative z-10 lg:divide-x divide-zinc-200">
           {stories.map((story, index) => (
             <Feature
               key={story.title}
