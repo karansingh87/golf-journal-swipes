@@ -45,10 +45,10 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature w-full bg-white",
+        "flex flex-col lg:border-r border-zinc-200 h-[280px] relative group/feature w-full bg-white",
         (index === 0) && "lg:border-l",
         index < 4 && "lg:border-b",
-        index >= 4 && "lg:border-t lg:-mt-[1px]" // Fix border overlap
+        index >= 4 && "lg:border-t lg:-mt-[1px]"
       )}
     >
       {index < 4 && (
@@ -57,8 +57,8 @@ const Feature = ({
       {index >= 4 && (
         <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-zinc-50 to-transparent pointer-events-none" />
       )}
-      <div className="mb-4 relative z-10 px-10 text-zinc-600">
-        <Icon className="h-5 w-5" strokeWidth={1.5} />
+      <div className="mb-4 relative z-10 px-10 pt-10 text-zinc-600">
+        <Icon className="h-6 w-6" strokeWidth={2.5} />
       </div>
       <div className="text-lg font-bold mb-2 relative z-10 px-10">
         <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-300 group-hover/feature:bg-zinc-900 transition-all duration-200 origin-center" />
