@@ -18,13 +18,15 @@ const Landing = () => {
       <div className="gradient-overlay" />
       
       <Navigation />
-      <HeroSection />
-      <PhoneMockup />
-      <BenefitsSection />
-      <DetailedFeaturesSection />
-      <GolferStoriesSection />
-      <PricingSection />
-      <FAQSection />
+      <div className="space-y-8 lg:space-y-16">
+        <HeroSection />
+        <PhoneMockup />
+        <BenefitsSection />
+        <DetailedFeaturesSection />
+        <GolferStoriesSection />
+        <PricingSection />
+        <FAQSection />
+      </div>
       <Footer />
     </div>
   );

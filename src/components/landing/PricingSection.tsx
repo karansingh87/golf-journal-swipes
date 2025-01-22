@@ -40,7 +40,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
   };
   
   return (
-    <div className="relative py-8 sm:py-12 lg:py-16">
+    <div className="relative py-8 sm:py-12 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center mb-8 sm:mb-10">
           <h2 className="text-3xl sm:text-4xl font-display tracking-tight text-zinc-900">
