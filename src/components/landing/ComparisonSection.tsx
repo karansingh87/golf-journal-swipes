@@ -97,9 +97,7 @@ const ComparisonSection = () => {
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <div className="bg-zinc-900 rounded-full p-1.5">
-                          <X className="h-4 w-4 text-zinc-50" />
-                        </div>
+                        <X className="h-4 w-4 text-zinc-300" />
                       </div>
                     )}
                   </td>
@@ -112,9 +110,7 @@ const ComparisonSection = () => {
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <div className="bg-zinc-900 rounded-full p-1.5">
-                          <X className="h-4 w-4 text-zinc-50" />
-                        </div>
+                        <X className="h-4 w-4 text-zinc-300" />
                       </div>
                     )}
                   </td>
