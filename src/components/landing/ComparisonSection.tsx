@@ -79,7 +79,7 @@ const ComparisonSection = () => {
                   <span className="text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
                 </th>
                 <th className="px-3 sm:px-6 py-2 sm:py-4">
-                  <span className="text-sm sm:text-base text-zinc-600">Other Apps</span>
+                  <span className="text-sm sm:text-base text-zinc-600">Notes/Voice Memos</span>
                 </th>
               </tr>
             </thead>
