@@ -91,22 +91,30 @@ const ComparisonSection = () => {
                   <td className="px-6 py-5">
                     {feature.golflog ? (
                       <div className="flex justify-center">
-                        <Check className="h-4 w-4 text-emerald-500" />
+                        <div className="bg-zinc-900 rounded-full p-1.5">
+                          <Check className="h-4 w-4 text-zinc-50" />
+                        </div>
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <X className="h-4 w-4 text-zinc-300" />
+                        <div className="bg-zinc-900 rounded-full p-1.5">
+                          <X className="h-4 w-4 text-zinc-50" />
+                        </div>
                       </div>
                     )}
                   </td>
                   <td className="px-6 py-5">
                     {feature.other ? (
                       <div className="flex justify-center">
-                        <Check className="h-4 w-4 text-emerald-500" />
+                        <div className="bg-zinc-900 rounded-full p-1.5">
+                          <Check className="h-4 w-4 text-zinc-50" />
+                        </div>
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <X className="h-4 w-4 text-zinc-300" />
+                        <div className="bg-zinc-900 rounded-full p-1.5">
+                          <X className="h-4 w-4 text-zinc-50" />
+                        </div>
                       </div>
                     )}
                   </td>
