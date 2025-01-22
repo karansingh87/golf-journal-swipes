@@ -8,7 +8,6 @@ import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
 import ComparisonSection from "@/components/landing/ComparisonSection";
-import GradientBlobs from "@/components/landing/GradientBlobs";
 
 const Landing = () => {
   return (
@@ -18,9 +17,6 @@ const Landing = () => {
       
       {/* Gradient Overlay */}
       <div className="gradient-overlay" />
-      
-      {/* Gradient Blobs */}
-      <GradientBlobs />
       
       <Navigation />
       <div className="space-y-8 lg:space-y-16">
