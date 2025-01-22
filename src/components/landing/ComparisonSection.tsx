@@ -75,7 +75,7 @@ const ComparisonSection = () => {
                 <th className="text-left py-2 sm:py-4 px-3 sm:px-6 bg-white sticky left-0 z-10 min-w-[180px] sm:min-w-[200px]">
                   <span className="text-sm sm:text-base text-zinc-900 font-display">Feature</span>
                 </th>
-                <th className="px-3 sm:px-6 py-2 sm:py-4 bg-gradient-to-br from-white to-zinc-50 border-l-2 border-emerald-500">
+                <th className="px-3 sm:px-6 py-2 sm:py-4 bg-[#FDE1D3]/20 shadow-sm">
                   <span className="text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
                 </th>
                 <th className="px-3 sm:px-6 py-2 sm:py-4 bg-white">
@@ -98,7 +98,7 @@ const ComparisonSection = () => {
                     <div className="font-medium text-sm sm:text-base text-zinc-900">{feature.name}</div>
                     <div className="text-xs sm:text-sm text-zinc-500">{feature.description}</div>
                   </td>
-                  <td className="px-3 sm:px-6 py-4 sm:py-6 bg-gradient-to-br from-white to-zinc-50 border-l-2 border-emerald-500">
+                  <td className="px-3 sm:px-6 py-4 sm:py-6 bg-[#FDE1D3]/20 shadow-sm">
                     {feature.golflog ? (
                       <div className="flex justify-center">
                         <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-emerald-500/5 flex items-center justify-center">
