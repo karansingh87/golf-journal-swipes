@@ -59,8 +59,8 @@ const GolferStoriesSection = () => {
     <section className="py-20 sm:py-28 lg:py-20 relative">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-50">
-            <span className="text-sm font-medium text-zinc-900">
+          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-950">
+            <span className="text-sm font-medium text-zinc-50">
               Journal Anytime
             </span>
           </div>
