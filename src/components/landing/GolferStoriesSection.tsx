@@ -34,7 +34,7 @@ const Feature = ({
     <div
       className={cn(
         "flex flex-col lg:border-r border-zinc-800 py-10 relative group/feature",
-        "bg-zinc-950",
+        "bg-zinc-900",
         (index === 0 || index === 2) && "lg:border-l",
         index < 2 && "lg:border-b",
         index >= 2 && "lg:border-t lg:-mt-[1px]"
@@ -59,7 +59,7 @@ const GolferStoriesSection = () => {
     <section className="py-20 sm:py-28 lg:py-20 relative">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-950">
+          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-900">
             <span className="text-sm font-medium text-zinc-50">
               Journal Anytime
             </span>
