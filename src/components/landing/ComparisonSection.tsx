@@ -75,8 +75,9 @@ const ComparisonSection = () => {
                 <th className="text-left py-2 sm:py-4 px-3 sm:px-6 bg-white sticky left-0 z-10 w-1/3">
                   <span className="text-sm sm:text-base text-zinc-900 font-display">Feature</span>
                 </th>
-                <th className="px-3 sm:px-6 py-2 sm:py-4 bg-gradient-to-b from-white to-slate-50 w-1/3">
-                  <span className="text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
+                <th className="px-3 sm:px-6 py-2 sm:py-4 w-1/3 relative">
+                  <div className="absolute inset-0 bg-gradient-to-b from-white to-slate-50" />
+                  <span className="relative z-10 text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
                 </th>
                 <th className="px-3 sm:px-6 py-2 sm:py-4 bg-white w-1/3">
                   <span className="text-sm sm:text-base text-zinc-400">Notes/Voice Memos</span>
@@ -98,15 +99,16 @@ const ComparisonSection = () => {
                     <div className="font-medium text-sm sm:text-base text-zinc-900">{feature.name}</div>
                     <div className="text-xs sm:text-sm text-zinc-500">{feature.description}</div>
                   </td>
-                  <td className="px-3 sm:px-6 py-4 sm:py-6 bg-gradient-to-b from-white to-slate-50">
+                  <td className="px-3 sm:px-6 py-4 sm:py-6 relative">
+                    <div className="absolute inset-0 bg-gradient-to-b from-white to-slate-50" />
                     {feature.golflog ? (
-                      <div className="flex justify-center">
+                      <div className="flex justify-center relative z-10">
                         <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-emerald-500/5 flex items-center justify-center">
                           <Check className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-500" />
                         </div>
                       </div>
                     ) : (
-                      <div className="flex justify-center">
+                      <div className="flex justify-center relative z-10">
                         <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-zinc-100 flex items-center justify-center">
                           <X className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-400" />
                         </div>
