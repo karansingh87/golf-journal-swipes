@@ -46,7 +46,7 @@ const BentoCard = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
-      "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
+      "group relative overflow-hidden rounded-[10px] p-4 lg:p-8",
       "bg-zinc-800",
       "border border-zinc-700/30",
       "shadow-[0_4px_12px_-2px_rgba(0,0,0,0.2),0_2px_6px_-2px_rgba(0,0,0,0.1)]",

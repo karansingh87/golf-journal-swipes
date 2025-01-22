@@ -60,10 +60,10 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature w-full bg-white",
+        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature w-full bg-white rounded-[10px]",
         (index === 0 || index === 4) && "lg:border-l",
         index < 4 && "lg:border-b",
-        index >= 4 && "lg:border-t lg:-mt-[1px]" // Fix border overlap
+        index >= 4 && "lg:border-t lg:-mt-[1px]"
       )}
     >
       {index < 4 && (

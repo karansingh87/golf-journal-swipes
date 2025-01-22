@@ -40,7 +40,7 @@ const GolferStoriesSection = () => {
             <Card 
               key={story.title}
               className={cn(
-                "group relative overflow-hidden aspect-square",
+                "group relative overflow-hidden aspect-square rounded-[10px]",
                 "bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/90",
                 "backdrop-blur-sm border border-zinc-200/80",
                 "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
