@@ -75,7 +75,7 @@ const BentoCard = ({
     <div className="relative z-10 h-full flex flex-col justify-between">
       <div className="flex-1 flex flex-col justify-end mb-3">
         <div className="mb-3 flex items-center">
-          <Icon className="h-5 w-5 text-zinc-600" strokeWidth={1.5} />
+          <Icon className="h-5 w-5 text-[#FDE1D3]" strokeWidth={1.5} />
         </div>
         <h3 className="font-display font-bold text-lg lg:text-xl text-zinc-900 tracking-tight leading-snug">
           {title}
