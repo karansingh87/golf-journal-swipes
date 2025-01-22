@@ -34,22 +34,20 @@ const Feature = ({
     <div
       className={cn(
         "flex flex-col py-10 relative group/feature min-h-[180px]",
-        "bg-[#F2FCE2] border-[#2F3E46]/10",
-        // Consistent border rules for all sides
-        "lg:border-r lg:border-b",
-        // First column needs left border
-        index % 2 === 0 && "lg:border-l",
-        // Last row needs different bottom border treatment
-        index >= 2 && "lg:border-b"
+        "bg-white w-full",
+        "border border-zinc-200/50",
+        "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
+        "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
+        "transition-all duration-300 ease-in-out",
+        "hover:translate-y-[-2px]"
       )}
     >
-      <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-[#F2FCE2] to-transparent pointer-events-none" />
-      <div className="mb-4 relative z-10 px-10 text-[#2F3E46]">
+      <div className="mb-4 relative z-10 px-10 text-zinc-600">
         <Icon className="h-8 w-8" strokeWidth={1.5} />
       </div>
       <div className="text-sm relative z-10 px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-[#2F3E46]/20 group-hover/feature:bg-[#2F3E46] transition-all duration-200 origin-center" />
-        <span className="text-[#2F3E46]">
+        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-200 group-hover/feature:bg-zinc-300 transition-all duration-200 origin-center" />
+        <span className="text-zinc-900">
           {title}
         </span>
       </div>
@@ -69,7 +67,7 @@ const GolferStoriesSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-2 lg:grid-cols-4 relative z-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 relative z-10 gap-3 md:gap-4">
           {stories.map((story, index) => (
             <Feature
               key={story.title}
