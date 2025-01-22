@@ -1,23 +1,23 @@
 import React from "react";
-import { Blend, Flame, MessagesSquare } from "lucide-react";
+import { Car, Target, Beer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "Trend Spotting",
-    description: "See patterns across multiple rounds. Smart analysis connects the dots between your best performances.",
-    icon: Blend,
+    title: "Talk through rounds on the drive home",
+    description: "Record your thoughts and reflections right after finishing your round while everything is still fresh in your mind.",
+    icon: Car,
   },
   {
-    title: "Instant Confidence",
-    description: "Get AI-powered pep talks based on your recent rounds. Remind yourself what works before you play.",
-    icon: Flame,
+    title: "Quick notes during range sessions",
+    description: "Capture swing thoughts and practice insights in real-time as you work on your game at the driving range.",
+    icon: Target,
   },
   {
-    title: "Better Lessons",
-    description: "Share structured insights with your coach. Transform random thoughts into focused improvement plans.",
-    icon: MessagesSquare,
+    title: "Capture thoughts on 19th hole",
+    description: "Save those post-round insights and observations while relaxing after your game.",
+    icon: Beer,
   },
 ];
 
