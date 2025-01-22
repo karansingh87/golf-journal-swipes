@@ -38,7 +38,7 @@ const features = [
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 md:auto-rows-[250px]">
+    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 lg:gap-4 md:auto-rows-[200px]">
       {children}
     </div>
   );
@@ -62,27 +62,28 @@ const BentoCard = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
-      "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
+      "group relative overflow-hidden rounded-[20px] p-4 lg:p-6",
       "bg-white",
       "border border-zinc-200/50",
       "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
       "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
       "transition-all duration-300 ease-in-out",
       "hover:translate-y-[-2px]",
+      "h-full",
       className
     )}
   >
     <div className="relative z-10 h-full flex flex-col">
-      <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
+      <div className="mb-4 rounded-full w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center
                     bg-gradient-to-br from-zinc-50 to-white
                     shadow-[0_2px_4px_rgba(16,24,40,0.08)]
                     group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
+        <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-zinc-900" />
       </div>
-      <h3 className="font-display text-xl lg:text-2xl text-zinc-900 mb-2 tracking-tight">
+      <h3 className="font-display text-lg lg:text-xl text-zinc-900 mb-2 tracking-tight">
         {title}
       </h3>
-      <p className="text-sm lg:text-base text-zinc-600 leading-relaxed">
+      <p className="text-sm text-zinc-600 leading-relaxed">
         {description}
       </p>
     </div>
