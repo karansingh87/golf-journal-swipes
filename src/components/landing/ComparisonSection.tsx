@@ -62,7 +62,7 @@ const ComparisonSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-sm sm:text-base text-zinc-600 max-w-2xl mx-auto"
+            className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto"
           >
             See how GolfLog transforms your golf journey beyond basic note-taking
           </motion.p>
@@ -79,7 +79,7 @@ const ComparisonSection = () => {
                   <span className="text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
                 </th>
                 <th className="px-3 sm:px-6 py-2 sm:py-4">
-                  <span className="text-sm sm:text-base text-zinc-600">Notes/Voice Memos</span>
+                  <span className="text-sm sm:text-base text-zinc-400">Notes/Voice Memos</span>
                 </th>
               </tr>
             </thead>
@@ -97,7 +97,7 @@ const ComparisonSection = () => {
                 >
                   <td className="text-left py-2 sm:py-4 px-3 sm:px-6 sticky left-0 bg-inherit">
                     <div className="font-medium text-sm sm:text-base text-zinc-900">{feature.name}</div>
-                    <div className="text-xs sm:text-sm text-zinc-600">{feature.description}</div>
+                    <div className="text-xs sm:text-sm text-zinc-400">{feature.description}</div>
                   </td>
                   <td className="px-3 sm:px-6 py-2 sm:py-4">
                     {feature.golflog ? (
