@@ -87,7 +87,7 @@ const PowerFeaturesSection = () => {
           <div className="flex justify-center">
             <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-950">
               <span className="text-sm font-medium text-zinc-50">
-                Deeper Insights
+                Journal Anytime
               </span>
             </div>
           </div>
