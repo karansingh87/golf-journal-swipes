@@ -62,7 +62,7 @@ const BentoCard = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
-      "group relative overflow-hidden rounded-2xl p-4",
+      "group relative overflow-hidden rounded-2xl p-6 md:p-8",
       "bg-white",
       "border border-zinc-200",
       "shadow-sm hover:shadow-md",
@@ -72,15 +72,15 @@ const BentoCard = ({
     )}
   >
     <div className="relative z-10 h-full flex flex-col">
-      <div className="mb-3 rounded-full w-10 h-10 flex items-center justify-center
+      <div className="mb-4 rounded-full w-12 h-12 flex items-center justify-center
                     bg-gradient-to-br from-zinc-50 to-white
                     shadow-sm group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-5 h-5 text-zinc-900" />
+        <Icon className="w-6 h-6 text-zinc-900" />
       </div>
-      <h3 className="font-display text-base text-zinc-900 mb-1.5 tracking-tight">
+      <h3 className="font-display text-lg md:text-xl text-zinc-900 mb-2 tracking-tight">
         {title}
       </h3>
-      <p className="text-sm text-zinc-600 leading-relaxed">
+      <p className="text-sm md:text-base text-zinc-600 leading-relaxed">
         {description}
       </p>
     </div>
@@ -91,7 +91,7 @@ const BenefitsSection = () => {
   return (
     <section className="py-20 sm:py-28 lg:py-32 relative">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(211,228,253,0.05),transparent_70%)] pointer-events-none" />
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative">
         <div className="mb-12 sm:mb-14 lg:mb-16">
           <div className="flex justify-center">
             <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
@@ -102,9 +102,9 @@ const BenefitsSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-3 gap-3 auto-rows-[180px]">
+        <div className="grid grid-cols-3 gap-4 auto-rows-[240px]">
           {/* First column */}
-          <div className="col-span-1 space-y-3">
+          <div className="col-span-1 space-y-4">
             <BentoCard
               key={features[0].title}
               title={features[0].title}
@@ -130,13 +130,13 @@ const BenefitsSection = () => {
                 description={features[2].description}
                 Icon={features[2].icon}
                 index={2}
-                className="h-[363px]"
+                className="h-[484px]"
               />
             </div>
           </div>
           
           {/* Last column */}
-          <div className="col-span-1 space-y-3">
+          <div className="col-span-1 space-y-4">
             <BentoCard
               key={features[1].title}
               title={features[1].title}
