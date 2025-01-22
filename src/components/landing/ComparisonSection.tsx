@@ -5,36 +5,31 @@ const features = [
   {
     name: "Record thoughts",
     golflog: true,
-    notes: true,
-    memos: true,
+    other: true,
     description: "Capture ideas on the go"
   },
   {
     name: "AI Analysis",
     golflog: true,
-    notes: false,
-    memos: false,
+    other: false,
     description: "Get instant insights from your recordings"
   },
   {
     name: "Pattern Recognition",
     golflog: true,
-    notes: false,
-    memos: false,
+    other: false,
     description: "Identify trends in your game"
   },
   {
     name: "Mental Game Coaching",
     golflog: true,
-    notes: false,
-    memos: false,
+    other: false,
     description: "AI-powered guidance for improvement"
   },
   {
     name: "Structured Insights",
     golflog: true,
-    notes: false,
-    memos: false,
+    other: false,
     description: "Organized feedback for better learning"
   }
 ];
@@ -84,10 +79,7 @@ const ComparisonSection = () => {
                   <span className="text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
                 </th>
                 <th className="px-3 sm:px-6 py-2 sm:py-4">
-                  <span className="text-sm sm:text-base text-zinc-600">Notes App</span>
-                </th>
-                <th className="px-3 sm:px-6 py-2 sm:py-4">
-                  <span className="text-sm sm:text-base text-zinc-600">Voice Memos</span>
+                  <span className="text-sm sm:text-base text-zinc-600">Other Apps</span>
                 </th>
               </tr>
             </thead>
@@ -123,22 +115,7 @@ const ComparisonSection = () => {
                     )}
                   </td>
                   <td className="px-3 sm:px-6 py-2 sm:py-4">
-                    {feature.notes ? (
-                      <div className="flex justify-center">
-                        <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                          <Check className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-500" />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="flex justify-center">
-                        <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-zinc-200/50 flex items-center justify-center">
-                          <X className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-400" />
-                        </div>
-                      </div>
-                    )}
-                  </td>
-                  <td className="px-3 sm:px-6 py-2 sm:py-4">
-                    {feature.memos ? (
+                    {feature.other ? (
                       <div className="flex justify-center">
                         <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
                           <Check className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-500" />
