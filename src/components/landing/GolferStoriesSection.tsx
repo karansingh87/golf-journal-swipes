@@ -41,7 +41,7 @@ const Feature = ({
       )}
     >
       <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
-      <div className="mb-4 relative z-10 px-10 text-[#FDE1D3]">
+      <div className="mb-4 relative z-10 px-10 text-zinc-900">
         <Icon className="h-5 w-5" strokeWidth={1.5} />
       </div>
       <div className="text-lg font-display tracking-tight mb-2 relative z-10 px-10">
