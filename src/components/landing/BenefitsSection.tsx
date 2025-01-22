@@ -38,7 +38,7 @@ const features = [
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 h-[200px] md:h-auto md:auto-rows-[180px]">
+    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 md:auto-rows-[180px]">
       {children}
     </div>
   );
@@ -75,7 +75,7 @@ const BentoCard = ({
     <div className="relative z-10 h-full flex flex-col justify-between">
       <div className="flex-1 flex flex-col justify-end mb-3">
         <div className="mb-3 flex items-center">
-          <Icon className="h-5 w-5 text-zinc-600" strokeWidth={1.5} />
+          <Icon className="h-5 w-5 text-[#FDE1D3]" strokeWidth={1.5} />
         </div>
         <h3 className="font-display font-bold text-lg lg:text-xl text-zinc-900 tracking-tight leading-snug">
           {title}
