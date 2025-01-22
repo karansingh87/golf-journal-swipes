@@ -28,8 +28,8 @@ const GolferStoriesSection = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(211,228,253,0.05),transparent_70%)] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-golf-subtle">
-            <span className="text-sm font-medium text-zinc-900">
+          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-950">
+            <span className="text-sm font-medium text-zinc-50">
               Journal Anytime
             </span>
           </div>
@@ -42,6 +42,7 @@ const GolferStoriesSection = () => {
               className={cn(
                 "group relative overflow-hidden aspect-square",
                 "bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/90",
+                "hover:from-accent-lavender-50/80 hover:via-accent-lavender-50/60 hover:to-white",
                 "backdrop-blur-sm border border-zinc-200/80",
                 "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
                 "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
@@ -51,8 +52,10 @@ const GolferStoriesSection = () => {
               )}
             >
               <CardContent className="p-3 sm:p-4 h-full flex flex-col items-center justify-center text-center gap-4 sm:gap-6 relative z-10">
-                <story.icon className="h-8 w-8 sm:h-10 sm:w-10 text-zinc-900 transition-transform duration-300 group-hover:scale-110" />
-                <h3 className="text-sm sm:text-base font-medium text-golf-gray-text-primary">
+                <div className="p-3 rounded-xl bg-accent-lavender-100/10 group-hover:bg-accent-lavender-100/20 transition-colors">
+                  <story.icon className="h-8 w-8 sm:h-10 sm:w-10 text-zinc-600 group-hover:text-zinc-800 transition-transform duration-300 group-hover:scale-110" />
+                </div>
+                <h3 className="text-sm sm:text-base font-medium text-zinc-600 group-hover:text-zinc-800">
                   {story.title}
                 </h3>
               </CardContent>

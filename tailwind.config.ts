@@ -43,6 +43,13 @@ export default {
             },
           },
         },
+        accent: {
+          lavender: {
+            50: "#F7F5FF",
+            100: "#E5DEFF",
+            200: "#D3E4FD",
+          },
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

@@ -63,8 +63,9 @@ const BentoCard = ({
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
       "group relative overflow-hidden p-4 lg:p-6 h-full",
-      "bg-white",
+      "bg-white/80 backdrop-blur-sm",
       "border border-zinc-200/50",
+      "hover:bg-accent-lavender-50/80 hover:border-accent-lavender-100/50",
       "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
       "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
       "transition-all duration-300 ease-in-out",
@@ -75,13 +76,15 @@ const BentoCard = ({
     <div className="relative z-10 h-full flex flex-col justify-between">
       <div className="flex-1 flex flex-col justify-end mb-3">
         <div className="mb-3 flex items-center">
-          <Icon className="h-5 w-5 text-zinc-600" strokeWidth={1.5} />
+          <div className="p-2 rounded-lg bg-accent-lavender-100/10 group-hover:bg-accent-lavender-100/20 transition-colors">
+            <Icon className="h-5 w-5 text-zinc-600 group-hover:text-zinc-800" strokeWidth={1.5} />
+          </div>
         </div>
         <h3 className="font-display font-bold text-lg lg:text-xl text-zinc-900 tracking-tight leading-snug">
           {title}
         </h3>
       </div>
-      <p className="text-sm font-normal text-zinc-400 font-sans leading-normal">
+      <p className="text-sm font-normal text-zinc-500 group-hover:text-zinc-600 font-sans leading-normal">
         {description}
       </p>
     </div>
