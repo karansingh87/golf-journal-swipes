@@ -33,20 +33,20 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature",
-        "bg-[#FDE1D3] bg-opacity-50",
+        "flex flex-col lg:border-r border-zinc-800 py-10 relative group/feature",
+        "bg-zinc-950",
         (index === 0 || index === 2) && "lg:border-l",
         index < 2 && "lg:border-b",
         index >= 2 && "lg:border-t lg:-mt-[1px]"
       )}
     >
-      <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
-      <div className="mb-4 relative z-10 px-10 text-zinc-900">
+      <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-900 to-transparent pointer-events-none" />
+      <div className="mb-4 relative z-10 px-10 text-zinc-50">
         <Icon className="h-8 w-8" strokeWidth={1.5} />
       </div>
       <div className="text-sm relative z-10 px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-300 group-hover/feature:bg-zinc-900 transition-all duration-200 origin-center" />
-        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-zinc-900">
+        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-800 group-hover/feature:bg-zinc-50 transition-all duration-200 origin-center" />
+        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-zinc-50">
           {title}
         </span>
       </div>
