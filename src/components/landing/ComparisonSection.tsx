@@ -75,7 +75,7 @@ const ComparisonSection = () => {
                 <th className="text-left py-2 sm:py-4 px-3 sm:px-6 bg-white sticky left-0 z-10 min-w-[180px] sm:min-w-[200px]">
                   <span className="text-sm sm:text-base text-zinc-900 font-display">Feature</span>
                 </th>
-                <th className="px-3 sm:px-6 py-2 sm:py-4 bg-zinc-950/5">
+                <th className="px-3 sm:px-6 py-2 sm:py-4 bg-zinc-100">
                   <span className="text-sm sm:text-base text-zinc-900 font-display">GolfLog</span>
                 </th>
                 <th className="px-3 sm:px-6 py-2 sm:py-4">
@@ -93,13 +93,12 @@ const ComparisonSection = () => {
                     duration: 0.5,
                     delay: 0.1 + index * 0.1,
                   }}
-                  className={index % 2 === 0 ? "bg-white" : "bg-zinc-950/[0.02]"}
                 >
-                  <td className="text-left py-2 sm:py-4 px-3 sm:px-6 sticky left-0 bg-inherit">
+                  <td className="text-left py-2 sm:py-4 px-3 sm:px-6 sticky left-0 bg-white">
                     <div className="font-medium text-sm sm:text-base text-zinc-900">{feature.name}</div>
                     <div className="text-xs sm:text-sm text-zinc-400">{feature.description}</div>
                   </td>
-                  <td className="px-3 sm:px-6 py-2 sm:py-4">
+                  <td className="px-3 sm:px-6 py-2 sm:py-4 bg-zinc-100">
                     {feature.golflog ? (
                       <div className="flex justify-center">
                         <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
