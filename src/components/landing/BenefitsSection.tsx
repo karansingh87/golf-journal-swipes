@@ -8,70 +8,88 @@ const features = [
     title: "Smart Golf Journal",
     description: "Simply talk or type your golf thoughts on the go. Capture insights whenever they strike.",
     icon: NotebookPen,
+    className: "md:col-start-1 md:col-span-1 md:row-start-1 md:row-span-2",
   },
   {
     title: "Instant Confidence",
     description: "AI-powered pep talks based on your successes. Remember what works before you play.",
     icon: Flame,
+    className: "md:col-start-1 md:col-span-1 md:row-start-3 md:row-span-1.5",
   },
   {
     title: "Deep Game Insights",
     description: "AI analysis reveals what works in your game. From swing thoughts to pre-shot routines.",
     icon: Brain,
+    className: "md:col-start-2 md:col-span-1 md:row-start-1 md:row-span-3",
   },
   {
     title: "Better Lessons",
     description: "Share focused insights with your coach. Track progress between sessions.",
     icon: MessagesSquare,
+    className: "md:col-start-3 md:col-span-1 md:row-start-1 md:row-span-1.5",
   },
   {
     title: "Your Golf Evolution",
     description: "Watch patterns emerge. Build your personal playbook for better golf.",
     icon: TrendingUp,
+    className: "md:col-start-3 md:col-span-1 md:row-start-2.5 md:row-span-2",
   },
 ];
 
-const Feature = ({
+const BentoGrid = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 md:auto-rows-[180px]">
+      {children}
+    </div>
+  );
+};
+
+const BentoCard = ({
   title,
   description,
-  icon: Icon,
+  Icon,
+  className,
   index,
 }: {
   title: string;
   description: string;
-  icon: React.ElementType;
+  Icon: any;
+  className?: string;
   index: number;
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex flex-col lg:border-r border-zinc-200 h-[280px] relative group/feature w-full bg-white",
-        (index === 0) && "lg:border-l",
-        index < 4 && "lg:border-b",
-        index >= 4 && "lg:border-t lg:-mt-[1px]"
-      )}
-    >
-      {index < 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
-      )}
-      {index >= 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-zinc-50 to-transparent pointer-events-none" />
-      )}
-      <div className="mb-4 relative z-10 px-10 pt-10 text-zinc-600">
-        <Icon className="h-6 w-6" strokeWidth={2.5} />
-      </div>
-      <div className="text-lg font-bold mb-2 relative z-10 px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-300 group-hover/feature:bg-zinc-900 transition-all duration-200 origin-center" />
-        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-zinc-900">
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.4, delay: index * 0.1 }}
+    className={cn(
+      "group relative overflow-hidden rounded-[20px] p-4 lg:p-6 h-full",
+      "bg-white",
+      "border border-zinc-200/50",
+      "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
+      "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
+      "transition-all duration-300 ease-in-out",
+      "hover:translate-y-[-2px]",
+      className
+    )}
+  >
+    <div className="relative z-10 h-full flex flex-col justify-between">
+      <div className="flex-1 flex flex-col justify-end mb-3">
+        <div className="mb-3 rounded-full w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center
+                      bg-gradient-to-br from-zinc-50 to-white
+                      shadow-[0_2px_4px_rgba(16,24,40,0.08)]
+                      group-hover:scale-110 transition-transform duration-300">
+          <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-zinc-900" />
+        </div>
+        <h3 className="font-display font-bold text-lg lg:text-xl text-zinc-900 tracking-tight leading-snug">
           {title}
-        </span>
+        </h3>
       </div>
-      <p className="text-sm text-zinc-600 max-w-xs relative z-10 px-10">
+      <p className="text-sm text-zinc-600 tracking-[-0.01em] font-sans leading-normal">
         {description}
       </p>
     </div>
-  );
-};
+  </motion.div>
+);
 
 const BenefitsSection = () => {
   return (
@@ -88,19 +106,18 @@ const BenefitsSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-5">
+        <BentoGrid>
           {features.map((feature, index) => (
-            <motion.div
+            <BentoCard
               key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="w-full"
-            >
-              <Feature {...feature} index={index} />
-            </motion.div>
+              title={feature.title}
+              description={feature.description}
+              Icon={feature.icon}
+              className={feature.className}
+              index={index}
+            />
           ))}
-        </div>
+        </BentoGrid>
       </div>
     </section>
   );
