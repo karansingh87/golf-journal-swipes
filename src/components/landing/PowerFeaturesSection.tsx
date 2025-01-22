@@ -33,46 +33,45 @@ const features = [
 
 const Feature = ({
   title,
-  Icon,
   description,
+  icon: Icon,
   index,
 }: {
   title: string;
   description: string;
-  Icon: any;
+  icon: React.ElementType;
   index: number;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.4, delay: index * 0.1 }}
-    className={cn(
-      "group relative overflow-hidden p-6 h-full",
-      "bg-zinc-800 border border-zinc-700/30 rounded-[10px]",
-      "transition-all duration-300 ease-in-out",
-      "hover:shadow-lg"
-    )}
-  >
-    <div className="relative z-10 h-full flex flex-col">
-      <div className="mb-6 rounded-full w-12 h-12 flex items-center justify-center
-                    bg-zinc-700 shadow-lg
-                    group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-6 h-6 text-zinc-100" />
+}) => {
+  return (
+    <div
+      className={cn(
+        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature w-full bg-white",
+        (index === 0) && "lg:border-l",
+        index < 4 && "lg:border-b",
+        index >= 4 && "lg:border-t lg:-mt-[1px]" // Fix border overlap
+      )}
+    >
+      {index < 4 && (
+        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
+      )}
+      {index >= 4 && (
+        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-b from-zinc-50 to-transparent pointer-events-none" />
+      )}
+      <div className="mb-4 relative z-10 px-10 text-zinc-600">
+        <Icon className="h-5 w-5" strokeWidth={1.5} />
       </div>
-      <h3 className="text-lg font-semibold text-zinc-100 mb-2">
-        {title}
-      </h3>
-      <p className="text-sm text-zinc-400">
+      <div className="text-lg font-bold mb-2 relative z-10 px-10">
+        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-300 group-hover/feature:bg-zinc-900 transition-all duration-200 origin-center" />
+        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-zinc-900">
+          {title}
+        </span>
+      </div>
+      <p className="text-sm text-zinc-600 max-w-xs relative z-10 px-10">
         {description}
       </p>
     </div>
-    
-    <div className="absolute -right-6 -bottom-6 w-32 h-32 
-                    bg-gradient-to-br from-zinc-700/20 to-zinc-600/10 
-                    rounded-full blur-2xl opacity-70
-                    animate-pulse-ring" />
-  </motion.div>
-);
+  );
+};
 
 const PowerFeaturesSection = () => {
   return (
@@ -89,15 +88,17 @@ const PowerFeaturesSection = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5">
           {features.map((feature, index) => (
-            <Feature
+            <motion.div
               key={feature.title}
-              title={feature.title}
-              description={feature.description}
-              Icon={feature.icon}
-              index={index}
-            />
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="w-full"
+            >
+              <Feature {...feature} index={index} />
+            </motion.div>
           ))}
         </div>
       </div>
