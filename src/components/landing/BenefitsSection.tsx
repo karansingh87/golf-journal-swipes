@@ -70,8 +70,7 @@ const BentoCard = ({
   >
     <div className="relative z-10 h-full flex flex-col p-6">
       <div className="flex-1">
-        <div className="mb-4 relative">
-          <div className="absolute left-0 inset-y-0 h-6 group-hover:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-300 group-hover:bg-zinc-900 transition-all duration-200 origin-center" />
+        <div className="flex items-center mb-4">
           <Icon className="h-5 w-5 text-zinc-600" strokeWidth={2.5} />
         </div>
         <h3 className="text-lg font-bold mb-2 text-zinc-900 group-hover:translate-x-2 transition duration-200">
