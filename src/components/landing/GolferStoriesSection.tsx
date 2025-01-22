@@ -42,7 +42,7 @@ const Feature = ({
     >
       <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
       <div className="mb-4 relative z-10 px-10 text-zinc-900">
-        <Icon className="h-5 w-5" strokeWidth={1.5} />
+        <Icon className="h-6 w-6" strokeWidth={1.5} />
       </div>
       <div className="text-sm relative z-10 px-10">
         <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-300 group-hover/feature:bg-zinc-900 transition-all duration-200 origin-center" />
