@@ -14,7 +14,7 @@ const features = [
     title: "Instant Confidence",
     description: "Get AI-powered pep talks based on your recent rounds. Remind yourself what works before you play.",
     icon: Flame,
-    className: "md:col-start-1 md:col-span-1 md:row-start-3 md:row-span-1",
+    className: "md:col-start-1 md:col-span-1 md:row-start-3 md:row-span-1.5",
   },
   {
     title: "Deep Game Insights",
@@ -26,19 +26,19 @@ const features = [
     title: "Better Lessons",
     description: "Transform random thoughts into focused improvement areas. Share structured insights with your coach and track progress between sessions.",
     icon: MessagesSquare,
-    className: "md:col-start-3 md:col-span-1 md:row-start-1 md:row-span-1",
+    className: "md:col-start-3 md:col-span-1 md:row-start-1 md:row-span-1.5",
   },
   {
     title: "Your Golf Evolution",
     description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, building your personal playbook for better golf.",
     icon: TrendingUp,
-    className: "md:col-start-3 md:col-span-1 md:row-start-2 md:row-span-2",
+    className: "md:col-start-3 md:col-span-1 md:row-start-2.5 md:row-span-2",
   },
 ];
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 md:auto-rows-[200px]">
+    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 md:auto-rows-[180px]">
       {children}
     </div>
   );
@@ -73,14 +73,14 @@ const BentoCard = ({
     )}
   >
     <div className="relative z-10 h-full flex flex-col justify-between">
-      <div>
+      <div className="flex-1 flex flex-col justify-end mb-4">
         <div className="mb-4 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
                       bg-gradient-to-br from-zinc-50 to-white
                       shadow-[0_2px_4px_rgba(16,24,40,0.08)]
                       group-hover:scale-110 transition-transform duration-300">
           <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
         </div>
-        <h3 className="font-display text-xl lg:text-2xl text-zinc-900 mb-2 tracking-tight">
+        <h3 className="font-display text-xl lg:text-2xl text-zinc-900 tracking-tight">
           {title}
         </h3>
       </div>
