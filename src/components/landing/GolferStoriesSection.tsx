@@ -33,11 +33,14 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-[#2F3E46]/20 py-10 relative group/feature min-h-[180px]",
-        "bg-[#F2FCE2]",
-        (index === 0 || index === 2) && "lg:border-l",
-        index < 2 && "lg:border-b",
-        index >= 2 && "lg:border-t lg:-mt-[1px]"
+        "flex flex-col py-10 relative group/feature min-h-[180px]",
+        "bg-[#F2FCE2] border-[#2F3E46]/10",
+        // Consistent border rules for all sides
+        "lg:border-r lg:border-b",
+        // First column needs left border
+        index % 2 === 0 && "lg:border-l",
+        // Last row needs different bottom border treatment
+        index >= 2 && "lg:border-b"
       )}
     >
       <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-[#F2FCE2] to-transparent pointer-events-none" />
