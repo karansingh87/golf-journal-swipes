@@ -21,8 +21,8 @@ const Landing = () => {
       <Navigation />
       <div className="space-y-8 lg:space-y-16">
         <HeroSection />
-        <ComparisonSection />
         <PhoneMockup />
+        <ComparisonSection />
         <BenefitsSection />
         <DetailedFeaturesSection />
         <GolferStoriesSection />
