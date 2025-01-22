@@ -1,5 +1,5 @@
 import React from "react";
-import { NotebookPen, Brain, TrendingUp } from "lucide-react";
+import { NotebookPen, Brain, Flame, MessagesSquare, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -8,22 +8,37 @@ const features = [
     title: "Smart Golf Journal",
     description: "Voice or text, capture your golf thoughts naturally. Use it on the drive home, after practice, or whenever inspiration hits.",
     icon: NotebookPen,
+    className: "md:col-span-2 md:row-span-1",
   },
   {
     title: "Deep Game Insights",
     description: "Let smart analysis uncover your patterns. From swing thoughts to pre-shot routines, see what actually works for YOUR game.",
     icon: Brain,
+    className: "md:col-span-1 md:row-span-1",
+  },
+  {
+    title: "Instant Confidence",
+    description: "Get AI-powered pep talks based on your recent rounds. Remind yourself what works before you play.",
+    icon: Flame,
+    className: "md:col-span-1 md:row-span-2",
+  },
+  {
+    title: "Better Lessons",
+    description: "Transform random thoughts into focused improvement areas. Share structured insights with your coach and track progress between sessions.",
+    icon: MessagesSquare,
+    className: "md:col-span-1 md:row-span-1",
   },
   {
     title: "Your Golf Evolution",
-    description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, every improvement tracked.",
+    description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, building your personal playbook for better golf.",
     icon: TrendingUp,
+    className: "md:col-span-2 md:row-span-1",
   },
 ];
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 md:auto-rows-[250px]">
       {children}
     </div>
   );
@@ -48,35 +63,29 @@ const BentoCard = ({
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
       "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
-      "bg-gradient-to-br from-white via-zinc-50/90 to-zinc-100/90",
-      "backdrop-blur-sm border border-zinc-200/80",
+      "bg-white",
+      "border border-zinc-200/50",
       "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
       "hover:shadow-[0_8px_24px_-4px_rgba(16,24,40,0.12),0_4px_12px_-4px_rgba(16,24,40,0.08)]",
       "transition-all duration-300 ease-in-out",
       "hover:translate-y-[-2px]",
-      "before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(155,135,245,0.05),transparent_60%)]",
       className
     )}
   >
     <div className="relative z-10 h-full flex flex-col">
       <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
-                    bg-gradient-to-br from-zinc-100 to-white
+                    bg-gradient-to-br from-zinc-50 to-white
                     shadow-[0_2px_4px_rgba(16,24,40,0.08)]
                     group-hover:scale-110 transition-transform duration-300">
         <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
       </div>
-      <h3 className="text-xl lg:text-2xl font-semibold text-zinc-900 mb-2 tracking-tight">
+      <h3 className="font-display text-xl lg:text-2xl text-zinc-900 mb-2 tracking-tight">
         {title}
       </h3>
       <p className="text-sm lg:text-base text-zinc-600 leading-relaxed">
         {description}
       </p>
     </div>
-    
-    <div className="absolute -right-6 -bottom-6 w-32 h-32 
-                    bg-gradient-to-br from-purple-500/10 to-blue-500/5 
-                    rounded-full blur-2xl opacity-70
-                    animate-pulse-ring" />
   </motion.div>
 );
 
@@ -102,6 +111,7 @@ const BenefitsSection = () => {
               title={feature.title}
               description={feature.description}
               Icon={feature.icon}
+              className={feature.className}
               index={index}
             />
           ))}
