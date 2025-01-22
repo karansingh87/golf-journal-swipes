@@ -66,12 +66,9 @@ const BentoCard = ({
                     group-hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]">
         <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-100" />
       </div>
-      <h3 className="text-xl lg:text-2xl font-semibold text-zinc-100 mb-2 tracking-tight">
+      <h3 className="text-xl lg:text-2xl font-bold text-zinc-100 mb-2 tracking-tight">
         {title}
       </h3>
-      <p className="text-sm lg:text-base text-zinc-400 leading-relaxed">
-        {description}
-      </p>
     </div>
     
     <div className="absolute -right-6 -bottom-6 w-32 h-32 
