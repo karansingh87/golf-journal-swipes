@@ -73,18 +73,18 @@ const BentoCard = ({
     )}
   >
     <div className="relative z-10 h-full flex flex-col justify-between">
-      <div className="flex-1 flex flex-col justify-end mb-4">
-        <div className="mb-4 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
+      <div className="flex-1 flex flex-col justify-end mb-3">
+        <div className="mb-3 rounded-full w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center
                       bg-gradient-to-br from-zinc-50 to-white
                       shadow-[0_2px_4px_rgba(16,24,40,0.08)]
                       group-hover:scale-110 transition-transform duration-300">
-          <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
+          <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-zinc-900" />
         </div>
-        <h3 className="font-display text-xl lg:text-2xl text-zinc-900 tracking-tight">
+        <h3 className="font-display text-lg lg:text-xl text-zinc-900 tracking-tight">
           {title}
         </h3>
       </div>
-      <p className="text-sm lg:text-base text-zinc-600 leading-relaxed">
+      <p className="text-sm text-zinc-600 leading-relaxed">
         {description}
       </p>
     </div>
