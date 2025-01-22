@@ -8,19 +8,25 @@ const features = [
     title: "Smart Golf Journal",
     description: "Voice or text, capture your golf thoughts naturally. Use it on the drive home, after practice, or whenever inspiration hits.",
     icon: NotebookPen,
-    className: "md:col-span-2 md:row-span-1",
-  },
-  {
-    title: "Deep Game Insights",
-    description: "Let smart analysis uncover your patterns. From swing thoughts to pre-shot routines, see what actually works for YOUR game.",
-    icon: Brain,
     className: "md:col-span-1 md:row-span-1",
   },
   {
     title: "Instant Confidence",
     description: "Get AI-powered pep talks based on your recent rounds. Remind yourself what works before you play.",
     icon: Flame,
-    className: "md:col-span-1 md:row-span-2",
+    className: "md:col-span-1 md:row-span-1",
+  },
+  {
+    title: "Deep Game Insights",
+    description: "Let smart analysis uncover your patterns. From swing thoughts to pre-shot routines, see what actually works for YOUR game.",
+    icon: Brain,
+    className: "md:col-span-2 md:row-span-2",
+  },
+  {
+    title: "Your Golf Evolution",
+    description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, building your personal playbook for better golf.",
+    icon: TrendingUp,
+    className: "md:col-span-1 md:row-span-1",
   },
   {
     title: "Better Lessons",
@@ -28,17 +34,11 @@ const features = [
     icon: MessagesSquare,
     className: "md:col-span-1 md:row-span-1",
   },
-  {
-    title: "Your Golf Evolution",
-    description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, building your personal playbook for better golf.",
-    icon: TrendingUp,
-    className: "md:col-span-2 md:row-span-1",
-  },
 ];
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 md:auto-rows-[250px]">
+    <div className="grid w-full grid-cols-1 md:grid-cols-4 gap-4 md:auto-rows-[240px]">
       {children}
     </div>
   );
@@ -62,7 +62,7 @@ const BentoCard = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
-      "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
+      "group relative overflow-hidden rounded-[20px] p-4 lg:p-8 h-full",
       "bg-white",
       "border border-zinc-200/50",
       "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
