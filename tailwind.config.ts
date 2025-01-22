@@ -49,6 +49,115 @@ export default {
             100: "#E5DEFF",
             200: "#D3E4FD",
           },
+          peach: {
+            50: "#FFF5F2",
+            100: "#FDE1D3",
+          },
+          sky: {
+            50: "#F0F7FF",
+            100: "#D3E4FD",
+          }
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      boxShadow: {
+        'card-light': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'lg': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "I'll help implement these design improvements focusing on the landing page sections while maintaining the zinc foundation and adding the requested accent colors. Let's update the necessary components.
+
+<lov-code>
+First, let's add our new accent colors to the Tailwind config:
+
+<lov-write file_path="tailwind.config.ts">
+import type { Config } from "tailwindcss";
+
+export default {
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Manrope', 'system-ui', 'sans-serif'],
+        roboto: ['Roboto', 'system-ui', 'sans-serif'],
+      },
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        golf: {
+          green: "hsl(240 5.9% 10%)",
+          muted: "hsl(240 3.7% 15.9%)",
+          subtle: "hsl(240 3.7% 15.9% / 0.1)",
+          white: "#FFFFFF",
+          gray: {
+            light: "hsl(240 5.2% 33.9%)",
+            card: "hsl(240 3.8% 46.1%)",
+            text: {
+              primary: "hsl(240 5.9% 10%)",
+              secondary: "hsl(240 3.8% 46.1%)",
+              hint: "hsl(240 5.2% 33.9%)",
+            },
+          },
+        },
+        accent: {
+          lavender: {
+            50: "#F7F5FF",
+            100: "#E5DEFF",
+            200: "#D3E4FD",
+          },
+          peach: {
+            50: "#FFF5F2",
+            100: "#FDE1D3",
+          },
+          sky: {
+            50: "#F0F7FF",
+            100: "#D3E4FD",
+          },
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -109,6 +218,10 @@ export default {
             opacity: "0",
           },
         },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,15 +229,7 @@ export default {
         "spin-slow": "spin 4s linear infinite",
         "pulse-ring": "pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "meteor-effect": "meteor 5s linear infinite",
-      },
-      rotate: {
-        'y-180': 'rotateY(180deg)',
-      },
-      transformStyle: {
-        'preserve-3d': 'preserve-3d',
-      },
-      backfaceVisibility: {
-        'hidden': 'hidden',
+        "float": "float 6s ease-in-out infinite",
       },
     },
   },
