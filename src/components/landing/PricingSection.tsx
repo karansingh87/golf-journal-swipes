@@ -69,7 +69,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
 
         <div className="mx-auto max-w-5xl grid gap-8 lg:grid-cols-2">
           {/* Free Plan */}
-          <div className="relative overflow-hidden rounded-[10px] bg-white border border-zinc-200 shadow-sm">
+          <div className="relative overflow-hidden rounded-3xl bg-white border border-zinc-200 shadow-sm">
             <div className="p-6 sm:p-8">
               <h3 className="text-lg font-semibold leading-8 text-zinc-900">Free</h3>
               <p className="mt-1 text-sm text-zinc-600">Start your golf journey</p>
@@ -97,7 +97,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
           </div>
 
           {/* Pro Plan */}
-          <div className="relative overflow-hidden rounded-[10px] bg-zinc-900 shadow-xl">
+          <div className="relative overflow-hidden rounded-3xl bg-zinc-900 shadow-xl">
             <div className="absolute top-3 right-3">
               <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-500">
                 Most Popular
