@@ -60,9 +60,10 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature",
+        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature w-full",
         (index === 0 || index === 4) && "lg:border-l",
-        index < 4 && "lg:border-b"
+        index < 4 && "lg:border-b",
+        index >= 4 && "lg:border-t lg:-mt-[1px]" // Fix border overlap
       )}
     >
       {index < 4 && (
@@ -109,6 +110,7 @@ const DetailedFeaturesSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
+              className="w-full"
             >
               <Feature {...feature} index={index} />
             </motion.div>
