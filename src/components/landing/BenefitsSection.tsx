@@ -8,31 +8,31 @@ const features = [
     title: "Smart Golf Journal",
     description: "Voice or text, capture your golf thoughts naturally. Use it on the drive home, after practice, or whenever inspiration hits.",
     icon: NotebookPen,
-    className: "md:col-span-1 md:row-span-2",
+    className: "md:col-start-1 md:col-span-1 md:row-span-2",
   },
   {
     title: "Instant Confidence",
     description: "Get AI-powered pep talks based on your recent rounds. Remind yourself what works before you play.",
     icon: Flame,
-    className: "md:col-span-1 md:row-span-1",
+    className: "md:col-start-1 md:col-span-1 md:row-span-1",
   },
   {
     title: "Deep Game Insights",
     description: "Let smart analysis uncover your patterns. From swing thoughts to pre-shot routines, see what actually works for YOUR game.",
     icon: Brain,
-    className: "md:col-span-1 md:row-span-3",
+    className: "md:col-start-2 md:col-span-1 md:row-span-3",
   },
   {
     title: "Better Lessons",
     description: "Transform random thoughts into focused improvement areas. Share structured insights with your coach and track progress between sessions.",
     icon: MessagesSquare,
-    className: "md:col-span-1 md:row-span-1",
+    className: "md:col-start-3 md:col-span-1 md:row-span-1",
   },
   {
     title: "Your Golf Evolution",
     description: "Watch your game transform as insights build. Every breakthrough saved, every pattern spotted, building your personal playbook for better golf.",
     icon: TrendingUp,
-    className: "md:col-span-1 md:row-span-2",
+    className: "md:col-start-3 md:col-span-1 md:row-span-2",
   },
 ];
 
