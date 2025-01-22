@@ -33,7 +33,7 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-800 py-10 relative group/feature",
+        "flex flex-col lg:border-r border-zinc-800 py-10 relative group/feature min-h-[180px]",
         "bg-zinc-900",
         (index === 0 || index === 2) && "lg:border-l",
         index < 2 && "lg:border-b",
