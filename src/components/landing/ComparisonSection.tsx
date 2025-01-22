@@ -57,18 +57,18 @@ const ComparisonSection = () => {
           </motion.p>
         </div>
 
-        <div className="relative">
-          <table className="w-full border-separate border-spacing-0">
+        <div className="relative bg-white rounded-lg shadow-sm">
+          <table className="w-full">
             <thead>
               <tr>
-                <th className="text-left py-4 px-6 w-1/3">
-                  <span className="text-sm text-zinc-500">Feature</span>
+                <th className="text-left py-6 px-6 border-b border-zinc-100">
+                  <span className="text-sm text-zinc-500 font-normal">Feature</span>
                 </th>
-                <th className="px-6 py-4 w-1/3">
-                  <span className="text-sm font-semibold text-zinc-900">GolfLog</span>
+                <th className="px-6 py-6 border-b border-zinc-100">
+                  <span className="text-sm font-medium text-zinc-900">GolfLog</span>
                 </th>
-                <th className="px-6 py-4 w-1/3">
-                  <span className="text-sm text-zinc-500">Notes/Voice Memos</span>
+                <th className="px-6 py-6 border-b border-zinc-100">
+                  <span className="text-sm text-zinc-500 font-normal">Notes/Voice Memos</span>
                 </th>
               </tr>
             </thead>
@@ -82,30 +82,31 @@ const ComparisonSection = () => {
                     duration: 0.5,
                     delay: 0.1 + index * 0.1,
                   }}
+                  className="border-b border-zinc-50 last:border-0"
                 >
-                  <td className="text-left py-6 px-6">
+                  <td className="text-left py-5 px-6">
                     <div className="font-medium text-sm text-zinc-900">{feature.name}</div>
                     <div className="text-xs text-zinc-500 mt-1">{feature.description}</div>
                   </td>
-                  <td className="px-6 py-6">
+                  <td className="px-6 py-5">
                     {feature.golflog ? (
                       <div className="flex justify-center">
-                        <Check className="h-5 w-5 text-emerald-500" />
+                        <Check className="h-4 w-4 text-emerald-500" />
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <X className="h-5 w-5 text-zinc-300" />
+                        <X className="h-4 w-4 text-zinc-300" />
                       </div>
                     )}
                   </td>
-                  <td className="px-6 py-6">
+                  <td className="px-6 py-5">
                     {feature.other ? (
                       <div className="flex justify-center">
-                        <Check className="h-5 w-5 text-emerald-500" />
+                        <Check className="h-4 w-4 text-emerald-500" />
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <X className="h-5 w-5 text-zinc-300" />
+                        <X className="h-4 w-4 text-zinc-300" />
                       </div>
                     )}
                   </td>
