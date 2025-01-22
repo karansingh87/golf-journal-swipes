@@ -84,7 +84,7 @@ const BentoCard = ({
     </div>
     <div className="opacity-0 group-hover:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-50 to-transparent pointer-events-none" />
   </motion.div>
-));
+);
 
 const BenefitsSection = () => {
   return (
