@@ -38,7 +38,7 @@ const features = [
 
 const BentoGrid = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 md:auto-rows-[200px]">
+    <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 md:auto-rows-[200px]">
       {children}
     </div>
   );
@@ -62,7 +62,7 @@ const BentoCard = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
-      "group relative overflow-hidden rounded-[20px] p-4 lg:p-8 h-full",
+      "group relative overflow-hidden rounded-[20px] p-4 lg:p-6 h-full",
       "bg-white",
       "border border-zinc-200/50",
       "shadow-[0_4px_12px_-2px_rgba(16,24,40,0.08),0_2px_6px_-2px_rgba(16,24,40,0.06)]",
@@ -72,16 +72,18 @@ const BentoCard = ({
       className
     )}
   >
-    <div className="relative z-10 h-full flex flex-col">
-      <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
-                    bg-gradient-to-br from-zinc-50 to-white
-                    shadow-[0_2px_4px_rgba(16,24,40,0.08)]
-                    group-hover:scale-110 transition-transform duration-300">
-        <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
+    <div className="relative z-10 h-full flex flex-col justify-between">
+      <div>
+        <div className="mb-4 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
+                      bg-gradient-to-br from-zinc-50 to-white
+                      shadow-[0_2px_4px_rgba(16,24,40,0.08)]
+                      group-hover:scale-110 transition-transform duration-300">
+          <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-900" />
+        </div>
+        <h3 className="font-display text-xl lg:text-2xl text-zinc-900 mb-2 tracking-tight">
+          {title}
+        </h3>
       </div>
-      <h3 className="font-display text-xl lg:text-2xl text-zinc-900 mb-2 tracking-tight">
-        {title}
-      </h3>
       <p className="text-sm lg:text-base text-zinc-600 leading-relaxed">
         {description}
       </p>
