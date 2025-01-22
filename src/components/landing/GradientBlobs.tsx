@@ -18,7 +18,7 @@ const GradientBlobs = () => {
   }, []);
 
   return (
-    <div ref={blobRef} className="fixed inset-0 pointer-events-none overflow-hidden">
+    <div ref={blobRef} className="absolute inset-0 pointer-events-none overflow-hidden">
       <motion.div
         className="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] rounded-full 
                    bg-gradient-to-br from-emerald-100/30 to-emerald-200/30 
