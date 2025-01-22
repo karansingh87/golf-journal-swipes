@@ -33,20 +33,20 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-800 py-10 relative group/feature min-h-[180px]",
-        "bg-zinc-900",
+        "flex flex-col lg:border-r border-[#2F3E46]/20 py-10 relative group/feature min-h-[180px]",
+        "bg-[#F2FCE2]",
         (index === 0 || index === 2) && "lg:border-l",
         index < 2 && "lg:border-b",
         index >= 2 && "lg:border-t lg:-mt-[1px]"
       )}
     >
-      <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-zinc-900 to-transparent pointer-events-none" />
-      <div className="mb-4 relative z-10 px-10 text-zinc-50">
+      <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-gradient-to-t from-[#F2FCE2] to-transparent pointer-events-none" />
+      <div className="mb-4 relative z-10 px-10 text-[#2F3E46]">
         <Icon className="h-8 w-8" strokeWidth={1.5} />
       </div>
       <div className="text-sm relative z-10 px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-zinc-800 group-hover/feature:bg-zinc-50 transition-all duration-200 origin-center" />
-        <span className="text-zinc-50">
+        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-[#2F3E46]/20 group-hover/feature:bg-[#2F3E46] transition-all duration-200 origin-center" />
+        <span className="text-[#2F3E46]">
           {title}
         </span>
       </div>
@@ -59,8 +59,8 @@ const GolferStoriesSection = () => {
     <section className="py-20 sm:py-28 lg:py-20 relative">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-[#F2FCE2]">
-            <span className="text-sm font-medium text-[#2F3E46]">
+          <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-900">
+            <span className="text-sm font-medium text-zinc-50">
               Journal Anytime
             </span>
           </div>
