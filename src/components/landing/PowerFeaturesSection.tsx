@@ -1,5 +1,5 @@
 import React from "react";
-import { Car, Target, Beer } from "lucide-react";
+import { Car, Target, Beer, Mic, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
@@ -19,26 +19,27 @@ const features = [
     description: "Save those post-round insights and observations while relaxing after your game.",
     icon: Beer,
   },
+  {
+    title: "Voice or text, your choice",
+    description: "Whether you prefer speaking or typing, capture your golf insights your way.",
+    icon: Mic,
+  },
+  {
+    title: "Share with your coach",
+    description: "Easily share your practice notes and round insights with your golf instructor.",
+    icon: Share2,
+  },
 ];
 
-const BentoGrid = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
-      {children}
-    </div>
-  );
-};
-
-const BentoCard = ({
+const Feature = ({
   title,
   Icon,
-  className,
+  description,
   index,
 }: {
   title: string;
   description: string;
   Icon: any;
-  className?: string;
   index: number;
 }) => (
   <motion.div
@@ -46,27 +47,24 @@ const BentoCard = ({
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
-      "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
-      "bg-zinc-800",
-      "border border-zinc-700/30",
-      "shadow-[0_4px_12px_-2px_rgba(0,0,0,0.2),0_2px_6px_-2px_rgba(0,0,0,0.1)]",
-      "hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.3),0_4px_12px_-4px_rgba(0,0,0,0.2)]",
+      "group relative overflow-hidden p-6 h-full",
+      "bg-zinc-800 border border-zinc-700/30 rounded-[10px]",
       "transition-all duration-300 ease-in-out",
-      "hover:translate-y-[-2px]",
-      className
+      "hover:shadow-lg"
     )}
   >
     <div className="relative z-10 h-full flex flex-col">
-      <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
-                    bg-zinc-700
-                    shadow-[0_2px_4px_rgba(0,0,0,0.2)]
-                    group-hover:scale-110 transition-transform duration-300
-                    group-hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]">
-        <Icon className="w-6 h-6 lg:w-7 lg:h-7 text-zinc-100" />
+      <div className="mb-6 rounded-full w-12 h-12 flex items-center justify-center
+                    bg-zinc-700 shadow-lg
+                    group-hover:scale-110 transition-transform duration-300">
+        <Icon className="w-6 h-6 text-zinc-100" />
       </div>
-      <h3 className="text-xl lg:text-2xl font-bold text-zinc-100 mb-2 tracking-tight">
+      <h3 className="text-lg font-semibold text-zinc-100 mb-2">
         {title}
       </h3>
+      <p className="text-sm text-zinc-400">
+        {description}
+      </p>
     </div>
     
     <div className="absolute -right-6 -bottom-6 w-32 h-32 
@@ -91,9 +89,9 @@ const PowerFeaturesSection = () => {
           </div>
         </div>
         
-        <BentoGrid>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 lg:gap-8">
           {features.map((feature, index) => (
-            <BentoCard
+            <Feature
               key={feature.title}
               title={feature.title}
               description={feature.description}
@@ -101,7 +99,7 @@ const PowerFeaturesSection = () => {
               index={index}
             />
           ))}
-        </BentoGrid>
+        </div>
       </div>
     </section>
   );
