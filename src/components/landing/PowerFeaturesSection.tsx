@@ -31,7 +31,6 @@ const BentoGrid = ({ children }: { children: React.ReactNode }) => {
 
 const BentoCard = ({
   title,
-  description,
   Icon,
   className,
   index,
@@ -48,19 +47,18 @@ const BentoCard = ({
     transition={{ duration: 0.4, delay: index * 0.1 }}
     className={cn(
       "group relative overflow-hidden rounded-[20px] p-4 lg:p-8",
-      "bg-gradient-to-br from-zinc-900 via-zinc-800/95 to-zinc-700/90",
-      "backdrop-blur-sm border border-zinc-800/30",
+      "bg-zinc-800",
+      "border border-zinc-700/30",
       "shadow-[0_4px_12px_-2px_rgba(0,0,0,0.2),0_2px_6px_-2px_rgba(0,0,0,0.1)]",
       "hover:shadow-[0_8px_24px_-4px_rgba(0,0,0,0.3),0_4px_12px_-4px_rgba(0,0,0,0.2)]",
       "transition-all duration-300 ease-in-out",
       "hover:translate-y-[-2px]",
-      "before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top_left,rgba(155,135,245,0.1),transparent_60%)]",
       className
     )}
   >
     <div className="relative z-10 h-full flex flex-col">
       <div className="mb-6 rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center
-                    bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-600
+                    bg-zinc-700
                     shadow-[0_2px_4px_rgba(0,0,0,0.2)]
                     group-hover:scale-110 transition-transform duration-300
                     group-hover:shadow-[0_0_12px_rgba(255,255,255,0.1)]">
@@ -72,7 +70,7 @@ const BentoCard = ({
     </div>
     
     <div className="absolute -right-6 -bottom-6 w-32 h-32 
-                    bg-gradient-to-br from-purple-500/20 to-blue-500/10 
+                    bg-gradient-to-br from-zinc-700/20 to-zinc-600/10 
                     rounded-full blur-2xl opacity-70
                     animate-pulse-ring" />
   </motion.div>
