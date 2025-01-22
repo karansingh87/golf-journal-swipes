@@ -7,6 +7,7 @@ import GolferStoriesSection from "@/components/landing/GolferStoriesSection";
 import PricingSection from "@/components/landing/PricingSection";
 import FAQSection from "@/components/landing/FAQSection";
 import Footer from "@/components/landing/Footer";
+import ComparisonSection from "@/components/landing/ComparisonSection";
 
 const Landing = () => {
   return (
@@ -20,6 +21,7 @@ const Landing = () => {
       <Navigation />
       <div className="space-y-8 lg:space-y-16">
         <HeroSection />
+        <ComparisonSection />
         <PhoneMockup />
         <BenefitsSection />
         <DetailedFeaturesSection />
