@@ -57,18 +57,18 @@ const ComparisonSection = () => {
           </motion.p>
         </div>
 
-        <div className="relative bg-white rounded-lg shadow-sm">
+        <div className="relative bg-zinc-950 rounded-lg shadow-sm">
           <table className="w-full">
             <thead>
               <tr>
-                <th className="text-left py-6 px-6 border-b border-zinc-100">
-                  <span className="text-sm text-zinc-500 font-normal">Feature</span>
+                <th className="text-left py-6 px-6 border-b border-zinc-800">
+                  <span className="text-sm text-zinc-50 font-normal">Feature</span>
                 </th>
-                <th className="px-6 py-6 border-b border-zinc-100">
-                  <span className="text-sm font-medium text-zinc-900">GolfLog</span>
+                <th className="px-6 py-6 border-b border-zinc-800">
+                  <span className="text-sm font-medium text-zinc-50">GolfLog</span>
                 </th>
-                <th className="px-6 py-6 border-b border-zinc-100">
-                  <span className="text-sm text-zinc-500 font-normal">Notes/Voice Memos</span>
+                <th className="px-6 py-6 border-b border-zinc-800">
+                  <span className="text-sm text-zinc-50 font-normal">Notes/Voice Memos</span>
                 </th>
               </tr>
             </thead>
@@ -82,31 +82,31 @@ const ComparisonSection = () => {
                     duration: 0.5,
                     delay: 0.1 + index * 0.1,
                   }}
-                  className="border-b border-zinc-50 last:border-0"
+                  className="border-b border-zinc-800 last:border-0"
                 >
                   <td className="text-left py-5 px-6">
-                    <div className="font-medium text-sm text-zinc-900">{feature.name}</div>
-                    <div className="text-xs text-zinc-500 mt-1">{feature.description}</div>
+                    <div className="font-medium text-sm text-zinc-50">{feature.name}</div>
+                    <div className="text-xs text-zinc-400 mt-1">{feature.description}</div>
                   </td>
                   <td className="px-6 py-5">
                     {feature.golflog ? (
                       <div className="flex justify-center">
-                        <Check className="h-4 w-4 text-emerald-500" />
+                        <Check className="h-4 w-4 text-zinc-50" />
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <X className="h-4 w-4 text-zinc-300" />
+                        <X className="h-4 w-4 text-zinc-600" />
                       </div>
                     )}
                   </td>
                   <td className="px-6 py-5">
                     {feature.other ? (
                       <div className="flex justify-center">
-                        <Check className="h-4 w-4 text-emerald-500" />
+                        <Check className="h-4 w-4 text-zinc-50" />
                       </div>
                     ) : (
                       <div className="flex justify-center">
-                        <X className="h-4 w-4 text-zinc-300" />
+                        <X className="h-4 w-4 text-zinc-600" />
                       </div>
                     )}
                   </td>
