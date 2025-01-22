@@ -82,7 +82,7 @@ const BentoCard = ({
           {title}
         </h3>
       </div>
-      <p className="text-sm text-zinc-600 tracking-[-0.01em] font-sans leading-normal">
+      <p className="text-sm text-zinc-500 tracking-[-0.01em] font-sans leading-normal">
         {description}
       </p>
     </div>
