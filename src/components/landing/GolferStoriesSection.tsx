@@ -1,7 +1,6 @@
 import React from "react";
 import { Car, Target, Beer, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Card, CardContent } from "@/components/ui/card";
 
 const stories = [
   {
@@ -34,7 +33,8 @@ const Feature = ({
   return (
     <div
       className={cn(
-        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature w-full bg-white",
+        "flex flex-col lg:border-r border-zinc-200 py-10 relative group/feature",
+        "bg-[#FDE1D3] bg-opacity-50",
         (index === 0 || index === 2) && "lg:border-l",
         index < 2 && "lg:border-b",
         index >= 2 && "lg:border-t lg:-mt-[1px]"
@@ -57,7 +57,6 @@ const Feature = ({
 const GolferStoriesSection = () => {
   return (
     <section className="py-20 sm:py-28 lg:py-32 relative">
-      <div className="absolute inset-0 bg-[#FDE1D3] bg-opacity-50 pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-center mb-16 sm:mb-20">
           <div className="inline-flex items-center rounded-full px-4 py-1.5 bg-zinc-950">
