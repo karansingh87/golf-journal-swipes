@@ -10,7 +10,7 @@ const features = [
     icon: Mic,
   },
   {
-    title: "Multi-Language Support",
+    title: "Multi-Language",
     description: "Record and review in your preferred language",
     icon: Languages,
   },
