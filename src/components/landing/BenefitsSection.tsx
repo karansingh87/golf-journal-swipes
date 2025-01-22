@@ -80,11 +80,11 @@ const BentoCard = ({
                       group-hover:scale-110 transition-transform duration-300">
           <Icon className="w-5 h-5 lg:w-6 lg:h-6 text-zinc-900" />
         </div>
-        <h3 className="font-display text-lg lg:text-xl text-zinc-900 tracking-tight">
+        <h3 className="font-display text-lg lg:text-xl text-zinc-900 tracking-tight leading-snug">
           {title}
         </h3>
       </div>
-      <p className="text-sm text-zinc-600 leading-relaxed">
+      <p className="text-sm text-zinc-600 leading-7 tracking-[-0.01em] font-sans">
         {description}
       </p>
     </div>
