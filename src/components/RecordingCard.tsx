@@ -14,7 +14,6 @@ interface RecordingCardProps {
     session_type: "course" | "practice";
   };
   onEdit: (recording: any) => void;
-  onDelete: (id: string) => void;
   isEditing: boolean;
   editedTranscription: string;
   onEditChange: (value: string) => void;

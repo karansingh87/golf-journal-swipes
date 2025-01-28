@@ -54,30 +54,6 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('recordings')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Recording deleted successfully",
-      });
-      setRecordings(recordings.filter(recording => recording.id !== id));
-    } catch (error) {
-      console.error("Error deleting recording:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to delete recording",
-      });
-    }
-  };
-
   const filteredRecordings = recordings.filter((recording) => {
     const matchesSearch = searchQuery
       ? recording.transcription?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -108,7 +84,6 @@ const RecordingHistory = ({ searchQuery }: RecordingHistoryProps) => {
               key={recording.id}
               recording={recording}
               isEditing={false}
-              onDelete={() => handleDelete(recording.id)}
               onEdit={() => {}}
               editedTranscription=""
               onEditChange={() => {}}
