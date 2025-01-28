@@ -7,6 +7,8 @@ import SessionTypeModal from "../SessionTypeModal";
 import { UpgradeModal } from "../subscription/UpgradeModal";
 import { useProfileData } from "./hooks/useProfileData";
 import { canAccessRecording } from "@/utils/subscription";
+import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
 
 const RecordingContainer = () => {
   console.log("RecordingContainer mounting");
@@ -15,6 +17,7 @@ const RecordingContainer = () => {
   const [sessionType, setSessionType] = useState<"course" | "practice" | null>(null);
   const [showSessionTypeModal, setShowSessionTypeModal] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [monthlyUsage, setMonthlyUsage] = useState<number | null>(null);
 
   const { profile, isProfileLoading, isAuthenticated } = useProfileData();
   
@@ -27,6 +30,27 @@ const RecordingContainer = () => {
     handleAudioRecording,
     handleTextSubmit,
   } = useGolfRecording();
+
+  // Fetch monthly usage for free users
+  useEffect(() => {
+    const fetchMonthlyUsage = async () => {
+      if (!profile?.id || profile.has_pro_access) return;
+
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
+
+      const { count } = await supabase
+        .from('recordings')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', profile.id)
+        .gte('created_at', startOfMonth.toISOString());
+
+      setMonthlyUsage(count || 0);
+    };
+
+    fetchMonthlyUsage();
+  }, [profile]);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -59,7 +83,12 @@ const RecordingContainer = () => {
     }
   };
 
-  const handleRecordingStart = () => {
+  const handleRecordingStart = async () => {
+    // For free users, check if they've hit their limit
+    if (!profile.has_pro_access && monthlyUsage !== null && monthlyUsage >= 3) {
+      setShowUpgradeModal(true);
+      return;
+    }
     setShowSessionTypeModal(true);
   };
 
@@ -74,6 +103,13 @@ const RecordingContainer = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
+      {!profile.has_pro_access && monthlyUsage !== null && (
+        <div className="absolute top-4 right-4 z-50">
+          <Badge variant="secondary" className="text-sm">
+            {monthlyUsage}/3 recordings this month
+          </Badge>
+        </div>
+      )}
       {showTextInput ? (
         <TextInput
           onSubmit={handleTextSubmitAndClose}
