@@ -7,9 +7,9 @@ const RecordPlaceholderCard = () => {
   return (
     <button
       onClick={() => navigate("/record")}
-      className="w-full py-4 px-5 bg-[#6448FF] 
-        backdrop-blur-sm hover:bg-[#5438EE] rounded-2xl 
-        shadow-md transition-all duration-200 hover:scale-[1.02]
+      className="w-full py-4 px-5 bg-[#6448FF]/90 
+        backdrop-blur-sm hover:bg-[#5438EE]/90 rounded-2xl 
+        shadow-md transition-all duration-200
         hover:shadow-lg hover:shadow-[#6448FF]/20
         flex items-start gap-3 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
