@@ -15,7 +15,7 @@ const UsageIndicators = () => {
       
       const { data, error } = await supabase
         .from('profiles')
-        .select('subscription_tier, has_pro_access')
+        .select('id, subscription_tier, has_pro_access')
         .eq('id', session.user.id)
         .single();
 
