@@ -104,7 +104,7 @@ const RecordingContainer = () => {
   return (
     <div className="fixed inset-0 flex flex-col bg-background text-foreground overflow-hidden">
       {!profile.has_pro_access && monthlyUsage !== null && (
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50">
           <Badge variant="secondary" className="text-sm">
             {monthlyUsage}/3 recordings this month
           </Badge>
