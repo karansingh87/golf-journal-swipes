@@ -76,7 +76,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
     setUpgradeFeature(feature);
   };
 
-  const handleFeatureAction = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
+  const handleFeatureAction = (feature: 'trends' | 'pep-talk' | 'lesson-prep' | 'recording') => {
     switch (feature) {
       case 'trends':
         navigate('/trends');
@@ -86,6 +86,9 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
         break;
       case 'lesson-prep':
         onGenerateClick();
+        break;
+      case 'recording':
+        navigate('/record');
         break;
     }
   };
