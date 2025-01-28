@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import VoiceRecorder from "../VoiceRecorder";
 import TextInput from "../TextInput";
 import { useGolfRecording } from "../../hooks/useGolfRecording";
