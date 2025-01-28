@@ -13,7 +13,7 @@ const PlaceholderCard = () => {
         flex items-start gap-3 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
       <div className="w-8 h-8 flex items-center justify-center">
-        <NotebookPen className="w-4 h-4 text-zinc-950 group-hover:text-white" />
+        <NotebookPen className="w-4 h-4 text-zinc-950" />
       </div>
       <div className="text-left">
         <h3 className="font-semibold text-sm leading-none mb-1.5">Notes</h3>
