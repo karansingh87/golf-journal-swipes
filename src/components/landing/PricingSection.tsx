@@ -26,7 +26,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
   
   const defaultFeatures = {
     free: [
-      "Unlimited voice & text recordings",
+      "3 recordings per month",
       "AI game analysis",
       "Personal recording history",
       "Core features access",
