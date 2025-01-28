@@ -32,6 +32,7 @@ const PricingSection = ({ content }: PricingSectionProps) => {
       "Core features access",
     ],
     pro: [
+      "Unlimited recordings",
       "Advanced AI analysis & insights",
       "Mental game coaching & pep talks",
       "Smart lesson prep & coach sharing",
