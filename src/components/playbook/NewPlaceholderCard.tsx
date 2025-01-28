@@ -8,8 +8,8 @@ const NewPlaceholderCard = ({ onClick }: NewPlaceholderCardProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full py-4 px-5 bg-gradient-to-br from-blue-50/80 to-cyan-100/80
-        backdrop-blur-sm hover:from-blue-100 hover:to-cyan-200 rounded-2xl 
+      className="w-full py-4 px-5 bg-zinc-400/80 
+        backdrop-blur-sm hover:bg-zinc-300 rounded-2xl 
         shadow-sm transition-all duration-200
         flex items-start gap-3 group focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
     >
