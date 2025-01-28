@@ -70,7 +70,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-3">
+      <div className="grid grid-cols-1 gap-2.5 pt-8">
         <RecordPlaceholderCard />
         <PlaceholderCard />
         <TrendsCard onClick={() => handleFeatureClick('trends')} />
