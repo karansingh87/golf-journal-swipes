@@ -70,14 +70,6 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
   return (
     <>
       <div className="grid grid-cols-1 gap-3">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handleRecordClick}
-            className="flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors"
-          >
-            Record Note
-          </button>
-        </div>
         <PlaceholderCard />
         <TrendsCard onClick={() => handleFeatureClick('trends')} />
         <NewPlaceholderCard onClick={() => handleFeatureClick('pep-talk')} />

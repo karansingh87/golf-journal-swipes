@@ -14,7 +14,7 @@ const Login = () => {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate('/record');
+        navigate('/playbook');
       }
     };
     
@@ -22,7 +22,7 @@ const Login = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        navigate('/record');
+        navigate('/playbook');
       }
     });
 
