@@ -117,7 +117,7 @@ const Playbook = () => {
       <div className="flex-1 flex flex-col w-full px-6 sm:px-10 lg:px-20 max-w-7xl mx-auto">
         <div className="flex-1 flex flex-col h-[calc(100dvh-3.5rem)] pt-6">
           <PlaybookHeader displayName={displayName} />
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col">
             <PlaybookActions 
               onGenerateClick={() => setIsActionModalOpen(true)}
               onPepTalkClick={handlePepTalkClick}
