@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import VoiceRecorder from "../VoiceRecorder";
 import TextInput from "../TextInput";
 import { useGolfRecording } from "../../hooks/useGolfRecording";
@@ -98,6 +97,11 @@ const RecordingContainer = () => {
   };
 
   const handleSwitchToText = () => {
+    // For free users, check if they've hit their limit
+    if (!profile.has_pro_access && monthlyUsage !== null && monthlyUsage >= 3) {
+      setShowUpgradeModal(true);
+      return;
+    }
     setShowTextInput(true);
   };
 
