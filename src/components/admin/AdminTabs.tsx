@@ -1,4 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import PromptEditor from "./PromptEditor";
 import PromptHistoryTable from "./PromptHistoryTable";
 import UserManagementTable from "./UserManagementTable";
@@ -36,6 +38,36 @@ const AdminTabs = ({
   onModelProviderChange,
   onModelNameChange,
 }: AdminTabsProps) => {
+  const { toast } = useToast();
+
+  const handleSyncStripeSubscriptions = async () => {
+    try {
+      const response = await fetch('/functions/v1/sync-stripe-subscriptions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to sync subscriptions');
+      }
+
+      const result = await response.json();
+      toast({
+        title: "Success",
+        description: "Stripe subscriptions synced successfully",
+      });
+    } catch (error) {
+      console.error('Error syncing subscriptions:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sync Stripe subscriptions",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Tabs defaultValue="analysis" className="w-full">
       <TabsList className="mb-4 w-full flex h-auto flex-wrap gap-2 bg-transparent border-b border-border/50">
@@ -109,7 +141,17 @@ const AdminTabs = ({
         </TabsContent>
 
         <TabsContent value="users">
-          <UserManagementTable />
+          <div className="space-y-4">
+            <div className="flex justify-end">
+              <Button 
+                onClick={handleSyncStripeSubscriptions}
+                className="mb-4"
+              >
+                Sync Stripe Subscriptions
+              </Button>
+            </div>
+            <UserManagementTable />
+          </div>
         </TabsContent>
 
         <TabsContent value="colors">
