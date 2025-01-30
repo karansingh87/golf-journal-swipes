@@ -6,6 +6,7 @@ import PromptHistoryTable from "./PromptHistoryTable";
 import UserManagementTable from "./UserManagementTable";
 import ModelConfig from "./ModelConfig";
 import ColorConfigTab from "./ColorConfigTab";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AdminTabsProps {
   analysisPrompt: string;
@@ -42,22 +43,20 @@ const AdminTabs = ({
 
   const handleSyncStripeSubscriptions = async () => {
     try {
-      const response = await fetch('/functions/v1/sync-stripe-subscriptions', {
+      const { data, error } = await supabase.functions.invoke('sync-stripe-subscriptions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to sync subscriptions');
+      if (error) {
+        throw error;
       }
 
-      const result = await response.json();
       toast({
         title: "Success",
         description: "Stripe subscriptions synced successfully",
       });
+      
+      console.info('Sync response:', data);
     } catch (error) {
       console.error('Error syncing subscriptions:', error);
       toast({
