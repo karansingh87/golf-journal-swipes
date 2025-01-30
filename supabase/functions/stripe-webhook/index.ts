@@ -48,6 +48,42 @@ serve(async (req) => {
     console.log('Processing webhook event:', event.type)
 
     switch (event.type) {
+      case 'customer.subscription.created': {
+        const subscription = event.data.object;
+        const customerId = subscription.customer as string;
+        
+        console.log('Processing new subscription creation for customer:', customerId);
+        
+        const { data: profiles, error: profileError } = await supabaseClient
+          .from('profiles')
+          .select('id')
+          .eq('stripe_customer_id', customerId)
+          .single();
+
+        if (profileError || !profiles) {
+          console.error('Error finding user:', profileError);
+          throw new Error('User not found');
+        }
+
+        const { error: updateError } = await supabaseClient
+          .from('profiles')
+          .update({
+            subscription_tier: 'pro',
+            has_pro_access: true,
+            subscription_status: subscription.status,
+            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+          })
+          .eq('id', profiles.id);
+
+        if (updateError) {
+          console.error('Error updating user profile:', updateError);
+          throw new Error('Failed to update user profile');
+        }
+
+        console.log('Successfully processed subscription creation');
+        break;
+      }
+
       case 'checkout.session.completed': {
         const session = event.data.object;
         const customerId = session.customer;
