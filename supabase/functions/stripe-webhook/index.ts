@@ -52,6 +52,8 @@ serve(async (req) => {
         const session = event.data.object;
         const customerId = session.customer;
         const isLifetime = session.mode === 'payment';
+        
+        console.log('Processing checkout completion for customer:', customerId);
 
         const { data: profiles, error: profileError } = await supabaseClient
           .from('profiles')
@@ -64,10 +66,16 @@ serve(async (req) => {
           throw new Error('User not found')
         }
 
-        // Set subscription tier based on payment type
+        // Set subscription tier and pro access
         const updateData = {
           subscription_tier: isLifetime ? 'lifetime' : 'pro',
-          current_period_end: isLifetime ? null : new Date(session.subscription?.current_period_end * 1000).toISOString(),
+          has_pro_access: true,
+          subscription_status: 'active',
+          stripe_customer_id: customerId,
+          current_period_end: isLifetime ? null : 
+            session.subscription ? 
+              new Date(session.subscription.current_period_end * 1000).toISOString() : 
+              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days from now as fallback
         }
 
         const { error: updateError } = await supabaseClient
@@ -80,7 +88,7 @@ serve(async (req) => {
           throw new Error('Failed to update user')
         }
 
-        console.log(`Successfully updated user to ${updateData.subscription_tier} tier`)
+        console.log(`Successfully updated user to ${updateData.subscription_tier} tier with pro access`)
         break;
       }
       
@@ -107,6 +115,8 @@ serve(async (req) => {
             .from('profiles')
             .update({
               subscription_tier: 'free',
+              has_pro_access: false,
+              subscription_status: 'canceled',
               current_period_end: null,
             })
             .eq('id', profiles.id)
@@ -144,6 +154,8 @@ serve(async (req) => {
             .from('profiles')
             .update({
               subscription_tier: 'pro',
+              has_pro_access: true,
+              subscription_status: subscription.status,
               current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
             })
             .eq('id', profiles.id)
