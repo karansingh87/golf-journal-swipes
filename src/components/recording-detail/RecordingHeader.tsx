@@ -100,7 +100,7 @@ const RecordingHeader = ({ recording, onDelete, onTogglePublic, onShare }: Recor
           variant="ghost"
           size="sm"
           onClick={onDelete}
-          className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+          className="hidden h-6 w-6 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
         >
           <Trash2 className="h-3 w-3" />
         </Button>
