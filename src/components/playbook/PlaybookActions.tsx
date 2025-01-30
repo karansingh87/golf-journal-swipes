@@ -18,7 +18,7 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
   const [upgradeFeature, setUpgradeFeature] = useState<'trends' | 'pep-talk' | 'lesson-prep' | 'recording' | null>(null);
   const navigate = useNavigate();
 
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading: isProfileLoading } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -40,6 +40,9 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
   };
 
   const handleFeatureClick = (feature: 'trends' | 'pep-talk' | 'lesson-prep') => {
+    // Don't show upgrade modal while profile is loading
+    if (isProfileLoading) return;
+    
     if (!profile) return;
 
     // Pro users bypass all checks
@@ -67,6 +70,19 @@ const PlaybookActions = ({ onGenerateClick, onPepTalkClick }: PlaybookActionsPro
         break;
     }
   };
+
+  // Show loading state while profile data is being fetched
+  if (isProfileLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-2.5 pt-10 opacity-50">
+        <RecordPlaceholderCard />
+        <PlaceholderCard />
+        <TrendsCard onClick={() => {}} />
+        <NewPlaceholderCard onClick={() => {}} />
+        <GenerateNotesCard onClick={() => {}} />
+      </div>
+    );
+  }
 
   return (
     <>
