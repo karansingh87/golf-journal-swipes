@@ -28,3 +28,5 @@ enabled = true
 [functions]
 [functions.stripe-webhook]
 verify_jwt = false
+[functions.sync-stripe-subscriptions]
+verify_jwt = true
