@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
@@ -30,9 +31,6 @@ serve(async (req) => {
       console.error('No audio file provided in request');
       throw new Error('No audio file provided');
     }
-
-    // Add response_format=verbose_json to get timestamps
-    formData.append('response_format', 'verbose_json');
 
     console.log('Sending audio to OpenAI Whisper API...');
     const openAIResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
